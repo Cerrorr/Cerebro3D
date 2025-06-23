@@ -1,0 +1,78 @@
+@use 'sass:map';
+@use 'variables' as vars;
+
+// 响应式混入 - 使用现代map语法
+@mixin respond-to($breakpoint) {
+  @if map.has-key(vars.$breakpoints, $breakpoint) {
+    @media (min-width: map.get(vars.$breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Invalid breakpoint: #{$breakpoint}";
+  }
+}
+
+// 按钮样式混入
+@mixin button-base {
+  @apply inline-flex items-center justify-center;
+  @apply font-medium rounded-lg;
+  @apply transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+@mixin button-size($size: md) {
+  @if $size == sm {
+    @apply px-3 py-1.5 text-sm;
+  } @else if $size == md {
+    @apply px-4 py-2 text-base;
+  } @else if $size == lg {
+    @apply px-6 py-3 text-lg;
+  }
+}
+
+// 卡片样式混入
+@mixin card-base {
+  @apply bg-white rounded-xl border;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// 渐变背景混入 - 使用现代map语法
+@mixin gradient-primary {
+  background: linear-gradient(135deg, 
+    map.get(vars.$primary-colors, 500) 0%, 
+    map.get(vars.$secondary-colors, 500) 100%
+  );
+}
+
+// 文本截断混入
+@mixin text-ellipsis($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// 居中混入
+@mixin center($direction: both) {
+  @if $direction == both {
+    @apply flex items-center justify-center;
+  } @else if $direction == horizontal {
+    @apply flex justify-center;
+  } @else if $direction == vertical {
+    @apply flex items-center;
+  }
+} 

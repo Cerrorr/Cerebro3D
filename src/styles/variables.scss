@@ -1,0 +1,57 @@
+// 设计token变量 - 与Tailwind配置同步
+// 使用现代SCSS语法，避免弃用警告
+
+$primary-colors: (
+  50: #eff6ff,
+  100: #dbeafe,
+  500: #667eea,
+  600: #5a67d8,
+  700: #4c51bf,
+  900: #3c366b
+) !default;
+
+$secondary-colors: (
+  500: #764ba2,
+  600: #6b46c1,
+  700: #553c9a
+) !default;
+
+$gray-colors: (
+  50: #f9fafb,
+  100: #f3f4f6,
+  200: #e5e7eb,
+  500: #6b7280,
+  800: #1f2937,
+  900: #111827
+) !default;
+
+// 间距系统
+$spacing: (
+  xs: 0.25rem,   // 4px
+  sm: 0.5rem,    // 8px  
+  md: 1rem,      // 16px
+  lg: 1.5rem,    // 24px
+  xl: 2rem,      // 32px
+  2xl: 3rem,     // 48px
+  3xl: 4rem,     // 64px
+) !default;
+
+// 断点系统
+$breakpoints: (
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  2xl: 1536px
+) !default;
+
+// Z-index层级
+$z-indexes: (
+  dropdown: 1000,
+  sticky: 1020,
+  fixed: 1030,
+  modal-backdrop: 1040,
+  modal: 1050,
+  popover: 1060,
+  tooltip: 1070
+) !default; 

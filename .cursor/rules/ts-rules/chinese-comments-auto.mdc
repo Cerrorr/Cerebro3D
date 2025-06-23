@@ -1,0 +1,90 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+description: 
+globs: *.ts, *.tsx, *.js, *.jsx
+alwaysApply: false
+---
+
+# 中文注释规范
+
+## Critical Rules
+
+- 所有方法、函数、类都必须添加中文注释说明其用途
+- 携带参数的方法必须使用JSDoc格式注释，包含@param和@returns
+- 复杂业务逻辑必须添加行内中文注释解释关键步骤
+- 接口和类型定义必须有中文注释说明其用途和字段含义
+- 常量和配置项必须有中文注释说明其作用
+- Hook函数必须注释其功能、依赖和返回值
+- 工具函数必须详细说明输入输出和使用场景
+- 组件Props接口必须注释每个属性的用途
+
+## Examples
+
+<example>
+  /**
+   * 更新3D对象的变换属性
+   * @param objectId 对象ID
+   * @param transform 变换数据，包含位置、旋转、缩放
+   * @returns 更新是否成功
+   */
+  const updateObjectTransform = (objectId: string, transform: Transform): boolean => {
+    // 验证对象是否存在
+    const object = scene.getObjectById(objectId);
+    if (!object) {
+      console.warn('对象不存在:', objectId);
+      return false;
+    }
+    
+    // 应用变换属性
+    object.position.set(transform.position.x, transform.position.y, transform.position.z);
+    return true;
+  };
+
+  // 无参数方法的简单注释
+  const clearSelection = () => {
+    // 清空当前选择的对象
+    selectedObjects.clear();
+  };
+
+  /**
+   * 编辑器工具类型定义
+   */
+  interface ToolbarButtonProps {
+    /** 按钮图标 */
+    icon?: ReactNode;
+    /** 按钮标题文本 */
+    title?: string;
+    /** 是否为激活状态 */
+    active?: boolean;
+    /** 点击事件处理函数 */
+    onClick?: () => void;
+  }
+</example>
+
+<example type="invalid">
+  // 英文注释
+  const updateObject = (id: string, data: any) => {
+    // update the object
+    return true;
+  };
+
+  // 无注释的方法
+  const deleteObject = (id: string) => {
+    objects.delete(id);
+  };
+
+  // 缺少JSDoc格式的参数说明
+  const createMesh = (geometry, material) => {
+    return new Mesh(geometry, material);
+  };
+
+  // 无注释的接口
+  interface ComponentProps {
+    className?: string;
+    children?: ReactNode;
+  }
+</example>

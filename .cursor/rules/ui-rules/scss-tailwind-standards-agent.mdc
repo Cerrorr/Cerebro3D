@@ -1,0 +1,112 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# SCSS + Tailwind CSS 使用规范 🎨
+
+## Critical Rules
+
+- **优先级原则**: Tailwind优先，SCSS补充 - 先用Tailwind工具类，复杂样式用SCSS
+- **文件命名**: SCSS文件使用`.scss`扩展名，遵循组件名称命名
+- **嵌套限制**: SCSS嵌套不超过3层，避免过度嵌套
+- **变量管理**: 使用SCSS变量管理设计token，与Tailwind配置保持同步
+- **混入复用**: 创建可复用的SCSS mixins处理复杂样式逻辑
+- **响应式设计**: 优先使用Tailwind响应式前缀，复杂媒体查询用SCSS
+- **性能优化**: 使用Tailwind的purge功能清理未使用的样式
+- **样式隔离**: 组件样式使用CSS Modules或styled-components避免污染
+
+## 📁 文件结构规范
+
+```
+src/
+├── styles/
+│   ├── globals.scss              # 全局SCSS样式
+│   ├── variables.scss            # SCSS变量定义
+│   ├── mixins.scss              # SCSS混入函数
+│   ├── components.scss          # 基础组件样式
+│   └── utilities.scss           # 自定义工具类
+├── components/
+│   └── ComponentName/
+│       ├── ComponentName.tsx
+│       ├── ComponentName.module.scss  # 组件专用样式
+│       └── index.ts
+└── tailwind.config.js           # Tailwind配置文件
+```
+
+## 🎯 使用优先级策略
+
+### 1. 🥇 首选 - Tailwind 工具类
+```tsx
+// ✅ 优先使用Tailwind处理常见样式
+const Button = () => (
+  <button className="
+    px-4 py-2 
+    bg-blue-500 hover:bg-blue-600 
+    text-white font-medium 
+    rounded-lg shadow-md 
+    transition-colors duration-200
+  ">
+    点击按钮
+  </button>
+)
+```
+
+### 2. 🥈 次选 - SCSS模块化样式
+```scss
+// ComponentName.module.scss
+.customButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  &:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-2px);
+  }
+  
+  &.large {
+    @apply px-6 py-3 text-lg; // 结合Tailwind
+  }
+}
+```
+
+## Examples
+
+<example>
+  ```tsx
+  // ✅ 正确的组合使用方式
+  import styles from './ProjectCard.module.scss'
+  
+  const ProjectCard = ({ project }) => (
+    <div className={`
+      ${styles.card}
+      bg-white rounded-xl shadow-md 
+      hover:shadow-lg transition-shadow duration-300
+      p-6 border border-gray-100
+    `}>
+      <img 
+        src={project.image} 
+        className="w-full h-48 object-cover rounded-lg mb-4"
+        alt={project.title}
+      />
+      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        {project.title}
+      </h3>
+    </div>
+  )
+  ```
+</example>
+
+<example type="invalid">
+  ```tsx
+  // ❌ 错误的使用方式 - 过度使用内联样式
+  const BadComponent = () => (
+    <div style={{
+      backgroundColor: '#667eea',  // 应该用Tailwind: bg-blue-500
+      padding: '16px',            // 应该用Tailwind: p-4
+      borderRadius: '8px',        // 应该用Tailwind: rounded-lg
+    }}>
+      内容
+    </div>
+  )
+  ```
+</example>

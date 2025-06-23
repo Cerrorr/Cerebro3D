@@ -1,0 +1,77 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 作者信息和时间戳规范
+
+## Critical Rules
+
+- **统一作者标识**：所有文件的 `@author` 标注必须使用 `Cerror`
+- **当前时间戳**：所有 `@since` 时间戳必须使用当前日期（YYYY-MM-DD 格式）
+- **JSDoc规范**：所有公共函数、类、接口都必须包含完整的JSDoc注释
+- **作者信息位置**：`@author` 标注应位于文件头部或主要导出的注释块中
+- **时间戳更新**：每次重大修改时应更新 `@since` 时间戳为当前日期
+- **中文注释支持**：方法和参数注释必须包含中文说明
+- **一致性检查**：定期检查并统一所有文件的作者信息
+
+## Examples
+
+<example>
+  正确的作者和时间戳标注：
+  
+  /**
+   * 用户管理工具类
+   * 提供用户数据的增删改查功能
+   * @author Cerror
+   * @since 2024-01-22
+   */
+  export class UserManager {
+    /**
+     * 获取用户信息
+     * 根据用户ID获取完整的用户数据
+     * @param userId - 用户唯一标识符
+     * @returns {Promise<User>} 用户信息对象
+     * @author Cerror
+     * @since 2024-01-22
+     */
+    async getUser(userId: string): Promise<User> {
+      // 实现逻辑
+    }
+  }
+  
+  /**
+   * 项目配置类型定义
+   * @author Cerror
+   * @since 2024-01-22
+   */
+  export interface ProjectConfig {
+    // 接口定义
+  }
+</example>
+
+<example type="invalid">
+  错误的作者和时间戳标注：
+  
+  /**
+   * 用户管理工具类
+   * @author ErSan          // ❌ 作者应该是 Cerror
+   * @since 2024-01-20      // ❌ 应该使用当前日期
+   */
+  
+  /**
+   * 获取用户信息
+   * @author Admin          // ❌ 作者标识不统一
+   * @since 2023-12-01      // ❌ 时间戳过旧
+   */
+  
+  // ❌ 缺少作者和时间戳信息
+  export interface ProjectConfig {
+    // 接口定义
+  }
+  
+  /**
+   * @author               // ❌ 作者信息为空
+   * @since                // ❌ 时间戳为空
+   */
+</example>

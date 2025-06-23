@@ -1,0 +1,20 @@
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as mix;
+
+/* 侧边栏底部样式 */
+.sidebar-footer {
+  @apply p-5 pt-0;
+  
+  .app-info {
+    @apply text-gray-500 text-xs leading-relaxed;
+  }
+  
+  .version {
+    @apply font-medium text-gray-700 block;
+  }
+  
+  .author,
+  .license {
+    @apply block mt-1;
+  }
+} 

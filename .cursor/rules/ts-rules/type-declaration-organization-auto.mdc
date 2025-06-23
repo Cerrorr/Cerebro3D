@@ -1,0 +1,124 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 类型声明组织管理规范
+
+## Critical Rules
+
+- **类型文件就近管理**：所有类型声明必须放到当前引用代码目录的 `types/` 文件夹中
+- **目录级类型管理**：每个功能目录下都应有独立的 `types/` 子目录
+- **类型文件命名规范**：类型文件使用小驼峰命名 + `.types.ts` 后缀
+- **类型定义分类**：按功能模块分别创建对应的类型文件
+- **避免全局类型污染**：禁止将业务特定类型放在根级 `src/types/` 中
+- **类型文件一对一**：每个主要功能文件应有对应的类型文件
+- **接口导出统一**：同一模块的类型定义统一从一个 `index.ts` 文件导出
+- **类型依赖就近原则**：类型依赖应优先使用同目录或父目录的类型定义
+
+## 标准类型目录结构
+
+```
+src/
+├── types/                    # 📁 全局通用类型
+│   ├── common.types.ts       # 全局通用类型
+│   └── api.types.ts          # API相关通用类型
+├── pages/
+│   ├── editor/
+│   │   ├── types/            # 📁 编辑器页面类型
+│   │   │   ├── editorPage.types.ts
+│   │   │   └── index.ts
+│   │   └── editorPage.tsx
+│   └── project/
+│       ├── types/            # 📁 项目管理类型
+│       │   ├── projectList.types.ts
+│       │   └── index.ts
+│       └── projectListPage.tsx
+├── components/
+│   ├── editor/
+│   │   ├── types/            # 📁 编辑器组件类型
+│   │   │   ├── threeScene.types.ts
+│   │   │   └── index.ts
+│   │   └── threeScene.tsx
+│   └── layout/
+│       ├── types/            # 📁 布局组件类型
+│       │   ├── appLayout.types.ts
+│       │   └── index.ts
+│       └── appLayout.tsx
+├── hooks/
+│   ├── business/
+│   │   ├── types/            # 📁 业务Hook类型
+│   │   │   └── projectManager.types.ts
+│   │   └── useProjectManager.ts
+│   └── three/
+│       ├── types/            # 📁 Three.js Hook类型
+│       │   └── threeScene.types.ts
+│       └── useThreeScene.ts
+└── store/
+    ├── types/                # 📁 状态管理类型
+    │   ├── editorSlice.types.ts
+    │   └── index.ts
+    └── slices/
+        └── editorSlice.ts
+```
+
+## Examples
+
+<example>
+  正确的类型声明组织：
+  
+  // 页面组件及其类型
+  // pages/editor/editorPage.tsx
+  import { EditorPageProps } from './types/editorPage.types';
+  
+  // pages/editor/types/editorPage.types.ts
+  export interface EditorPageProps {
+    projectId: string;
+    mode: 'edit' | 'view';
+  }
+  
+  // pages/editor/types/index.ts
+  export * from './editorPage.types';
+  
+  // Hook及其类型
+  // hooks/business/useProjectManager.ts
+  import { ProjectManagerConfig } from './types/projectManager.types';
+  
+  // hooks/business/types/projectManager.types.ts
+  export interface ProjectManagerConfig {
+    autoSave: boolean;
+    maxProjects: number;
+  }
+  
+  // 组件及其类型
+  // components/editor/threeScene.tsx
+  import { ThreeSceneProps } from './types/threeScene.types';
+  
+  // components/editor/types/threeScene.types.ts
+  export interface ThreeSceneProps {
+    width: number;
+    height: number;
+    objects: SceneObject[];
+  }
+</example>
+
+<example type="invalid">
+  错误的类型声明组织：
+  
+  // ❌ 将页面特定类型放在全局types中
+  src/types/editorPageTypes.ts  // 应该在 pages/editor/types/
+  
+  // ❌ 类型文件与功能文件分离太远
+  pages/editor/editorPage.tsx
+  types/editor/editorTypes.ts   // 应该在 pages/editor/types/
+  
+  // ❌ 混合不同模块的类型在一个文件中
+  components/types/allComponentTypes.ts  // 应该分模块管理
+  
+  // ❌ 没有按功能分类的类型文件
+  hooks/allHookTypes.ts         // 应该分别放在 business/types/ 和 three/types/
+  
+  // ❌ 类型文件命名不规范
+  pages/editor/EditorTypes.ts   // 应该是 editorPage.types.ts
+  pages/editor/editor-types.ts  // 应该是 editorPage.types.ts
+</example>

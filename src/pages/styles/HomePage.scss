@@ -1,0 +1,23 @@
+@use '../../styles/variables' as vars;
+@use '../../styles/mixins' as mix;
+@use 'sass:map';
+
+/* 首页布局 - 使用SCSS变量和Tailwind结合 */
+.home-page {
+  @apply flex h-screen overflow-hidden;
+  @include mix.gradient-primary;
+}
+
+/* 响应式布局 */
+@include mix.respond-to('md') {
+  .home-page {
+    @apply flex-row;
+  }
+}
+
+/* 小屏幕下垂直布局 */
+@media (max-width: 768px) {
+  .home-page {
+    @apply flex-col;
+  }
+} 

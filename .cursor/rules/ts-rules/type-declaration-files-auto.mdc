@@ -1,0 +1,362 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# TypeScript 类型声明文件规范
+
+## Critical Rules
+
+- 所有TypeScript类型声明必须放在独立的.types.ts文件中
+- 类型文件命名必须与对应的业务文件保持一致性
+- 每个业务模块必须有对应的类型声明文件
+- 不允许在业务逻辑文件中定义复杂类型
+- 类型文件必须仅包含类型声明，不能包含实现代码
+- 类型导入导出必须明确，避免循环依赖
+- 公共类型必须放在shared/common类型文件中
+- API相关类型必须与API模块一一对应
+- Redux相关类型必须与对应的slice文件对应
+- 3D相关类型必须与React Three Fiber模块对应
+
+## Examples
+
+<example>
+  // Good - 文件结构组织
+  src/
+  ├── types/
+  │   ├── common.types.ts           // 通用类型
+  │   ├── api.types.ts             // API通用类型
+  │   └── three.types.ts           // 3D相关通用类型
+  ├── components/
+  │   ├── UserManagement/
+  │   │   ├── UserManagement.tsx
+  │   │   ├── UserManagement.types.ts
+  │   │   └── UserManagement.test.tsx
+  │   └── Scene3D/
+  │       ├── Scene3D.tsx
+  │       ├── Scene3D.types.ts
+  │       └── Scene3D.test.tsx
+  ├── store/
+  │   ├── slices/
+  │   │   ├── userSlice.ts
+  │   │   └── userSlice.types.ts
+  │   └── store.types.ts
+  ├── hooks/
+  │   ├── useUserManagement.ts
+  │   ├── useUserManagement.types.ts
+  │   ├── useR3FAnimation.ts
+  │   └── useR3FAnimation.types.ts
+  └── services/
+      ├── userService.ts
+      ├── userService.types.ts
+      ├── apiService.ts
+      └── apiService.types.ts
+
+  // Good - 通用类型文件 (types/common.types.ts)
+  export interface BaseEntity {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+
+  export interface PaginationParams {
+    page: number;
+    pageSize: number;
+    total?: number;
+  }
+
+  export interface ApiResponse<T> {
+    data: T;
+    message: string;
+    success: boolean;
+  }
+
+  export interface ApiError {
+    code: string;
+    message: string;
+    details?: Record<string, any>;
+  }
+
+  export type LoadingState = 'idle' | 'pending' | 'succeeded' | 'failed';
+
+  // Good - 用户管理类型文件 (components/UserManagement/UserManagement.types.ts)
+  import { BaseEntity, PaginationParams } from '@/types/common.types';
+
+  export interface User extends BaseEntity {
+    name: string;
+    email: string;
+    role: UserRole;
+    avatar?: string;
+    isActive: boolean;
+    lastLoginAt?: Date;
+  }
+
+  export type UserRole = 'admin' | 'user' | 'viewer';
+
+  export interface UserFormData {
+    name: string;
+    email: string;
+    role: UserRole;
+  }
+
+  export interface UserUpdateData extends Partial<UserFormData> {
+    isActive?: boolean;
+  }
+
+  export interface UserListProps {
+    users: User[];
+    loading: boolean;
+    pagination: PaginationParams;
+    onUserSelect: (userId: string) => void;
+    onUserEdit: (user: User) => void;
+    onUserDelete: (userId: string) => void;
+  }
+
+  export interface UserFormProps {
+    user?: User;
+    onSubmit: (data: UserFormData) => void;
+    onCancel: () => void;
+    loading?: boolean;
+  }
+
+  // Good - 对应的组件实现 (components/UserManagement/UserManagement.tsx)
+  import React from 'react';
+  import { Table, Button, Space } from 'antd';
+  import type { 
+    UserListProps, 
+    User,
+    UserRole 
+  } from './UserManagement.types';
+
+  const UserList: React.FC<UserListProps> = ({
+    users,
+    loading,
+    pagination,
+    onUserSelect,
+    onUserEdit,
+    onUserDelete
+  }) => {
+    // 组件实现，只包含逻辑，不包含类型定义
+    return (
+      <Table
+        dataSource={users}
+        loading={loading}
+        pagination={pagination}
+        // ...
+      />
+    );
+  };
+
+  // Good - Redux类型文件 (store/slices/userSlice.types.ts)
+  import type { User, UserFormData } from '@/components/UserManagement/UserManagement.types';
+  import type { LoadingState, ApiError } from '@/types/common.types';
+
+  export interface UserState {
+    users: User[];
+    currentUser: User | null;
+    selectedUserId: string | null;
+    loading: LoadingState;
+    error: ApiError | null;
+  }
+
+  export interface FetchUsersPayload {
+    page?: number;
+    pageSize?: number;
+    search?: string;
+  }
+
+  export interface CreateUserPayload extends UserFormData {
+    sendWelcomeEmail?: boolean;
+  }
+
+  export interface UpdateUserPayload {
+    userId: string;
+    updates: Partial<User>;
+  }
+
+  // Good - 3D相关类型文件 (types/three.types.ts)
+  import * as THREE from 'three';
+
+  export interface Vector3D {
+    x: number;
+    y: number;
+    z: number;
+  }
+
+  export interface SceneObject {
+    id: string;
+    name: string;
+    position: Vector3D;
+    rotation: Vector3D;
+    scale: Vector3D;
+    visible: boolean;
+  }
+
+  export interface CameraSettings {
+    position: Vector3D;
+    target: Vector3D;
+    fov: number;
+    near: number;
+    far: number;
+  }
+
+  export interface LightingConfig {
+    ambientIntensity: number;
+    directionalIntensity: number;
+    directionalPosition: Vector3D;
+  }
+
+  // Good - Hook类型文件 (hooks/useR3FAnimation.types.ts)
+  import type { RefObject } from 'react';
+  import type * as THREE from 'three';
+  import type { Vector3D } from '@/types/three.types';
+
+  export interface UseR3FAnimationOptions {
+    autoStart?: boolean;
+    speed?: number;
+    direction?: Vector3D;
+    loop?: boolean;
+  }
+
+  export interface UseR3FAnimationResult {
+    meshRef: RefObject<THREE.Mesh>;
+    isAnimating: boolean;
+    progress: number;
+    start: () => void;
+    stop: () => void;
+    reset: () => void;
+    setSpeed: (speed: number) => void;
+  }
+
+  export type AnimationEasing = 'linear' | 'easeIn' | 'easeOut' | 'easeInOut';
+
+  // Good - API服务类型文件 (services/userService.types.ts)
+  import type { User, UserFormData, UserUpdateData } from '@/components/UserManagement/UserManagement.types';
+  import type { ApiResponse, PaginationParams } from '@/types/common.types';
+
+  export interface GetUsersRequest extends PaginationParams {
+    search?: string;
+    role?: string;
+    isActive?: boolean;
+  }
+
+  export interface GetUsersResponse extends ApiResponse<User[]> {
+    pagination: {
+      total: number;
+      page: number;
+      pageSize: number;
+      hasNext: boolean;
+    };
+  }
+
+  export interface CreateUserRequest extends UserFormData {
+    sendWelcomeEmail?: boolean;
+  }
+
+  export interface CreateUserResponse extends ApiResponse<User> {}
+
+  export interface UpdateUserRequest {
+    userId: string;
+    data: UserUpdateData;
+  }
+
+  export interface UpdateUserResponse extends ApiResponse<User> {}
+</example>
+
+<example type="invalid">
+  // Bad - 在组件文件中定义类型
+  // UserManagement.tsx
+  import React from 'react';
+
+  interface User {  // 应该在.types.ts文件中
+    id: string;
+    name: string;
+    email: string;
+  }
+
+  interface UserListProps {  // 应该在.types.ts文件中
+    users: User[];
+    onSelect: (user: User) => void;
+  }
+
+  const UserList: React.FC<UserListProps> = ({ users, onSelect }) => {
+    return <div>...</div>;
+  };
+
+  // Bad - 类型文件包含实现代码
+  // UserManagement.types.ts
+  export interface User {
+    id: string;
+    name: string;
+  }
+
+  // 不应该在类型文件中包含实现
+  export const validateUser = (user: User): boolean => {
+    return user.name.length > 0;
+  };
+
+  export const DEFAULT_USER: User = {  // 不应该在类型文件中
+    id: '',
+    name: ''
+  };
+
+  // Bad - 类型文件命名不对应
+  // 文件结构：
+  // components/UserDashboard/UserDashboard.tsx
+  // components/UserDashboard/types.ts  // 应该是UserDashboard.types.ts
+
+  // Bad - 没有对应的类型文件
+  // userService.ts
+  export const fetchUsers = async () => {
+    // 复杂的API调用逻辑，但没有对应的userService.types.ts
+  };
+
+  // userSlice.ts  
+  export const userSlice = createSlice({
+    // 复杂的Redux逻辑，但没有对应的userSlice.types.ts
+  });
+
+  // Bad - 类型定义分散
+  // 在多个文件中重复定义相同的类型
+  // UserList.tsx
+  interface User {
+    id: string;
+    name: string;
+  }
+
+  // UserForm.tsx
+  interface User {  // 重复定义
+    id: string;
+    name: string;
+  }
+
+  // Bad - 循环依赖
+  // userService.types.ts
+  import type { UserComponent } from '@/components/UserManagement/UserManagement.types';
+
+  // UserManagement.types.ts
+  import type { UserService } from '@/services/userService.types';
+  // 形成循环依赖
+
+  // Bad - 类型导入不明确
+  import * as UserTypes from './UserManagement.types';  // 应该明确导入具体类型
+  import { User, UserFormData } from './UserManagement.types';  // 正确
+
+  // Bad - 混合导入导出
+  // UserManagement.types.ts
+  export interface User {
+    id: string;
+  }
+
+  export { BaseEntity } from '@/types/common.types';  // 不应该re-export
+  export * from './submodule.types';  // 避免使用
+
+  // Bad - 类型文件位置错误
+  src/
+  ├── components/
+  │   └── UserManagement/
+  │       ├── UserManagement.tsx
+  │       └── types/  // 错误：不应该有单独的types目录
+  │           └── User.types.ts
+  // 应该直接放在组件目录下：UserManagement.types.ts
+</example>

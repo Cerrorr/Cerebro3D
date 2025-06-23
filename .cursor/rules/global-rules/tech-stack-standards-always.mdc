@@ -1,0 +1,119 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 项目技术栈标准
+
+## Critical Rules
+
+- 项目必须基于 React (最新版本) 构建所有UI组件
+- 必须使用 TypeScript (最新版本) 进行类型安全的开发
+- 3D相关功能必须使用 React Three Fiber (最新版本)
+- 样式系统必须使用 TailwindCSS (最新版本)
+- 所有新增依赖必须与主技术栈兼容
+- 优先选择与React生态系统集成良好的库
+- 避免引入与主技术栈冲突的替代方案
+- 保持技术栈版本的及时更新
+- 新功能实现应优先考虑技术栈内的解决方案
+
+## Examples
+
+<example>
+  // Good - 使用React + TypeScript
+  interface ComponentProps {
+    title: string;
+    isVisible: boolean;
+  }
+
+  const MyComponent: React.FC<ComponentProps> = ({ title, isVisible }) => {
+    return (
+      <div className="flex items-center justify-center p-4 bg-blue-500 text-white">
+        {isVisible && <h1 className="text-2xl font-bold">{title}</h1>}
+      </div>
+    );
+  };
+
+  // Good - 3D组件使用React Three Fiber
+  import { Canvas, useFrame } from '@react-three/fiber';
+  import { useRef } from 'react';
+  
+  const RotatingBox: React.FC = () => {
+    const meshRef = useRef<THREE.Mesh>(null);
+    
+    useFrame((state, delta) => {
+      if (meshRef.current) {
+        meshRef.current.rotation.x += delta;
+      }
+    });
+
+    return (
+      <mesh ref={meshRef}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="orange" />
+      </mesh>
+    );
+  };
+
+  // Good - TailwindCSS样式类
+  const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    return (
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl hover:shadow-lg transition-shadow duration-300">
+        <div className="p-8">
+          {children}
+        </div>
+      </div>
+    );
+  };
+
+  // Good - 技术栈集成使用
+  const Scene3D: React.FC = () => {
+    return (
+      <div className="w-full h-screen bg-gradient-to-b from-blue-400 to-purple-600">
+        <Canvas camera={{ position: [0, 0, 5] }}>
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} />
+          <RotatingBox />
+        </Canvas>
+      </div>
+    );
+  };
+</example>
+
+<example type="invalid">
+  // Bad - 使用非TypeScript代码
+  const MyComponent = ({ title, isVisible }) => {
+    return <div>{isVisible && title}</div>;
+  };
+
+  // Bad - 使用原生CSS而非TailwindCSS
+  const StyledComponent = () => {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        backgroundColor: '#3b82f6',
+        padding: '16px'
+      }}>
+        Content
+      </div>
+    );
+  };
+
+  // Bad - 3D功能使用Three.js而非React Three Fiber
+  import * as THREE from 'three';
+  
+  const create3DScene = () => {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    // 直接操作Three.js而非通过React
+  };
+
+  // Bad - 引入与主技术栈冲突的库
+  import styled from 'styled-components'; // 与TailwindCSS冲突
+  import { Component } from 'react'; // 使用类组件而非函数组件
+
+  // Bad - 使用过时版本或非推荐方案
+  import { render } from 'react-dom'; // 应使用React 18的createRoot
+</example>

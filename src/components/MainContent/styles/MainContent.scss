@@ -1,0 +1,154 @@
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as mix;
+@use 'sass:map';
+
+/* 主内容区布局 */
+.main-content {
+  @apply flex-1 flex flex-col overflow-hidden;
+  background: rgba(255, 255, 255, 0.05); /* 更透明的背景 */
+  backdrop-filter: blur(10px); /* 毛玻璃效果 */
+  min-height: 0; /* 确保flex子元素能正确计算高度 */
+}
+
+/* 轮播图样式已移动到 CarouselSection.scss */
+
+/* 项目网格区域 */
+.project-grid {
+  @apply flex-1 p-5 flex flex-col;
+  height: 100%; /* 恢复height确保滚动容器有正确高度 */
+}
+
+.grid-header {
+  @apply flex justify-between items-center mb-5 text-white flex-shrink-0;
+}
+
+.grid-title {
+  @apply text-xl font-semibold;
+}
+
+.project-count {
+  @apply text-sm opacity-80 px-3 py-1 rounded-xl;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.grid-container {
+  @apply flex-1 overflow-y-auto;
+  min-height: 0; /* 让flex子元素正确收缩 */
+  /* 仅顶部留出少量空间 */
+  padding-top: 8px;
+  
+  /* 自定义滚动条样式 */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
+  
+  /* 为Firefox添加滚动条样式 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+.grid-layout {
+  @apply grid gap-5;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  /* 在最后一行后面添加margin确保有足够滚动空间 */
+  margin-bottom: 60px;
+}
+
+/* 空状态 */
+.empty-state {
+  @apply flex flex-col items-center justify-center text-center;
+  @apply text-white text-opacity-60;
+  height: 200px;
+}
+
+.empty-icon {
+  @apply text-5xl mb-4 opacity-50;
+}
+
+.empty-text {
+  @apply text-base;
+}
+
+/* 内联空状态样式（用于有新建卡片时） */
+.empty-state-inline {
+  @apply col-span-full flex items-center justify-center py-8 text-center;
+  @apply bg-white bg-opacity-20 rounded-xl border-2 border-dashed border-white border-opacity-30;
+  backdrop-filter: blur(10px);
+  
+  .empty-text {
+    @apply text-white text-opacity-70 text-sm;
+  }
+}
+
+/* 项目卡片样式已移动到 ProjectCard.scss */
+
+/* 响应式设计 */
+@include mix.respond-to('xl') {
+  .grid-layout {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@include mix.respond-to('md') {
+  .carousel-section {
+    @apply mx-4 mt-4;
+    height: 256px;
+  }
+  
+  .carousel-title {
+    @apply text-xl;
+  }
+  
+  .carousel-description {
+    @apply text-sm;
+  }
+  
+  .project-grid {
+    @apply p-4;
+  }
+  
+  .grid-layout {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  
+  .grid-header {
+    @apply flex-col items-start gap-2;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-section {
+    @apply mx-3 mt-3;
+    height: 192px;
+  }
+  
+  .carousel-content {
+    @apply bottom-4 left-4;
+  }
+  
+  .carousel-title {
+    @apply text-lg;
+  }
+  
+  .carousel-description {
+    @apply text-xs;
+  }
+  
+  .decoration-icon {
+    font-size: 120px;
+  }
+} 

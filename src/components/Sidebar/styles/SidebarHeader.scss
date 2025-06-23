@@ -1,0 +1,19 @@
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as mix;
+
+/* 侧边栏头部样式 */
+.sidebar-header {
+  @apply p-5 border-b border-gray-200;
+  
+  .logo-container {
+    @apply flex items-center gap-3;
+  }
+  
+  .logo-icon {
+    @apply text-3xl;
+  }
+  
+  .logo-text {
+    @apply text-lg font-semibold text-gray-800;
+  }
+} 
