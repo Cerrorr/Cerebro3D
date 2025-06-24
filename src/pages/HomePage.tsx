@@ -41,7 +41,8 @@ const HomePage: React.FC = () => {
     name: '3D Editor',
     version: '1.0.0',
     author: 'Cerror',
-    license: '京ICP备2025130821号'
+    license: '京ICP备2025130821号',
+    licenseUrl: 'https://beian.miit.gov.cn/'
   };
 
   // 侧边栏菜单配置

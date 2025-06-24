@@ -93,12 +93,14 @@ export interface SidebarMenuItem {
  * @property {string} version - 应用程序版本号
  * @property {string} author - 应用程序作者
  * @property {string} license - 应用程序许可证或备案信息
+ * @property {string} [licenseUrl] - 备案号跳转链接（可选）
  */
 export interface AppInfo {
   readonly name: string;
   readonly version: string;
   readonly author: string;
   readonly license: string;
+  readonly licenseUrl?: string;
 }
 
 /**
