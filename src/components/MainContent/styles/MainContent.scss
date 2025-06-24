@@ -15,7 +15,8 @@
 /* 项目网格区域 */
 .project-grid {
   @apply flex-1 p-5 flex flex-col;
-  height: 100%; /* 恢复height确保滚动容器有正确高度 */
+  min-height: 0; /* 让flex子元素正确收缩 */
+  /* 移除 height: 100% 避免与 flex-1 冲突 */
 }
 
 .grid-header {
@@ -34,7 +35,7 @@
 .grid-container {
   @apply flex-1 overflow-y-auto;
   min-height: 0; /* 让flex子元素正确收缩 */
-  /* 仅顶部留出少量空间 */
+  /* 顶部留出空间防止悬浮卡片被遮挡 */
   padding-top: 8px;
   
   /* 自定义滚动条样式 */
@@ -64,8 +65,8 @@
 .grid-layout {
   @apply grid gap-5;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  /* 在最后一行后面添加margin确保有足够滚动空间 */
-  margin-bottom: 60px;
+  /* 确保最后一行完全可见 */
+  padding-bottom: 20px;
 }
 
 /* 空状态 */

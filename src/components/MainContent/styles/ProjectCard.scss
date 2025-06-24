@@ -1,5 +1,6 @@
 @use '../../../styles/variables' as vars;
 @use '../../../styles/mixins' as mix;
+@use 'sass:map';
 
 /* 项目卡片样式 */
 .project-card {
@@ -76,8 +77,8 @@
 
 .tag {
   @apply px-2 py-1 rounded-md text-xs;
-  background-color: map-get(vars.$primary-colors, 50);
-  color: map-get(vars.$primary-colors, 600);
+  background-color: map.get(vars.$primary-colors, 50);
+  color: map.get(vars.$primary-colors, 600);
   
   &.tag-more {
     @apply text-gray-500;
@@ -101,7 +102,7 @@
   @apply transition-colors duration-200 text-gray-500 hover:text-white;
   
   &:hover {
-    background-color: map-get(vars.$primary-colors, 500);
+    background-color: map.get(vars.$primary-colors, 500);
   }
   
   &.delete:hover {

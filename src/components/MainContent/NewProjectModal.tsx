@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { message } from 'antd';
 import { ProjectType } from '../../types/common.types';
 import './styles/NewProjectModal.scss';
 
@@ -165,7 +166,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
    */
   const handleConfirm = () => {
     if (!formData.name.trim()) {
-      alert('请输入项目名称');
+      message.error('请输入项目名称');
       return;
     }
     

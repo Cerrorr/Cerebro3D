@@ -5,27 +5,68 @@
 .sidebar-menu {
   @apply flex-1 py-5;
   
-  .menu-item {
-    @apply flex items-center gap-3 px-5 py-3 text-gray-700;
-    @apply cursor-pointer transition-all duration-200;
-    @apply hover:bg-gray-100 hover:text-gray-900;
+  /* Ant Design Menu 组件自定义样式 */
+  .sidebar-antd-menu {
+    @apply border-none bg-transparent;
     
-    &.active {
-      @apply bg-blue-50 text-blue-700;
-      position: relative;
+    /* 菜单项样式 */
+    .ant-menu-item {
+      @apply mx-2 rounded-lg transition-all duration-200;
+      height: auto !important;
+      line-height: normal !important;
+      margin-bottom: 4px !important;
+      padding: 12px 16px !important;
       
-      &::before {
-        content: '';
-        @apply absolute left-0 top-0 bottom-0 w-1 bg-blue-500;
+      /* 默认状态 - 深色文字适配白色背景 */
+      color: #6b7280 !important;
+      background: transparent !important;
+      
+      /* 悬浮状态 */
+      &:hover {
+        @apply bg-gray-50;
+        color: #374151 !important;
+      }
+      
+      /* 选中状态 */
+      &.ant-menu-item-selected {
+        @apply bg-blue-50;
+        color: #2563eb !important;
+        position: relative;
+        
+        &::after {
+          content: '';
+          @apply absolute left-0 top-2 bottom-2 w-1 bg-blue-500 rounded-r;
+        }
+      }
+      
+      /* 菜单项内容布局 */
+      .ant-menu-title-content {
+        @apply flex items-center;
+        margin-left: 0 !important;
+      }
+      
+      /* 图标与文字间距 */
+      .ant-menu-item-icon {
+        margin-right: 8px !important;
       }
     }
-  }
-  
-  .menu-icon {
-    @apply text-lg;
-  }
-  
-  .menu-label {
-    @apply font-medium;
+    
+    /* 图标样式 */
+    .menu-icon-emoji {
+      @apply text-lg;
+      font-style: normal;
+      margin-right: 12px !important;
+    }
+    
+    /* 激活菜单项的特殊样式 */
+    .active-menu-item {
+      @apply bg-blue-100;
+      color: #1d4ed8 !important;
+      font-weight: 600;
+      
+      .menu-icon-emoji {
+        filter: none;
+      }
+    }
   }
 } 
