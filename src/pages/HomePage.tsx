@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { 
-  SidebarMenuItem, 
-  AppInfo, 
-  CarouselItem, 
+import {
+  SidebarMenuItem,
+  AppInfo,
+  CarouselItem,
   ProjectItem,
   ProjectType,
   MenuClickHandler,
@@ -10,6 +10,7 @@ import {
 } from '@/types/common.types';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import MainContent from '@/components/MainContent/MainContent';
+import { BaiduAnalytics, usePageTracking } from '@/utils/analytics';
 
 import './styles/HomePage.scss';
 
@@ -36,6 +37,9 @@ interface NewProjectFormData {
  * @since 2025-06-24
  */
 const HomePage: React.FC = () => {
+  // 页面访问追踪
+  usePageTracking('/', '3D编辑器首页');
+
   // 应用信息
   const appInfo: AppInfo = {
     name: '3D Editor',
@@ -258,6 +262,10 @@ const HomePage: React.FC = () => {
    */
   const handleMenuClick: MenuClickHandler = (item: SidebarMenuItem): void => {
     console.log('菜单点击:', item.label);
+    
+    // 追踪菜单点击事件
+    BaiduAnalytics.trackMenu.click(item.id, item.label);
+    
     // TODO: 实现路由跳转
   };
 
@@ -269,6 +277,10 @@ const HomePage: React.FC = () => {
    */
   const handleProjectClick: ProjectClickHandler = (project: ProjectItem): void => {
     console.log('项目点击:', project.title);
+    
+    // 追踪项目打开事件
+    BaiduAnalytics.trackProject.open(project.id, project.type);
+    
     // TODO: 打开项目编辑器
   };
 
@@ -285,6 +297,10 @@ const HomePage: React.FC = () => {
       description: formData.description,
       template: formData.templateId
     });
+    
+    // 追踪项目创建事件
+    BaiduAnalytics.trackProject.create(formData.category);
+    
     // TODO: 创建新项目并添加到项目列表
     // 这里可以调用API创建项目，然后更新状态
   };
