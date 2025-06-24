@@ -5,7 +5,7 @@
  * @since 2025-06-24
  */
 
-import { SidebarMenuItem, AppInfo, MenuClickHandler } from '../../../types/common.types';
+import { SidebarMenuItem, AppInfo, MenuClickHandler } from '@/types/common.types';
 
 /**
  * 侧边栏组件属性接口

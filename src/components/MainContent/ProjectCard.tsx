@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProjectItem } from '../../types';
+import { ProjectItem } from '@/types';
 import './styles/ProjectCard.scss';
 
 /**

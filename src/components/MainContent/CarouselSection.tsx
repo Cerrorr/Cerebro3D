@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CarouselItem } from '../../types';
+import { CarouselItem } from '@/types';
 import './styles/CarouselSection.scss';
 
 /**

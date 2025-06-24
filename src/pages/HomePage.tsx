@@ -7,9 +7,9 @@ import {
   ProjectType,
   MenuClickHandler,
   ProjectClickHandler
-} from '../types/common.types';
-import Sidebar from '../components/Sidebar/Sidebar';
-import MainContent from '../components/MainContent/MainContent';
+} from '@/types/common.types';
+import Sidebar from '@/components/Sidebar/Sidebar';
+import MainContent from '@/components/MainContent/MainContent';
 
 import './styles/HomePage.scss';
 

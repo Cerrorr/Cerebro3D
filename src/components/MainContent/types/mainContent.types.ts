@@ -5,7 +5,7 @@
  * @since 2025-06-24
  */
 
-import { CarouselItem, ProjectItem, ProjectClickHandler } from '../../../types/common.types';
+import { CarouselItem, ProjectItem, ProjectClickHandler } from '@/types/common.types';
 
 /**
  * 主内容区组件属性接口

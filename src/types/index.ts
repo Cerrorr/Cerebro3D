@@ -15,9 +15,9 @@
 // 全局通用类型（推荐直接从 './common.types' 导入）
 export * from './common.types';
 
-// 页面类型（推荐直接从 '../pages/types' 导入）
-export * from '../pages/types';
+// 页面类型（推荐直接从 '@/pages/types' 导入）
+export * from '@/pages/types';
 
 // 组件类型（推荐直接从对应组件types目录导入）
-export * from '../components/Sidebar/types';
-export * from '../components/MainContent/types'; 
+export * from '@/components/Sidebar/types';
+export * from '@/components/MainContent/types'; 

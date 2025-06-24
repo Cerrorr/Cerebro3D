@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ProjectItem, ProjectClickHandler } from '../../types';
-import { ProjectType } from '../../types/common.types';
-import ProjectCard from './ProjectCard';
-import NewProjectCard from './NewProjectCard';
-import NewProjectModal from './NewProjectModal';
+import { ProjectItem, ProjectClickHandler } from '@/types';
+import { ProjectType } from '@/types/common.types';
+import ProjectCard from '@/components/MainContent/ProjectCard';
+import NewProjectCard from '@/components/MainContent/NewProjectCard';
+import NewProjectModal from '@/components/MainContent/NewProjectModal';
 import './styles/NewProjectCard.scss';
 
 /**

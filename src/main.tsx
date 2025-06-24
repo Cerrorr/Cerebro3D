@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/globals.scss'
-import App from './App.tsx'
+import App from '@/App.tsx'
 
 /**
  * React应用入口文件

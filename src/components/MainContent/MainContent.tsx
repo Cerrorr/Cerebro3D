@@ -1,8 +1,8 @@
 import React from 'react';
-import { CarouselItem, ProjectItem, ProjectClickHandler } from '../../types';
-import { ProjectType } from '../../types/common.types';
-import CarouselSection from './CarouselSection';
-import ProjectGrid from './ProjectGrid';
+import { CarouselItem, ProjectItem, ProjectClickHandler } from '@/types';
+import { ProjectType } from '@/types/common.types';
+import CarouselSection from '@/components/MainContent/CarouselSection';
+import ProjectGrid from '@/components/MainContent/ProjectGrid';
 import './styles/MainContent.scss';
 
 /**

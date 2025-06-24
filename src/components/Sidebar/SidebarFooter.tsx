@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppInfo } from '../../types';
+import { AppInfo } from '@/types';
 import './styles/SidebarFooter.scss';
 
 /**

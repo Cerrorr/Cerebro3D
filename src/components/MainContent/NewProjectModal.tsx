@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { message } from 'antd';
-import { ProjectType } from '../../types/common.types';
+import { ProjectType } from '@/types/common.types';
 import './styles/NewProjectModal.scss';
 
 /**

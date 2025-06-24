@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
-import { SidebarMenuItem, MenuClickHandler } from '../../types';
+import { SidebarMenuItem, MenuClickHandler } from '@/types';
 import './styles/SidebarMenu.scss';
 
 /**
