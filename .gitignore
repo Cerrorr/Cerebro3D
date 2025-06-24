@@ -48,3 +48,6 @@ memory-bank/
 # Personal notes and cursor configuration
 xnotes/
 .cursor/
+
+# Documentation (local development only)
+docs/
