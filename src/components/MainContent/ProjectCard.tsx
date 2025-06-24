@@ -120,7 +120,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
               className="action-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log('编辑项目:', project.title);
+                // TODO: 实现编辑项目功能
               }}
               aria-label="编辑项目"
             >
@@ -130,7 +130,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
               className="action-btn delete"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log('删除项目:', project.title);
+                // TODO: 实现删除项目功能
               }}
               aria-label="删除项目"
             >

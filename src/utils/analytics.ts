@@ -5,12 +5,35 @@
  * @since 2025-06-24
  */
 
-// 声明百度统计全局变量
+// 百度统计全局对象类型声明
 declare global {
   interface Window {
-    _hmt: any[];
+    _hmt?: Array<(string | number)[]>;
+    hm?: HTMLScriptElement;
   }
 }
+
+/**
+ * 开发环境日志输出
+ * 只在开发环境输出日志，生产环境静默
+ */
+const devLog = {
+  log: (message: string, ...args: any[]) => {
+    if (import.meta.env.DEV) {
+      console.log(message, ...args);
+    }
+  },
+  warn: (message: string, ...args: any[]) => {
+    if (import.meta.env.DEV) {
+      console.warn(message, ...args);
+    }
+  },
+  error: (message: string, ...args: any[]) => {
+    if (import.meta.env.DEV) {
+      console.error(message, ...args);
+    }
+  }
+};
 
 /**
  * 百度统计分析工具类
@@ -29,7 +52,7 @@ export class BaiduAnalytics {
 
     const analyticsId = import.meta.env.VITE_BAIDU_ANALYTICS_ID;
     if (!analyticsId) {
-      console.warn('百度统计ID未配置，请在.env文件中设置VITE_BAIDU_ANALYTICS_ID');
+      devLog.warn('百度统计ID未配置，请在.env文件中设置VITE_BAIDU_ANALYTICS_ID');
       return;
     }
 
@@ -46,9 +69,9 @@ export class BaiduAnalytics {
       firstScript.parentNode?.insertBefore(script, firstScript);
       
       this.initialized = true;
-      console.log('✅ 百度统计已初始化');
+      devLog.log('✅ 百度统计已初始化');
     } catch (error) {
-      console.error('百度统计初始化失败:', error);
+      devLog.error('百度统计初始化失败:', error);
     }
   }
 
@@ -67,22 +90,22 @@ export class BaiduAnalytics {
    */
   static trackPageView(pagePath: string, pageTitle?: string): void {
     if (!this.isLoaded()) {
-      console.warn('百度统计未加载');
+      devLog.warn('百度统计未加载');
       return;
     }
 
     try {
       // 追踪页面访问
-      window._hmt.push(['_trackPageview', pagePath]);
+      window._hmt!.push(['_trackPageview', pagePath]);
       
       if (pageTitle) {
         // 设置页面标题
-        window._hmt.push(['_setCustomVar', 1, 'page_title', pageTitle, 3]);
+        window._hmt!.push(['_setCustomVar', 1, 'page_title', pageTitle, 3]);
       }
       
-      console.log(`📊 页面访问追踪: ${pagePath}${pageTitle ? ` (${pageTitle})` : ''}`);
+      devLog.log(`📊 页面访问追踪: ${pagePath}${pageTitle ? ` (${pageTitle})` : ''}`);
     } catch (error) {
-      console.error('百度统计页面追踪失败:', error);
+      devLog.error('百度统计页面追踪失败:', error);
     }
   }
 
@@ -100,7 +123,7 @@ export class BaiduAnalytics {
     value?: number
   ): void {
     if (!this.isLoaded()) {
-      console.warn('百度统计未加载');
+      devLog.warn('百度统计未加载');
       return;
     }
 
@@ -116,11 +139,11 @@ export class BaiduAnalytics {
         eventData.push(value);
       }
 
-      window._hmt.push(eventData);
+      window._hmt!.push(eventData);
       
-      console.log(`📊 事件追踪: ${category} -> ${action}${label ? ` (${label})` : ''}${value !== undefined ? ` [${value}]` : ''}`);
+      devLog.log(`📊 事件追踪: ${category} -> ${action}${label ? ` (${label})` : ''}${value !== undefined ? ` [${value}]` : ''}`);
     } catch (error) {
-      console.error('百度统计事件追踪失败:', error);
+      devLog.error('百度统计事件追踪失败:', error);
     }
   }
 

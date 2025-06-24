@@ -248,8 +248,6 @@ const HomePage: React.FC = () => {
    * @returns void
    */
   const handleMenuClick: MenuClickHandler = (item: SidebarMenuItem): void => {
-    console.log('菜单点击:', item.label);
-    
     // 追踪菜单点击事件
     BaiduAnalytics.trackMenu.click(item.id, item.label);
     
@@ -263,8 +261,6 @@ const HomePage: React.FC = () => {
    * @returns void
    */
   const handleProjectClick: ProjectClickHandler = (project: ProjectItem): void => {
-    console.log('项目点击:', project.title);
-    
     // 追踪项目打开事件
     BaiduAnalytics.trackProject.open(project.id, project.type);
     
@@ -278,13 +274,6 @@ const HomePage: React.FC = () => {
    * @returns void
    */
   const handleNewProject = (formData: NewProjectFormData): void => {
-    console.log('新建项目:', {
-      name: formData.name,
-      category: formData.category,
-      description: formData.description,
-      template: formData.templateId
-    });
-    
     // 追踪项目创建事件
     BaiduAnalytics.trackProject.create(formData.category);
     
