@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Carousel } from 'antd';
 import { CarouselItem } from '@/types';
 import { CarouselSectionProps } from '@/components/MainContent/types';
 import './styles/CarouselSection.scss';
@@ -11,8 +12,8 @@ import './styles/CarouselSection.scss';
 const defaultCarouselItems: CarouselItem[] = [
   {
     id: '1',
-    title: '欢迎使用 3D Editor',
-    description: '强大的Web3D编辑器，让创作更简单',
+    title: '欢迎使用 Cerebro3D',
+    description: '智能化Web3D编辑器，让创作更简单',
     image: '' // 使用CSS渐变替代
   },
   {
@@ -31,34 +32,13 @@ const defaultCarouselItems: CarouselItem[] = [
 
 /**
  * 轮播图区域组件
- * 自动轮播展示3D编辑器特性
+ * 使用 Ant Design Carousel 组件展示3D编辑器特性
  * 
  * @param items - 轮播图数据列表
  * @author Cerror
  * @since 2025-06-24
  */
 const CarouselSection: React.FC<CarouselSectionProps> = ({ items = defaultCarouselItems }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // 自动轮播
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
-        prevIndex === items.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [items.length]);
-
-  /**
-   * 手动切换轮播项
-   * @param index - 目标轮播项索引
-   */
-  const handleIndicatorClick = (index: number) => {
-    setCurrentIndex(index);
-  };
-
   /**
    * 获取轮播项的渐变背景样式
    * @param index - 轮播项索引
@@ -95,13 +75,17 @@ const CarouselSection: React.FC<CarouselSectionProps> = ({ items = defaultCarous
 
   return (
     <section className="carousel-section">
-      <div className="carousel-container">
-        <div 
-          className="carousel-track"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {items.map((item, index) => (
-            <div key={item.id} className="carousel-slide">
+      <Carousel 
+        autoplay
+        autoplaySpeed={5000}
+        dots={{ className: 'custom-carousel-dots' }}
+        dotPosition="bottom"
+        effect="fade"
+        className="custom-carousel"
+      >
+        {items.map((item, index) => (
+          <div key={item.id}>
+            <div className="carousel-slide">
               {/* 使用渐变背景和装饰图标 */}
               <div 
                 className="carousel-gradient-bg"
@@ -120,21 +104,9 @@ const CarouselSection: React.FC<CarouselSectionProps> = ({ items = defaultCarous
                 <p className="carousel-description">{item.description}</p>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* 指示器 */}
-        <div className="carousel-indicators">
-          {items.map((_, index) => (
-            <button
-              key={index}
-              className={`indicator ${index === currentIndex ? 'active' : ''}`}
-              onClick={() => handleIndicatorClick(index)}
-              aria-label={`切换到第${index + 1}张轮播图`}
-            />
-          ))}
-        </div>
-      </div>
+          </div>
+        ))}
+      </Carousel>
     </section>
   );
 };

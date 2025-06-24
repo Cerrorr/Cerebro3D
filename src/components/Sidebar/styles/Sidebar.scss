@@ -44,11 +44,11 @@
   }
 }
 
-/* 小屏幕布局 */
+/* 小屏幕布局 - 768px以下统一使用极简模式 */
 @media (max-width: 768px) {
   .sidebar {
-    @apply w-full h-auto flex-row border-r-0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    @apply w-12 h-full flex-col border-r border-b-0;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
   }
   
   .sidebar-menu {
@@ -56,23 +56,27 @@
   }
   
   .menu-list {
-    @apply flex gap-2 px-2;
+    @apply flex-col gap-0 p-0;
   }
   
   .menu-item {
-    @apply flex-col px-3 py-2 gap-1;
-    border-left: none;
-    border-bottom: 3px solid transparent;
-    min-width: 60px;
+    @apply flex-col px-1 py-2 gap-0;
+    border-left: 3px solid transparent;
+    border-bottom: none;
+    min-width: unset;
     
     &.active {
-      border-left-color: transparent;
-      border-bottom-color: map.get(vars.$primary-colors, 600);
+      border-left-color: map.get(vars.$primary-colors, 600);
+      border-bottom-color: transparent;
     }
   }
   
   .menu-label {
-    @apply text-xs;
+    @apply hidden;
+  }
+  
+  .menu-icon {
+    @apply text-sm;
   }
   
   .sidebar-footer {

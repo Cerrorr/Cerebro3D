@@ -20,4 +20,5 @@ export * from '@/pages/types';
 
 // 组件类型（推荐直接从对应组件types目录导入）
 export * from '@/components/Sidebar/types';
-export * from '@/components/MainContent/types'; 
+// 注意：MainContent types中的NewProjectFormData与common.types重复，暂时注释避免冲突
+// export * from '@/components/MainContent/types'; 

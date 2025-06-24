@@ -165,7 +165,7 @@ export class BaiduAnalytics {
      * @param projectType - 项目类型
      */
     open: (projectId: string, projectType: string) => {
-      BaiduAnalytics.trackEvent('项目管理', '打开项目', projectType);
+      BaiduAnalytics.trackEvent('项目管理', '打开项目', `${projectType}_${projectId}`);
     },
 
     /**

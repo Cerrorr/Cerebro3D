@@ -1,7 +1,6 @@
 import React from 'react';
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
-import { SidebarMenuItem, MenuClickHandler } from '@/types';
 import { SidebarMenuProps } from '@/components/Sidebar/types';
 import './styles/SidebarMenu.scss';
 
@@ -23,7 +22,12 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ items, onItemClick }) => {
   const menuItems: MenuProps['items'] = items.map((item) => ({
     key: item.id,
     icon: <span className="menu-icon-emoji">{item.icon}</span>,
-    label: item.label,
+    label: (
+      <>
+        <span className="menu-label-full">{item.label}</span>
+        <span className="menu-label-short">{item.label.slice(0, 2)}</span>
+      </>
+    ),
     className: item.active ? 'active-menu-item' : undefined,
   }));
 

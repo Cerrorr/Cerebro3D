@@ -4,20 +4,20 @@
 
 /* 首页布局 - 使用SCSS变量和Tailwind结合 */
 .home-page {
-  @apply flex h-screen overflow-hidden;
+  @apply flex h-screen overflow-hidden flex-row;
   @include mix.gradient-primary;
 }
 
-/* 响应式布局 */
+/* 响应式布局保持左右结构 */
 @include mix.respond-to('md') {
   .home-page {
     @apply flex-row;
   }
 }
 
-/* 小屏幕下垂直布局 */
+/* 小屏幕下仍然保持左右布局，不改为垂直布局 */
 @media (max-width: 768px) {
   .home-page {
-    @apply flex-col;
+    @apply flex-row;
   }
 } 

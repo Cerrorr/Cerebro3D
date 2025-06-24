@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { ProjectItem, ProjectClickHandler, NewProjectFormData } from '@/types';
-import { ProjectType } from '@/types/common.types';
+import { NewProjectFormData } from '@/types';
 import ProjectCard from '@/components/MainContent/ProjectCard';
 import NewProjectCard from '@/components/MainContent/NewProjectCard';
 import NewProjectModal from '@/components/MainContent/NewProjectModal';

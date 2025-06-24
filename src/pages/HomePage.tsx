@@ -4,7 +4,6 @@ import {
   AppInfo,
   CarouselItem,
   ProjectItem,
-  ProjectType,
   MenuClickHandler,
   ProjectClickHandler,
   NewProjectFormData
@@ -25,11 +24,11 @@ import './styles/HomePage.scss';
  */
 const HomePage: React.FC = () => {
   // 页面访问追踪
-  usePageTracking('/', '3D编辑器首页');
+  usePageTracking('/', 'Cerebro3D首页');
 
   // 应用信息
   const appInfo: AppInfo = {
-    name: '3D Editor',
+    name: 'Cerebro3D',
     version: '1.0.0',
     author: 'Cerror',
     license: '京ICP备2025130821号',
@@ -69,8 +68,8 @@ const HomePage: React.FC = () => {
   const carouselItems: CarouselItem[] = [
     {
       id: '1',
-      title: '欢迎使用 3D Editor',
-      description: '强大的Web3D编辑器，让创作更简单',
+      title: '欢迎使用 Cerebro3D',
+      description: '智能化Web3D编辑器，让创作更简单',
       image: '' // 使用渐变背景
     },
     {

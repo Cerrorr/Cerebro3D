@@ -10,10 +10,37 @@
   }
   
   .logo-icon {
-    @apply text-3xl;
+    @apply w-8 h-8 object-contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   }
   
   .logo-text {
     @apply text-lg font-semibold text-gray-800;
+  }
+}
+
+/* 响应式设计 */
+@include mix.respond-to('md') {
+  .sidebar-header {
+    @apply px-5 py-4;
+  }
+}
+
+/* 小屏幕：768px以下统一只显示Logo图标 */
+@media (max-width: 768px) {
+  .sidebar-header {
+    @apply px-1 py-2;
+  }
+  
+  .logo-container {
+    @apply flex-col items-center gap-0;
+  }
+  
+  .logo-icon {
+    @apply w-5 h-5 object-contain;
+  }
+  
+  .logo-text {
+    @apply hidden;
   }
 } 

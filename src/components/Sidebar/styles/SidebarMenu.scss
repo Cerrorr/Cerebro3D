@@ -68,5 +68,60 @@
         filter: none;
       }
     }
+    
+    /* 默认显示完整标签，隐藏短标签 */
+    .menu-label-full {
+      @apply block;
+    }
+    
+    .menu-label-short {
+      @apply hidden;
+    }
+  }
+}
+
+/* 响应式设计 */
+@include mix.respond-to('md') {
+  .sidebar-menu {
+    @apply py-4;
+  }
+}
+
+/* 小屏幕：768px以下统一显示图标和前两个字 */
+@media (max-width: 768px) {
+  .sidebar-menu {
+    @apply py-2;
+    
+    .sidebar-antd-menu {
+      .ant-menu-item {
+        @apply mx-0 rounded;
+        padding: 6px 2px !important;
+        text-align: center;
+        
+        .ant-menu-title-content {
+          @apply justify-center flex-col items-center gap-1;
+          margin-left: 0 !important;
+          
+          /* 隐藏完整标签，显示短标签 */
+          .menu-label-full {
+            @apply hidden;
+          }
+          
+          .menu-label-short {
+            @apply block text-xs leading-none text-center;
+            font-size: 0.5rem;
+          }
+        }
+        
+        .ant-menu-item-icon {
+          margin-right: 0 !important;
+        }
+      }
+      
+      .menu-icon-emoji {
+        @apply text-sm;
+        margin-right: 0 !important;
+      }
+    }
   }
 } 

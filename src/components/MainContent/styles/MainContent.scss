@@ -152,4 +152,25 @@
   .decoration-icon {
     font-size: 120px;
   }
+  
+  .project-grid {
+    @apply p-3;
+  }
+  
+  .grid-layout {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    @apply gap-3;
+  }
+}
+
+/* 极小屏幕适配 */
+@media (max-width: 360px) {
+  .grid-layout {
+    grid-template-columns: 1fr;
+    @apply gap-3;
+  }
+  
+  .project-grid {
+    @apply p-2;
+  }
 } 

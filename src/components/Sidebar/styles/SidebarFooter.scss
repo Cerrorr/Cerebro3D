@@ -25,4 +25,18 @@
       }
     }
   }
+}
+
+/* 响应式设计 */
+@include mix.respond-to('md') {
+  .sidebar-footer {
+    @apply px-5 py-3;
+  }
+}
+
+/* 小屏幕：768px以下完全隐藏底部信息 */
+@media (max-width: 768px) {
+  .sidebar-footer {
+    @apply hidden;
+  }
 } 

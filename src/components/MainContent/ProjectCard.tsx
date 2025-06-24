@@ -1,5 +1,4 @@
 import React from 'react';
-import { ProjectItem } from '@/types';
 import { ProjectCardProps } from '@/components/MainContent/types';
 import './styles/ProjectCard.scss';
 

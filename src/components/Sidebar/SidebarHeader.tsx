@@ -12,7 +12,11 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({ appName }) => {
   return (
     <div className="sidebar-header">
       <div className="logo-container">
-        <div className="logo-icon">🚀</div>
+        <img 
+          src="/images/logo.png" 
+          alt="Cerebro3D Logo" 
+          className="logo-icon"
+        />
         <h1 className="logo-text">{appName}</h1>
       </div>
     </div>
