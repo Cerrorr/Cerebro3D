@@ -44,7 +44,7 @@ interface ProjectGridProps {
  * 项目网格组件
  * 响应式展示项目卡片，每行1-4个项目，包含新建项目功能
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const ProjectGrid: React.FC<ProjectGridProps> = ({ 
   projects, 

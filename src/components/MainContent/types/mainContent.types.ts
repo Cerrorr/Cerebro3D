@@ -2,7 +2,7 @@
  * 主内容区组件类型定义
  * 包含主内容区相关的组件Props和事件处理器类型
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 
 import { CarouselItem, ProjectItem, ProjectClickHandler } from '../../../types/common.types';

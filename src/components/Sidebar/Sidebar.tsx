@@ -13,7 +13,7 @@ import './styles/Sidebar.scss';
  * @param appInfo - 应用信息（名称、版本、作者、备案号）
  * @param onMenuClick - 菜单项点击处理函数
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const Sidebar: React.FC<SidebarProps> = ({ 
   menuItems, 

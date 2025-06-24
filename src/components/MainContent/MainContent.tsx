@@ -51,7 +51,7 @@ interface MainContentProps {
  * @param onProjectClick - 项目点击处理函数
  * @param onNewProject - 新建项目处理函数
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const MainContent: React.FC<MainContentProps> = ({
   carouselItems,

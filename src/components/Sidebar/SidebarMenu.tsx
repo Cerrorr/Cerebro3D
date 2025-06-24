@@ -26,7 +26,7 @@ interface SidebarMenuProps {
  * @param items - 菜单项列表
  * @param onItemClick - 菜单项点击回调
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const SidebarMenu: React.FC<SidebarMenuProps> = ({ items, onItemClick }) => {
   /**

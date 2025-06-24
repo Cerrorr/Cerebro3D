@@ -2,7 +2,7 @@
  * 侧边栏组件类型定义
  * 包含侧边栏相关的组件Props和事件处理器类型
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 
 import { SidebarMenuItem, AppInfo, MenuClickHandler } from '../../../types/common.types';

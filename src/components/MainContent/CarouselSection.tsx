@@ -44,7 +44,7 @@ const defaultCarouselItems: CarouselItem[] = [
  * 
  * @param items - 轮播图数据列表
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const CarouselSection: React.FC<CarouselSectionProps> = ({ items = defaultCarouselItems }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

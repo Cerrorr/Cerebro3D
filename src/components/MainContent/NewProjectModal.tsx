@@ -118,7 +118,7 @@ const projectTemplates: readonly ProjectTemplate[] = [
  * @param onClose - 关闭回调
  * @param onConfirm - 确认回调
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const NewProjectModal: React.FC<NewProjectModalProps> = ({
   isOpen,

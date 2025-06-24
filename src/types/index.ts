@@ -8,7 +8,7 @@
  * - 通用类型：从 './common.types' 导入
  * 
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  * @deprecated 推荐使用模块化类型导入
  */
 

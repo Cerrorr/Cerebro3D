@@ -55,7 +55,7 @@ const getProjectTypeStyle = (type: string) => {
  * @param project - 项目数据对象
  * @param onClick - 项目点击处理函数
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
   /**

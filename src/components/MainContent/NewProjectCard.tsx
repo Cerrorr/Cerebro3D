@@ -18,7 +18,7 @@ interface NewProjectCardProps {
  * 
  * @param onClick - 点击处理函数
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const NewProjectCard: React.FC<NewProjectCardProps> = ({ onClick }) => {
   return (

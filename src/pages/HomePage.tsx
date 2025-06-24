@@ -33,7 +33,7 @@ interface NewProjectFormData {
  * 首页组件
  * 整合侧边栏和主内容区，展示3D编辑器主界面
  * @author Cerror
- * @since 2025-06-23
+ * @since 2025-06-24
  */
 const HomePage: React.FC = () => {
   // 应用信息
@@ -105,8 +105,8 @@ const HomePage: React.FC = () => {
       thumbnail: '', // 使用渐变背景占位符
       type: 'Web3D',
       tags: ['科幻', '城市', '建筑', '光效'],
-      createdAt: '2024-01-15',
-      updatedAt: '2024-01-20'
+      createdAt: '2025-06-15',
+      updatedAt: '2025-06-20'
     },
     {
       id: '2',
@@ -115,8 +115,8 @@ const HomePage: React.FC = () => {
       thumbnail: '', // 使用渐变背景占位符
       type: 'VR',
       tags: ['VR', '城市', '漫游', '交互'],
-      createdAt: '2024-01-10',
-      updatedAt: '2024-01-18'
+      createdAt: '2025-06-10',
+      updatedAt: '2025-06-18'
     },
     {
       id: '3',
@@ -125,8 +125,8 @@ const HomePage: React.FC = () => {
       thumbnail: '', // 使用渐变背景占位符
       type: 'AR',
       tags: ['AR', '家具', '预览', '移动端'],
-      createdAt: '2024-01-05',
-      updatedAt: '2024-01-15'
+      createdAt: '2025-06-05',
+      updatedAt: '2025-06-15'
     },
     {
       id: '4',
@@ -135,8 +135,8 @@ const HomePage: React.FC = () => {
       thumbnail: '', // 使用渐变背景占位符
       type: 'Game',
       tags: ['游戏', '冒险', '魔法', '森林'],
-      createdAt: '2024-01-08',
-      updatedAt: '2024-01-22'
+      createdAt: '2025-06-08',
+      updatedAt: '2025-06-22'
     },
     {
       id: '5',
@@ -145,8 +145,8 @@ const HomePage: React.FC = () => {
       thumbnail: '', // 使用渐变背景占位符
       type: 'Web3D',
       tags: ['企业', '产品', '展示', '交互'],
-      createdAt: '2024-01-12',
-      updatedAt: '2024-01-19'
+      createdAt: '2025-06-12',
+      updatedAt: '2025-06-19'
     },
     {
       id: '6',
@@ -155,8 +155,8 @@ const HomePage: React.FC = () => {
       thumbnail: '', // 使用渐变背景占位符
       type: 'VR',
       tags: ['展览', '艺术', '虚拟', '沉浸'],
-      createdAt: '2024-01-03',
-      updatedAt: '2024-01-16'
+      createdAt: '2025-06-03',
+      updatedAt: '2025-06-16'
     },
     {
       id: '7',
@@ -165,8 +165,8 @@ const HomePage: React.FC = () => {
       thumbnail: '', // 使用渐变背景占位符
       type: 'App',
       tags: ['移动端', '原型', '设计', 'UI'],
-      createdAt: '2024-01-07',
-      updatedAt: '2024-01-21'
+      createdAt: '2025-06-07',
+      updatedAt: '2025-06-21'
     },
     {
       id: '8',
@@ -175,8 +175,8 @@ const HomePage: React.FC = () => {
       thumbnail: '', // 使用渐变背景占位符
       type: 'Web3D',
       tags: ['建筑', '可视化', '设计', '现代'],
-      createdAt: '2024-01-04',
-      updatedAt: '2024-01-17'
+      createdAt: '2025-06-04',
+      updatedAt: '2025-06-17'
     },
     {
       id: '9',
@@ -185,8 +185,8 @@ const HomePage: React.FC = () => {
       thumbnail: '',
       type: 'VR',
       tags: ['医疗', '培训', '手术', '虚拟现实'],
-      createdAt: '2024-01-02',
-      updatedAt: '2024-01-18'
+      createdAt: '2025-06-02',
+      updatedAt: '2025-06-18'
     },
     {
       id: '10',
@@ -195,8 +195,8 @@ const HomePage: React.FC = () => {
       thumbnail: '',
       type: 'AR',
       tags: ['工厂', '巡检', 'AR', '智能制造'],
-      createdAt: '2024-01-09',
-      updatedAt: '2024-01-23'
+      createdAt: '2025-06-09',
+      updatedAt: '2025-06-23'
     },
     {
       id: '11',
