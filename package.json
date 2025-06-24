@@ -1,8 +1,32 @@
 {
-  "name": "react-three-editor",
+  "name": "cerebro3d",
   "version": "0.1.0",
   "private": true,
-  "description": "A powerful online 3D editor built with React Three Fiber",
+  "description": "Cerebro3D - Intelligent Web3D Editor that makes 3D creation simple",
+  "keywords": [
+    "cerebro3d",
+    "3d-editor", 
+    "three.js",
+    "react-three-fiber",
+    "webgl",
+    "web3d",
+    "intelligent",
+    "editor"
+  ],
+  "author": {
+    "name": "Cerror",
+    "email": "contact@cerebro3d.com",
+    "url": "https://cerebro3d.com"
+  },
+  "homepage": "https://cerebro3d.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cerror/cerebro3d.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cerror/cerebro3d/issues"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
