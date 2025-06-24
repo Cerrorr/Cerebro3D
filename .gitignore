@@ -41,3 +41,10 @@ coverage/
 # Private individual user cursor rules
 .cursor/rules/_*.mdc
 node_modules
+
+# Memory Bank system (project documentation, not for version control)
+memory-bank/
+
+# Personal notes and cursor configuration
+xnotes/
+.cursor/
