@@ -1,16 +1,8 @@
 import React from 'react';
+import { NewProjectCardProps } from '@/components/MainContent/types';
 import './styles/NewProjectCard.scss';
 
-/**
- * 新建项目卡片组件属性接口
- * 
- * @interface NewProjectCardProps
- * @property {() => void} onClick - 点击事件处理函数
- */
-interface NewProjectCardProps {
-  /** 点击事件处理函数 */
-  readonly onClick: () => void;
-}
+// 类型声明已移至 @/components/MainContent/types/mainContent.types.ts
 
 /**
  * 新建项目卡片组件

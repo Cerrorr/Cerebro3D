@@ -1,16 +1,9 @@
 import React from 'react';
 import { ProjectItem } from '@/types';
+import { ProjectCardProps } from '@/components/MainContent/types';
 import './styles/ProjectCard.scss';
 
-/**
- * 项目卡片组件属性接口
- */
-interface ProjectCardProps {
-  /** 项目数据 */
-  project: ProjectItem;
-  /** 项目点击事件处理函数 */
-  onClick: (project: ProjectItem) => void;
-}
+// 类型声明已移至 @/components/MainContent/types/mainContent.types.ts
 
 /**
  * 获取项目类型对应的渐变背景和图标

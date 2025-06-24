@@ -1,13 +1,8 @@
 import React from 'react';
+import { SidebarHeaderProps } from '@/components/Sidebar/types';
 import './styles/SidebarHeader.scss';
 
-/**
- * 侧边栏头部组件属性接口
- * @param appName - 应用名称
- */
-interface SidebarHeaderProps {
-  appName: string;
-}
+// 类型声明已移至 @/components/Sidebar/types/sidebar.types.ts
 
 /**
  * 侧边栏头部组件

@@ -1,14 +1,9 @@
 import React from 'react';
 import { AppInfo } from '@/types';
+import { SidebarFooterProps } from '@/components/Sidebar/types';
 import './styles/SidebarFooter.scss';
 
-/**
- * 侧边栏底部组件属性接口
- * @param appInfo - 应用信息
- */
-interface SidebarFooterProps {
-  appInfo: AppInfo;
-}
+// 类型声明已移至 @/components/Sidebar/types/sidebar.types.ts
 
 /**
  * 侧边栏底部组件

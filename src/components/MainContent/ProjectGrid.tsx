@@ -1,44 +1,13 @@
 import React, { useState } from 'react';
-import { ProjectItem, ProjectClickHandler } from '@/types';
+import { ProjectItem, ProjectClickHandler, NewProjectFormData } from '@/types';
 import { ProjectType } from '@/types/common.types';
 import ProjectCard from '@/components/MainContent/ProjectCard';
 import NewProjectCard from '@/components/MainContent/NewProjectCard';
 import NewProjectModal from '@/components/MainContent/NewProjectModal';
+import { ProjectGridProps } from '@/components/MainContent/types';
 import './styles/NewProjectCard.scss';
 
-/**
- * 新建项目表单数据接口
- * 
- * @interface NewProjectFormData
- * @property {string} name - 项目名称
- * @property {ProjectType} category - 项目分类
- * @property {string} description - 项目说明
- * @property {string} templateId - 选中的模板ID
- */
-interface NewProjectFormData {
-  name: string;
-  category: ProjectType;
-  description: string;
-  templateId: string;
-}
-
-/**
- * 项目网格组件属性接口
- * 定义项目网格组件所需的所有属性类型
- * 
- * @interface ProjectGridProps
- * @property {readonly ProjectItem[]} projects - 项目数据数组（只读）
- * @property {ProjectClickHandler} onProjectClick - 项目点击事件处理函数
- * @property {(formData: NewProjectFormData) => void} onNewProject - 新建项目处理函数
- */
-interface ProjectGridProps {
-  /** 项目列表 */
-  readonly projects: readonly ProjectItem[];
-  /** 项目点击回调函数 */
-  readonly onProjectClick: ProjectClickHandler;
-  /** 新建项目处理函数 */
-  readonly onNewProject: (formData: NewProjectFormData) => void;
-}
+// 类型声明已移至 @/components/MainContent/types/mainContent.types.ts
 
 /**
  * 项目网格组件

@@ -6,7 +6,8 @@ import {
   ProjectItem,
   ProjectType,
   MenuClickHandler,
-  ProjectClickHandler
+  ProjectClickHandler,
+  NewProjectFormData
 } from '@/types/common.types';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import MainContent from '@/components/MainContent/MainContent';
@@ -14,21 +15,7 @@ import { BaiduAnalytics, usePageTracking } from '@/utils/analytics';
 
 import './styles/HomePage.scss';
 
-/**
- * 新建项目表单数据接口
- * 
- * @interface NewProjectFormData
- * @property {string} name - 项目名称
- * @property {ProjectType} category - 项目分类
- * @property {string} description - 项目说明
- * @property {string} templateId - 选中的模板ID
- */
-interface NewProjectFormData {
-  name: string;
-  category: ProjectType;
-  description: string;
-  templateId: string;
-}
+// NewProjectFormData类型已在 @/types/common.types 中定义
 
 /**
  * 首页组件

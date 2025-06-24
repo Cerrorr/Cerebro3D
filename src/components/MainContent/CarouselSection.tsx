@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CarouselItem } from '@/types';
+import { CarouselSectionProps } from '@/components/MainContent/types';
 import './styles/CarouselSection.scss';
 
-/**
- * 轮播图组件属性接口
- * 定义轮播图组件所需的所有属性类型
- * 
- * @interface CarouselSectionProps
- * @property {readonly CarouselItem[]} items - 轮播图数据数组（只读）
- */
-interface CarouselSectionProps {
-  /** 轮播图项目列表 */
-  readonly items: readonly CarouselItem[];
-}
+// 类型声明已移至 @/components/MainContent/types/mainContent.types.ts
 
 /**
  * 默认轮播项数据，使用CSS渐变背景

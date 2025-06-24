@@ -1,60 +1,10 @@
 import React, { useState } from 'react';
 import { message } from 'antd';
 import { ProjectType } from '@/types/common.types';
+import { NewProjectModalProps, ProjectTemplate, NewProjectFormData } from '@/components/MainContent/types';
 import './styles/NewProjectModal.scss';
 
-/**
- * 项目模板接口
- * 
- * @interface ProjectTemplate
- * @property {string} id - 模板唯一标识
- * @property {string} name - 模板名称
- * @property {string} category - 模板分类
- * @property {string} thumbnail - 模板缩略图
- * @property {ProjectType} type - 项目类型
- * @property {string} description - 模板描述
- */
-interface ProjectTemplate {
-  readonly id: string;
-  readonly name: string;
-  readonly category: string;
-  readonly thumbnail: string;
-  readonly type: ProjectType;
-  readonly description: string;
-}
-
-/**
- * 新建项目表单数据接口
- * 
- * @interface NewProjectFormData
- * @property {string} name - 项目名称
- * @property {ProjectType} category - 项目分类
- * @property {string} description - 项目说明
- * @property {string} templateId - 选中的模板ID
- */
-interface NewProjectFormData {
-  name: string;
-  category: ProjectType;
-  description: string;
-  templateId: string;
-}
-
-/**
- * 新建项目弹窗组件属性接口
- * 
- * @interface NewProjectModalProps
- * @property {boolean} isOpen - 弹窗是否打开
- * @property {() => void} onClose - 关闭弹窗回调
- * @property {(formData: NewProjectFormData) => void} onConfirm - 确认创建回调
- */
-interface NewProjectModalProps {
-  /** 弹窗是否打开 */
-  readonly isOpen: boolean;
-  /** 关闭弹窗回调 */
-  readonly onClose: () => void;
-  /** 确认创建回调 */
-  readonly onConfirm: (formData: NewProjectFormData) => void;
-}
+// 类型声明已移至 @/components/MainContent/types/mainContent.types.ts
 
 /**
  * 项目模板数据

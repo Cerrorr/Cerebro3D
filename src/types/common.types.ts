@@ -158,4 +158,21 @@ export function isValidProjectItem(value: unknown): value is ProjectItem {
     typeof item.createdAt === 'string' &&
     typeof item.updatedAt === 'string'
   );
+}
+
+/**
+ * 新建项目表单数据接口
+ * 定义创建新项目时的表单数据结构
+ * 
+ * @interface NewProjectFormData
+ * @property {string} name - 项目名称
+ * @property {ProjectType} category - 项目分类
+ * @property {string} description - 项目说明
+ * @property {string} templateId - 选中的模板ID
+ */
+export interface NewProjectFormData {
+  readonly name: string;
+  readonly category: ProjectType;
+  readonly description: string;
+  readonly templateId: string;
 } 
