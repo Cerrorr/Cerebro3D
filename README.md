@@ -99,8 +99,8 @@ src/
 ## 🚀 快速开始
 
 ### 环境要求
-- Node.js >= 16.0.0
-- npm >= 8.0.0 或 yarn >= 1.22.0
+- Node.js >= 20.0.0
+- npm >= 10.0.0 或 yarn >= 1.22.0
 
 ### 安装与运行
 ```bash
@@ -147,34 +147,8 @@ VITE_BAIDU_ANALYTICS_ID=your_baidu_analytics_id
 - 🗜️ **代码压缩** - Gzip压缩率 ~68%
 - 🎯 **代码质量** - TypeScript严格模式，零技术债务
 
-## 🌐 部署指南
 
-### HTTPS证书配置
-```bash
-# 使用Let's Encrypt免费SSL证书
-sudo certbot --nginx -d yourdomain.com
 
-# 自动续期设置
-sudo systemctl enable certbot-renewal.timer
-```
-
-### Nginx配置示例
-```nginx
-server {
-    listen 443 ssl;
-    server_name cerebro3d.com;
-    
-    ssl_certificate /etc/letsencrypt/live/cerebro3d.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/cerebro3d.com/privkey.pem;
-    
-    root /var/www/cerebro3d;
-    index index.html;
-    
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
-```
 
 ## 🤝 贡献指南
 
@@ -205,7 +179,6 @@ test: 测试相关
 ## 📞 联系我们
 
 - 🌐 **官网**: [cerebro3d.com](https://cerebro3d.com)
-- 📧 **邮箱**: contact@cerebro3d.com
 - 🐙 **GitHub**: [github.com/cerror/cerebro3d](https://github.com/cerror/cerebro3d)
 
 ---
