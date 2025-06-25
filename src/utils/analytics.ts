@@ -2,7 +2,7 @@
  * 百度统计工具类
  * 提供页面访问追踪和自定义事件追踪功能
  * @author Cerror
- * @since 2025-06-24
+ * @since 2025-06-25
  */
 
 import './types/analytics.types';

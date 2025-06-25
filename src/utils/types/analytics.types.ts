@@ -2,7 +2,7 @@
  * 百度统计工具类型定义
  * 包含analytics.ts相关的所有类型声明
  * @author Cerror
- * @since 2025-06-24
+ * @since 2025-06-25
  */
 
 /**

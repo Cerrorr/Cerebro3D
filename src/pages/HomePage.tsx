@@ -25,7 +25,7 @@ import './styles/HomePage.scss';
  * 首页组件
  * 整合侧边栏和主内容区，展示3D编辑器主界面
  * @author Cerror
- * @since 2025-06-24
+ * @since 2025-06-25
  */
 const HomePage: React.FC = () => {
   // 页面访问追踪

@@ -18,7 +18,7 @@ import './styles/CarouselSection.scss';
  * 
  * @param items - 轮播图数据列表
  * @author Cerror
- * @since 2025-06-24
+ * @since 2025-06-25
  */
 const CarouselSection: React.FC<CarouselSectionProps> = ({ items = DEFAULT_CAROUSEL_ITEMS }) => {
   /**

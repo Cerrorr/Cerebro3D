@@ -2,7 +2,7 @@
  * ProjectPage页面常量配置
  * 集中管理项目编辑器页面相关的常量数据
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-25
  */
 
 import React from 'react';

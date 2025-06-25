@@ -2,7 +2,7 @@
  * 可调整面板组件类型定义
  * 包含ResizablePanel组件相关的所有类型声明
  * @author Cerror
- * @since 2025-06-24
+ * @since 2025-06-25
  */
 
 import React from 'react';

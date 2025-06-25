@@ -2,7 +2,7 @@
  * NewProjectModal组件常量配置
  * 集中管理新建项目弹窗相关的常量数据
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-25
  */
 
 import type { ProjectTemplate, NewProjectFormData } from '@/components/MainContent/types';

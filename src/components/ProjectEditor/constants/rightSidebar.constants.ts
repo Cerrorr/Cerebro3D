@@ -2,7 +2,7 @@
  * 右侧栏配置常量
  * 集中管理右侧栏相关的常量数据
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-25
  */
 
 import React from 'react';

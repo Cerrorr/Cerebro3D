@@ -2,7 +2,7 @@
  * CarouselSection组件常量配置
  * 集中管理轮播组件相关的常量数据
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-25
  */
 
 import type { CarouselItem } from '@/types/common.types';
