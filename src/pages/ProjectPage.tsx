@@ -14,8 +14,8 @@ import {
   SettingOutlined,
   ArrowLeftOutlined
 } from '@ant-design/icons';
-import { Toolbar, SceneTree, Canvas3D, ResizablePanel } from '@/components/ProjectEditor';
-import { ToolbarAction, SceneNode, CanvasSettings } from '@/components/ProjectEditor/types';
+import { Toolbar, SceneTree, Canvas3D, ResizablePanel, RightSidebar } from '@/components/ProjectEditor';
+import { ToolbarAction, SceneNode, CanvasSettings, RightSidebarTabType } from '@/components/ProjectEditor/types';
 import { ProjectPageProps } from './types';
 import './styles/ProjectPage.scss';
 
@@ -133,6 +133,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
   const [sceneNodes, setSceneNodes] = useState<SceneNode[]>(mockSceneNodes);
   const [selectedNodeId, setSelectedNodeId] = useState<string>('cube1');
   const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(120);
+  const [rightSidebarTab, setRightSidebarTab] = useState<RightSidebarTabType>('scene');
   const [canvasSettings, setCanvasSettings] = useState<CanvasSettings>({
     gridVisible: true,
     axisVisible: true,
@@ -152,6 +153,8 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
       // TODO: 根据projectId从API加载项目数据
     }
   }, [routeState?.projectTitle, projectId]);
+
+
 
   // 工具栏左侧按钮配置
   const leftActions: ToolbarAction[] = [
@@ -269,6 +272,14 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
     console.log('切换节点可见性:', nodeId);
   }, []);
 
+  /**
+   * 处理右侧栏标签切换
+   * @param tab 标签类型
+   */
+  const handleRightSidebarTabChange = useCallback((tab: RightSidebarTabType) => {
+    setRightSidebarTab(tab);
+  }, []);
+
   return (
     <div className="project-page">
       <div className="project-layout">
@@ -319,13 +330,14 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
 
           {/* 右侧面板 */}
           <div className="layout-right">
-            <div className="placeholder-content">
-              右侧扩展面板
-              <br />
-              材质编辑器、渲染设置等
-              <br />
-              预留开发区域
-            </div>
+            <RightSidebar
+              activeTab={rightSidebarTab}
+              onTabChange={handleRightSidebarTabChange}
+              visible={true}
+              width={320}
+              collapsible={true}
+              defaultCollapsed={false}
+            />
           </div>
         </div>
       </div>
