@@ -1,108 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import {
-  ImportOutlined,
-  UndoOutlined,
-  RedoOutlined,
-  DeleteOutlined,
-  ClearOutlined,
-  CopyOutlined,
-  FullscreenOutlined,
-  ExportOutlined,
-  SaveOutlined,
-  EyeOutlined,
-  SettingOutlined,
-  ArrowLeftOutlined
-} from '@ant-design/icons';
 import { Toolbar, SceneTree, Canvas3D, ResizablePanel, RightSidebar } from '@/components/ProjectEditor';
 import { ToolbarAction, SceneNode, CanvasSettings, RightSidebarTabType } from '@/components/ProjectEditor/types';
 import { ProjectPageProps } from './types';
+import {
+  DEFAULT_CANVAS_SETTINGS,
+  DEFAULT_PANEL_CONFIG,
+  getLeftToolbarActions,
+  RIGHT_TOOLBAR_ACTIONS,
+  MOCK_SCENE_NODES
+} from './constants';
 import './styles/ProjectPage.scss';
 
-// 模拟场景数据
-const mockSceneNodes: SceneNode[] = [
-  {
-    id: 'scene',
-    name: '特效材质贴图',
-    type: 'folder',
-    expanded: true,
-    visible: true,
-    children: [
-      {
-        id: 'cameras',
-        name: '默认相机',
-        type: 'folder',
-        expanded: true,
-        visible: true,
-        children: [
-          {
-            id: 'camera1',
-            name: '正交视图',
-            type: 'camera',
-            visible: true
-          },
-          {
-            id: 'camera2', 
-            name: '透视视图',
-            type: 'camera',
-            visible: true
-          }
-        ]
-      },
-      {
-        id: 'lights',
-        name: '灯光',
-        type: 'folder',
-        expanded: true,
-        visible: true,
-        children: [
-          {
-            id: 'light1',
-            name: '环境光',
-            type: 'light',
-            visible: true
-          },
-          {
-            id: 'light2',
-            name: '方向光',
-            type: 'light',
-            visible: true
-          }
-        ]
-      },
-      {
-        id: 'meshes',
-        name: '模型',
-        type: 'folder',
-        expanded: true,
-        visible: true,
-        children: [
-          {
-            id: 'cube1',
-            name: '立方体',
-            type: 'mesh',
-            visible: true
-          },
-          {
-            id: 'materials',
-            name: '材质',
-            type: 'folder',
-            expanded: false,
-            visible: true,
-            children: [
-              {
-                id: 'material1',
-                name: '默认材质',
-                type: 'material',
-                visible: true
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-];
+// 使用来自常量的模拟场景数据
 
 /**
  * 项目页面主组件
@@ -130,15 +40,12 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
   const finalProjectTitle = routeState?.projectTitle || initialTitle || '新建项目';
   
   const [projectTitle, setProjectTitle] = useState(finalProjectTitle);
-  const [sceneNodes, setSceneNodes] = useState<SceneNode[]>(mockSceneNodes);
+  const [sceneNodes, setSceneNodes] = useState<SceneNode[]>([...MOCK_SCENE_NODES]);
   const [selectedNodeId, setSelectedNodeId] = useState<string>('cube1');
-  const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(120);
+  const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(DEFAULT_PANEL_CONFIG.BOTTOM_PANEL_HEIGHT);
   const [rightSidebarTab, setRightSidebarTab] = useState<RightSidebarTabType>('scene');
   const [canvasSettings, setCanvasSettings] = useState<CanvasSettings>({
-    gridVisible: true,
-    axisVisible: true,
-    backgroundColor: '#0a0a0a',
-    cameraPosition: [5, 5, 5]
+    ...DEFAULT_CANVAS_SETTINGS
   });
 
   // 监听路由变化，更新项目标题
@@ -156,87 +63,9 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
 
 
 
-  // 工具栏左侧按钮配置
-  const leftActions: ToolbarAction[] = [
-    {
-      id: 'home',
-      label: '返回首页',
-      icon: <ArrowLeftOutlined />,
-      onClick: () => navigate('/')
-    },
-    {
-      id: 'import',
-      label: '导入',
-      icon: <ImportOutlined />,
-      onClick: () => console.log('导入文件')
-    },
-    {
-      id: 'undo',
-      label: '撤回',
-      icon: <UndoOutlined />,
-      onClick: () => console.log('撤回操作'),
-      disabled: true
-    },
-    {
-      id: 'redo',
-      label: '重做',
-      icon: <RedoOutlined />,
-      onClick: () => console.log('重做操作'),
-      disabled: true
-    },
-    {
-      id: 'delete',
-      label: '删除',
-      icon: <DeleteOutlined />,
-      onClick: () => console.log('删除选中对象')
-    },
-    {
-      id: 'clear',
-      label: '清空',
-      icon: <ClearOutlined />,
-      onClick: () => console.log('清空场景')
-    },
-    {
-      id: 'copy',
-      label: '复制',
-      icon: <CopyOutlined />,
-      onClick: () => console.log('复制选中对象')
-    },
-    {
-      id: 'fullscreen',
-      label: '全屏',
-      icon: <FullscreenOutlined />,
-      onClick: () => console.log('切换全屏模式')
-    }
-  ];
-
-  // 工具栏右侧按钮配置
-  const rightActions: ToolbarAction[] = [
-    {
-      id: 'export',
-      label: '导出',
-      icon: <ExportOutlined />,
-      onClick: () => console.log('导出项目')
-    },
-    {
-      id: 'save',
-      label: '保存',
-      icon: <SaveOutlined />,
-      onClick: () => console.log('保存项目')
-    },
-    {
-      id: 'preview',
-      label: '预览',
-      icon: <EyeOutlined />,
-      onClick: () => console.log('预览模式')
-    },
-    {
-      id: 'settings',
-      label: '设置',
-      icon: <SettingOutlined />,
-      onClick: () => console.log('打开设置')
-    }
-  ];
+  // 使用常量文件中的工具栏配置
+  const leftActions = getLeftToolbarActions(navigate);
+  const rightActions = RIGHT_TOOLBAR_ACTIONS;
 
   /**
    * 处理场景树节点选择
