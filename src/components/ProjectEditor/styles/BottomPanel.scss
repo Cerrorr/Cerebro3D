@@ -1,0 +1,180 @@
+/**
+ * 底部面板组件样式
+ * @author Cerror
+ * @since 2025-06-25
+ */
+
+.bottom-panel {
+  @apply flex flex-col;
+  background: linear-gradient(180deg, #1e2328 0%, #252a31 100%);
+  border-top: 1px solid rgba(79, 172, 254, 0.15);
+  
+  // 确保面板在容器中正确显示
+  width: 100%;
+  position: relative;
+
+  .bottom-panel-header {
+    @apply flex items-center justify-between px-4 py-2;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(79, 172, 254, 0.1);
+    height: 40px;
+    flex-shrink: 0;
+
+    .panel-controls {
+      @apply flex items-center;
+
+      .ant-select {
+        .ant-select-selector {
+          background: rgba(255, 255, 255, 0.08) !important;
+          border: 1px solid rgba(79, 172, 254, 0.2) !important;
+          color: #d1d9e0 !important;
+        }
+
+        .ant-select-selection-item {
+          @apply flex items-center;
+          color: #d1d9e0 !important;
+        }
+
+        .ant-select-arrow {
+          color: #d1d9e0 !important;
+        }
+
+        &:hover .ant-select-selector {
+          background: rgba(255, 255, 255, 0.12) !important;
+          border-color: rgba(79, 172, 254, 0.4) !important;
+        }
+
+        &.ant-select-focused .ant-select-selector {
+          background: rgba(255, 255, 255, 0.12) !important;
+          border-color: rgba(79, 172, 254, 0.6) !important;
+          box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.1) !important;
+        }
+      }
+    }
+
+    .panel-info {
+      .panel-description {
+        @apply text-xs;
+        color: #bbb;
+      }
+    }
+  }
+
+  .bottom-panel-content {
+    @apply flex-1 overflow-hidden;
+    min-height: 0; // 允许内容区域收缩
+
+    // 通用内容区域样式
+    .assets-content,
+    .animation-content,
+    .console-content {
+      @apply w-full h-full flex items-center justify-center;
+      padding: 24px;
+
+      .content-placeholder {
+        @apply flex flex-col items-center justify-center text-center;
+        gap: 16px;
+        max-width: 400px;
+
+        .placeholder-icon {
+          color: #666;
+          font-size: 48px;
+        }
+
+        .placeholder-text {
+          @apply text-lg font-medium;
+          color: #d1d9e0;
+        }
+
+        .placeholder-description {
+          @apply text-sm leading-relaxed;
+          color: #bbb;
+          line-height: 1.6;
+        }
+      }
+    }
+
+    // 资源中心特定样式
+    .assets-content {
+      .content-placeholder {
+        .placeholder-icon {
+          @apply text-blue-400;
+        }
+      }
+    }
+
+    // 动画编辑器特定样式
+    .animation-content {
+      .content-placeholder {
+        .placeholder-icon {
+          @apply text-green-400;
+        }
+      }
+    }
+
+    // 日志控制台特定样式
+    .console-content {
+      .content-placeholder {
+        .placeholder-icon {
+          @apply text-orange-400;
+        }
+      }
+    }
+  }
+
+  // 响应式设计
+  @media (max-width: 768px) {
+    .bottom-panel-header {
+      @apply px-2;
+
+      .panel-controls {
+        .ant-select {
+          width: 140px !important;
+        }
+      }
+
+      .panel-info {
+        display: none;
+      }
+    }
+
+    .bottom-panel-content {
+      .content-placeholder {
+        @apply px-4;
+
+        .placeholder-icon {
+          font-size: 36px;
+        }
+
+        .placeholder-text {
+          @apply text-base;
+        }
+
+        .placeholder-description {
+          @apply text-xs;
+        }
+      }
+    }
+  }
+
+  // 下拉框全局样式覆盖
+  :global(.ant-select-dropdown) {
+    background: #2a2f36 !important;
+    border: 1px solid rgba(79, 172, 254, 0.2) !important;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.5) !important;
+
+    .ant-select-item {
+      color: #d1d9e0 !important;
+      background: transparent !important;
+
+      &:hover {
+        background: rgba(79, 172, 254, 0.1) !important;
+      }
+
+      &.ant-select-item-option-selected {
+        background: rgba(79, 172, 254, 0.2) !important;
+        color: #fff !important;
+      }
+    }
+  }
+} 

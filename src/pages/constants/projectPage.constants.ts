@@ -36,7 +36,7 @@ export const DEFAULT_CANVAS_SETTINGS = {
  * 默认面板配置
  */
 export const DEFAULT_PANEL_CONFIG = {
-  BOTTOM_PANEL_HEIGHT: 120,
+  BOTTOM_PANEL_HEIGHT: 220,  // 底部面板默认高度
   RIGHT_SIDEBAR_WIDTH: 320,
   RIGHT_SIDEBAR_COLLAPSED: false
 } as const;

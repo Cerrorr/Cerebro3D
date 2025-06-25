@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { Toolbar, SceneTree, Canvas3D, ResizablePanel, RightSidebar } from '@/components/ProjectEditor';
-import { SceneNode, CanvasSettings, RightSidebarTabType } from '@/components/ProjectEditor/types';
+import { Toolbar, SceneTree, Canvas3D, ResizablePanel, RightSidebar, BottomPanel } from '@/components/ProjectEditor';
+import { SceneNode, CanvasSettings, RightSidebarTabType, BottomPanelType } from '@/components/ProjectEditor/types';
 import { ProjectPageProps } from './types';
 import {
   DEFAULT_CANVAS_SETTINGS,
@@ -44,6 +44,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
   const [selectedNodeId, setSelectedNodeId] = useState<string>('cube1');
   const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(DEFAULT_PANEL_CONFIG.BOTTOM_PANEL_HEIGHT);
   const [rightSidebarTab, setRightSidebarTab] = useState<RightSidebarTabType>('scene');
+  const [bottomPanelType, setBottomPanelType] = useState<BottomPanelType>('assets');
   const [canvasSettings, setCanvasSettings] = useState<CanvasSettings>({
     ...DEFAULT_CANVAS_SETTINGS
   });
@@ -109,6 +110,15 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
     setRightSidebarTab(tab);
   }, []);
 
+  /**
+   * 处理底部面板类型切换
+   * @param type 面板类型
+   */
+  const handleBottomPanelTypeChange = useCallback((type: BottomPanelType) => {
+    setBottomPanelType(type);
+    console.log('切换底部面板类型:', type);
+  }, []);
+
   return (
     <div className="project-page">
       <div className="project-layout">
@@ -145,15 +155,16 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
             {/* 底部面板 */}
             <ResizablePanel
               initialHeight={bottomPanelHeight}
+              minHeight={0}
               maxHeight={400}
               position="bottom"
               onHeightChange={setBottomPanelHeight}
             >
-              <div className="panel-placeholder">
-                底部扩展面板 - 属性编辑器、动画时间轴等功能
-                <br />
-                当前高度: {bottomPanelHeight}px
-              </div>
+              <BottomPanel
+                defaultActiveType={bottomPanelType}
+                onTypeChange={handleBottomPanelTypeChange}
+                height={bottomPanelHeight - 4} // 减去边框高度
+              />
             </ResizablePanel>
           </div>
 

@@ -226,4 +226,35 @@
 // 焦点样式
 .focus-ring:focus-visible {
   @apply outline-2 outline-primary-500 outline-offset-2;
+}
+
+// Ant Design下拉框深色主题覆盖
+.ant-select-dropdown {
+  background: #2a2f36 !important;
+  border: 1px solid rgba(79, 172, 254, 0.2) !important;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.5) !important;
+
+  .ant-select-item {
+    color: #d1d9e0 !important;
+    background: transparent !important;
+
+    &:hover {
+      background: rgba(79, 172, 254, 0.1) !important;
+      color: #ffffff !important;
+    }
+
+    &.ant-select-item-option-selected {
+      background: rgba(79, 172, 254, 0.2) !important;
+      color: #ffffff !important;
+    }
+
+    &.ant-select-item-option-active {
+      background: rgba(79, 172, 254, 0.15) !important;
+      color: #ffffff !important;
+    }
+  }
+
+  .ant-select-item-option-content {
+    color: inherit !important;
+  }
 } 
