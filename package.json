@@ -5,7 +5,7 @@
   "description": "Cerebro3D - Intelligent Web3D Editor that makes 3D creation simple",
   "keywords": [
     "cerebro3d",
-    "3d-editor", 
+    "3d-editor",
     "three.js",
     "react-three-fiber",
     "webgl",

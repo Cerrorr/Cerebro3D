@@ -5,13 +5,7 @@
  * @since 2025-06-24
  */
 
-// 百度统计全局对象类型声明
-declare global {
-  interface Window {
-    _hmt?: Array<(string | number)[]>;
-    hm?: HTMLScriptElement;
-  }
-}
+import './types/analytics.types';
 
 /**
  * 开发环境日志输出

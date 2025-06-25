@@ -1,0 +1,426 @@
+@use '@/styles/variables' as *;
+@use 'sass:map';
+
+.canvas-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+  overflow: hidden;
+  border-radius: 4px;
+
+  .canvas-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+          color: #d1d9e0;
+      font-size: 14px;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-top: 3px solid map.get($primary-colors, 500);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    span {
+      opacity: 0.8;
+      font-weight: 500;
+    }
+  }
+
+  .main-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: crosshair;
+    
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  // 左上角控制器
+  .canvas-controls {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 5;
+    gap: 12px;
+
+    .view-controls {
+      pointer-events: auto;
+
+      .control-buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+
+        .control-btn {
+          width: 40px;
+          height: 40px;
+          background: rgba(0, 0, 0, 0.7);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 8px;
+          color: #b8c5d1;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          transition: all 0.2s ease;
+          backdrop-filter: blur(8px);
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.9);
+            border-color: map.get($primary-colors, 500);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+
+          &.active {
+            background: rgba(79, 172, 254, 0.2);
+            border-color: #4facfe;
+            color: #4facfe;
+          }
+
+          &.view-cycle-btn {
+            position: relative;
+            
+            &::after {
+              content: '▼';
+              position: absolute;
+              bottom: -2px;
+              right: -2px;
+              width: 8px;
+              height: 8px;
+              background: rgba(0, 0, 0, 0.8);
+              border-radius: 2px;
+              border: 1px solid rgba(255, 255, 255, 0.3);
+              font-size: 6px;
+              color: #4facfe;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              line-height: 1;
+            }
+
+            // 视图图标特定颜色
+            .anticon {
+              &.anticon-box-plot {
+                color: #8b5cf6; // 透视视图 - 紫色
+              }
+              &.anticon-arrow-up {
+                color: #10b981; // 前视图 - 绿色
+              }
+              &.anticon-arrow-down {
+                color: #ef4444; // 后视图 - 红色
+              }
+              &.anticon-arrow-left {
+                color: #3b82f6; // 左视图 - 蓝色
+              }
+              &.anticon-arrow-right {
+                color: #f59e0b; // 右视图 - 黄色
+              }
+              &.anticon-up {
+                color: #06b6d4; // 顶视图 - 青色
+              }
+              &.anticon-down {
+                color: #ec4899; // 底视图 - 粉色
+              }
+            }
+          }
+
+          // Ant Design 图标颜色
+          .anticon {
+            &.anticon-home {
+              color: #10b981;
+            }
+
+            &.anticon-expand {
+              color: #3b82f6;
+            }
+
+            &.anticon-eye {
+              color: #10b981;
+            }
+
+            &.anticon-eye-invisible {
+              color: #666;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 右下角渲染信息
+  .render-info {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    pointer-events: none;
+    z-index: 5;
+
+    .render-stats {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 11px;
+      color: #d1d9e0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      pointer-events: auto;
+      backdrop-filter: blur(8px);
+      line-height: 1.3;
+
+      span {
+        display: block;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+
+        &:first-child {
+          color: #10b981; // 渲染时间 - 绿色
+        }
+
+        &:nth-child(2) {
+          color: #f97316; // 物体数 - 橙色
+        }
+
+        &:nth-child(3) {
+          color: #3b82f6; // 顶点数 - 蓝色
+        }
+
+        &:nth-child(4) {
+          color: #f59e0b; // 三角面数 - 黄色
+        }
+
+        &:last-child {
+          color: #8b5cf6; // 视图信息 - 紫色
+        }
+      }
+    }
+  }
+
+  // 右键菜单样式（未来扩展）
+  .context-menu {
+    position: absolute;
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 160px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    z-index: 1000;
+
+    .menu-item {
+      padding: 8px 16px;
+      color: #d1d9e0;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background: rgba(102, 126, 234, 0.2);
+        color: #fff;
+      }
+
+      &.divider {
+        height: 1px;
+        background: #444;
+        margin: 4px 0;
+        padding: 0;
+      }
+
+      .menu-icon {
+        width: 16px;
+        text-align: center;
+      }
+    }
+  }
+
+  // 工具提示
+  .canvas-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+// 视图选择下拉菜单样式
+.view-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+
+  .anticon {
+    font-size: 14px;
+    
+    &.anticon-box-plot {
+      color: #8b5cf6; // 透视视图 - 紫色
+    }
+    &.anticon-arrow-up {
+      color: #10b981; // 前视图 - 绿色
+    }
+    &.anticon-arrow-down {
+      color: #ef4444; // 后视图 - 红色
+    }
+    &.anticon-arrow-left {
+      color: #3b82f6; // 左视图 - 蓝色
+    }
+    &.anticon-arrow-right {
+      color: #f59e0b; // 右视图 - 黄色
+    }
+    &.anticon-up {
+      color: #06b6d4; // 顶视图 - 青色
+    }
+    &.anticon-down {
+      color: #ec4899; // 底视图 - 粉色
+    }
+  }
+
+  span {
+    color: #d1d9e0;
+    font-weight: 500;
+  }
+}
+
+// 自定义下拉菜单样式
+.ant-dropdown {
+  .ant-dropdown-menu {
+    background: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+    padding: 4px !important;
+
+    .ant-dropdown-menu-item {
+      border-radius: 6px !important;
+      margin: 2px 0 !important;
+      
+      &:hover {
+        background: rgba(79, 172, 254, 0.2) !important;
+        
+        .view-menu-item {
+          .anticon {
+            color: #4facfe !important;
+          }
+          
+          span {
+            color: #fff !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 旋转动画
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// 脉冲动画
+@keyframes pulse {
+  0% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.6; 
+    transform: scale(1.2); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+// 响应式设计
+@media (max-width: map.get($breakpoints, md)) {
+  .canvas-3d {
+    .canvas-controls {
+      top: 12px;
+      left: 12px;
+
+      .view-controls .control-buttons .control-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+      }
+    }
+
+    .render-info {
+      bottom: 12px;
+      right: 12px;
+
+      .render-stats {
+        padding: 6px 8px;
+        font-size: 10px;
+
+        span {
+          font-size: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: map.get($breakpoints, sm)) {
+  .canvas-3d {
+    .canvas-controls .view-controls .control-buttons {
+      gap: 6px;
+      
+      .control-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 11px;
+      }
+    }
+
+    .render-info .render-stats {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 8px;
+    }
+  }
+} 

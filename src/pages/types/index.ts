@@ -6,4 +6,7 @@
  */
 
 // 首页相关类型
-export * from './homePage.types'; 
+export * from './homePage.types';
+
+// 项目页面类型
+export * from './projectPage.types'; 

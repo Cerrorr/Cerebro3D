@@ -15,13 +15,18 @@ export default defineConfig({
       '@/services': path.resolve(__dirname, './src/services'),
       '@/utils': path.resolve(__dirname, './src/utils'),
       '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/styles': path.resolve(__dirname, './src/styles'),
     },
   },
   css: {
     preprocessorOptions: {
       scss: {
         api: 'modern-compiler',
-        silenceDeprecations: ['legacy-js-api']
+        silenceDeprecations: ['legacy-js-api'],
+        additionalData: `
+          @use "@/styles/variables" as *;
+          @use "@/styles/mixins" as *;
+        `
       }
     }
   },

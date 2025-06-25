@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import HomePage from '@/pages/HomePage';
+import AppRouter from '@/routes/route';
 import { BaiduAnalytics } from '@/utils/analytics';
 import './App.css';
 
@@ -15,7 +15,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <HomePage />
+      <AppRouter />
     </div>
   );
 };

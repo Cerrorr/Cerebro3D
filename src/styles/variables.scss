@@ -1,6 +1,8 @@
 // 设计token变量 - 与Tailwind配置同步
 // 使用现代SCSS语法，避免弃用警告
 
+@use 'sass:map';
+
 $primary-colors: (
   50: #eff6ff,
   100: #dbeafe,

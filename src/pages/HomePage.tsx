@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   SidebarMenuItem,
   AppInfo,
@@ -25,6 +26,9 @@ import './styles/HomePage.scss';
 const HomePage: React.FC = () => {
   // 页面访问追踪
   usePageTracking('/', 'Cerebro3D首页');
+  
+  // 路由导航hook
+  const navigate = useNavigate();
 
   // 应用信息
   const appInfo: AppInfo = {
@@ -263,7 +267,13 @@ const HomePage: React.FC = () => {
     // 追踪项目打开事件
     BaiduAnalytics.trackProject.open(project.id, project.type);
     
-    // TODO: 打开项目编辑器
+    // 跳转到项目编辑页面
+    navigate(`/project/${project.id}`, { 
+      state: { 
+        projectTitle: project.title,
+        projectType: project.type 
+      } 
+    });
   };
 
   /**
@@ -276,8 +286,17 @@ const HomePage: React.FC = () => {
     // 追踪项目创建事件
     BaiduAnalytics.trackProject.create(formData.category);
     
-    // TODO: 创建新项目并添加到项目列表
-    // 这里可以调用API创建项目，然后更新状态
+    // 生成新项目ID
+    const newProjectId = `project_${Date.now()}`;
+    
+    // 跳转到新项目编辑页面
+    navigate(`/project/${newProjectId}`, { 
+      state: { 
+        projectTitle: formData.name,
+        projectType: formData.category,
+        isNewProject: true 
+      } 
+    });
   };
 
   return (

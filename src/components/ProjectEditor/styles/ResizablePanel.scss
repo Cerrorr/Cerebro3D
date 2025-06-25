@@ -1,0 +1,136 @@
+.resizable-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #1e2328 0%, #252a31 100%);
+  border-top: 1px solid rgba(79, 172, 254, 0.15);
+  transition: none;
+  backdrop-filter: blur(10px);
+  
+  &.dragging {
+    user-select: none;
+    
+    * {
+      user-select: none;
+      pointer-events: none;
+    }
+    
+    .resizer {
+      pointer-events: auto;
+    }
+  }
+
+  .resizer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 10px;
+    cursor: row-resize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: background-color 0.2s ease;
+    background-color: rgba(255, 255, 255, 0.02);
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      
+      .resizer-handle {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+    
+    &:active {
+      background-color: rgba(79, 172, 254, 0.2);
+      
+      .resizer-handle .resizer-line {
+        background-color: #4facfe;
+      }
+    }
+  }
+
+  .resizer-handle {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    
+    .resizer-line {
+      width: 10px;
+      height: 2px;
+      background: #888;
+      border-radius: 1px;
+      transition: background-color 0.2s ease;
+    }
+  }
+
+  &--bottom .resizer {
+    top: -5px;
+  }
+
+  &--top .resizer {
+    bottom: -5px;
+  }
+
+  .panel-content {
+    flex: 1;
+    overflow: hidden;
+    padding: 16px;
+    color: #d1d9e0;
+    
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #444;
+      border-radius: 3px;
+      
+      &:hover {
+        background: #555;
+      }
+    }
+  }
+
+  // 响应式适配
+  @media (max-width: 768px) {
+    .resizer {
+      height: 12px;
+      
+      &--bottom {
+        top: -6px;
+      }
+      
+      &--top {
+        bottom: -6px;
+      }
+    }
+    
+    .resizer-handle {
+      width: 60px;
+      height: 8px;
+    }
+  }
+}
+
+// 全局拖拽状态下的鼠标样式
+body.resizing {
+  cursor: row-resize !important;
+  user-select: none;
+  
+  * {
+    cursor: row-resize !important;
+  }
+} 
