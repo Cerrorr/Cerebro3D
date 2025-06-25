@@ -4,7 +4,7 @@ import {
   LeftOutlined,
   RightOutlined
 } from '@ant-design/icons';
-import { RightSidebarProps, RightSidebarTabType, RightSidebarTabItem } from './types/rightSidebar.types';
+import { RightSidebarProps, RightSidebarTabType } from './types/rightSidebar.types';
 import { TAB_TITLE_MAP, EMPTY_STATE_ICONS, getTabItems, DEFAULT_CONFIG } from './constants';
 import './styles/RightSidebar.scss';
 

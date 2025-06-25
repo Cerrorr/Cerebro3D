@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, Tooltip } from 'antd';
 import { ToolbarProps } from './types';
+import { TOOLBAR_SHORTCUTS, TOOLBAR_TOOLTIPS } from './constants';
 import './styles/Toolbar.scss';
 
 /**
@@ -23,22 +24,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
    * @returns 包含快捷键的完整提示文本
    */
   const getTooltipTitle = (label: string, actionId: string): string => {
-    // 快捷键映射表
-    const shortcuts: Record<string, string> = {
-      'import': 'Ctrl+I',
-      'undo': 'Ctrl+Z',
-      'redo': 'Ctrl+Y',
-      'delete': 'Delete',
-      'clear': 'Ctrl+Shift+C',
-      'copy': 'Ctrl+C',
-      'fullscreen': 'F11',
-      'export': 'Ctrl+E',
-      'save': 'Ctrl+S',
-      'preview': 'Ctrl+P',
-      'settings': 'Ctrl+,'
-    };
-    
-    const shortcut = shortcuts[actionId];
+    const shortcut = TOOLBAR_SHORTCUTS[actionId];
     return shortcut ? `${label} (${shortcut})` : label;
   };
 
@@ -47,7 +33,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       {/* 左侧工具区 */}
       <div className="toolbar-section toolbar-left">
         {projectLogo && (
-          <Tooltip title="项目标识" placement="bottom">
+          <Tooltip title={TOOLBAR_TOOLTIPS.PROJECT_LOGO} placement="bottom">
             <div className="project-logo">
               <img src={projectLogo} alt="Project Logo" />
             </div>
@@ -76,13 +62,13 @@ const Toolbar: React.FC<ToolbarProps> = ({
       {/* 中间标题区 */}
       <div className="toolbar-section toolbar-center">
         <div className="project-title">
-          <Tooltip title="编辑项目标题" placement="bottom">
+          <Tooltip title={TOOLBAR_TOOLTIPS.EDIT_TITLE} placement="bottom">
             <Input
               type="text"
               value={projectTitle}
               onChange={(e) => onTitleChange?.(e.target.value)}
               className="title-input"
-              placeholder="项目标题"
+              placeholder={TOOLBAR_TOOLTIPS.PROJECT_TITLE_PLACEHOLDER}
               bordered={false}
               aria-label="项目标题"
             />

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   SidebarMenuItem,
-  AppInfo,
-  CarouselItem,
   ProjectItem,
   MenuClickHandler,
   ProjectClickHandler,

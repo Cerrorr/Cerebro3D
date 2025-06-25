@@ -2,63 +2,14 @@ import React, { useState } from 'react';
 import { message } from 'antd';
 import { ProjectType } from '@/types/common.types';
 import { NewProjectModalProps, ProjectTemplate, NewProjectFormData } from '@/components/MainContent/types';
+import { 
+  PROJECT_TEMPLATES, 
+  PROJECT_TYPE_GRADIENTS, 
+  DEFAULT_FORM_DATA, 
+  DEFAULT_SELECTED_TEMPLATE,
+  TEMPLATE_ICONS 
+} from '@/components/MainContent/constants';
 import './styles/NewProjectModal.scss';
-
-// 类型声明已移至 @/components/MainContent/types/mainContent.types.ts
-
-/**
- * 项目模板数据
- */
-const projectTemplates: readonly ProjectTemplate[] = [
-  {
-    id: 'blank',
-    name: '空项目',
-    category: 'Web3D',
-    thumbnail: '',
-    type: 'Web3D',
-    description: '从空白场景开始创建'
-  },
-  {
-    id: '3d-editor',
-    name: '3D Editor',
-    category: '模板',
-    thumbnail: '',
-    type: 'Web3D',
-    description: '基础3D编辑器模板'
-  },
-  {
-    id: 'house-template',
-    name: '风格化场景',
-    category: '其他',
-    thumbnail: '',
-    type: 'Web3D',
-    description: '现代建筑风格场景'
-  },
-  {
-    id: 'city-template',
-    name: '城市',
-    category: '园区',
-    thumbnail: '',
-    type: 'Web3D',
-    description: '城市建筑群场景'
-  },
-  {
-    id: 'animations',
-    name: 'animations',
-    category: '其他',
-    thumbnail: '',
-    type: 'Game',
-    description: '动物动画展示'
-  },
-  {
-    id: 'material-template',
-    name: '特效材质贴图',
-    category: '其他',
-    thumbnail: '',
-    type: 'Web3D',
-    description: '材质和特效演示'
-  }
-];
 
 /**
  * 新建项目弹窗组件
@@ -75,13 +26,8 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
   onClose,
   onConfirm
 }) => {
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('blank');
-  const [formData, setFormData] = useState<NewProjectFormData>({
-    name: '',
-    category: 'Web3D',
-    description: '',
-    templateId: 'blank'
-  });
+  const [selectedTemplate, setSelectedTemplate] = useState<string>(DEFAULT_SELECTED_TEMPLATE);
+  const [formData, setFormData] = useState<NewProjectFormData>(DEFAULT_FORM_DATA);
 
   /**
    * 处理表单字段变化
@@ -101,7 +47,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
    */
   const handleTemplateSelect = (templateId: string) => {
     setSelectedTemplate(templateId);
-    const template = projectTemplates.find(t => t.id === templateId);
+    const template = PROJECT_TEMPLATES.find((t: ProjectTemplate) => t.id === templateId);
     if (template) {
       setFormData(prev => ({
         ...prev,
@@ -126,13 +72,8 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
     });
     
     // 重置表单
-    setFormData({
-      name: '',
-      category: 'Web3D',
-      description: '',
-      templateId: 'blank'
-    });
-    setSelectedTemplate('blank');
+    setFormData(DEFAULT_FORM_DATA);
+    setSelectedTemplate(DEFAULT_SELECTED_TEMPLATE);
   };
 
   /**
@@ -141,13 +82,8 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
   const handleClose = () => {
     onClose();
     // 重置表单
-    setFormData({
-      name: '',
-      category: 'Web3D',
-      description: '',
-      templateId: 'blank'
-    });
-    setSelectedTemplate('blank');
+    setFormData(DEFAULT_FORM_DATA);
+    setSelectedTemplate(DEFAULT_SELECTED_TEMPLATE);
   };
 
   /**
@@ -155,14 +91,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
    * @param template - 模板对象
    */
   const getTemplateGradient = (template: ProjectTemplate) => {
-    const gradients = {
-      'Web3D': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      'VR': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      'AR': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      'Game': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      'App': 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
-    };
-    return gradients[template.type];
+    return PROJECT_TYPE_GRADIENTS[template.type];
   };
 
   if (!isOpen) return null;
@@ -183,7 +112,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
           <div className="template-section">
             <h3 className="section-title">模板</h3>
             <div className="template-grid">
-              {projectTemplates.map((template) => (
+              {PROJECT_TEMPLATES.map((template: ProjectTemplate) => (
                 <div
                   key={template.id}
                   className={`template-item ${selectedTemplate === template.id ? 'selected' : ''}`}
@@ -194,7 +123,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
                     style={{ background: getTemplateGradient(template) }}
                   >
                     <span className="template-icon">
-                      {template.id === 'blank' ? '📄' : '🎨'}
+                      {TEMPLATE_ICONS[template.id] || TEMPLATE_ICONS.default}
                     </span>
                   </div>
                   <div className="template-info">

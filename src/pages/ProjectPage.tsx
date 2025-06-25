@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Toolbar, SceneTree, Canvas3D, ResizablePanel, RightSidebar } from '@/components/ProjectEditor';
-import { ToolbarAction, SceneNode, CanvasSettings, RightSidebarTabType } from '@/components/ProjectEditor/types';
+import { SceneNode, CanvasSettings, RightSidebarTabType } from '@/components/ProjectEditor/types';
 import { ProjectPageProps } from './types';
 import {
   DEFAULT_CANVAS_SETTINGS,

@@ -1,43 +1,19 @@
 import React from 'react';
 import { ProjectCardProps } from '@/components/MainContent/types';
+import { 
+  PROJECT_TYPE_STYLES, 
+  DEFAULT_PROJECT_TYPE_STYLE, 
+  CARD_ACTION_ICONS, 
+  MAX_VISIBLE_TAGS 
+} from '@/components/MainContent/constants';
 import './styles/ProjectCard.scss';
-
-// 类型声明已移至 @/components/MainContent/types/mainContent.types.ts
 
 /**
  * 获取项目类型对应的渐变背景和图标
  * @param type - 项目类型
  */
 const getProjectTypeStyle = (type: string) => {
-  const typeStyles = {
-    'Web3D': {
-      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      icon: '🌐',
-      color: '#667eea'
-    },
-    'VR': {
-      gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', 
-      icon: '🥽',
-      color: '#f093fb'
-    },
-    'AR': {
-      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '📱',
-      color: '#4facfe'
-    },
-    'Game': {
-      gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: '🎮',
-      color: '#43e97b'
-    },
-    'App': {
-      gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-      icon: '📱',
-      color: '#fa709a'
-    }
-  };
-  
-  return typeStyles[type as keyof typeof typeStyles] || typeStyles['Web3D'];
+  return PROJECT_TYPE_STYLES[type] || DEFAULT_PROJECT_TYPE_STYLE;
 };
 
 /**
@@ -95,14 +71,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         
         {/* 标签列表 */}
         <div className="card-tags">
-          {project.tags.slice(0, 3).map((tag, index) => (
+          {project.tags.slice(0, MAX_VISIBLE_TAGS).map((tag, index) => (
             <span key={index} className="tag">
               {tag}
             </span>
           ))}
-          {project.tags.length > 3 && (
+          {project.tags.length > MAX_VISIBLE_TAGS && (
             <span className="tag tag-more">
-              +{project.tags.length - 3}
+              +{project.tags.length - MAX_VISIBLE_TAGS}
             </span>
           )}
         </div>
@@ -110,7 +86,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         {/* 卡片底部信息 */}
         <div className="card-footer">
           <div className="update-date">
-            <span>📅</span>
+            <span>{CARD_ACTION_ICONS.calendar}</span>
             <span>更新于 {formatDate(project.updatedAt)}</span>
           </div>
           
@@ -123,7 +99,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
               }}
               aria-label="编辑项目"
             >
-              ✏️
+              {CARD_ACTION_ICONS.edit}
             </button>
             <button 
               className="action-btn delete"
@@ -133,7 +109,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
               }}
               aria-label="删除项目"
             >
-              🗑️
+              {CARD_ACTION_ICONS.delete}
             </button>
           </div>
         </div>
