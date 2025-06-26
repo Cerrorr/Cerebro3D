@@ -1,18 +1,7 @@
 import React from 'react';
 import type { LogEntry } from './types';
+import type { ConsolePanelProps } from './types/consolePanel.types';
 import { MOCK_LOG_DATA } from './constants';
-
-/**
- * 控制台面板组件属性接口
- */
-interface ConsolePanelProps {
-  /** 日志数据 */
-  logs?: LogEntry[];
-  /** 日志级别筛选 */
-  logLevel?: 'all' | 'info' | 'warn' | 'error';
-  /** 清空日志回调 */
-  onClearLogs?: () => void;
-}
 
 /**
  * 控制台面板组件

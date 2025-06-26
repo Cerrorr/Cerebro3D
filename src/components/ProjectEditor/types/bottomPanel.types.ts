@@ -134,48 +134,4 @@ export interface MockAssetDataType {
   panel: AssetData;
 }
 
-// 拆分后的组件属性接口
-
-/** 底部面板头部组件属性接口 */
-export interface BottomPanelHeaderProps {
-  /** 当前激活的面板类型 */
-  activeType: BottomPanelType;
-  /** 面板类型变化回调 */
-  onTypeChange: (type: BottomPanelType) => void;
-  /** 动画编辑器状态 */
-  animationState?: AnimationEditorState;
-  /** 动画播放/暂停回调 */
-  onAnimationPlayPause?: () => void;
-  /** 上一帧回调 */
-  onPreviousFrame?: () => void;
-  /** 下一帧回调 */
-  onNextFrame?: () => void;
-  /** 时间格式化函数 */
-  formatTime?: (seconds: number) => string;
-}
-
-/** 资源面板组件属性接口 */
-export interface AssetsPanelProps {
-  /** 搜索关键词 */
-  searchKeyword?: string;
-  /** 资源选择回调 */
-  onAssetSelect?: (asset: AssetItem) => void;
-}
-
-/** 动画面板组件属性接口 */
-export interface AnimationPanelProps {
-  /** 动画编辑器状态 */
-  animationState: AnimationEditorState;
-  /** 对象选择回调 */
-  onObjectSelect?: (objectId: string) => void;
-}
-
-/** 控制台面板组件属性接口 */
-export interface ConsolePanelProps {
-  /** 日志数据 */
-  logs?: LogEntry[];
-  /** 日志级别筛选 */
-  logLevel?: 'all' | 'info' | 'warn' | 'error';
-  /** 清空日志回调 */
-  onClearLogs?: () => void;
-} 
+ 

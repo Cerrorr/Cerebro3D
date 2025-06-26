@@ -1,15 +1,6 @@
 import React from 'react';
 import type { AnimationEditorState } from './types';
-
-/**
- * 动画面板组件属性接口
- */
-interface AnimationPanelProps {
-  /** 动画编辑器状态 */
-  animationState: AnimationEditorState;
-  /** 对象选择回调 */
-  onObjectSelect?: (objectId: string) => void;
-}
+import type { AnimationPanelProps } from './types/animationPanel.types';
 
 /**
  * 动画面板组件

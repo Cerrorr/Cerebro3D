@@ -5,21 +5,12 @@ import type {
   AssetItem,
   MockAssetDataType
 } from './types';
+import type { AssetsPanelProps } from './types/assetsPanel.types';
 import {
   ASSET_CATEGORIES,
   ASSET_TABS,
   MOCK_ASSET_DATA
 } from './constants';
-
-/**
- * 资源面板组件属性接口
- */
-interface AssetsPanelProps {
-  /** 搜索关键词 */
-  searchKeyword?: string;
-  /** 资源选择回调 */
-  onAssetSelect?: (asset: AssetItem) => void;
-}
 
 /**
  * 资源面板组件
