@@ -14,14 +14,15 @@
   position: relative;
 
   .bottom-panel-header {
-    @apply flex items-center justify-between px-4 py-2;
+    @apply flex items-center px-4 py-2;
     background: rgba(255, 255, 255, 0.03);
     border-bottom: 1px solid rgba(79, 172, 254, 0.1);
     height: 40px;
     flex-shrink: 0;
+    gap: 16px;
 
     .panel-controls {
-      @apply flex items-center;
+      @apply flex items-center flex-shrink-0;
 
       .ant-select {
         .ant-select-selector {
@@ -52,10 +53,178 @@
       }
     }
 
+    // 中间居中区域样式
+    .panel-center {
+      @apply flex-1 flex justify-center;
+
+      .animation-controls-center {
+        @apply flex items-center gap-1;
+
+        .control-btn {
+          @apply flex items-center justify-center;
+          width: 32px;
+          height: 32px;
+          border: none !important;
+          background: transparent !important;
+          color: #8892a0 !important;
+          border-radius: 4px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.08) !important;
+            color: #d1d9e0 !important;
+          }
+
+          &.play-btn {
+            background: rgba(79, 172, 254, 0.1) !important;
+            color: #4facfe !important;
+
+            &:hover {
+              background: rgba(79, 172, 254, 0.2) !important;
+              color: #6bb6fe !important;
+            }
+          }
+
+          .anticon {
+            font-size: 16px;
+          }
+        }
+      }
+
+      .console-level-filter {
+        @apply flex items-center;
+
+        .ant-space {
+          @apply items-center;
+        }
+
+        .ant-select {
+          .ant-select-selector {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 1px solid rgba(79, 172, 254, 0.2) !important;
+            color: #d1d9e0 !important;
+          }
+
+          .ant-select-selection-item {
+            color: #d1d9e0 !important;
+          }
+
+          .ant-select-arrow {
+            color: #d1d9e0 !important;
+          }
+
+          &:hover .ant-select-selector {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(79, 172, 254, 0.4) !important;
+          }
+
+          &.ant-select-focused .ant-select-selector {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(79, 172, 254, 0.6) !important;
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.1) !important;
+          }
+        }
+      }
+    }
+
+    .panel-search {
+      @apply flex-1 flex justify-center;
+
+      .ant-input-affix-wrapper {
+        background: rgba(30, 35, 40, 0.8) !important;
+        border: 1px solid rgba(79, 172, 254, 0.3) !important;
+        border-radius: 4px !important;
+        height: 28px !important;
+        
+        &:hover {
+          border-color: rgba(79, 172, 254, 0.5) !important;
+        }
+        
+        &:focus-within {
+          border-color: #4facfe !important;
+          box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+        }
+        
+        .ant-input {
+          background: transparent !important;
+          border: none !important;
+          color: #e1e8f0 !important;
+          font-size: 12px !important;
+          
+          &::placeholder {
+            color: #b8c5d1 !important;
+          }
+        }
+        
+        .ant-input-prefix {
+          color: #b8c5d1 !important;
+          
+          .anticon {
+            color: #b8c5d1 !important;
+            
+            &:hover {
+              color: #d1d9e0 !important;
+            }
+          }
+        }
+        
+        .ant-input-suffix {
+          .ant-input-clear-icon {
+            color: #b8c5d1 !important;
+            font-size: 12px !important;
+            
+            &:hover {
+              color: #e1e8f0 !important;
+              background: rgba(255, 255, 255, 0.1) !important;
+              border-radius: 50% !important;
+            }
+          }
+        }
+      }
+    }
+
     .panel-info {
+      @apply flex-shrink-0;
+
       .panel-description {
         @apply text-xs;
         color: #bbb;
+      }
+
+      .console-clear-btn {
+        @apply px-3 py-1 text-xs rounded;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(79, 172, 254, 0.2);
+        color: #d1d9e0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: rgba(79, 172, 254, 0.1);
+          border-color: rgba(79, 172, 254, 0.4);
+        }
+      }
+
+      // 动画时间显示在头部的样式
+      .animation-time-header {
+        .time-display {
+          @apply font-mono text-sm;
+          color: #d1d9e0;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          font-size: 12px;
+        }
+      }
+
+      .ant-btn {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(79, 172, 254, 0.2) !important;
+        color: #d1d9e0 !important;
+
+        &:hover {
+          background: rgba(79, 172, 254, 0.1) !important;
+          border-color: rgba(79, 172, 254, 0.4) !important;
+        }
       }
     }
   }
@@ -64,59 +233,293 @@
     @apply flex-1 overflow-hidden;
     min-height: 0; // 允许内容区域收缩
 
-    // 通用内容区域样式
-    .assets-content,
-    .animation-content,
-    .console-content {
-      @apply w-full h-full flex items-center justify-center;
-      padding: 24px;
+    // 动画编辑器样式
+    .animation-content {
+      @apply w-full h-full flex flex-col;
+      background: #1a1d22;
 
-      .content-placeholder {
-        @apply flex flex-col items-center justify-center text-center;
-        gap: 16px;
-        max-width: 400px;
+      .animation-main {
+        @apply flex-1 flex items-center justify-center;
+        padding: 40px 20px;
 
-        .placeholder-icon {
-          color: #666;
-          font-size: 48px;
+        .empty-state {
+          @apply flex flex-col items-center justify-center text-center;
+          gap: 16px;
+          max-width: 300px;
+
+          .empty-icon {
+            @apply flex items-center justify-center;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(79, 172, 254, 0.1);
+
+            svg {
+              opacity: 0.6;
+            }
+          }
+
+          .empty-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #e1e8f0;
+            margin: 0;
+          }
+
+          .empty-description {
+            font-size: 14px;
+            color: #8892a0;
+            line-height: 1.5;
+            margin: 0;
+          }
         }
 
-        .placeholder-text {
-          @apply text-lg font-medium;
-          color: #d1d9e0;
-        }
+        .timeline-container {
+          @apply w-full h-full;
+          background: rgba(255, 255, 255, 0.02);
+          border-radius: 8px;
+          border: 1px solid rgba(79, 172, 254, 0.1);
 
-        .placeholder-description {
-          @apply text-sm leading-relaxed;
-          color: #bbb;
-          line-height: 1.6;
+          .timeline-placeholder {
+            @apply flex items-center justify-center h-full;
+            color: #8892a0;
+            font-size: 14px;
+          }
         }
       }
+    }
+
+    // 资源中心布局
+    .assets-content {
+      @apply w-full h-full flex;
+      padding: 0;
     }
 
     // 资源中心特定样式
     .assets-content {
-      .content-placeholder {
-        .placeholder-icon {
-          @apply text-blue-400;
+      .assets-sidebar {
+        @apply flex-shrink-0;
+        width: 200px;
+        background: rgba(255, 255, 255, 0.02);
+        border-right: 1px solid rgba(79, 172, 254, 0.1);
+
+        .asset-categories {
+          @apply p-4;
+
+          .category-item {
+            @apply flex items-center px-3 py-2 mb-2 rounded cursor-pointer;
+            transition: all 0.2s ease;
+            color: #d1d9e0;
+
+            &:hover {
+              background: rgba(79, 172, 254, 0.08);
+            }
+
+            &.active {
+              background: rgba(79, 172, 254, 0.15);
+              color: #4fc3f7;
+
+              .category-icon {
+                color: #4fc3f7;
+              }
+            }
+
+            .category-icon {
+              @apply mr-3;
+              color: #888;
+              transition: color 0.2s ease;
+            }
+
+            .category-label {
+              @apply text-sm;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+
+      .assets-main {
+        @apply flex-1 flex flex-col;
+
+        .assets-toolbar {
+          @apply flex items-center px-4 py-3;
+          background: rgba(255, 255, 255, 0.02);
+          border-bottom: 1px solid rgba(79, 172, 254, 0.08);
+          flex-shrink: 0;
+
+          .asset-tabs {
+            @apply flex;
+
+            .asset-tab {
+              @apply px-4 py-1 mr-2 text-sm rounded cursor-pointer;
+              background: rgba(255, 255, 255, 0.05);
+              color: #888;
+              transition: all 0.2s ease;
+
+              &:hover {
+                background: rgba(79, 172, 254, 0.1);
+                color: #d1d9e0;
+              }
+
+              &.active {
+                background: rgba(79, 172, 254, 0.2);
+                color: #4fc3f7;
+              }
+            }
+          }
+
+
+        }
+
+        .assets-grid {
+          @apply flex-1 p-4 overflow-auto;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+          gap: 12px;
+          align-content: start;
+
+          .asset-item {
+            @apply flex flex-col items-center p-2 rounded cursor-pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background: rgba(79, 172, 254, 0.08);
+              transform: translateY(-2px);
+            }
+
+            .asset-preview {
+              @apply mb-2;
+
+              .asset-icon {
+                @apply flex items-center justify-center rounded;
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+              }
+            }
+
+            .asset-name {
+              @apply text-xs text-center;
+              color: #d1d9e0;
+              line-height: 1.2;
+              max-width: 100%;
+              word-break: break-all;
+            }
+          }
+
+          // 自定义滚动条
+          &::-webkit-scrollbar {
+            width: 6px;
+          }
+
+          &::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: rgba(79, 172, 254, 0.3);
+            border-radius: 3px;
+
+            &:hover {
+              background: rgba(79, 172, 254, 0.5);
+            }
+          }
         }
       }
     }
-
-    // 动画编辑器特定样式
-    .animation-content {
-      .content-placeholder {
-        .placeholder-icon {
-          @apply text-green-400;
-        }
-      }
-    }
-
-    // 日志控制台特定样式
+    
     .console-content {
-      .content-placeholder {
-        .placeholder-icon {
-          @apply text-orange-400;
+      @apply w-full h-full flex flex-col;
+      padding: 0;
+
+      .console-logs {
+        @apply flex-1 w-full overflow-auto;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        font-size: 13px;
+        line-height: 1.4;
+
+        .log-entry {
+          @apply flex items-center px-4 py-1;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+          min-height: 24px;
+          white-space: nowrap;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.02);
+          }
+
+          .log-time {
+            @apply flex-shrink-0 mr-3;
+            color: #888;
+            width: 140px;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .log-level {
+            @apply flex-shrink-0 mr-3;
+            width: 45px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+          }
+
+          .log-message {
+            @apply flex-1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          // 不同级别的日志样式
+          &.log-info {
+            .log-level {
+              color: #4fc3f7;
+            }
+            .log-message {
+              color: #d1d9e0;
+            }
+          }
+
+          &.log-warn {
+            .log-level {
+              color: #ffb74d;
+            }
+            .log-message {
+              color: #ffcc80;
+            }
+          }
+
+          &.log-error {
+            .log-level {
+              color: #f48fb1;
+            }
+            .log-message {
+              color: #ffcdd2;
+            }
+          }
+        }
+
+        // 自定义滚动条
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: rgba(79, 172, 254, 0.3);
+          border-radius: 3px;
+
+          &:hover {
+            background: rgba(79, 172, 254, 0.5);
+          }
         }
       }
     }

@@ -8,6 +8,6 @@
 export * from './toolbar.types';
 export * from './sceneTree.types';
 export * from './canvas3D.types';
-export * from './resizablePanel.types';
+export * from './resizablePanel.types'; 
 export * from './rightSidebar.types';
 export * from './bottomPanel.types'; 

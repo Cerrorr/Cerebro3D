@@ -15,4 +15,6 @@ export {
 export {
   TOOLBAR_SHORTCUTS,
   TOOLBAR_TOOLTIPS
-} from './toolbar.constants'; 
+} from './toolbar.constants';
+
+export * from './bottomPanel.constants'; 
