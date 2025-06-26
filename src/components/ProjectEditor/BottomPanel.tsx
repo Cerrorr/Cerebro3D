@@ -2,11 +2,11 @@ import React, { useState, useCallback } from 'react';
 import type { 
   BottomPanelProps, 
   BottomPanelType,
-  AnimationEditorState
-} from './types';
+  AnimationEditorState,
+} from './types/bottomPanel.types';
 import BottomPanelHeader from './BottomPanelHeader';
 import AssetsPanel from './AssetsPanel';
-import AnimationPanel from './AnimationPanel';
+import AnimationTimeline from './AnimationTimeline';
 import ConsolePanel from './ConsolePanel';
 import './styles/BottomPanel.scss';
 
@@ -25,8 +25,8 @@ const BottomPanel: React.FC<BottomPanelProps> = ({
   const isCollapsed = height <= 40;
   const [activeType, setActiveType] = useState<BottomPanelType>(defaultActiveType);
 
-  // 动画编辑器状态
-  const [animationState, setAnimationState] = useState<AnimationEditorState>({
+  // 动画编辑器状态（仅用于头部控制）
+  const [animationEditorState, setAnimationEditorState] = useState<AnimationEditorState>({
     playState: 'stopped',
     currentTime: 0,
     duration: 0,
@@ -49,7 +49,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({
    * 处理动画播放/暂停
    */
   const handleAnimationPlayPause = useCallback(() => {
-    setAnimationState(prev => ({
+    setAnimationEditorState(prev => ({
       ...prev,
       playState: prev.playState === 'playing' ? 'paused' : 'playing'
     }));
@@ -59,7 +59,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({
    * 处理上一帧
    */
   const handlePreviousFrame = useCallback(() => {
-    setAnimationState(prev => ({
+    setAnimationEditorState(prev => ({
       ...prev,
       currentFrame: Math.max(0, prev.currentFrame - 1),
       currentTime: Math.max(0, (prev.currentFrame - 1) / prev.frameRate)
@@ -70,7 +70,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({
    * 处理下一帧
    */
   const handleNextFrame = useCallback(() => {
-    setAnimationState(prev => ({
+    setAnimationEditorState(prev => ({
       ...prev,
       currentFrame: Math.min(prev.totalFrames, prev.currentFrame + 1),
       currentTime: Math.min(prev.duration, (prev.currentFrame + 1) / prev.frameRate)
@@ -100,7 +100,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({
         return <AssetsPanel />;
       
       case 'animation':
-        return <AnimationPanel animationState={animationState} />;
+        return <AnimationTimeline />;
       
       case 'console':
         return <ConsolePanel />;
@@ -116,7 +116,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({
       <BottomPanelHeader
         activeType={activeType}
         onTypeChange={handleTypeChange}
-        animationState={animationState}
+        animationState={animationEditorState}
         onAnimationPlayPause={handleAnimationPlayPause}
         onPreviousFrame={handlePreviousFrame}
         onNextFrame={handleNextFrame}

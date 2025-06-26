@@ -7,7 +7,6 @@
 
 import React from 'react';
 import {
-  ArrowLeftOutlined,
   ImportOutlined,
   UndoOutlined,
   RedoOutlined,
@@ -45,7 +44,7 @@ export const DEFAULT_PANEL_CONFIG = {
  * 工具栏左侧按钮配置
  * 定义编辑器左侧工具栏的所有按钮
  */
-export const getLeftToolbarActions = (navigate: (path: string) => void): ToolbarAction[] => [
+export const getLeftToolbarActions = (): ToolbarAction[] => [
   {
     id: 'import',
     label: '导入',

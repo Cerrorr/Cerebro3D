@@ -17,7 +17,7 @@ export type RightSidebarTabType =
   | 'lighting'     // 灯光配置  
   | 'renderer'     // 渲染器配置
   | 'postprocess'  // 后期处理
-  | 'weather'      // 天气设置
+  | 'weather'      // 天气配置
   | 'history'      // 历史记录
   | 'object'       // 对象
   | 'geometry'     // 几何

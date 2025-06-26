@@ -65,7 +65,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
 
 
   // 使用常量文件中的工具栏配置
-  const leftActions = getLeftToolbarActions(navigate);
+  const leftActions = getLeftToolbarActions();
   const rightActions = RIGHT_TOOLBAR_ACTIONS;
 
   /**

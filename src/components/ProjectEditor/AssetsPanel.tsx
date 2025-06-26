@@ -2,8 +2,7 @@ import React, { useState, useCallback } from 'react';
 import type { 
   AssetCategory,
   AssetTab,
-  AssetItem,
-  MockAssetDataType
+  AssetItem
 } from './types';
 import type { AssetsPanelProps } from './types/assetsPanel.types';
 import {
@@ -19,7 +18,6 @@ import {
  * @since 2025-06-25
  */
 const AssetsPanel: React.FC<AssetsPanelProps> = ({
-  searchKeyword,
   onAssetSelect
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>('model');

@@ -11,8 +11,7 @@ import { MOCK_LOG_DATA } from './constants';
  */
 const ConsolePanel: React.FC<ConsolePanelProps> = ({
   logs = MOCK_LOG_DATA,
-  logLevel = 'all',
-  onClearLogs
+  logLevel = 'all'
 }) => {
   // 根据级别筛选日志
   const filteredLogs = logs.filter(log => 

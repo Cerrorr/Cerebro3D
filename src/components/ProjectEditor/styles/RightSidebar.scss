@@ -7,56 +7,36 @@
 
 .right-sidebar {
   @apply flex h-full bg-gray-900 border-l border-gray-700;
-  min-width: 48px;
-  transition: width 0.3s ease;
+  position: relative;
+  transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   &--collapsed {
-    width: 48px !important;
-    min-width: 48px !important;
-    max-width: 48px !important;
+    width: 48px;
     
-    .right-sidebar__tab-list {
-      border-right: 2px solid rgba(79, 172, 254, 0.3);
-    }
-    
-    .right-sidebar__tab-button {
-      margin: 2px 3px;
-      background: rgba(0, 0, 0, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      
-      &:hover {
-        background: rgba(79, 172, 254, 0.2);
-        border-color: #4facfe;
-        transform: scale(1.05);
-      }
-    }
-    
-    // 确保内容区域在收起状态下完全隐藏
     .right-sidebar__content {
-      display: none !important;
-      width: 0 !important;
-      overflow: hidden !important;
+      opacity: 0;
+      transform: translateX(20px);
+      pointer-events: none;
     }
   }
 
   &--expanded {
-    width: 320px !important;
-    min-width: 320px !important;
-    max-width: 320px !important;
+    width: 320px;
     
     .right-sidebar__content {
-      display: flex !important;
-      flex: 1;
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 
   // 左侧图标按钮区域
   &__tab-list {
-    @apply flex flex-col bg-gray-800 border-r border-gray-700 relative;
+    @apply flex flex-col bg-gray-800 border-r border-gray-700;
     width: 48px;
     flex-shrink: 0;
     cursor: pointer;
     user-select: none;
+    z-index: 10;
     
     &:hover {
       background: rgba(0, 0, 0, 0.1);
@@ -125,7 +105,7 @@
     }
 
     &[data-tab="weather"] .anticon {
-      color: #ef4444; // 红色 - 天气设置
+      color: #ef4444; // 红色 - 天气配置
     }
 
     &[data-tab="history"] .anticon {
@@ -202,12 +182,16 @@
 
   // 右侧内容区域
   &__content {
-    flex: 1;
+    position: absolute;
+    left: 48px;
+    right: 0;
+    top: 0;
+    bottom: 0;
     height: 100%;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-out, transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
     &--hidden {
       @apply opacity-0 pointer-events-none;
@@ -483,37 +467,4 @@
       box-shadow: -4px 0 12px rgba(0, 0, 0, 0.5);
     }
   }
-}
-
-
-
-// 动画效果
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideOutRight {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
-.right-sidebar-enter {
-  animation: slideInRight 0.3s ease-out forwards;
-}
-
-.right-sidebar-exit {
-  animation: slideOutRight 0.3s ease-out forwards;
 } 

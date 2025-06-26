@@ -1,0 +1,532 @@
+/**
+ * 对象面板样式
+ * 深色主题的对象配置界面样式
+ * @author Cerror
+ * @since 2024-01-22
+ */
+
+.object-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #111827; // bg-gray-900
+  color: #f3f4f6; // text-gray-100
+
+  // 空状态样式
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    
+    .empty-state {
+      text-align: center;
+      
+      .empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  // 折叠面板容器
+  &__collapse {
+    height: 100%;
+    overflow-y: auto;
+
+    // 自定义滚动条
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #1f2937; // bg-gray-800
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #4b5563; // bg-gray-600
+      border-radius: 3px;
+      
+      &:hover {
+        background: #6b7280; // bg-gray-500
+      }
+    }
+
+    // 覆盖Ant Design折叠面板样式
+    .ant-collapse {
+      background: transparent !important;
+      border: none !important;
+
+      &-header {
+        background: #1f2937 !important; // bg-gray-800
+        border-bottom: 1px solid #374151 !important; // border-gray-700
+        color: #f3f4f6 !important; // text-gray-100
+        padding: 12px 16px !important;
+
+        &:hover {
+          background: #374151 !important; // bg-gray-700
+        }
+
+        .ant-collapse-arrow {
+          color: #9ca3af !important; // text-gray-400
+        }
+      }
+
+      &-content {
+        background: #111827 !important; // bg-gray-900
+        border: none !important;
+        color: #f3f4f6 !important; // text-gray-100
+
+        &-box {
+          padding: 16px !important;
+        }
+      }
+
+      &-item {
+        border: none !important;
+        border-bottom: 1px solid #374151 !important; // border-gray-700
+
+        &:last-child {
+          border-bottom: none !important;
+        }
+
+        &-active {
+          .ant-collapse-header {
+            background: #374151 !important; // bg-gray-700
+          }
+        }
+      }
+    }
+  }
+
+  // 面板头部样式
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .panel-icon {
+      color: #4facfe;
+      font-size: 14px;
+    }
+  }
+
+  // 信息区域样式
+  .info-section {
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .form-label {
+        font-size: 12px;
+        color: #d1d5db; // text-gray-300
+        font-weight: 500;
+        min-width: 60px;
+      }
+    }
+
+    .object-type {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .type-icon {
+        font-size: 16px;
+      }
+    }
+
+    .type-field {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      max-width: 200px;
+
+      .type-text {
+        flex: 1;
+        font-size: 12px;
+        color: #f3f4f6; // text-gray-100
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .id-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      max-width: 200px;
+
+      .id-text {
+        flex: 1;
+        font-size: 12px;
+        color: #9ca3af; // text-gray-400
+        font-family: 'Monaco', 'Consolas', monospace;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0; // 确保文本能够正确省略
+      }
+
+      .refresh-btn {
+        color: #9ca3af !important; // text-gray-400
+        border: none !important;
+        background: transparent !important;
+        flex-shrink: 0;
+        margin-right: 8px; // 增加右侧间距
+
+        &:hover {
+          color: #4facfe !important;
+          background: rgba(79, 172, 254, 0.1) !important;
+        }
+      }
+    }
+  }
+
+  // 变换区域样式
+  .transform-section {
+    .vector-group {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .vector-label {
+        font-size: 12px;
+        color: #d1d5db; // text-gray-300
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .vector-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
+        
+        .ant-input-number {
+          min-width: 0; // 确保输入框能够正确缩小
+          width: 100%;
+          font-size: 12px;
+          
+          .ant-input-number-input {
+            padding: 4px 8px; // 减小内边距
+            font-size: 12px;
+          }
+          
+          .ant-input-number-handler-wrap {
+            width: 16px; // 减小控制按钮宽度
+            
+            .ant-input-number-handler {
+              height: 12px; // 减小控制按钮高度
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 阴影区域样式
+  .shadow-section {
+    .switch-group {
+      display: flex;
+      gap: 24px;
+      
+      .switch-item {
+        margin-bottom: 0; // 覆盖全局switch-item的下边距
+        flex: 1; // 每个开关项占用相等空间
+        min-width: 0; // 确保能够正确收缩
+      }
+    }
+  }
+
+  // 可见性区域样式
+  .visibility-section {
+    .switch-item {
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      .form-label {
+        font-size: 12px;
+        color: #d1d5db; // text-gray-300
+      }
+
+      .render-order-input {
+        max-width: 100px;
+      }
+    }
+  }
+
+  // 剖切区域样式
+  .clipping-section {
+    .vector-group {
+      margin: 16px 0;
+    }
+  }
+
+  // 爆炸区域样式
+  .explode-section {
+    .vector-group {
+      margin: 16px 0;
+    }
+  }
+
+  // 自定义数据区域样式
+  .custom-data-section {
+    .custom-data-input {
+      background: #1f2937 !important; // bg-gray-800
+      border-color: #4b5563 !important; // border-gray-600
+      color: #f3f4f6 !important; // text-gray-100
+
+      &:hover {
+        border-color: #6b7280 !important; // border-gray-500
+      }
+
+      &:focus {
+        border-color: #4facfe !important;
+        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+      }
+
+      &::placeholder {
+        color: #6b7280 !important; // text-gray-500
+      }
+    }
+  }
+
+  // 开关组件样式
+  .switch-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    span:first-child {
+      font-size: 12px;
+      color: #d1d5db; // text-gray-300
+    }
+  }
+
+  // 统一输入框样式覆盖
+  .ant-input,
+  .ant-input-number,
+  .ant-select-selector,
+  .ant-input-number-input {
+    background: #111827 !important; // bg-gray-900 - 更深的背景色
+    border-color: #4b5563 !important; // border-gray-600
+    color: #f3f4f6 !important; // text-gray-100
+    font-family: inherit !important;
+
+    &:hover {
+      border-color: #6b7280 !important; // border-gray-500
+    }
+
+    &:focus,
+    &:focus-within {
+      border-color: #4facfe !important;
+      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+    }
+
+    &::placeholder {
+      color: #6b7280 !important; // text-gray-500
+    }
+  }
+
+  // 数字输入框样式
+  .ant-input-number {
+    .ant-input-number-input {
+      background: transparent !important;
+      color: #f3f4f6 !important; // text-gray-100
+    }
+
+    .ant-input-number-handler-wrap {
+      background: #374151 !important; // bg-gray-700
+      border-left-color: #4b5563 !important; // border-gray-600
+    }
+
+    .ant-input-number-handler {
+      color: #9ca3af !important; // text-gray-400
+      border-color: #4b5563 !important; // border-gray-600
+
+      &:hover {
+        color: #f3f4f6 !important; // text-gray-100
+      }
+    }
+  }
+
+  // 选择器样式
+  .ant-select {
+    .ant-select-selection-item {
+      color: #f3f4f6 !important; // text-gray-100
+    }
+
+    .ant-select-arrow {
+      color: #9ca3af !important; // text-gray-400
+    }
+
+    &-open {
+      .ant-select-selector {
+        border-color: #4facfe !important;
+        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+      }
+    }
+  }
+
+  // 开关样式
+  .ant-switch {
+    background: #4b5563 !important; // bg-gray-600
+
+    &.ant-switch-checked {
+      background: #4facfe !important;
+    }
+
+    &:hover:not(.ant-switch-disabled) {
+      background: #6b7280 !important; // bg-gray-500
+
+      &.ant-switch-checked {
+        background: #69b7ff !important;
+      }
+    }
+  }
+
+  // 颜色选择器样式
+  .ant-color-picker {
+    .ant-color-picker-trigger {
+      background: #1f2937 !important; // bg-gray-800
+      border-color: #4b5563 !important; // border-gray-600
+
+      &:hover {
+        border-color: #6b7280 !important; // border-gray-500
+      }
+    }
+  }
+
+  // 文本区域和其他输入样式
+  .ant-input {
+    background: #111827 !important; // bg-gray-900 - 更深的背景色
+    border-color: #4b5563 !important; // border-gray-600
+    color: #f3f4f6 !important; // text-gray-100
+
+    &:hover {
+      border-color: #6b7280 !important; // border-gray-500
+    }
+
+    &:focus {
+      border-color: #4facfe !important;
+      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+    }
+
+    &::placeholder {
+      color: #6b7280 !important; // text-gray-500
+    }
+
+    // 后缀图标样式
+    .anticon {
+      color: #9ca3af !important; // text-gray-400
+    }
+  }
+
+  // 按钮样式
+  .ant-btn {
+    background: #374151 !important; // bg-gray-700
+    border-color: #4b5563 !important; // border-gray-600
+    color: #f3f4f6 !important; // text-gray-100
+
+    &:hover {
+      background: #4b5563 !important; // bg-gray-600
+      border-color: #6b7280 !important; // border-gray-500
+      color: #4facfe !important;
+    }
+
+    &:focus {
+      background: #4b5563 !important; // bg-gray-600
+      border-color: #4facfe !important;
+      color: #4facfe !important;
+      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+    }
+
+    &.ant-btn-text {
+      background: transparent !important;
+      border: none !important;
+      
+      &:hover {
+        background: rgba(79, 172, 254, 0.1) !important;
+      }
+    }
+  }
+
+  // 文本样式
+  .ant-typography {
+    color: #f3f4f6 !important; // text-gray-100
+
+    &.ant-typography-secondary {
+      color: #9ca3af !important; // text-gray-400
+    }
+  }
+}
+
+// 全局下拉菜单样式（Ant Design下拉菜单会挂载到body）
+.ant-select-dropdown {
+  background: #1f2937 !important; // bg-gray-800
+  border: 1px solid #4b5563 !important; // border-gray-600
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+
+  .ant-select-item {
+    color: #f3f4f6 !important; // text-gray-100
+
+    &:hover {
+      background: #374151 !important; // bg-gray-700
+    }
+
+    &.ant-select-item-option-selected {
+      background: rgba(79, 172, 254, 0.2) !important;
+      color: #4facfe !important;
+    }
+  }
+}
+
+// 全局颜色选择器面板样式
+.ant-color-picker-panel {
+  background: #1f2937 !important; // bg-gray-800
+  border: 1px solid #4b5563 !important; // border-gray-600
+
+  .ant-color-picker-panel-header {
+    background: #374151 !important; // bg-gray-700
+  }
+
+  .ant-color-picker-panel-body {
+    background: #1f2937 !important; // bg-gray-800
+  }
+
+  input {
+    background: #374151 !important; // bg-gray-700
+    border-color: #4b5563 !important; // border-gray-600
+    color: #f3f4f6 !important; // text-gray-100
+
+    &:focus {
+      border-color: #4facfe !important;
+      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+    }
+  }
+} 

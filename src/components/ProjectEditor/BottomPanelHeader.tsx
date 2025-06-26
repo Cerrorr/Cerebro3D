@@ -8,9 +8,7 @@ import {
   SearchOutlined
 } from '@ant-design/icons';
 import type { 
-  BottomPanelType,
   BottomPanelOption,
-  AnimationEditorState
 } from './types';
 import type { BottomPanelHeaderProps } from './types/bottomPanelHeader.types';
 import { PANEL_OPTIONS } from './constants';

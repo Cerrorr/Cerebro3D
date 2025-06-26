@@ -1,0 +1,383 @@
+/**
+ * 渲染器配置面板样式
+ * @author Cerror
+ * @since 2024-01-22
+ */
+
+@use '@/styles/variables' as *;
+
+.renderer-config-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #111827; // bg-gray-900 - 统一背景色
+  color: #f3f4f6; // text-gray-100 - 统一文字色
+  font-size: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  // 自定义滚动条
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  // 折叠面板样式
+  .config-collapse {
+    background: transparent;
+    border: none;
+
+    .ant-collapse-item {
+      border: none;
+      background: transparent;
+
+      .ant-collapse-header {
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #d1d9e0 !important;
+        font-weight: 500;
+        
+        .ant-collapse-arrow {
+          color: #8892a0 !important;
+          font-size: 10px;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .anticon {
+          color: #4facfe;
+          margin-right: 8px;
+        }
+      }
+
+      .ant-collapse-content {
+        background: transparent;
+        border: none;
+
+        .ant-collapse-content-box {
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  // 通用配置项样式
+  .config-section {
+    padding: 16px;
+  }
+
+  .config-item {
+    margin-bottom: 16px;
+
+    .config-label {
+      display: block;
+      margin-bottom: 6px;
+      color: #d1d9e0;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .config-value {
+      color: #4facfe;
+      font-weight: 500;
+      min-width: 40px;
+      text-align: right;
+    }
+  }
+
+  .config-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .config-label {
+      margin-bottom: 0;
+      flex: 1;
+    }
+  }
+
+  // Switch开关样式
+  .config-switch {
+    .ant-switch-handle {
+      background: #fff;
+      border-radius: 50% !important;
+    }
+
+    &.ant-switch-checked {
+      background: #4facfe !important;
+      
+      .ant-switch-handle {
+        border-radius: 50% !important;
+      }
+    }
+
+    &:not(.ant-switch-checked) {
+      background: #4b5563 !important; // bg-gray-600 - 统一开关背景
+      
+      .ant-switch-handle {
+        border-radius: 50% !important;
+      }
+    }
+
+    &.ant-switch-disabled {
+      background: rgba(64, 64, 64, 0.5) !important;
+      
+      .ant-switch-handle {
+        background: rgba(255, 255, 255, 0.5) !important;
+        border-radius: 50% !important;
+      }
+    }
+
+    border-radius: 100px !important;
+  }
+
+  // Slider滑块样式 - 只改变颜色，保持原有位置和大小
+  .config-slider {
+    .ant-slider-rail {
+      background: #4b5563 !important; // bg-gray-600 - 统一滑块轨道色
+    }
+
+    .ant-slider-track {
+      background: #4facfe !important;
+    }
+
+    .ant-slider-handle {
+      background: #fff !important;
+      border-color: #4facfe !important;
+    }
+
+    &.ant-slider-disabled {
+      .ant-slider-rail {
+        background: rgba(64, 64, 64, 0.5) !important;
+      }
+
+      .ant-slider-track {
+        background: rgba(79, 172, 254, 0.3) !important;
+      }
+
+      .ant-slider-handle {
+        border-color: rgba(79, 172, 254, 0.3) !important;
+        background: rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+  }
+
+  // Select下拉框样式
+  .config-select {
+    width: 100%;
+
+    .ant-select-selector {
+      background: #111827 !important; // bg-gray-900 - 统一输入背景
+      border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
+      border-radius: 4px;
+      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+      font-size: 12px;
+      height: 32px;
+
+      .ant-select-selection-item {
+        color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+        line-height: 30px;
+      }
+    }
+
+    &:hover .ant-select-selector {
+      border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
+    }
+
+    &.ant-select-focused .ant-select-selector {
+      border-color: #4facfe !important;
+      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+    }
+
+    &.ant-select-disabled .ant-select-selector {
+      background: rgba(17, 24, 39, 0.5) !important; // bg-gray-900 with opacity
+      border-color: rgba(75, 85, 99, 0.5) !important; // border-gray-600 with opacity
+      color: #6b7280 !important; // text-gray-500 - 统一禁用文字色
+
+      .ant-select-selection-item {
+        color: #6b7280 !important; // text-gray-500 - 统一禁用文字色
+      }
+    }
+
+    .ant-select-arrow {
+      color: #9ca3af !important; // text-gray-400 - 统一箭头色
+    }
+  }
+
+  // Select下拉菜单全局样式
+  .ant-select-dropdown {
+    background: #1f2937 !important; // bg-gray-800 - 统一下拉背景
+    border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+
+    .ant-select-item {
+      background: transparent !important;
+      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+      font-size: 12px;
+      padding: 8px 12px;
+
+      &:hover {
+        background: #374151 !important; // bg-gray-700 - 统一hover背景
+        color: #4facfe !important;
+      }
+
+      &.ant-select-item-option-selected {
+        background: #4facfe !important; // 统一选中背景
+        color: #ffffff !important;
+        font-weight: 500;
+      }
+
+      &.ant-select-item-option-disabled {
+        color: #666 !important;
+        cursor: not-allowed !important;
+
+        &:hover {
+          background: transparent !important;
+          color: #666 !important;
+        }
+      }
+    }
+  }
+
+  // 数字输入框样式
+  .config-number-input {
+    width: 100%;
+    background: #111827 !important; // bg-gray-900 - 统一输入背景
+    border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
+    border-radius: 4px;
+    color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+    font-size: 12px;
+    height: 32px;
+
+    .ant-input-number-input {
+      background: transparent !important;
+      border: none !important;
+      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+      font-size: 12px;
+    }
+
+    .ant-input-number-handler-wrap {
+      background: #111827 !important; // bg-gray-900 - 统一输入背景
+      border-left: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
+
+      .ant-input-number-handler {
+        border: none !important;
+        background: transparent !important;
+        color: #9ca3af !important; // text-gray-400 - 统一按钮色
+
+        &:hover {
+          background: rgba(79, 172, 254, 0.1) !important;
+          color: #4facfe !important;
+        }
+
+        &:active {
+          background: rgba(79, 172, 254, 0.2) !important;
+        }
+      }
+    }
+
+    &:hover {
+      border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
+    }
+
+    &:focus,
+    &:focus-within {
+      border-color: #4facfe !important;
+      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.1) !important;
+      outline: none !important;
+    }
+
+    &.ant-input-number-disabled {
+      background: rgba(17, 24, 39, 0.5) !important; // bg-gray-900 with opacity
+      border-color: rgba(75, 85, 99, 0.5) !important; // border-gray-600 with opacity
+      color: #6b7280 !important; // text-gray-500 - 统一禁用文字色
+
+      .ant-input-number-input {
+        color: #6b7280 !important; // text-gray-500 - 统一禁用文字色
+      }
+
+      .ant-input-number-handler-wrap {
+        background: rgba(17, 24, 39, 0.5) !important; // bg-gray-900 with opacity
+        
+        .ant-input-number-handler {
+          color: #6b7280 !important; // text-gray-500 - 统一禁用文字色
+          cursor: not-allowed !important;
+
+          &:hover {
+            background: transparent !important;
+            color: #6b7280 !important; // text-gray-500 - 统一禁用文字色
+          }
+        }
+      }
+    }
+  }
+
+  // 颜色输入框样式
+  .config-color-input {
+    width: 100%;
+    height: 32px;
+    padding: 0;
+    border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
+    border-radius: 4px;
+    background: #111827 !important; // bg-gray-900 - 统一输入背景
+    cursor: pointer;
+
+    &:hover {
+      border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
+    }
+
+    &:focus,
+    &:focus-within {
+      border-color: #4facfe !important;
+      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+      outline: none !important;
+    }
+
+    &[disabled] {
+      background: #1a1a1a !important;
+      border-color: #333 !important;
+      cursor: not-allowed !important;
+      opacity: 0.5;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      cursor: inherit;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 4px;
+        border-radius: 4px;
+      }
+
+      &::-webkit-color-swatch {
+        border: none;
+        border-radius: 2px;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+} 
