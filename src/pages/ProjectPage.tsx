@@ -129,6 +129,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({
           leftActions={leftActions}
           rightActions={rightActions}
           projectLogo={projectLogo}
+          onLogoClick={() => navigate('/')}
         />
 
         {/* 主要内容区域 */}

@@ -25,11 +25,33 @@
         width: 32px;
         height: 32px;
         margin-right: 12px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        
+        &.clickable {
+          cursor: pointer;
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+          }
+          
+          &:active {
+            transform: translateY(0);
+            background: rgba(255, 255, 255, 0.15);
+          }
+          
+          &:focus {
+            outline: 2px solid rgba(102, 126, 234, 0.5);
+            outline-offset: 2px;
+          }
+        }
         
         img {
           width: 100%;
           height: 100%;
           object-fit: contain;
+          border-radius: 4px;
         }
       }
     }

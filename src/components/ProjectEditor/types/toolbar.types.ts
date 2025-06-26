@@ -33,4 +33,6 @@ export interface ToolbarProps {
   rightActions: ToolbarAction[];
   /** 项目logo图片路径 */
   projectLogo?: string;
+  /** logo点击回调函数 */
+  onLogoClick?: () => void;
 } 

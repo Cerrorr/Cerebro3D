@@ -47,12 +47,6 @@ export const DEFAULT_PANEL_CONFIG = {
  */
 export const getLeftToolbarActions = (navigate: (path: string) => void): ToolbarAction[] => [
   {
-    id: 'home',
-    label: '返回首页',
-    icon: React.createElement(ArrowLeftOutlined),
-    onClick: () => navigate('/')
-  },
-  {
     id: 'import',
     label: '导入',
     icon: React.createElement(ImportOutlined),
@@ -89,12 +83,6 @@ export const getLeftToolbarActions = (navigate: (path: string) => void): Toolbar
     label: '复制',
     icon: React.createElement(CopyOutlined),
     onClick: () => console.log('复制选中对象')
-  },
-  {
-    id: 'fullscreen',
-    label: '全屏',
-    icon: React.createElement(FullscreenOutlined),
-    onClick: () => console.log('切换全屏模式')
   }
 ];
 
@@ -103,6 +91,12 @@ export const getLeftToolbarActions = (navigate: (path: string) => void): Toolbar
  * 定义编辑器右侧工具栏的所有按钮
  */
 export const RIGHT_TOOLBAR_ACTIONS: ToolbarAction[] = [
+  {
+    id: 'fullscreen',
+    label: '全屏',
+    icon: React.createElement(FullscreenOutlined),
+    onClick: () => console.log('切换全屏模式')
+  },
   {
     id: 'export',
     label: '导出',

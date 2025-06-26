@@ -15,7 +15,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onTitleChange,
   leftActions,
   rightActions,
-  projectLogo
+  projectLogo,
+  onLogoClick
 }) => {
   /**
    * 获取按钮的提示标题（包含快捷键信息）
@@ -33,8 +34,18 @@ const Toolbar: React.FC<ToolbarProps> = ({
       {/* 左侧工具区 */}
       <div className="toolbar-section toolbar-left">
         {projectLogo && (
-          <Tooltip title={TOOLBAR_TOOLTIPS.PROJECT_LOGO} placement="bottom">
-            <div className="project-logo">
+          <Tooltip title="返回首页" placement="bottom">
+            <div 
+              className="project-logo clickable" 
+              onClick={onLogoClick}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  onLogoClick?.();
+                }
+              }}
+            >
               <img src={projectLogo} alt="Project Logo" />
             </div>
           </Tooltip>
