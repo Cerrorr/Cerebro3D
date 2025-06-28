@@ -34,7 +34,7 @@ import type {
   ClippingConfig,
   ExplodeConfig,
   ObjectVector3
-} from './types/objectPanel.types';
+} from './types/ObjectPanel.types';
 import './styles/ObjectPanel.scss';
 
 const { Panel } = Collapse;

@@ -5,7 +5,7 @@
  * @since 2025-06-25
  */
 
-import type { SidebarMenuItem, CarouselItem, ProjectItem, AppInfo } from '@/types/common.types';
+import type { SidebarMenuItem, CarouselItem, ProjectItem, AppInfo } from '@/types/Common.types';
 
 /**
  * 应用程序基本信息配置

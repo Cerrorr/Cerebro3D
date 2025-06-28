@@ -9,7 +9,7 @@ export {
   SIDEBAR_MENU_ITEMS,
   HOME_CAROUSEL_ITEMS,
   HOME_PROJECT_ITEMS
-} from './homePage.constants';
+} from './HomePage.constants';
 
 export {
   DEFAULT_CANVAS_SETTINGS,
@@ -17,4 +17,4 @@ export {
   getLeftToolbarActions,
   RIGHT_TOOLBAR_ACTIONS,
   MOCK_SCENE_NODES
-} from './projectPage.constants'; 
+} from './ProjectEditorPage.constants'; 

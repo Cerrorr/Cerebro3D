@@ -1,6 +1,6 @@
 import React from 'react';
 import type { LogEntry } from './types';
-import type { ConsolePanelProps } from './types/consolePanel.types';
+import type { ConsolePanelProps } from './types/ConsolePanel.types';
 import { MOCK_LOG_DATA } from './constants';
 
 /**

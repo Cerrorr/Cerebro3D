@@ -19,7 +19,7 @@ import type {
   FrameRateConfig,
   RendererShadowConfig,
   GlobalIlluminationConfig
-} from './types/rendererConfig.types';
+} from './types/RendererConfig.types';
 import './styles/RendererConfigPanel.scss';
 
 const { Option } = Select;

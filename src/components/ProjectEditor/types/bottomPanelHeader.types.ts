@@ -7,7 +7,7 @@
 import type { 
   BottomPanelType,
   AnimationEditorState
-} from './bottomPanel.types';
+} from './BottomPanel.types';
 
 /**
  * 底部面板头部组件属性接口

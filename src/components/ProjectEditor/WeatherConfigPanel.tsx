@@ -11,7 +11,7 @@ import type {
   FogConfig,
   RainConfig,
   SnowConfig 
-} from './types/weatherConfig.types';
+} from './types/WeatherConfig.types';
 import './styles/WeatherConfigPanel.scss';
 
 /**

@@ -46,7 +46,7 @@ src/
 │   ├── business/        # 业务逻辑钩子
 │   └── three/           # 3D相关钩子
 ├── types/               # 全局类型定义
-│   ├── common.types.ts  # 通用类型
+│   ├── Common.types.ts  # 通用类型
 │   └── index.ts         # 类型导出
 ├── styles/              # 全局样式
 │   ├── globals.scss     # 全局样式

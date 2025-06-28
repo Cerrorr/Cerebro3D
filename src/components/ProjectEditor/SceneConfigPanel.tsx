@@ -11,7 +11,7 @@ import {
   ProjectOutlined,
   SettingOutlined
 } from '@ant-design/icons';
-import type { SceneConfigPanelProps } from './types/sceneConfig.types';
+import type { SceneConfigPanelProps } from './types/SceneConfig.types';
 import './styles/SceneConfigPanel.scss';
 
 const { Option } = Select;

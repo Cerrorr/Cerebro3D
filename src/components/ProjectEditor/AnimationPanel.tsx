@@ -16,11 +16,11 @@ import type {
   AnimationPanelProps,
   AnimationItem,
   AnimationStatus
-} from './types/animationPanel.types';
+} from './types/AnimationPanel.types';
 import {
   ANIMATION_TYPE_ICONS,
   ANIMATION_TYPE_COLORS
-} from './types/animationPanel.types';
+} from './types/AnimationPanel.types';
 
 const { Text } = Typography;
 

@@ -1,0 +1,85 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins'    as mix;
+@use 'sass:map';
+
+/* 侧边栏整体布局 */
+.sidebar {
+  @apply w-64 flex flex-col shadow-2xl bg-white;
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  
+  /* 确保背景不被覆盖 */
+  position: relative;
+  z-index: 10;
+}
+
+/* 子组件样式已移动到各自的 SCSS 文件中 */
+
+/* 响应式设计 */
+@include mix.respond-to('md') {
+  .sidebar {
+    @apply w-64 h-auto flex-col border-r border-b-0;
+  }
+  
+  .sidebar-menu {
+    @apply flex-1 py-5;
+  }
+  
+  .menu-list {
+    @apply flex-col gap-0 p-0;
+  }
+  
+  .menu-item {
+    @apply flex-row px-5 py-3 gap-3 border-b-0;
+    border-left: 3px solid transparent;
+    
+    &.active {
+      border-left-color: map.get(vars.$primary-colors, 600);
+      border-bottom-color: transparent;
+    }
+  }
+  
+  .sidebar-footer {
+    @apply block;
+  }
+}
+
+/* 小屏幕布局 - 768px以下统一使用极简模式 */
+@media (max-width: 768px) {
+  .sidebar {
+    @apply w-12 h-full flex-col border-r border-b-0;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .sidebar-menu {
+    @apply flex-1 py-2;
+  }
+  
+  .menu-list {
+    @apply flex-col gap-0 p-0;
+  }
+  
+  .menu-item {
+    @apply flex-col px-1 py-2 gap-0;
+    border-left: 3px solid transparent;
+    border-bottom: none;
+    min-width: unset;
+    
+    &.active {
+      border-left-color: map.get(vars.$primary-colors, 600);
+      border-bottom-color: transparent;
+    }
+  }
+  
+  .menu-label {
+    @apply hidden;
+  }
+  
+  .menu-icon {
+    @apply text-sm;
+  }
+  
+  .sidebar-footer {
+    @apply hidden;
+  }
+} 

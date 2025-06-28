@@ -19,7 +19,7 @@ import {
   FunctionOutlined,
   BuildOutlined
 } from '@ant-design/icons';
-import type { RightSidebarTabType, RightSidebarTabItem } from '../types/rightSidebar.types';
+import type { RightSidebarTabType, RightSidebarTabItem } from '../types/RightSidebar.types';
 
 /**
  * 标签标题映射表

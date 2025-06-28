@@ -16,7 +16,7 @@ import {
   ControlOutlined,
   SwapOutlined
 } from '@ant-design/icons';
-import type { CameraConfigPanelProps, CameraType } from './types/cameraConfig.types';
+import type { CameraConfigPanelProps, CameraType } from './types/CameraConfig.types';
 import './styles/CameraConfigPanel.scss';
 
 const { Option } = Select;

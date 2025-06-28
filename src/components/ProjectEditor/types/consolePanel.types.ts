@@ -4,7 +4,7 @@
  * @since 2025-06-25
  */
 
-import type { LogEntry } from './bottomPanel.types';
+import type { LogEntry } from './BottomPanel.types';
 
 /**
  * 控制台面板组件属性接口

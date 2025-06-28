@@ -20,7 +20,7 @@ import type {
   LightingConfigPanelProps,
   LightingConfig,
   Vector3
-} from './types/lightingConfig.types';
+} from './types/LightingConfig.types';
 import './styles/LightingConfigPanel.scss';
 
 const { Panel } = Collapse;

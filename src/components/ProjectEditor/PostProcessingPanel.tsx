@@ -27,7 +27,7 @@ import type {
   ZoomConfig,
   PixelConfig,
   HalftoneConfig
-} from './types/postProcessing.types';
+} from './types/PostProcessing.types';
 import './styles/PostProcessingPanel.scss';
 
 const { Option } = Select;

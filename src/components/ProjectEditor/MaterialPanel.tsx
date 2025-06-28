@@ -32,12 +32,12 @@ import type {
   MaterialTextures,
   TextureConfig,
   MaterialRender
-} from './types/materialPanel.types';
+} from './types/MaterialPanel.types';
 import {
   MATERIAL_TYPE_OPTIONS,
   BLENDING_MODE_OPTIONS,
   SIDE_OPTIONS
-} from './types/materialPanel.types';
+} from './types/MaterialPanel.types';
 import './styles/MaterialPanel.scss';
 
 const { Panel } = Collapse;

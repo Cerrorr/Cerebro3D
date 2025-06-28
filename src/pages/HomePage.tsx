@@ -6,20 +6,20 @@ import {
   MenuClickHandler,
   ProjectClickHandler,
   NewProjectFormData
-} from '@/types/common.types';
+} from '@/types/Common.types';
 import { 
   APP_INFO, 
   SIDEBAR_MENU_ITEMS, 
   HOME_CAROUSEL_ITEMS, 
   HOME_PROJECT_ITEMS 
 } from './constants';
-import Sidebar from '@/components/Sidebar/Sidebar';
-import MainContent from '@/components/MainContent/MainContent';
+import Sidebar from '@/components/homePage/sidebar/Sidebar';
+import MainContent from '@/components/homePage/mainContent/MainContent';
 import { BaiduAnalytics, usePageTracking } from '@/utils/analytics';
 
 import './styles/HomePage.scss';
 
-// NewProjectFormData类型已在 @/types/common.types 中定义
+// NewProjectFormData类型已在 @/types/Common.types 中定义
 
 /**
  * 首页组件

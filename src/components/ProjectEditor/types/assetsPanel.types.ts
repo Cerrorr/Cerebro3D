@@ -4,7 +4,7 @@
  * @since 2025-06-25
  */
 
-import type { AssetItem } from './bottomPanel.types';
+import type { AssetItem } from './BottomPanel.types';
 
 /**
  * 资源面板组件属性接口

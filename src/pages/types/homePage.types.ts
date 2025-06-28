@@ -10,7 +10,7 @@ import {
   AppInfo, 
   CarouselItem, 
   ProjectItem
-} from '@/types/common.types';
+} from '@/types/Common.types';
 
 /**
  * 首页组件Props接口

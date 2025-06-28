@@ -3,7 +3,7 @@ import type {
   BottomPanelProps, 
   BottomPanelType,
   AnimationEditorState,
-} from './types/bottomPanel.types';
+} from './types/BottomPanel.types';
 import BottomPanelHeader from './BottomPanelHeader';
 import AssetsPanel from './AssetsPanel';
 import AnimationTimeline from './AnimationTimeline';

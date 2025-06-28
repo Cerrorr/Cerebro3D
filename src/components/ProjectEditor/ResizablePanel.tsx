@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { ResizablePanelProps } from './types/resizablePanel.types';
+import { ResizablePanelProps } from './types/ResizablePanel.types';
 import './styles/ResizablePanel.scss';
 
 const ResizablePanel: React.FC<ResizablePanelProps> = ({

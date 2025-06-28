@@ -66,7 +66,7 @@ export const config = { ... };
 - 文件名与组件/功能名对应
 
 ```
-rightSidebar.constants.ts
+RightSidebar.constants.ts
 userManagement.constants.ts
 canvas3D.constants.ts
 ```
@@ -95,7 +95,7 @@ const RightSidebar = () => {
 
 #### ✅ 重构后 - 常量分离
 ```typescript
-// constants/rightSidebar.constants.ts
+// constants/RightSidebar.constants.ts
 export const TAB_TITLE_MAP = {
   scene: '场景配置',
   camera: '相机配置'
@@ -141,7 +141,7 @@ export {
   TAB_TITLE_MAP,
   EMPTY_STATE_ICONS,
   getTabItems
-} from './rightSidebar.constants';
+} from './RightSidebar.constants';
 ```
 
 ### 4. 🎯 类型安全

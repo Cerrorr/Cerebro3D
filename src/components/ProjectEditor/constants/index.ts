@@ -10,11 +10,11 @@ export {
   TAB_ICON_MAP,
   getTabItems,
   DEFAULT_CONFIG
-} from './rightSidebar.constants';
+} from './RightSidebar.constants';
 
 export {
   TOOLBAR_SHORTCUTS,
   TOOLBAR_TOOLTIPS
-} from './toolbar.constants';
+} from './Toolbar.constants';
 
-export * from './bottomPanel.constants'; 
+export * from './BottomPanel.constants'; 

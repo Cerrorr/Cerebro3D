@@ -1,0 +1,94 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mix;
+
+/* 新建项目卡片样式 */
+.new-project-card {
+  @apply relative bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-dashed border-blue-300 
+         rounded-xl p-6 cursor-pointer overflow-hidden transition-all duration-300;
+  min-height: 280px;
+  /* 确保悬浮时不被遮挡 */
+  z-index: 1;
+
+  &:hover {
+    @apply border-blue-500 shadow-lg transform -translate-y-1;
+    /* 悬浮时提升z-index */
+    z-index: 10;
+    
+    .new-icon {
+      @apply scale-110 bg-blue-500;
+    }
+    
+    .hover-overlay {
+      opacity: 1;
+    }
+    
+    .decoration-dots .dot {
+      animation: bounce 0.6s ease-in-out infinite;
+    }
+  }
+
+  .new-card-content {
+    @apply relative z-10 h-full flex flex-col items-center justify-center text-center;
+  }
+
+  .new-icon-container {
+    @apply mb-4;
+  }
+
+  .new-icon {
+    @apply w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center transition-all duration-300;
+    
+    .plus-icon {
+      @apply text-white text-3xl font-light;
+    }
+  }
+
+  .new-text {
+    @apply mb-4;
+  }
+
+  .new-title {
+    @apply text-xl font-semibold text-gray-800 mb-2;
+  }
+
+  .new-description {
+    @apply text-sm text-gray-600;
+  }
+
+  .decoration-dots {
+    @apply flex space-x-2;
+    
+    .dot {
+      @apply w-2 h-2 bg-blue-400 rounded-full;
+      animation-delay: calc(var(--i) * 0.2s);
+    }
+  }
+
+  .hover-overlay {
+    @apply absolute inset-0 bg-gradient-to-br from-blue-100/30 to-purple-100/30 opacity-0 transition-opacity duration-300;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .new-project-card {
+    min-height: 240px;
+    
+    .new-icon {
+      @apply w-12 h-12;
+      
+      .plus-icon {
+        @apply text-2xl;
+      }
+    }
+    
+    .new-title {
+      @apply text-lg;
+    }
+  }
+} 

@@ -10,7 +10,7 @@ import {
 import type { 
   BottomPanelOption,
 } from './types';
-import type { BottomPanelHeaderProps } from './types/bottomPanelHeader.types';
+import type { BottomPanelHeaderProps } from './types/BottomPanelHeader.types';
 import { PANEL_OPTIONS } from './constants';
 
 const { Option } = Select;

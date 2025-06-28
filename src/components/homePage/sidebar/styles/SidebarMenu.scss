@@ -1,0 +1,127 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mix;
+
+/* 侧边栏菜单样式 */
+.sidebar-menu {
+  @apply flex-1 py-5;
+  
+  /* Ant Design Menu 组件自定义样式 */
+  .sidebar-antd-menu {
+    @apply border-none bg-transparent;
+    
+    /* 菜单项样式 */
+    .ant-menu-item {
+      @apply mx-2 rounded-lg transition-all duration-200;
+      height: auto !important;
+      line-height: normal !important;
+      margin-bottom: 4px !important;
+      padding: 12px 16px !important;
+      
+      /* 默认状态 - 深色文字适配白色背景 */
+      color: #6b7280 !important;
+      background: transparent !important;
+      
+      /* 悬浮状态 */
+      &:hover {
+        @apply bg-gray-50;
+        color: #374151 !important;
+      }
+      
+      /* 选中状态 */
+      &.ant-menu-item-selected {
+        @apply bg-blue-50;
+        color: #2563eb !important;
+        position: relative;
+        
+        &::after {
+          content: '';
+          @apply absolute left-0 top-2 bottom-2 w-1 bg-blue-500 rounded-r;
+        }
+      }
+      
+      /* 菜单项内容布局 */
+      .ant-menu-title-content {
+        @apply flex items-center;
+        margin-left: 0 !important;
+      }
+      
+      /* 图标与文字间距 */
+      .ant-menu-item-icon {
+        margin-right: 8px !important;
+      }
+    }
+    
+    /* 图标样式 */
+    .menu-icon-emoji {
+      @apply text-lg;
+      font-style: normal;
+      margin-right: 12px !important;
+    }
+    
+    /* 激活菜单项的特殊样式 */
+    .active-menu-item {
+      @apply bg-blue-100;
+      color: #1d4ed8 !important;
+      font-weight: 600;
+      
+      .menu-icon-emoji {
+        filter: none;
+      }
+    }
+    
+    /* 默认显示完整标签，隐藏短标签 */
+    .menu-label-full {
+      @apply block;
+    }
+    
+    .menu-label-short {
+      @apply hidden;
+    }
+  }
+}
+
+/* 响应式设计 */
+@include mix.respond-to('md') {
+  .sidebar-menu {
+    @apply py-4;
+  }
+}
+
+/* 小屏幕：768px以下统一显示图标和前两个字 */
+@media (max-width: 768px) {
+  .sidebar-menu {
+    @apply py-2;
+    
+    .sidebar-antd-menu {
+      .ant-menu-item {
+        @apply mx-0 rounded;
+        padding: 6px 2px !important;
+        text-align: center;
+        
+        .ant-menu-title-content {
+          @apply justify-center flex-col items-center gap-1;
+          margin-left: 0 !important;
+          
+          /* 隐藏完整标签，显示短标签 */
+          .menu-label-full {
+            @apply hidden;
+          }
+          
+          .menu-label-short {
+            @apply block text-xs leading-none text-center;
+            font-size: 0.5rem;
+          }
+        }
+        
+        .ant-menu-item-icon {
+          margin-right: 0 !important;
+        }
+      }
+      
+      .menu-icon-emoji {
+        @apply text-sm;
+        margin-right: 0 !important;
+      }
+    }
+  }
+} 

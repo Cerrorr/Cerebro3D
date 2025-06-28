@@ -39,7 +39,7 @@ import type {
   HistoryRecord,
   HistoryActionType,
   HistoryFilter
-} from './types/historyPanel.types';
+} from './types/HistoryPanel.types';
 import './styles/HistoryPanel.scss';
 
 const { Option } = Select;

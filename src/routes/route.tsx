@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import HomePage from '@/pages/HomePage';
-import ProjectPage from '@/pages/ProjectPage';
+import ProjectEditorPage from '@/pages/ProjectEditorPage';
 
 /**
  * 路由配置
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/project/:projectId?',
-    element: <ProjectPage />,
+    element: <ProjectEditorPage />,
   },
   {
     path: '/home',

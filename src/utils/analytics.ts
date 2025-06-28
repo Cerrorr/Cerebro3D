@@ -5,7 +5,7 @@
  * @since 2025-06-25
  */
 
-import './types/analytics.types';
+import './types/Analytics.types';
 
 /**
  * 开发环境日志输出

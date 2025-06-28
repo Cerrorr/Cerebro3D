@@ -4,18 +4,18 @@ import {
   LeftOutlined,
   RightOutlined
 } from '@ant-design/icons';
-import { RightSidebarProps, RightSidebarTabType } from './types/rightSidebar.types';
-import { ProjectInfo, SceneConfiguration } from './types/sceneConfig.types';
-import { CameraConfiguration } from './types/cameraConfig.types';
-import { LightingConfig, DEFAULT_LIGHTING_CONFIG } from './types/lightingConfig.types';
-import { PostProcessingConfig, DEFAULT_POST_PROCESSING_CONFIG } from './types/postProcessing.types';
-import { WeatherConfig, DEFAULT_WEATHER_CONFIG } from './types/weatherConfig.types';
-import { RendererConfig, DEFAULT_RENDERER_CONFIG } from './types/rendererConfig.types';
-import { HistoryState, HistoryPanelConfig, DEFAULT_HISTORY_STATE, DEFAULT_HISTORY_CONFIG } from './types/historyPanel.types';
-import { AnimationPanelState, AnimationType, AnimationStatus } from './types/animationPanel.types';
-import { ObjectState, DEFAULT_OBJECT_STATE } from './types/objectPanel.types';
-import { MaterialState, DEFAULT_MATERIAL_STATE } from './types/materialPanel.types';
-import { GeometryState, DEFAULT_GEOMETRY_STATE } from './types/geometryPanel.types';
+import { RightSidebarProps, RightSidebarTabType } from './types/RightSidebar.types';
+import { ProjectInfo, SceneConfiguration } from './types/SceneConfig.types';
+import { CameraConfiguration } from './types/CameraConfig.types';
+import { LightingConfig, DEFAULT_LIGHTING_CONFIG } from './types/LightingConfig.types';
+import { PostProcessingConfig, DEFAULT_POST_PROCESSING_CONFIG } from './types/PostProcessing.types';
+import { WeatherConfig, DEFAULT_WEATHER_CONFIG } from './types/WeatherConfig.types';
+import { RendererConfig, DEFAULT_RENDERER_CONFIG } from './types/RendererConfig.types';
+import { HistoryState, HistoryPanelConfig, DEFAULT_HISTORY_STATE, DEFAULT_HISTORY_CONFIG } from './types/HistoryPanel.types';
+import { AnimationPanelState, AnimationType, AnimationStatus } from './types/AnimationPanel.types';
+import { ObjectState, DEFAULT_OBJECT_STATE } from './types/ObjectPanel.types';
+import { MaterialState, DEFAULT_MATERIAL_STATE } from './types/MaterialPanel.types';
+import { GeometryState, DEFAULT_GEOMETRY_STATE } from './types/GeometryPanel.types';
 import { TAB_TITLE_MAP, EMPTY_STATE_ICONS, getTabItems, DEFAULT_CONFIG } from './constants';
 import SceneConfigPanel from './SceneConfigPanel';
 import CameraConfigPanel from './CameraConfigPanel';

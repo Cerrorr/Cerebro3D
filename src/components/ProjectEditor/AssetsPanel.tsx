@@ -4,7 +4,7 @@ import type {
   AssetTab,
   AssetItem
 } from './types';
-import type { AssetsPanelProps } from './types/assetsPanel.types';
+import type { AssetsPanelProps } from './types/AssetsPanel.types';
 import {
   ASSET_CATEGORIES,
   ASSET_TABS,

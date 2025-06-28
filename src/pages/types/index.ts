@@ -1,12 +1,3 @@
-/**
- * 页面组件类型定义统一导出
- * 集中导出所有页面相关的类型定义
- * @author Cerror
- * @since 2025-06-24
- */
-
-// 首页相关类型
-export * from './homePage.types';
-
-// 项目页面类型
-export * from './projectPage.types'; 
+/**\n * 页面类型统一导出 (自动)\n */
+export * from "./HomePage.types";
+export * from "./ProjectEditorPage.types";

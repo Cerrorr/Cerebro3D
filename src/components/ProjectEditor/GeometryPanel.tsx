@@ -22,8 +22,8 @@ import {
 } from '@ant-design/icons';
 import type {
   GeometryPanelProps
-} from './types/geometryPanel.types';
-import { GEOMETRY_TYPE_OPTIONS } from './types/geometryPanel.types';
+} from './types/GeometryPanel.types';
+import { GEOMETRY_TYPE_OPTIONS } from './types/GeometryPanel.types';
 import './styles/GeometryPanel.scss';
 
 const { Panel } = Collapse;

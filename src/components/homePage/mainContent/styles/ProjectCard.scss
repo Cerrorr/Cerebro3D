@@ -1,0 +1,120 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mix;
+@use 'sass:map';
+
+/* 项目卡片样式 */
+.project-card {
+  @apply bg-white bg-opacity-95 rounded-2xl overflow-hidden cursor-pointer;
+  @apply transition-all duration-300 shadow-lg;
+  backdrop-filter: blur(20px);
+  /* 确保悬浮时不被遮挡 */
+  position: relative;
+  z-index: 1;
+
+  &:hover {
+    @apply transform -translate-y-1 shadow-xl;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    /* 悬浮时提升z-index */
+    z-index: 10;
+
+    .thumbnail-image {
+      @apply transform scale-105;
+    }
+  }
+}
+
+.card-thumbnail {
+  @apply relative overflow-hidden;
+  height: 160px;
+}
+
+.thumbnail-image {
+  @apply w-full h-full object-cover transition-transform duration-300;
+}
+
+.thumbnail-placeholder {
+  @apply h-full flex flex-col items-center justify-center text-white relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  .placeholder-icon {
+    @apply text-6xl mb-2 opacity-80;
+  }
+
+  .placeholder-text {
+    @apply text-sm opacity-70 font-medium;
+  }
+
+  &::before {
+    content: '';
+    @apply absolute inset-0;
+    background:
+      radial-gradient(
+        circle at 20% 80%,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+      );
+  }
+}
+
+.type-badge {
+  @apply absolute top-3 right-3 px-2 py-1 rounded-lg text-xs font-medium z-10;
+  @apply bg-white bg-opacity-90 text-gray-700;
+}
+
+.card-content {
+  @apply p-4;
+}
+
+.card-title {
+  @apply text-lg font-semibold text-gray-800 mb-2;
+  @include mix.text-ellipsis(1);
+}
+
+.card-description {
+  @apply text-sm text-gray-600 mb-3 leading-relaxed;
+  @include mix.text-ellipsis(2);
+}
+
+.card-tags {
+  @apply flex flex-wrap gap-1 mb-3;
+}
+
+.tag {
+  @apply px-2 py-1 rounded-md text-xs;
+  background-color: map.get(vars.$primary-colors, 50);
+  color: map.get(vars.$primary-colors, 600);
+
+  &.tag-more {
+    @apply text-gray-500;
+  }
+}
+
+.card-footer {
+  @apply flex justify-between items-center text-xs text-gray-500;
+}
+
+.update-date {
+  @apply flex items-center gap-1;
+}
+
+.card-actions {
+  @apply flex gap-1;
+}
+
+.action-btn {
+  @apply w-6 h-6 rounded-md flex items-center justify-center;
+  @apply transition-colors duration-200 text-gray-500 hover:text-white;
+
+  &:hover {
+    background-color: map.get(vars.$primary-colors, 500);
+  }
+
+  &.delete:hover {
+    @apply bg-red-500;
+  }
+}
