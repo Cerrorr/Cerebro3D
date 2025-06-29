@@ -5,8 +5,14 @@
  * @since 2025-06-25
  */
 
-import type { SidebarMenuItem, AppInfo } from '@/components/homePage/sidebar/types';
-import type { CarouselItem, ProjectItem } from '@/components/homePage/mainContent/types';
+import type {
+  SidebarMenuItem,
+  AppInfo,
+} from '@/components/homePage/sidebar/types';
+import type {
+  CarouselItem,
+  ProjectItem,
+} from '@/components/homePage/mainContent/types';
 
 /**
  * 应用程序基本信息配置
@@ -16,7 +22,7 @@ export const APP_INFO: AppInfo = {
   version: '1.0.0',
   author: 'Cerror',
   license: '京ICP备2025130821号',
-  licenseUrl: 'https://beian.miit.gov.cn/'
+  licenseUrl: 'https://beian.miit.gov.cn/',
 } as const;
 
 /**
@@ -29,26 +35,26 @@ export const SIDEBAR_MENU_ITEMS: readonly SidebarMenuItem[] = [
     label: '项目中心',
     icon: '📁',
     path: '/projects',
-    active: true
+    active: true,
   },
   {
     id: 'resources',
     label: '资源中心',
     icon: '🎨',
-    path: '/resources'
+    path: '/resources',
   },
   {
     id: 'settings',
     label: '设置中心',
     icon: '⚙️',
-    path: '/settings'
+    path: '/settings',
   },
   {
     id: 'about',
     label: '关于',
     icon: 'ℹ️',
-    path: '/about'
-  }
+    path: '/about',
+  },
 ] as const;
 
 /**
@@ -60,20 +66,20 @@ export const HOME_CAROUSEL_ITEMS: readonly CarouselItem[] = [
     id: '1',
     title: '欢迎使用 Cerebro3D',
     description: '智能化Web3D编辑器，让创作更简单',
-    image: '' // 使用渐变背景
+    image: '', // 使用渐变背景
   },
   {
     id: '2',
     title: '创建精美的3D场景',
     description: '拖拽式操作，所见即所得',
-    image: '' // 使用渐变背景
+    image: '', // 使用渐变背景
   },
   {
     id: '3',
     title: '实时预览与发布',
     description: '一键发布到Web，随时随地访问',
-    image: '' // 使用渐变背景
-  }
+    image: '', // 使用渐变背景
+  },
 ] as const;
 
 /**
@@ -89,7 +95,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'Web3D',
     tags: ['科幻', '城市', '建筑', '光效'],
     createdAt: '2025-06-15',
-    updatedAt: '2025-06-20'
+    updatedAt: '2025-06-20',
   },
   {
     id: '2',
@@ -99,7 +105,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'VR',
     tags: ['VR', '城市', '漫游', '交互'],
     createdAt: '2025-06-10',
-    updatedAt: '2025-06-18'
+    updatedAt: '2025-06-18',
   },
   {
     id: '3',
@@ -109,7 +115,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'AR',
     tags: ['AR', '家具', '预览', '移动端'],
     createdAt: '2025-06-05',
-    updatedAt: '2025-06-15'
+    updatedAt: '2025-06-15',
   },
   {
     id: '4',
@@ -119,7 +125,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'Game',
     tags: ['游戏', '冒险', '魔法', '森林'],
     createdAt: '2025-06-08',
-    updatedAt: '2025-06-22'
+    updatedAt: '2025-06-22',
   },
   {
     id: '5',
@@ -129,7 +135,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'Web3D',
     tags: ['企业', '产品', '展示', '交互'],
     createdAt: '2025-06-12',
-    updatedAt: '2025-06-19'
+    updatedAt: '2025-06-19',
   },
   {
     id: '6',
@@ -139,7 +145,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'VR',
     tags: ['展览', '艺术', '虚拟', '沉浸'],
     createdAt: '2025-06-03',
-    updatedAt: '2025-06-16'
+    updatedAt: '2025-06-16',
   },
   {
     id: '7',
@@ -149,7 +155,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'App',
     tags: ['移动端', '原型', '设计', 'UI'],
     createdAt: '2025-06-07',
-    updatedAt: '2025-06-21'
+    updatedAt: '2025-06-21',
   },
   {
     id: '8',
@@ -159,7 +165,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'Web3D',
     tags: ['建筑', '可视化', '设计', '现代'],
     createdAt: '2025-06-04',
-    updatedAt: '2025-06-17'
+    updatedAt: '2025-06-17',
   },
   {
     id: '9',
@@ -169,7 +175,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'VR',
     tags: ['医疗', '培训', '手术', '虚拟现实'],
     createdAt: '2025-06-02',
-    updatedAt: '2025-06-18'
+    updatedAt: '2025-06-18',
   },
   {
     id: '10',
@@ -179,7 +185,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'AR',
     tags: ['工厂', '巡检', 'AR', '智能制造'],
     createdAt: '2025-06-09',
-    updatedAt: '2025-06-23'
+    updatedAt: '2025-06-23',
   },
   {
     id: '11',
@@ -189,7 +195,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'Game',
     tags: ['太空', '模拟', '物理', '探索'],
     createdAt: '2024-01-11',
-    updatedAt: '2024-01-24'
+    updatedAt: '2024-01-24',
   },
   {
     id: '12',
@@ -199,7 +205,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'App',
     tags: ['教育', '在线学习', '交互', '3D'],
     createdAt: '2024-01-06',
-    updatedAt: '2024-01-25'
+    updatedAt: '2024-01-25',
   },
   {
     id: '13',
@@ -209,7 +215,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'Web3D',
     tags: ['数字孪生', '城市', '监控', '大数据'],
     createdAt: '2024-01-13',
-    updatedAt: '2024-01-26'
+    updatedAt: '2024-01-26',
   },
   {
     id: '14',
@@ -219,7 +225,7 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'VR',
     tags: ['购物', '电商', 'VR', '体验'],
     createdAt: '2024-01-14',
-    updatedAt: '2024-01-27'
+    updatedAt: '2024-01-27',
   },
   {
     id: '15',
@@ -229,6 +235,6 @@ export const HOME_PROJECT_ITEMS: readonly ProjectItem[] = [
     type: 'AR',
     tags: ['文物', '保护', '数字化', '历史'],
     createdAt: '2024-01-16',
-    updatedAt: '2024-01-28'
-  }
-] as const; 
+    updatedAt: '2024-01-28',
+  },
+] as const;

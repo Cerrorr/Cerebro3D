@@ -15,4 +15,4 @@ export interface AppInfo {
 
 export interface SidebarFooterProps {
   readonly appInfo: AppInfo;
-} 
+}

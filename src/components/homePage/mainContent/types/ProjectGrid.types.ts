@@ -17,4 +17,4 @@ export interface ProjectGridProps {
   readonly projects: readonly ProjectItem[];
   readonly onProjectClick: ProjectClickHandler;
   readonly onNewProject: (formData: NewProjectFormData) => void;
-} 
+}

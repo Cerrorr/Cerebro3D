@@ -7,7 +7,6 @@
 
 import React, { useCallback } from 'react';
 import {
-  Collapse,
   Input,
   Switch,
   Select,
@@ -39,8 +38,9 @@ import {
   SIDE_OPTIONS
 } from './types';
 import './styles/MaterialPanel.scss';
+import ModernCollapse from '@/components/common/ModernCollapse';
 
-const { Panel } = Collapse;
+const { Panel } = ModernCollapse;
 const { Text } = Typography;
 const { Option } = Select;
 
@@ -153,7 +153,7 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
       </div>
 
       <div className="material-panel__collapse">
-        <Collapse 
+        <ModernCollapse 
           defaultActiveKey={['basic', 'appearance']}
           ghost
           expandIconPosition="end"
@@ -446,7 +446,7 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               </div>
             </div>
           </Panel>
-        </Collapse>
+        </ModernCollapse>
       </div>
     </div>
   );

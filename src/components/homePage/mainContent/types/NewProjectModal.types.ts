@@ -20,4 +20,4 @@ export interface NewProjectModalProps {
   readonly isOpen: boolean;
   readonly onClose: () => void;
   readonly onConfirm: (formData: NewProjectFormData) => void;
-} 
+}

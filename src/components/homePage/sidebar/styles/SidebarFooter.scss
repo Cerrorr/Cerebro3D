@@ -4,22 +4,22 @@
 /* 侧边栏底部样式 */
 .sidebar-footer {
   @apply p-5 pt-0;
-  
+
   .app-info {
     @apply text-gray-500 text-xs leading-relaxed;
   }
-  
+
   .version {
     @apply font-medium text-gray-700 block;
   }
-  
+
   .author,
   .license {
     @apply block mt-1;
-    
+
     &.clickable {
       @apply cursor-pointer text-blue-600 hover:text-blue-800 hover:underline transition-colors;
-      
+
       &:active {
         @apply text-blue-900;
       }
@@ -39,4 +39,4 @@
   .sidebar-footer {
     @apply hidden;
   }
-} 
+}

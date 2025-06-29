@@ -7,7 +7,7 @@
 export {
   DEFAULT_CAROUSEL_ITEMS,
   CAROUSEL_GRADIENTS,
-  CAROUSEL_ICONS
+  CAROUSEL_ICONS,
 } from './CarouselSection.constants';
 
 export {
@@ -15,12 +15,12 @@ export {
   PROJECT_TYPE_GRADIENTS,
   DEFAULT_FORM_DATA,
   DEFAULT_SELECTED_TEMPLATE,
-  TEMPLATE_ICONS
+  TEMPLATE_ICONS,
 } from './NewProjectModal.constants';
 
 export {
   PROJECT_TYPE_STYLES,
   DEFAULT_PROJECT_TYPE_STYLE,
   CARD_ACTION_ICONS,
-  MAX_VISIBLE_TAGS
-} from './ProjectCard.constants'; 
+  MAX_VISIBLE_TAGS,
+} from './ProjectCard.constants';

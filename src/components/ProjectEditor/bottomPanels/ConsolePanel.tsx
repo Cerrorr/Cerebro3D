@@ -1,6 +1,7 @@
 import React from 'react';
 import type { LogEntry, ConsolePanelProps } from './types';
 import { MOCK_LOG_DATA } from './constants/BottomPanel.constants';
+import './styles/ConsolePanel.scss'; // 引入样式
 
 /**
  * 控制台面板组件

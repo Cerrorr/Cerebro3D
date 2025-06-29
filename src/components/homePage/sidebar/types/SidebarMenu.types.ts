@@ -18,4 +18,4 @@ export type MenuClickHandler = (menuItem: SidebarMenuItem) => void;
 export interface SidebarMenuProps {
   readonly items: readonly SidebarMenuItem[];
   readonly onItemClick: MenuClickHandler;
-} 
+}

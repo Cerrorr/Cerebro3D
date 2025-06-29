@@ -1,5 +1,5 @@
-@use '../../styles/variables' as vars;
-@use '../../styles/mixins' as mix;
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mix;
 @use 'sass:map';
 
 /* 首页布局 - 使用SCSS变量和Tailwind结合 */
@@ -20,4 +20,4 @@
   .home-page {
     @apply flex-row;
   }
-} 
+}

@@ -1,0 +1,50 @@
+/* ConsolePanel.scss */
+
+.console-content {
+  height: 100%;
+  background-color: #141414;
+  color: #d9d9d9;
+  overflow-y: auto;
+
+  .console-logs {
+    padding: 8px 12px;
+
+    .log-entry {
+      font-size: 12px;
+      line-height: 1.6;
+      display: flex;
+      gap: 8px;
+
+      & + .log-entry {
+        margin-top: 4px;
+      }
+
+      &.log-info .log-level {
+        color: #52c41a;
+      }
+
+      &.log-warn .log-level {
+        color: #faad14;
+      }
+
+      &.log-error .log-level {
+        color: #ff4d4f;
+      }
+    }
+
+    .log-time {
+      color: #8c8c8c;
+      min-width: 60px;
+    }
+
+    .log-level {
+      min-width: 48px;
+      text-transform: uppercase;
+    }
+
+    .log-message {
+      flex: 1;
+      word-break: break-all;
+    }
+  }
+} 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Carousel } from 'antd';
 import { CarouselSectionProps } from './types';
-import { 
-  DEFAULT_CAROUSEL_ITEMS, 
-  CAROUSEL_GRADIENTS, 
-  CAROUSEL_ICONS 
+import {
+  DEFAULT_CAROUSEL_ITEMS,
+  CAROUSEL_GRADIENTS,
+  CAROUSEL_ICONS,
 } from './constants';
 import './styles/CarouselSection.scss';
 
@@ -15,19 +15,21 @@ import './styles/CarouselSection.scss';
 /**
  * 轮播图区域组件
  * 使用 Ant Design Carousel 组件展示3D编辑器特性
- * 
+ *
  * @param items - 轮播图数据列表
  * @author Cerror
  * @since 2025-06-25
  */
-const CarouselSection: React.FC<CarouselSectionProps> = ({ items = DEFAULT_CAROUSEL_ITEMS }) => {
+const CarouselSection: React.FC<CarouselSectionProps> = ({
+  items = DEFAULT_CAROUSEL_ITEMS,
+}) => {
   /**
    * 获取轮播项的渐变背景样式
    * @param index - 轮播项索引
    */
   const getGradientStyle = (index: number) => {
     return {
-      background: CAROUSEL_GRADIENTS[index % CAROUSEL_GRADIENTS.length]
+      background: CAROUSEL_GRADIENTS[index % CAROUSEL_GRADIENTS.length],
     };
   };
 
@@ -51,7 +53,7 @@ const CarouselSection: React.FC<CarouselSectionProps> = ({ items = DEFAULT_CAROU
 
   return (
     <section className="carousel-section">
-      <Carousel 
+      <Carousel
         autoplay
         autoplaySpeed={5000}
         dots={{ className: 'custom-carousel-dots' }}
@@ -63,7 +65,7 @@ const CarouselSection: React.FC<CarouselSectionProps> = ({ items = DEFAULT_CAROU
           <div key={item.id}>
             <div className="carousel-slide">
               {/* 使用渐变背景和装饰图标 */}
-              <div 
+              <div
                 className="carousel-gradient-bg"
                 style={getGradientStyle(index)}
               >
@@ -74,7 +76,7 @@ const CarouselSection: React.FC<CarouselSectionProps> = ({ items = DEFAULT_CAROU
                   <div className="decoration-pattern"></div>
                 </div>
               </div>
-              
+
               <div className="carousel-content">
                 <h2 className="carousel-title">{item.title}</h2>
                 <p className="carousel-description">{item.description}</p>
@@ -87,4 +89,4 @@ const CarouselSection: React.FC<CarouselSectionProps> = ({ items = DEFAULT_CAROU
   );
 };
 
-export default CarouselSection; 
+export default CarouselSection;

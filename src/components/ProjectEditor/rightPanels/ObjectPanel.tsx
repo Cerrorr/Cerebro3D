@@ -7,7 +7,6 @@
 
 import React, { useCallback } from 'react';
 import {
-  Collapse,
   Input,
   InputNumber,
   Switch,
@@ -36,8 +35,9 @@ import type {
   ObjectVector3
 } from './types';
 import './styles/ObjectPanel.scss';
+import ModernCollapse from '@/components/common/ModernCollapse';
 
-const { Panel } = Collapse;
+const { Panel } = ModernCollapse;
 const { Text } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
@@ -157,7 +157,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
   return (
     <div className="object-panel">
       <div className="object-panel__collapse">
-        <Collapse 
+        <ModernCollapse 
           defaultActiveKey={['info', 'transform']}
           ghost
           expandIconPosition="end"
@@ -606,7 +606,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
             />
           </div>
         </Panel>
-        </Collapse>
+        </ModernCollapse>
       </div>
     </div>
   );

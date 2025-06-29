@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { 
   Select, 
   InputNumber, 
-  Collapse, 
   Button,
   Space,
   Typography
@@ -18,9 +17,10 @@ import {
 } from '@ant-design/icons';
 import type { CameraConfigPanelProps, CameraType } from './types';
 import './styles/CameraConfigPanel.scss';
+import ModernCollapse from '@/components/common/ModernCollapse';
 
 const { Option } = Select;
-const { Panel } = Collapse;
+const { Panel } = ModernCollapse;
 const { Text } = Typography;
 
 /**
@@ -108,7 +108,7 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
 
   return (
     <div className="camera-config-panel">
-      <Collapse 
+      <ModernCollapse 
         activeKey={activeKey}
         onChange={setActiveKey}
         ghost
@@ -430,7 +430,7 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
             </div>
           </div>
         </Panel>
-      </Collapse>
+      </ModernCollapse>
     </div>
   );
 };

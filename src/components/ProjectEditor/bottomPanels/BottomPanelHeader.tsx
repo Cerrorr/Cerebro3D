@@ -12,6 +12,7 @@ import type {
   BottomPanelHeaderProps
 } from './types';
 import { PANEL_OPTIONS } from './constants/BottomPanel.constants';
+import './styles/BottomPanelHeader.scss'; // 引入样式
 
 const { Option } = Select;
 const { Text } = Typography;

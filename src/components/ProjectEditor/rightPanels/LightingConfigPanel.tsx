@@ -6,7 +6,8 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { Collapse, InputNumber, Switch, Space, Typography, ColorPicker } from 'antd';
+import { InputNumber, Switch, Space, Typography, ColorPicker } from 'antd';
+import ModernCollapse from '@/components/common/ModernCollapse';
 import type { Color } from 'antd/es/color-picker';
 import { 
   DownOutlined, 
@@ -23,7 +24,7 @@ import type {
 } from './types';
 import './styles/LightingConfigPanel.scss';
 
-const { Panel } = Collapse;
+const { Panel } = ModernCollapse;
 const { Text } = Typography;
 
 /**
@@ -149,7 +150,7 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
 
   return (
     <div className="lighting-config-panel">
-      <Collapse 
+      <ModernCollapse 
         activeKey={activeKey}
         onChange={setActiveKey}
         ghost
@@ -688,7 +689,7 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
             </div>
           </div>
         </Panel>
-      </Collapse>
+      </ModernCollapse>
     </div>
   );
 };

@@ -12,9 +12,9 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({ appName }) => {
   return (
     <div className="sidebar-header">
       <div className="logo-container">
-        <img 
-          src="/images/logo.png" 
-          alt="Cerebro3D Logo" 
+        <img
+          src="/images/logo.png"
+          alt="Cerebro3D Logo"
           className="logo-icon"
         />
         <h1 className="logo-text">{appName}</h1>
@@ -23,4 +23,4 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({ appName }) => {
   );
 };
 
-export default SidebarHeader; 
+export default SidebarHeader;

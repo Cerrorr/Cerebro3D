@@ -19,31 +19,31 @@ export interface ProjectTypeStyle {
  * 定义每种项目类型对应的渐变背景、图标和颜色
  */
 export const PROJECT_TYPE_STYLES: Record<string, ProjectTypeStyle> = {
-  'Web3D': {
+  Web3D: {
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     icon: '🌐',
-    color: '#667eea'
+    color: '#667eea',
   },
-  'VR': {
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', 
+  VR: {
+    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     icon: '🥽',
-    color: '#f093fb'
+    color: '#f093fb',
   },
-  'AR': {
+  AR: {
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     icon: '📱',
-    color: '#4facfe'
+    color: '#4facfe',
   },
-  'Game': {
+  Game: {
     gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
     icon: '🎮',
-    color: '#43e97b'
+    color: '#43e97b',
   },
-  'App': {
+  App: {
     gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     icon: '📱',
-    color: '#fa709a'
-  }
+    color: '#fa709a',
+  },
 } as const;
 
 /**
@@ -57,10 +57,10 @@ export const DEFAULT_PROJECT_TYPE_STYLE = PROJECT_TYPE_STYLES['Web3D'];
 export const CARD_ACTION_ICONS = {
   edit: '✏️',
   delete: '🗑️',
-  calendar: '📅'
+  calendar: '📅',
 } as const;
 
 /**
  * 最大显示标签数量
  */
-export const MAX_VISIBLE_TAGS = 3 as const; 
+export const MAX_VISIBLE_TAGS = 3 as const;

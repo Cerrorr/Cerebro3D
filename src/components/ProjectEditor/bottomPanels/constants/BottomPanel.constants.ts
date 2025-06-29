@@ -1,7 +1,12 @@
+import React from 'react';
 import {
   FolderOpenOutlined,
   PlayCircleOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  AppstoreOutlined,
+  FireFilled,
+  BorderOutlined,
+  LayoutOutlined
 } from '@ant-design/icons';
 import type {
   LogEntry,
@@ -61,42 +66,22 @@ export const ASSET_CATEGORIES: AssetCategory[] = [
   {
     key: 'model',
     label: '模型',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <path d="M12 2L2 7v10c0 5.55 3.84 10 9 10s9-4.45 9-10V7l-10-5z"/>
-      </svg>
-    )
+    icon: React.createElement(AppstoreOutlined)
   },
   {
     key: 'particle',
     label: '粒子',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <circle cx="12" cy="12" r="3"/>
-        <circle cx="6" cy="6" r="2"/>
-        <circle cx="18" cy="6" r="2"/>
-        <circle cx="6" cy="18" r="2"/>
-        <circle cx="18" cy="18" r="2"/>
-      </svg>
-    )
+    icon: React.createElement(FireFilled)
   },
   {
     key: 'billboard',
     label: '广告牌',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-      </svg>
-    )
+    icon: React.createElement(BorderOutlined)
   },
   {
     key: 'panel',
     label: '面板',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-        <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>
-      </svg>
-    )
+    icon: React.createElement(LayoutOutlined)
   }
 ];
 
@@ -166,19 +151,19 @@ export const PANEL_OPTIONS: readonly BottomPanelOption[] = [
   {
     value: 'assets',
     label: '资源中心',
-    icon: <FolderOpenOutlined />,
+    icon: React.createElement(FolderOpenOutlined),
     description: '项目资源管理'
   },
   {
     value: 'animation',
     label: '动画编辑器',
-    icon: <PlayCircleOutlined />,
+    icon: React.createElement(PlayCircleOutlined),
     description: '动画时间轴和关键帧编辑'
   },
   {
     value: 'console',
     label: '日志',
-    icon: <FileTextOutlined />,
+    icon: React.createElement(FileTextOutlined),
     description: '系统日志和调试信息'
   }
 ] as const; 

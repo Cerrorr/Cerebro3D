@@ -5,7 +5,8 @@
  */
 
 import React, { useCallback } from 'react';
-import { Collapse, Switch, Select, Slider, Input, InputNumber } from 'antd';
+import { Switch, Select, Slider, Input, InputNumber } from 'antd';
+import ModernCollapse from '@/components/common/ModernCollapse';
 import { 
   DesktopOutlined,
   CloudOutlined,
@@ -337,7 +338,7 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
 
   return (
     <div className="renderer-config-panel">
-      <Collapse
+      <ModernCollapse
         items={collapseItems}
         defaultActiveKey={['renderer', 'shadow', 'globalIllumination']}
         ghost

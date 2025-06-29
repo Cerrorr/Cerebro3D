@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-  Select,
-  Input,
   Button,
-  Collapse,
+  Input,
+  Select,
   Space,
   Typography,
   Divider,
@@ -23,8 +22,9 @@ import {
 import type { GeometryPanelProps } from './types';
 import { GEOMETRY_TYPE_OPTIONS } from './types';
 import './styles/GeometryPanel.scss';
+import ModernCollapse from '@/components/common/ModernCollapse';
 
-const { Panel } = Collapse;
+const { Panel } = ModernCollapse;
 const { Text } = Typography;
 const { Option } = Select;
 
@@ -79,7 +79,7 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
 
   return (
     <div className="geometry-panel">
-      <Collapse
+      <ModernCollapse
         defaultActiveKey={['basic', 'attributes', 'morph', 'bounds']}
         ghost
         size="small"
@@ -300,7 +300,7 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
             </div>
           </div>
         </Panel>
-      </Collapse>
+      </ModernCollapse>
     </div>
   );
 };

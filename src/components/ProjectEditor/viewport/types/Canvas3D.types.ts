@@ -35,9 +35,9 @@ export interface Canvas3DProps {
   /** 设置变更回调函数 */
   onSettingsChange?: (settings: CanvasSettings) => void;
   /** 画布宽度（可选） */
-  width?: number;
+  width?: number | string;
   /** 画布高度（可选） */
-  height?: number;
+  height?: number | string;
   /** CSS类名 */
   className?: string;
   /** 对象选择回调函数 */

@@ -1,10 +1,10 @@
 import React from 'react';
 import { ProjectCardProps } from './types';
-import { 
-  PROJECT_TYPE_STYLES, 
-  DEFAULT_PROJECT_TYPE_STYLE, 
-  CARD_ACTION_ICONS, 
-  MAX_VISIBLE_TAGS 
+import {
+  PROJECT_TYPE_STYLES,
+  DEFAULT_PROJECT_TYPE_STYLE,
+  CARD_ACTION_ICONS,
+  MAX_VISIBLE_TAGS,
 } from './constants';
 import './styles/ProjectCard.scss';
 
@@ -19,7 +19,7 @@ const getProjectTypeStyle = (type: string) => {
 /**
  * 项目卡片组件
  * 展示单个项目的缩略图、信息和操作按钮
- * 
+ *
  * @param project - 项目数据对象
  * @param onClick - 项目点击处理函数
  * @author Cerror
@@ -41,7 +41,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString('zh-CN', {
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
 
@@ -51,14 +51,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
     <article className="project-card" onClick={handleClick}>
       <div className="card-thumbnail">
         {/* 使用渐变背景占位符替代真实图片 */}
-        <div 
+        <div
           className="thumbnail-placeholder"
           style={{ background: typeStyle.gradient }}
         >
           <span className="placeholder-icon">{typeStyle.icon}</span>
           <span className="placeholder-text">{project.type} 项目</span>
         </div>
-        
+
         {/* 项目类型标签 */}
         <span className="type-badge" style={{ color: typeStyle.color }}>
           {project.type}
@@ -68,7 +68,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
       <div className="card-content">
         <h3 className="card-title">{project.title}</h3>
         <p className="card-description">{project.description}</p>
-        
+
         {/* 标签列表 */}
         <div className="card-tags">
           {project.tags.slice(0, MAX_VISIBLE_TAGS).map((tag, index) => (
@@ -89,11 +89,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
             <span>{CARD_ACTION_ICONS.calendar}</span>
             <span>更新于 {formatDate(project.updatedAt)}</span>
           </div>
-          
+
           <div className="card-actions">
-            <button 
+            <button
               className="action-btn"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 // TODO: 实现编辑项目功能
               }}
@@ -101,9 +101,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
             >
               {CARD_ACTION_ICONS.edit}
             </button>
-            <button 
+            <button
               className="action-btn delete"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 // TODO: 实现删除项目功能
               }}

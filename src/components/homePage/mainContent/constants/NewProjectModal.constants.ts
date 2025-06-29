@@ -5,7 +5,10 @@
  * @since 2025-06-25
  */
 
-import type { ProjectTemplate, NewProjectFormData } from '@/components/homePage/mainContent/types';
+import type {
+  ProjectTemplate,
+  NewProjectFormData,
+} from '@/components/homePage/mainContent/types';
 import type { ProjectType } from '@/components/homePage/mainContent/types';
 
 /**
@@ -19,7 +22,7 @@ export const PROJECT_TEMPLATES: readonly ProjectTemplate[] = [
     category: 'Web3D',
     thumbnail: '',
     type: 'Web3D',
-    description: '从空白场景开始创建'
+    description: '从空白场景开始创建',
   },
   {
     id: '3d-editor',
@@ -27,7 +30,7 @@ export const PROJECT_TEMPLATES: readonly ProjectTemplate[] = [
     category: '模板',
     thumbnail: '',
     type: 'Web3D',
-    description: '基础3D编辑器模板'
+    description: '基础3D编辑器模板',
   },
   {
     id: 'house-template',
@@ -35,7 +38,7 @@ export const PROJECT_TEMPLATES: readonly ProjectTemplate[] = [
     category: '其他',
     thumbnail: '',
     type: 'Web3D',
-    description: '现代建筑风格场景'
+    description: '现代建筑风格场景',
   },
   {
     id: 'city-template',
@@ -43,7 +46,7 @@ export const PROJECT_TEMPLATES: readonly ProjectTemplate[] = [
     category: '园区',
     thumbnail: '',
     type: 'Web3D',
-    description: '城市建筑群场景'
+    description: '城市建筑群场景',
   },
   {
     id: 'animations',
@@ -51,7 +54,7 @@ export const PROJECT_TEMPLATES: readonly ProjectTemplate[] = [
     category: '其他',
     thumbnail: '',
     type: 'Game',
-    description: '动物动画展示'
+    description: '动物动画展示',
   },
   {
     id: 'material-template',
@@ -59,8 +62,8 @@ export const PROJECT_TEMPLATES: readonly ProjectTemplate[] = [
     category: '其他',
     thumbnail: '',
     type: 'Web3D',
-    description: '材质和特效演示'
-  }
+    description: '材质和特效演示',
+  },
 ] as const;
 
 /**
@@ -68,11 +71,11 @@ export const PROJECT_TEMPLATES: readonly ProjectTemplate[] = [
  * 定义每种项目类型对应的渐变背景样式
  */
 export const PROJECT_TYPE_GRADIENTS: Record<ProjectType, string> = {
-  'Web3D': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  'VR': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-  'AR': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-  'Game': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-  'App': 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+  Web3D: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  VR: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  AR: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  Game: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+  App: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
 } as const;
 
 /**
@@ -83,7 +86,7 @@ export const DEFAULT_FORM_DATA: NewProjectFormData = {
   name: '',
   category: 'Web3D',
   description: '',
-  templateId: 'blank'
+  templateId: 'blank',
 } as const;
 
 /**
@@ -97,5 +100,5 @@ export const DEFAULT_SELECTED_TEMPLATE = 'blank' as const;
  */
 export const TEMPLATE_ICONS: Record<string, string> = {
   blank: '📄',
-  default: '🎨'
-} as const; 
+  default: '🎨',
+} as const;

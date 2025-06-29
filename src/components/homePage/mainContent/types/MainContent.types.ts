@@ -6,17 +6,15 @@
  */
 
 import type { NewProjectFormData } from './NewProjectModal.types';
-import type { ProjectItem, ProjectType } from './ProjectGrid.types';
+import type { ProjectItem, ProjectClickHandler } from './ProjectGrid.types';
 import type { CarouselItem } from './CarouselSection.types';
 
 // 与首页主内容区相关的通用类型，就近定义
 
-export type ProjectClickHandler = (project: ProjectItem) => void;
-
 /**
  * 主内容区组件属性接口
  * 定义主内容区组件所需的所有属性类型
- * 
+ *
  * @interface MainContentProps
  * @property {readonly CarouselItem[]} carouselItems - 轮播图数据数组（只读）
  * @property {readonly ProjectItem[]} projects - 项目数据数组（只读）
@@ -32,4 +30,4 @@ export interface MainContentProps {
   readonly onProjectClick: ProjectClickHandler;
   /** 新建项目处理函数 */
   readonly onNewProject: (formData: NewProjectFormData) => void;
-} 
+}

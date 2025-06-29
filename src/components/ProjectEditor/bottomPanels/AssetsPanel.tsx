@@ -10,6 +10,7 @@ import {
   ASSET_TABS,
   MOCK_ASSET_DATA
 } from './constants/BottomPanel.constants';
+import './styles/AssetsPanel.scss'; // 引入本地样式
 
 /**
  * 资源面板组件

@@ -80,7 +80,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
               onChange={(e) => onTitleChange?.(e.target.value)}
               className="title-input"
               placeholder={TOOLBAR_TOOLTIPS.PROJECT_TITLE_PLACEHOLDER}
-              bordered={false}
+              variant="borderless"
               aria-label="项目标题"
             />
           </Tooltip>

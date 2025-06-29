@@ -11,7 +11,7 @@ import type { AppInfo } from './SidebarFooter.types';
 /**
  * 侧边栏组件属性接口
  * 定义侧边栏组件所需的所有属性类型
- * 
+ *
  * @interface SidebarProps
  * @property {readonly SidebarMenuItem[]} menuItems - 菜单项数组（只读）
  * @property {AppInfo} appInfo - 应用程序信息对象
@@ -24,4 +24,4 @@ export interface SidebarProps {
   readonly appInfo: AppInfo;
   /** 菜单点击事件处理函数 */
   readonly onMenuClick: MenuClickHandler;
-} 
+}

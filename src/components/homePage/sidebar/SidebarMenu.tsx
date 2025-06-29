@@ -9,7 +9,7 @@ import './styles/SidebarMenu.scss';
 /**
  * 侧边栏菜单组件
  * 展示导航菜单列表，使用 Ant Design Menu 组件
- * 
+ *
  * @param items - 菜单项列表
  * @param onItemClick - 菜单项点击回调
  * @author Cerror
@@ -19,7 +19,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ items, onItemClick }) => {
   /**
    * 将内部菜单项转换为 Ant Design Menu 项格式
    */
-  const menuItems: MenuProps['items'] = items.map((item) => ({
+  const menuItems: MenuProps['items'] = items.map(item => ({
     key: item.id,
     icon: <span className="menu-icon-emoji">{item.icon}</span>,
     label: (
@@ -40,7 +40,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ items, onItemClick }) => {
    * 处理菜单项点击事件
    * @param menuInfo - Ant Design 菜单点击信息
    */
-  const handleMenuClick: MenuProps['onClick'] = (menuInfo) => {
+  const handleMenuClick: MenuProps['onClick'] = menuInfo => {
     const clickedItem = items.find(item => item.id === menuInfo.key);
     if (clickedItem) {
       onItemClick(clickedItem);
@@ -61,4 +61,4 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ items, onItemClick }) => {
   );
 };
 
-export default SidebarMenu; 
+export default SidebarMenu;

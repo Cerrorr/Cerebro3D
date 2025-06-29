@@ -37,26 +37,26 @@
   min-height: 0; /* 让flex子元素正确收缩 */
   /* 顶部留出空间防止悬浮卡片被遮挡 */
   padding-top: 8px;
-  
+
   /* 自定义滚动条样式 */
   &::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 3px;
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.5);
     }
   }
-  
+
   /* 为Firefox添加滚动条样式 */
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
@@ -89,7 +89,7 @@
   @apply col-span-full flex items-center justify-center py-8 text-center;
   @apply bg-white bg-opacity-20 rounded-xl border-2 border-dashed border-white border-opacity-30;
   backdrop-filter: blur(10px);
-  
+
   .empty-text {
     @apply text-white text-opacity-70 text-sm;
   }
@@ -109,23 +109,23 @@
     @apply mx-4 mt-4;
     height: 256px;
   }
-  
+
   .carousel-title {
     @apply text-xl;
   }
-  
+
   .carousel-description {
     @apply text-sm;
   }
-  
+
   .project-grid {
     @apply p-4;
   }
-  
+
   .grid-layout {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
-  
+
   .grid-header {
     @apply flex-col items-start gap-2;
   }
@@ -136,27 +136,27 @@
     @apply mx-3 mt-3;
     height: 192px;
   }
-  
+
   .carousel-content {
     @apply bottom-4 left-4;
   }
-  
+
   .carousel-title {
     @apply text-lg;
   }
-  
+
   .carousel-description {
     @apply text-xs;
   }
-  
+
   .decoration-icon {
     font-size: 120px;
   }
-  
+
   .project-grid {
     @apply p-3;
   }
-  
+
   .grid-layout {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     @apply gap-3;
@@ -169,8 +169,8 @@
     grid-template-columns: 1fr;
     @apply gap-3;
   }
-  
+
   .project-grid {
     @apply p-2;
   }
-} 
+}

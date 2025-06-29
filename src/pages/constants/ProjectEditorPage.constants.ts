@@ -17,7 +17,7 @@ import {
   ExportOutlined,
   SaveOutlined,
   EyeOutlined,
-  SettingOutlined
+  SettingOutlined,
 } from '@ant-design/icons';
 import type { ToolbarAction } from '@/components/projectEditor/topToolbar/types/Toolbar.types';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types/SceneTree.types';
@@ -29,16 +29,16 @@ export const DEFAULT_CANVAS_SETTINGS = {
   gridVisible: true,
   axisVisible: true,
   backgroundColor: '#0a0a0a',
-  cameraPosition: [5, 5, 5] as [number, number, number]
+  cameraPosition: [5, 5, 5] as [number, number, number],
 } as const;
 
 /**
  * 默认面板配置
  */
 export const DEFAULT_PANEL_CONFIG = {
-  BOTTOM_PANEL_HEIGHT: 220,  // 底部面板默认高度
+  BOTTOM_PANEL_HEIGHT: 220, // 底部面板默认高度
   RIGHT_SIDEBAR_WIDTH: 320,
-  RIGHT_SIDEBAR_COLLAPSED: false
+  RIGHT_SIDEBAR_COLLAPSED: false,
 } as const;
 
 /**
@@ -50,40 +50,40 @@ export const getLeftToolbarActions = (): ToolbarAction[] => [
     id: 'import',
     label: '导入',
     icon: React.createElement(ImportOutlined),
-    onClick: () => console.log('导入文件')
+    onClick: () => console.log('导入文件'),
   },
   {
     id: 'undo',
     label: '撤回',
     icon: React.createElement(UndoOutlined),
     onClick: () => console.log('撤回操作'),
-    disabled: true
+    disabled: true,
   },
   {
     id: 'redo',
     label: '重做',
     icon: React.createElement(RedoOutlined),
     onClick: () => console.log('重做操作'),
-    disabled: true
+    disabled: true,
   },
   {
     id: 'delete',
     label: '删除',
     icon: React.createElement(DeleteOutlined),
-    onClick: () => console.log('删除选中对象')
+    onClick: () => console.log('删除选中对象'),
   },
   {
     id: 'clear',
     label: '清空',
     icon: React.createElement(ClearOutlined),
-    onClick: () => console.log('清空场景')
+    onClick: () => console.log('清空场景'),
   },
   {
     id: 'copy',
     label: '复制',
     icon: React.createElement(CopyOutlined),
-    onClick: () => console.log('复制选中对象')
-  }
+    onClick: () => console.log('复制选中对象'),
+  },
 ];
 
 /**
@@ -95,32 +95,32 @@ export const RIGHT_TOOLBAR_ACTIONS: ToolbarAction[] = [
     id: 'fullscreen',
     label: '全屏',
     icon: React.createElement(FullscreenOutlined),
-    onClick: () => console.log('切换全屏模式')
+    onClick: () => console.log('切换全屏模式'),
   },
   {
     id: 'export',
     label: '导出',
     icon: React.createElement(ExportOutlined),
-    onClick: () => console.log('导出项目')
+    onClick: () => console.log('导出项目'),
   },
   {
     id: 'save',
     label: '保存',
     icon: React.createElement(SaveOutlined),
-    onClick: () => console.log('保存项目')
+    onClick: () => console.log('保存项目'),
   },
   {
     id: 'preview',
     label: '预览',
     icon: React.createElement(EyeOutlined),
-    onClick: () => console.log('预览模式')
+    onClick: () => console.log('预览模式'),
   },
   {
     id: 'settings',
     label: '设置',
     icon: React.createElement(SettingOutlined),
-    onClick: () => console.log('打开设置')
-  }
+    onClick: () => console.log('打开设置'),
+  },
 ] as const;
 
 /**
@@ -146,15 +146,15 @@ export const MOCK_SCENE_NODES: readonly SceneNode[] = [
             id: 'camera1',
             name: '正交视图',
             type: 'camera',
-            visible: true
+            visible: true,
           },
           {
-            id: 'camera2', 
+            id: 'camera2',
             name: '透视视图',
             type: 'camera',
-            visible: true
-          }
-        ]
+            visible: true,
+          },
+        ],
       },
       {
         id: 'lights',
@@ -167,15 +167,15 @@ export const MOCK_SCENE_NODES: readonly SceneNode[] = [
             id: 'light1',
             name: '环境光',
             type: 'light',
-            visible: true
+            visible: true,
           },
           {
             id: 'light2',
             name: '方向光',
             type: 'light',
-            visible: true
-          }
-        ]
+            visible: true,
+          },
+        ],
       },
       {
         id: 'meshes',
@@ -188,7 +188,7 @@ export const MOCK_SCENE_NODES: readonly SceneNode[] = [
             id: 'cube1',
             name: '立方体',
             type: 'mesh',
-            visible: true
+            visible: true,
           },
           {
             id: 'materials',
@@ -201,12 +201,12 @@ export const MOCK_SCENE_NODES: readonly SceneNode[] = [
                 id: 'material1',
                 name: '默认材质',
                 type: 'material',
-                visible: true
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-] as const; 
+                visible: true,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+] as const;

@@ -36,4 +36,4 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({ appInfo }) => {
   );
 };
 
-export default SidebarFooter; 
+export default SidebarFooter;

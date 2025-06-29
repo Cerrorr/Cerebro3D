@@ -6,4 +6,4 @@ export { default as SidebarFooter } from './sidebar/SidebarFooter';
 export { default as MainContent } from './mainContent/MainContent';
 export { default as CarouselSection } from './mainContent/CarouselSection';
 export { default as ProjectGrid } from './mainContent/ProjectGrid';
-export { default as ProjectCard } from './mainContent/ProjectCard'; 
+export { default as ProjectCard } from './mainContent/ProjectCard';

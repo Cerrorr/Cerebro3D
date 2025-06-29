@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { message } from 'antd';
-import type { ProjectType, NewProjectModalProps, ProjectTemplate, NewProjectFormData } from './types';
-import { 
-  PROJECT_TEMPLATES, 
-  PROJECT_TYPE_GRADIENTS, 
-  DEFAULT_FORM_DATA, 
+import type {
+  ProjectType,
+  NewProjectModalProps,
+  ProjectTemplate,
+  NewProjectFormData,
+} from './types';
+import {
+  PROJECT_TEMPLATES,
+  PROJECT_TYPE_GRADIENTS,
+  DEFAULT_FORM_DATA,
   DEFAULT_SELECTED_TEMPLATE,
-  TEMPLATE_ICONS 
+  TEMPLATE_ICONS,
 } from './constants';
 import './styles/NewProjectModal.scss';
 
 /**
  * 新建项目弹窗组件
  * 提供模板选择和项目基本信息设置功能
- * 
+ *
  * @param isOpen - 弹窗打开状态
  * @param onClose - 关闭回调
  * @param onConfirm - 确认回调
@@ -23,10 +28,13 @@ import './styles/NewProjectModal.scss';
 const NewProjectModal: React.FC<NewProjectModalProps> = ({
   isOpen,
   onClose,
-  onConfirm
+  onConfirm,
 }) => {
-  const [selectedTemplate, setSelectedTemplate] = useState<string>(DEFAULT_SELECTED_TEMPLATE);
-  const [formData, setFormData] = useState<NewProjectFormData>(DEFAULT_FORM_DATA);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>(
+    DEFAULT_SELECTED_TEMPLATE
+  );
+  const [formData, setFormData] =
+    useState<NewProjectFormData>(DEFAULT_FORM_DATA);
 
   /**
    * 处理表单字段变化
@@ -36,7 +44,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
   const handleFormChange = (field: keyof NewProjectFormData, value: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -46,12 +54,14 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
    */
   const handleTemplateSelect = (templateId: string) => {
     setSelectedTemplate(templateId);
-    const template = PROJECT_TEMPLATES.find((t: ProjectTemplate) => t.id === templateId);
+    const template = PROJECT_TEMPLATES.find(
+      (t: ProjectTemplate) => t.id === templateId
+    );
     if (template) {
       setFormData(prev => ({
         ...prev,
         templateId,
-        category: template.type
+        category: template.type,
       }));
     }
   };
@@ -64,12 +74,12 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
       message.error('请输入项目名称');
       return;
     }
-    
+
     onConfirm({
       ...formData,
-      templateId: selectedTemplate
+      templateId: selectedTemplate,
     });
-    
+
     // 重置表单
     setFormData(DEFAULT_FORM_DATA);
     setSelectedTemplate(DEFAULT_SELECTED_TEMPLATE);
@@ -97,7 +107,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
 
   return (
     <div className="modal-overlay" onClick={handleClose}>
-      <div className="new-project-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="new-project-modal" onClick={e => e.stopPropagation()}>
         {/* 弹窗头部 */}
         <div className="modal-header">
           <h2 className="modal-title">新建项目</h2>
@@ -117,7 +127,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
                   className={`template-item ${selectedTemplate === template.id ? 'selected' : ''}`}
                   onClick={() => handleTemplateSelect(template.id)}
                 >
-                  <div 
+                  <div
                     className="template-thumbnail"
                     style={{ background: getTemplateGradient(template) }}
                   >
@@ -137,7 +147,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
           {/* 右侧项目设置区域 */}
           <div className="settings-section">
             <h3 className="section-title">项目默认设置</h3>
-            
+
             <div className="form-group">
               <label className="form-label required">
                 场景名称 <span className="required-mark">*</span>
@@ -147,7 +157,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
                 className="form-input"
                 placeholder="请输入场景名称"
                 value={formData.name}
-                onChange={(e) => handleFormChange('name', e.target.value)}
+                onChange={e => handleFormChange('name', e.target.value)}
               />
             </div>
 
@@ -156,7 +166,9 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
               <select
                 className="form-select"
                 value={formData.category}
-                onChange={(e) => handleFormChange('category', e.target.value as ProjectType)}
+                onChange={e =>
+                  handleFormChange('category', e.target.value as ProjectType)
+                }
               >
                 <option value="Web3D">Web3D</option>
                 <option value="VR">VR</option>
@@ -173,7 +185,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
                 placeholder="请输入场景描述"
                 rows={4}
                 value={formData.description}
-                onChange={(e) => handleFormChange('description', e.target.value)}
+                onChange={e => handleFormChange('description', e.target.value)}
               />
             </div>
           </div>
@@ -193,4 +205,4 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
   );
 };
 
-export default NewProjectModal; 
+export default NewProjectModal;

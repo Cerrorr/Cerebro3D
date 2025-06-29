@@ -8,7 +8,7 @@ export {
   APP_INFO,
   SIDEBAR_MENU_ITEMS,
   HOME_CAROUSEL_ITEMS,
-  HOME_PROJECT_ITEMS
+  HOME_PROJECT_ITEMS,
 } from './HomePage.constants';
 
 export {
@@ -16,5 +16,5 @@ export {
   DEFAULT_PANEL_CONFIG,
   getLeftToolbarActions,
   RIGHT_TOOLBAR_ACTIONS,
-  MOCK_SCENE_NODES
-} from './ProjectEditorPage.constants'; 
+  MOCK_SCENE_NODES,
+} from './ProjectEditorPage.constants';

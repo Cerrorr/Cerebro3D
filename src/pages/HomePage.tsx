@@ -5,13 +5,13 @@ import {
   ProjectItem,
   MenuClickHandler,
   ProjectClickHandler,
-  NewProjectFormData
+  NewProjectFormData,
 } from '@/components/homePage/types';
-import { 
-  APP_INFO, 
-  SIDEBAR_MENU_ITEMS, 
-  HOME_CAROUSEL_ITEMS, 
-  HOME_PROJECT_ITEMS 
+import {
+  APP_INFO,
+  SIDEBAR_MENU_ITEMS,
+  HOME_CAROUSEL_ITEMS,
+  HOME_PROJECT_ITEMS,
 } from './constants';
 import { Sidebar, MainContent } from '@/components/homePage';
 import { BaiduAnalytics, usePageTracking } from '@/utils/analytics';
@@ -29,7 +29,7 @@ import './styles/HomePage.scss';
 const HomePage: React.FC = () => {
   // 页面访问追踪
   usePageTracking('/', 'Cerebro3D首页');
-  
+
   // 路由导航hook
   const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ const HomePage: React.FC = () => {
   const handleMenuClick: MenuClickHandler = (item: SidebarMenuItem): void => {
     // 追踪菜单点击事件
     BaiduAnalytics.trackMenu.click(item.id, item.label);
-    
+
     // TODO: 实现路由跳转
   };
 
@@ -58,16 +58,18 @@ const HomePage: React.FC = () => {
    * @param project - 被点击的项目对象
    * @returns void
    */
-  const handleProjectClick: ProjectClickHandler = (project: ProjectItem): void => {
+  const handleProjectClick: ProjectClickHandler = (
+    project: ProjectItem
+  ): void => {
     // 追踪项目打开事件
     BaiduAnalytics.trackProject.open(project.id, project.type);
-    
+
     // 跳转到项目编辑页面
-    navigate(`/project/${project.id}`, { 
-      state: { 
+    navigate(`/project/${project.id}`, {
+      state: {
         projectTitle: project.title,
-        projectType: project.type 
-      } 
+        projectType: project.type,
+      },
     });
   };
 
@@ -80,28 +82,28 @@ const HomePage: React.FC = () => {
   const handleNewProject = (formData: NewProjectFormData): void => {
     // 追踪项目创建事件
     BaiduAnalytics.trackProject.create(formData.category);
-    
+
     // 生成新项目ID
     const newProjectId = `project_${Date.now()}`;
-    
+
     // 跳转到新项目编辑页面
-    navigate(`/project/${newProjectId}`, { 
-      state: { 
+    navigate(`/project/${newProjectId}`, {
+      state: {
         projectTitle: formData.name,
         projectType: formData.category,
-        isNewProject: true 
-      } 
+        isNewProject: true,
+      },
     });
   };
 
   return (
     <div className="home-page">
-      <Sidebar 
+      <Sidebar
         menuItems={menuItems}
         appInfo={appInfo}
         onMenuClick={handleMenuClick}
       />
-      <MainContent 
+      <MainContent
         carouselItems={carouselItems}
         projects={projects}
         onProjectClick={handleProjectClick}
@@ -111,4 +113,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage; 
+export default HomePage;

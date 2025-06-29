@@ -13,4 +13,4 @@ export interface CarouselItem {
  */
 export interface CarouselSectionProps {
   readonly items: readonly CarouselItem[];
-} 
+}

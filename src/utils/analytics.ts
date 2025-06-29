@@ -6,28 +6,8 @@
  */
 
 import './types/Analytics.types';
+import { devLog } from './devLog';
 
-/**
- * 开发环境日志输出
- * 只在开发环境输出日志，生产环境静默
- */
-const devLog = {
-  log: (message: string, ...args: any[]) => {
-    if (import.meta.env.DEV) {
-      console.log(message, ...args);
-    }
-  },
-  warn: (message: string, ...args: any[]) => {
-    if (import.meta.env.DEV) {
-      console.warn(message, ...args);
-    }
-  },
-  error: (message: string, ...args: any[]) => {
-    if (import.meta.env.DEV) {
-      console.error(message, ...args);
-    }
-  }
-};
 
 /**
  * 百度统计分析工具类

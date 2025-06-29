@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NewProjectFormData,ProjectGridProps } from './types';
+import { NewProjectFormData, ProjectGridProps } from './types';
 import ProjectCard from './ProjectCard';
 import NewProjectCard from './NewProjectCard';
 import NewProjectModal from './NewProjectModal';
@@ -13,10 +13,10 @@ import './styles/NewProjectCard.scss';
  * @author Cerror
  * @since 2025-06-24
  */
-const ProjectGrid: React.FC<ProjectGridProps> = ({ 
-  projects, 
+const ProjectGrid: React.FC<ProjectGridProps> = ({
+  projects,
   onProjectClick,
-  onNewProject
+  onNewProject,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -50,26 +50,28 @@ const ProjectGrid: React.FC<ProjectGridProps> = ({
         <h2 className="grid-title">我的项目</h2>
         <div className="project-count">{projects.length} 个项目</div>
       </div>
-      
+
       {/* 可滚动的卡片区域 */}
       <div className="grid-container">
         <div className="grid-layout">
           {/* 新建项目卡片 - 始终在第一位 */}
           <NewProjectCard onClick={handleNewProjectClick} />
-          
+
           {/* 现有项目卡片 */}
-          {projects.map((project) => (
+          {projects.map(project => (
             <ProjectCard
               key={project.id}
               project={project}
               onClick={() => onProjectClick(project)}
             />
           ))}
-          
+
           {/* 空状态提示（仅在没有项目时显示） */}
           {projects.length === 0 && (
             <div className="empty-state-inline">
-              <p className="empty-text">还没有其他项目，点击左侧新建开始创作吧！</p>
+              <p className="empty-text">
+                还没有其他项目，点击左侧新建开始创作吧！
+              </p>
             </div>
           )}
         </div>
@@ -85,4 +87,4 @@ const ProjectGrid: React.FC<ProjectGridProps> = ({
   );
 };
 
-export default ProjectGrid; 
+export default ProjectGrid;
