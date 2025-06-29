@@ -1,4 +1,4 @@
-import { SceneNode, CanvasSettings } from '@/components/projectEditor/types';
+import type { SceneNode, CanvasSettings } from '@/components/projectEditor/types';
 
 /**
  * 项目页面组件属性接口

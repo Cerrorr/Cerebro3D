@@ -19,7 +19,8 @@ import {
   EyeOutlined,
   SettingOutlined
 } from '@ant-design/icons';
-import type { ToolbarAction, SceneNode } from '@/components/projectEditor/types';
+import type { ToolbarAction } from '@/components/projectEditor/topToolbar/types/Toolbar.types';
+import type { SceneNode } from '@/components/projectEditor/sceneTree/types/SceneTree.types';
 
 /**
  * 默认画布设置配置

@@ -1,14 +1,26 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { Toolbar, SceneTree, Canvas3D, ResizablePanel, RightSidebar, BottomPanel } from '@/components/projectEditor';
-import { SceneNode, CanvasSettings, RightSidebarTabType, BottomPanelType } from '@/components/projectEditor/types';
+import {
+  Toolbar,
+  SceneTree,
+  Canvas3D,
+  ResizablePanel,
+  RightSidebar,
+  BottomPanel,
+} from '@/components/projectEditor';
+import type {
+  SceneNode,
+  CanvasSettings,
+  RightSidebarTabType,
+  BottomPanelType,
+} from '@/components/projectEditor/types';
 import { ProjectEditorPageProps } from './types';
 import {
   DEFAULT_CANVAS_SETTINGS,
   DEFAULT_PANEL_CONFIG,
   getLeftToolbarActions,
   RIGHT_TOOLBAR_ACTIONS,
-  MOCK_SCENE_NODES
+  MOCK_SCENE_NODES,
 } from './constants';
 import './styles/ProjectEditorPage.scss';
 
@@ -22,31 +34,38 @@ import './styles/ProjectEditorPage.scss';
  */
 const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   projectTitle: initialTitle,
-  projectLogo = '/images/logo.png'
+  projectLogo = '/images/logo.png',
 }) => {
   // 路由相关hooks
   const { projectId } = useParams<{ projectId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // 从路由状态中获取项目信息
   const routeState = location.state as {
     projectTitle?: string;
     projectType?: string;
     isNewProject?: boolean;
   } | null;
-  
+
   // 确定项目标题（优先使用路由状态，其次是props，最后是默认值）
-  const finalProjectTitle = routeState?.projectTitle || initialTitle || '新建项目';
-  
+  const finalProjectTitle =
+    routeState?.projectTitle || initialTitle || '新建项目';
+
   const [projectTitle, setProjectTitle] = useState(finalProjectTitle);
-  const [sceneNodes, setSceneNodes] = useState<SceneNode[]>([...MOCK_SCENE_NODES]);
+  const [sceneNodes, setSceneNodes] = useState<SceneNode[]>([
+    ...MOCK_SCENE_NODES,
+  ]);
   const [selectedNodeId, setSelectedNodeId] = useState<string>('cube1');
-  const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(DEFAULT_PANEL_CONFIG.BOTTOM_PANEL_HEIGHT);
-  const [rightSidebarTab, setRightSidebarTab] = useState<RightSidebarTabType>('scene');
-  const [bottomPanelType, setBottomPanelType] = useState<BottomPanelType>('assets');
+  const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(
+    DEFAULT_PANEL_CONFIG.BOTTOM_PANEL_HEIGHT
+  );
+  const [rightSidebarTab, setRightSidebarTab] =
+    useState<RightSidebarTabType>('scene');
+  const [bottomPanelType, setBottomPanelType] =
+    useState<BottomPanelType>('assets');
   const [canvasSettings, setCanvasSettings] = useState<CanvasSettings>({
-    ...DEFAULT_CANVAS_SETTINGS
+    ...DEFAULT_CANVAS_SETTINGS,
   });
 
   // 监听路由变化，更新项目标题
@@ -54,15 +73,13 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
     if (routeState?.projectTitle) {
       setProjectTitle(routeState.projectTitle);
     }
-    
+
     // 如果有projectId，可以在这里加载对应的项目数据
     if (projectId) {
       console.log('加载项目:', projectId);
       // TODO: 根据projectId从API加载项目数据
     }
   }, [routeState?.projectTitle, projectId]);
-
-
 
   // 使用常量文件中的工具栏配置
   const leftActions = getLeftToolbarActions();
@@ -106,9 +123,12 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
    * 处理右侧栏标签切换
    * @param tab 标签类型
    */
-  const handleRightSidebarTabChange = useCallback((tab: RightSidebarTabType) => {
-    setRightSidebarTab(tab);
-  }, []);
+  const handleRightSidebarTabChange = useCallback(
+    (tab: RightSidebarTabType) => {
+      setRightSidebarTab(tab);
+    },
+    []
+  );
 
   /**
    * 处理底部面板类型切换
@@ -186,4 +206,4 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   );
 };
 
-export default ProjectEditorPage; 
+export default ProjectEditorPage;
