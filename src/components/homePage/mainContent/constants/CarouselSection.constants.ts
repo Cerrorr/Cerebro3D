@@ -5,7 +5,7 @@
  * @since 2025-06-25
  */
 
-import type { CarouselItem } from '@/types/Common.types';
+import type { CarouselItem } from '@/components/homePage/mainContent/types';
 
 /**
  * 默认轮播图项目配置

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Carousel } from 'antd';
-import { CarouselSectionProps } from '@/components/homePage/mainContent/types';
+import { CarouselSectionProps } from './types';
 import { 
   DEFAULT_CAROUSEL_ITEMS, 
   CAROUSEL_GRADIENTS, 

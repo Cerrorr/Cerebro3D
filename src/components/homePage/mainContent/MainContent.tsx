@@ -1,7 +1,7 @@
 import React from 'react';
-import CarouselSection from '@/components/homePage/mainContent/CarouselSection';
-import ProjectGrid from '@/components/homePage/mainContent/ProjectGrid';
-import { MainContentProps } from '@/components/homePage/mainContent/types';
+import CarouselSection from './CarouselSection';
+import ProjectGrid from './ProjectGrid';
+import { MainContentProps } from './types';
 import './styles/MainContent.scss';
 
 // 类型声明已移至 @/components/homePage/mainContent/types/MainContent.types.ts

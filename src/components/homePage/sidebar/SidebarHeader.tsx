@@ -1,8 +1,8 @@
 import React from 'react';
-import { SidebarHeaderProps } from '@/components/homePage/sidebar/types';
+import { SidebarHeaderProps } from './types';
 import './styles/SidebarHeader.scss';
 
-// 类型声明已移至 @/components/homePage/sidebar/types/Sidebar.types.ts
+// 类型声明已移至 @/components/homePage/sidebar/types/SidebarHeader.types.ts
 
 /**
  * 侧边栏头部组件

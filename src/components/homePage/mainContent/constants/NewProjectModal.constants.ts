@@ -6,7 +6,7 @@
  */
 
 import type { ProjectTemplate, NewProjectFormData } from '@/components/homePage/mainContent/types';
-import type { ProjectType } from '@/types/Common.types';
+import type { ProjectType } from '@/components/homePage/mainContent/types';
 
 /**
  * 项目模板数据配置

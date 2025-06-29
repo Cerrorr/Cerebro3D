@@ -5,17 +5,17 @@
  * @since 2025-06-24
  */
 
-import { 
-  SidebarMenuItem, 
-  AppInfo, 
-  CarouselItem, 
-  ProjectItem
-} from '@/types/Common.types';
+import type {
+  SidebarMenuItem,
+  AppInfo,
+  CarouselItem,
+  ProjectItem,
+} from '@/components/homePage/types';
 
 /**
  * 首页组件Props接口
  * 虽然首页组件当前不接收外部props，但为扩展性预留
- * 
+ *
  * @interface HomePageProps
  */
 export interface HomePageProps {
@@ -25,7 +25,7 @@ export interface HomePageProps {
 /**
  * 首页状态接口
  * 定义首页组件内部状态类型
- * 
+ *
  * @interface HomePageState
  * @property {readonly ProjectItem[]} projects - 项目列表（只读）
  * @property {readonly SidebarMenuItem[]} menuItems - 菜单项列表（只读）
@@ -37,4 +37,4 @@ export interface HomePageState {
   readonly menuItems: readonly SidebarMenuItem[];
   readonly carouselItems: readonly CarouselItem[];
   readonly appInfo: AppInfo;
-} 
+}

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { message } from 'antd';
-import { ProjectType } from '@/types/Common.types';
-import { NewProjectModalProps, ProjectTemplate, NewProjectFormData } from '@/components/homePage/mainContent/types';
+import type { ProjectType, NewProjectModalProps, ProjectTemplate, NewProjectFormData } from './types';
 import { 
   PROJECT_TEMPLATES, 
   PROJECT_TYPE_GRADIENTS, 
   DEFAULT_FORM_DATA, 
   DEFAULT_SELECTED_TEMPLATE,
   TEMPLATE_ICONS 
-} from '@/components/homePage/mainContent/constants';
+} from './constants';
 import './styles/NewProjectModal.scss';
 
 /**

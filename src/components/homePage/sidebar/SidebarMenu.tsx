@@ -1,10 +1,10 @@
 import React from 'react';
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
-import { SidebarMenuProps } from '@/components/homePage/sidebar/types';
+import { SidebarMenuProps } from './types';
 import './styles/SidebarMenu.scss';
 
-// 类型声明已移至 @/components/homePage/sidebar/types/Sidebar.types.ts
+// 类型声明已移至 @/components/homePage/sidebar/types/SidebarMenu.types.ts
 
 /**
  * 侧边栏菜单组件

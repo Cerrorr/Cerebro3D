@@ -1,11 +1,11 @@
 import React from 'react';
-import { ProjectCardProps } from '@/components/homePage/mainContent/types';
+import { ProjectCardProps } from './types';
 import { 
   PROJECT_TYPE_STYLES, 
   DEFAULT_PROJECT_TYPE_STYLE, 
   CARD_ACTION_ICONS, 
   MAX_VISIBLE_TAGS 
-} from '@/components/homePage/mainContent/constants';
+} from './constants';
 import './styles/ProjectCard.scss';
 
 /**

@@ -1,8 +1,8 @@
 import React from 'react';
-import { SidebarFooterProps } from '@/components/homePage/sidebar/types';
+import { SidebarFooterProps } from './types';
 import './styles/SidebarFooter.scss';
 
-// 类型声明已移至 @/components/homePage/sidebar/types/Sidebar.types.ts
+// 类型声明已移至 @/components/homePage/sidebar/types/SidebarFooter.types.ts
 
 /**
  * 侧边栏底部组件

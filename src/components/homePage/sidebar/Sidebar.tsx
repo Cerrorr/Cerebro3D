@@ -1,8 +1,8 @@
 import React from 'react';
-import { SidebarProps } from '@/components/homePage/sidebar/types/Sidebar.types';
-import SidebarHeader from '@/components/homePage/sidebar/SidebarHeader';
-import SidebarMenu from '@/components/homePage/sidebar/SidebarMenu';
-import SidebarFooter from '@/components/homePage/sidebar/SidebarFooter';
+import { SidebarProps } from './types';
+import SidebarHeader from './SidebarHeader';
+import SidebarMenu from './SidebarMenu';
+import SidebarFooter from './SidebarFooter';
 import './styles/Sidebar.scss';
 
 /**

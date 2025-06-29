@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { NewProjectFormData } from '@/types';
-import ProjectCard from '@/components/homePage/mainContent/ProjectCard';
-import NewProjectCard from '@/components/homePage/mainContent/NewProjectCard';
-import NewProjectModal from '@/components/homePage/mainContent/NewProjectModal';
-import { ProjectGridProps } from '@/components/homePage/mainContent/types';
+import { NewProjectFormData,ProjectGridProps } from './types';
+import ProjectCard from './ProjectCard';
+import NewProjectCard from './NewProjectCard';
+import NewProjectModal from './NewProjectModal';
 import './styles/NewProjectCard.scss';
 
 // 类型声明已移至 @/components/homePage/mainContent/types/MainContent.types.ts

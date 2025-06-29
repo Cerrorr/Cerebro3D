@@ -1,5 +1,5 @@
 import React from 'react';
-import { NewProjectCardProps } from '@/components/homePage/mainContent/types';
+import { NewProjectCardProps } from './types';
 import './styles/NewProjectCard.scss';
 
 // 类型声明已移至 @/components/homePage/mainContent/types/MainContent.types.ts

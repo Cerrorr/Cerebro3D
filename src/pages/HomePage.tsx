@@ -6,15 +6,14 @@ import {
   MenuClickHandler,
   ProjectClickHandler,
   NewProjectFormData
-} from '@/types/Common.types';
+} from '@/components/homePage/types';
 import { 
   APP_INFO, 
   SIDEBAR_MENU_ITEMS, 
   HOME_CAROUSEL_ITEMS, 
   HOME_PROJECT_ITEMS 
 } from './constants';
-import Sidebar from '@/components/homePage/sidebar/Sidebar';
-import MainContent from '@/components/homePage/mainContent/MainContent';
+import { Sidebar, MainContent } from '@/components/homePage';
 import { BaiduAnalytics, usePageTracking } from '@/utils/analytics';
 
 import './styles/HomePage.scss';
