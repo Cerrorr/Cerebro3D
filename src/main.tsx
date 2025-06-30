@@ -2,6 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/globals.scss'
 import App from '@/App.tsx'
+import { Provider } from 'react-redux'
+import { store } from '@/store'
 
 /**
  * React应用入口文件
@@ -9,6 +11,8 @@ import App from '@/App.tsx'
  */
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </StrictMode>,
 )

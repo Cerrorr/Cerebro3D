@@ -29,6 +29,8 @@ export interface ObjectInfo {
   id: string;
   /** 名称 */
   name: string;
+  /** 材质 */
+  material?: string;
 }
 
 // 变换配置
@@ -149,7 +151,8 @@ export const DEFAULT_OBJECT_STATE: ObjectState = {
   info: {
     type: 'Object3D',
     id: '',
-    name: '未选择对象'
+    name: '未选择对象',
+    material: ''
   },
   transform: {
     position: { x: 0, y: 0, z: 0 },

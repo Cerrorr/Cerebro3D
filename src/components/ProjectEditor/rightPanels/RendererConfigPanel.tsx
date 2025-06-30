@@ -1,11 +1,13 @@
 /**
  * 渲染器配置面板组件
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 
 import React, { useCallback } from 'react';
-import { Switch, Select, Slider, Input, InputNumber } from 'antd';
+import { Select as AntSelect } from 'antd';
+import { RSwitch, RSelect, RSlider, RInput, RInputNumber } from '@/components/common/recordable';
+import { useRecord } from '@/hooks/common/useRecord';
 import ModernCollapse from '@/components/common/ModernCollapse';
 import { 
   DesktopOutlined,
@@ -23,18 +25,21 @@ import type {
 } from './types';
 import './styles/RendererConfigPanel.scss';
 
-const { Option } = Select;
+const { Option } = AntSelect;
 
 /**
  * 渲染器配置面板组件
  * 提供渲染器相关的详细配置选项
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
   config,
   onChange
 }) => {
+  // 记录器
+  const record = useRecord('渲染器');
+
   // 抗锯齿配置更新处理函数
   const handleAntialiasingChange = useCallback((updates: Partial<RendererAntialiasingConfig>) => {
     const newConfig: RendererConfig = {
@@ -94,9 +99,11 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
           <div className="config-item">
             <div className="config-row">
               <span className="config-label">抗锯齿</span>
-              <Switch
+              <RSwitch
+                record={record}
+                field="antialiasing.enabled"
                 checked={config.antialiasing.enabled}
-                onChange={(enabled) => handleAntialiasingChange({ enabled })}
+                onChange={(enabled: boolean) => handleAntialiasingChange({ enabled })}
                 className="config-switch"
                 size="small"
               />
@@ -105,7 +112,9 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">色调映射</span>
-            <Select
+            <RSelect
+              record={record}
+              field="toneMapping.type"
               value={config.toneMapping.type}
               onChange={(type) => handleToneMappingChange({ type })}
               className="config-select"
@@ -116,12 +125,14 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <Option value="Reinhard">Reinhard</Option>
               <Option value="Cineon">Cineon</Option>
               <Option value="ACESFilmic">ACESFilmic</Option>
-            </Select>
+            </RSelect>
           </div>
 
           <div className="config-item">
             <span className="config-label">帧率限制</span>
-            <Select
+            <RSelect
+              record={record}
+              field="frameRate.type"
               value={config.frameRate.type}
               onChange={(type) => handleFrameRateChange({ type })}
               className="config-select"
@@ -131,7 +142,7 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <Option value="中帧率">中帧率</Option>
               <Option value="低帧率">低帧率</Option>
               <Option value="自适应">自适应</Option>
-            </Select>
+            </RSelect>
           </div>
         </div>
       ),
@@ -149,9 +160,11 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
           <div className="config-item">
             <div className="config-row">
               <span className="config-label">启用</span>
-              <Switch
+              <RSwitch
+                record={record}
+                field="shadow.enabled"
                 checked={config.shadow.enabled}
-                onChange={(enabled) => handleShadowChange({ enabled })}
+                onChange={(enabled: boolean) => handleShadowChange({ enabled })}
                 className="config-switch"
                 size="small"
               />
@@ -160,7 +173,9 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">类型</span>
-            <Select
+            <RSelect
+              record={record}
+              field="shadow.type"
               value={config.shadow.type}
               onChange={(type) => handleShadowChange({ type })}
               disabled={!config.shadow.enabled}
@@ -171,7 +186,7 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <Option value="PCF">PCF</Option>
               <Option value="PCF Soft">PCF Soft</Option>
               <Option value="VSM">VSM</Option>
-            </Select>
+            </RSelect>
           </div>
         </div>
       ),
@@ -189,9 +204,11 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
           <div className="config-item">
             <div className="config-row">
               <span className="config-label">启用</span>
-              <Switch
+              <RSwitch
+                record={record}
+                field="globalIllumination.enabled"
                 checked={config.globalIllumination.enabled}
-                onChange={(enabled) => handleGlobalIlluminationChange({ enabled })}
+                onChange={(enabled: boolean) => handleGlobalIlluminationChange({ enabled })}
                 className="config-switch"
                 size="small"
               />
@@ -201,9 +218,11 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
           <div className="config-item">
             <div className="config-row">
               <span className="config-label">溢出</span>
-              <Switch
+              <RSwitch
+                record={record}
+                field="globalIllumination.bounce"
                 checked={config.globalIllumination.bounce}
-                onChange={(bounce) => handleGlobalIlluminationChange({ bounce })}
+                onChange={(bounce: boolean) => handleGlobalIlluminationChange({ bounce })}
                 className="config-switch"
                 size="small"
                 disabled={!config.globalIllumination.enabled}
@@ -216,9 +235,11 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <span className="config-label">阴影远距</span>
               <span className="config-value">{config.globalIllumination.shadowDistance}</span>
             </div>
-            <InputNumber
+            <RInputNumber
+              record={record}
+              field="globalIllumination.shadowDistance"
               value={config.globalIllumination.shadowDistance}
-              onChange={(shadowDistance) => handleGlobalIlluminationChange({ shadowDistance: shadowDistance || 1000 })}
+              onChange={(val) => handleGlobalIlluminationChange({ shadowDistance: Number(val ?? 1000) })}
               disabled={!config.globalIllumination.enabled}
               className="config-number-input"
               min={100}
@@ -229,7 +250,9 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">视锥体分割</span>
-            <Select
+            <RSelect
+              record={record}
+              field="globalIllumination.cascadeSplits"
               value={config.globalIllumination.cascadeSplits}
               onChange={(cascadeSplits) => handleGlobalIlluminationChange({ cascadeSplits })}
               disabled={!config.globalIllumination.enabled}
@@ -239,12 +262,14 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <Option value="practical">practical</Option>
               <Option value="uniform">uniform</Option>
               <Option value="logarithmic">logarithmic</Option>
-            </Select>
+            </RSelect>
           </div>
 
           <div className="config-item">
             <span className="config-label">阴影贴图</span>
-            <Select
+            <RSelect
+              record={record}
+              field="globalIllumination.shadowMapSize"
               value={config.globalIllumination.shadowMapSize}
               onChange={(shadowMapSize) => handleGlobalIlluminationChange({ shadowMapSize })}
               disabled={!config.globalIllumination.enabled}
@@ -254,7 +279,7 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <Option value="1024 * 1024">1024 * 1024</Option>
               <Option value="2048 * 2048">2048 * 2048</Option>
               <Option value="4096 * 4096">4096 * 4096</Option>
-            </Select>
+            </RSelect>
           </div>
 
           <div className="config-item">
@@ -262,9 +287,11 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <span className="config-label">光强度</span>
               <span className="config-value">{config.globalIllumination.lightIntensity}</span>
             </div>
-            <InputNumber
+            <RInputNumber
+              record={record}
+              field="globalIllumination.lightIntensity"
               value={config.globalIllumination.lightIntensity}
-              onChange={(lightIntensity) => handleGlobalIlluminationChange({ lightIntensity: lightIntensity || 1 })}
+              onChange={(val) => handleGlobalIlluminationChange({ lightIntensity: Number(val ?? 1) })}
               disabled={!config.globalIllumination.enabled}
               className="config-number-input"
               min={0}
@@ -275,10 +302,12 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">光颜色</span>
-            <Input
+            <RInput
+              record={record}
+              field="globalIllumination.lightColor"
               type="color"
               value={config.globalIllumination.lightColor}
-              onChange={(e) => handleGlobalIlluminationChange({ lightColor: e.target.value })}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleGlobalIlluminationChange({ lightColor: e.target.value })}
               disabled={!config.globalIllumination.enabled}
               className="config-color-input"
             />
@@ -289,7 +318,9 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <span className="config-label">光方向X</span>
               <span className="config-value">{config.globalIllumination.lightDirectionX.toFixed(2)}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="globalIllumination.lightDirectionX"
               min={-1}
               max={1}
               step={0.01}
@@ -305,7 +336,9 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <span className="config-label">光方向Y</span>
               <span className="config-value">{config.globalIllumination.lightDirectionY.toFixed(2)}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="globalIllumination.lightDirectionY"
               min={-1}
               max={1}
               step={0.01}
@@ -321,7 +354,9 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               <span className="config-label">光方向Z</span>
               <span className="config-value">{config.globalIllumination.lightDirectionZ.toFixed(2)}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="globalIllumination.lightDirectionZ"
               min={-1}
               max={1}
               step={0.01}

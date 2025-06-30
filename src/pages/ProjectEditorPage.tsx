@@ -24,6 +24,7 @@ import {
 } from './constants';
 import './styles/ProjectEditorPage.scss';
 import {usePageTracking } from '@/utils/analytics';
+import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 // 使用来自常量的模拟场景数据
 
 /**
@@ -70,6 +71,9 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
     ...DEFAULT_CANVAS_SETTINGS,
   });
 
+  // 历史记录 & 日志 Hook
+  const { addHistory, logs } = useHistoryRecorder();
+
   // 监听路由变化，更新项目标题
   useEffect(() => {
     if (routeState?.projectTitle) {
@@ -84,8 +88,35 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   }, [routeState?.projectTitle, projectId]);
 
   // 使用常量文件中的工具栏配置
-  const leftActions = getLeftToolbarActions();
-  const rightActions = RIGHT_TOOLBAR_ACTIONS;
+  const rawLeftActions = getLeftToolbarActions();
+
+  const leftActions = rawLeftActions.map(act => {
+    switch (act.id) {
+      case 'import':
+        return {
+          ...act,
+          onClick: () =>
+            addHistory({
+              actionType: 'import',
+              targetType: 'scene',
+              targetName: projectTitle,
+              description: `导入资源到项目：${projectTitle}`,
+            }),
+        };
+      case 'undo':
+        return { ...act, onClick: () => addHistory({ actionType: 'undo', targetType: 'scene', targetName: projectTitle, description: '撤回一次操作' }) };
+      case 'redo':
+        return { ...act, onClick: () => addHistory({ actionType: 'redo', targetType: 'scene', targetName: projectTitle, description: '重做一次操作' }) };
+      case 'delete':
+        return { ...act, onClick: () => addHistory({ actionType: 'delete', targetType: 'scene', targetName: projectTitle, description: '删除选中对象' }) };
+      case 'clear':
+        return { ...act, onClick: () => addHistory({ actionType: 'scene', targetType: 'scene', targetName: projectTitle, description: '清空场景对象' }) };
+      case 'copy':
+        return { ...act, onClick: () => addHistory({ actionType: 'create', targetType: 'scene', targetName: projectTitle, description: '复制选中对象' }) };
+      default:
+        return act;
+    }
+  });
 
   /**
    * 处理场景树节点选择
@@ -100,26 +131,43 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
    * 处理场景树节点可见性切换
    * @param nodeId 节点ID
    */
-  const handleNodeVisibilityToggle = useCallback((nodeId: string) => {
-    /**
-     * 递归切换节点可见性的内部函数
-     * @param nodes 节点数组
-     * @returns 更新后的节点数组
-     */
-    const toggleVisibility = (nodes: SceneNode[]): SceneNode[] => {
-      return nodes.map(node => {
-        if (node.id === nodeId) {
-          return { ...node, visible: !node.visible };
-        }
-        if (node.children) {
-          return { ...node, children: toggleVisibility(node.children) };
-        }
-        return node;
+  const handleNodeVisibilityToggle = useCallback(
+    (nodeId: string) => {
+      let prevVisible: boolean | undefined;
+      let nodeName: string = nodeId;
+
+      const toggleVisibility = (nodes: SceneNode[]): SceneNode[] => {
+        return nodes.map(node => {
+          if (node.id === nodeId) {
+            prevVisible = node.visible !== false;
+            nodeName = node.name ?? node.id;
+            return { ...node, visible: !prevVisible };
+          }
+          if (node.children) {
+            return { ...node, children: toggleVisibility(node.children) };
+          }
+          return node;
+        });
+      };
+
+      setSceneNodes(prev => toggleVisibility(prev));
+
+      const newVisible = !(prevVisible ?? true);
+      const actionText = newVisible ? '显示' : '隐藏';
+
+      addHistory({
+        actionType: 'modify',
+        targetType: 'object',
+        targetId: nodeId,
+        targetName: nodeName,
+        description: `${actionText}对象：${nodeName}`,
+        oldValue: { visible: prevVisible },
+        newValue: { visible: newVisible },
+        logLevel: 'info',
       });
-    };
-    setSceneNodes(prev => toggleVisibility(prev));
-    console.log('切换节点可见性:', nodeId);
-  }, []);
+    },
+    [addHistory]
+  );
 
   /**
    * 处理右侧栏标签切换
@@ -140,6 +188,30 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
     setBottomPanelType(type);
     console.log('切换底部面板类型:', type);
   }, []);
+
+  const handleExportClick = useCallback(() => {
+    addHistory({
+      actionType: 'export',
+      targetType: 'scene',
+      targetName: projectTitle,
+      description: `导出项目：${projectTitle}`,
+    });
+  }, [addHistory, projectTitle]);
+
+  const handleSaveClick = useCallback(() => {
+    addHistory({
+      actionType: 'scene',
+      targetType: 'scene',
+      targetName: projectTitle,
+      description: `保存项目：${projectTitle}`,
+    });
+  }, [addHistory, projectTitle]);
+
+  const rightActions = RIGHT_TOOLBAR_ACTIONS.map(act => {
+    if (act.id === 'export') return { ...act, onClick: handleExportClick };
+    if (act.id === 'save') return { ...act, onClick: handleSaveClick };
+    return act;
+  });
 
   return (
     <div className="project-page">
@@ -187,6 +259,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
                 defaultActiveType={bottomPanelType}
                 onTypeChange={handleBottomPanelTypeChange}
                 height={bottomPanelHeight - 4} // 减去边框高度
+                logs={logs}
               />
             </ResizablePanel>
           </div>

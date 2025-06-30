@@ -2,19 +2,15 @@
  * 材质面板组件
  * 提供完整的材质编辑功能
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 
 import React, { useCallback } from 'react';
 import {
-  Input,
-  Switch,
-  Select,
-  ColorPicker,
-  Button,
+  Input as AntInput,
+  Select as AntSelect,
   Typography,
-  Checkbox,
-  Slider,
+  Button as AntButton,
 } from 'antd';
 import {
   BgColorsOutlined,
@@ -39,10 +35,12 @@ import {
 } from './types';
 import './styles/MaterialPanel.scss';
 import ModernCollapse from '@/components/common/ModernCollapse';
+import { RButton, RSelect, RSwitch, RColorPicker, RSlider, RCheckbox } from '@/components/common/recordable';
+import { useRecord } from '@/hooks/common/useRecord';
 
 const { Panel } = ModernCollapse;
 const { Text } = Typography;
-const { Option } = Select;
+const { Option } = AntSelect;
 
 /**
  * 材质面板组件
@@ -57,6 +55,8 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
   onMaterialSelect,
   onMaterialApply
 }) => {
+  const record = useRecord('材质');
+
   // 处理材质信息变更
   const handleInfoChange = useCallback((field: keyof MaterialInfo, value: any) => {
     onInfoChange?.({ [field]: value });
@@ -100,11 +100,13 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
         <div className="texture-header">
           <Text className="texture-label">{label}</Text>
           <div className="texture-controls">
-            <Checkbox
+            <RCheckbox
+              record={record}
+              field={`${textureType}.enabled`}
               checked={texture.enabled}
               onChange={(e) => handleTextureChange(textureType, 'enabled', e.target.checked)}
             />
-            <Button
+            <AntButton
               type="text"
               size="small"
               icon={<PlusOutlined />}
@@ -133,7 +135,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
     <div className="material-panel">
       {/* 材质选择头部 */}
       <div className="material-header">
-        <Select
+        <RSelect
+          record={record}
+          field="materialSelect"
           value={materialState.info.name}
           onChange={(value) => onMaterialSelect?.(value)}
           className="material-selector"
@@ -142,14 +146,16 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
           <Option value="lambert5">lambert5</Option>
           <Option value="material1">material1</Option>
           <Option value="material2">material2</Option>
-        </Select>
-        <Button 
-          type="primary" 
+        </RSelect>
+        <RButton
+          record={record}
+          desc="应用材质"
+          type="primary"
           size="small"
           onClick={handleMaterialApply}
         >
           应用
-        </Button>
+        </RButton>
       </div>
 
       <div className="material-panel__collapse">
@@ -172,7 +178,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               {/* 类型 */}
               <div className="form-row">
                 <Text className="form-label">类型</Text>
-                <Select
+                <RSelect
+                  record={record}
+                  field="materialType"
                   value={materialState.info.type}
                   onChange={(value) => handleInfoChange('type', value)}
                   className="type-selector"
@@ -182,7 +190,7 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                       {option.label}
                     </Option>
                   ))}
-                </Select>
+                </RSelect>
               </div>
 
               {/* 识别码 */}
@@ -190,7 +198,7 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                 <Text className="form-label">识别码</Text>
                 <div className="id-field">
                   <Text className="id-text">{materialState.info.id}</Text>
-                  <Button
+                  <AntButton
                     type="text"
                     size="small"
                     icon={<ReloadOutlined />}
@@ -202,7 +210,7 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               {/* 名称 */}
               <div className="form-row">
                 <Text className="form-label">名称</Text>
-                <Input
+                <AntInput
                   value={materialState.info.name}
                   onChange={(e) => handleInfoChange('name', e.target.value)}
                   placeholder="输入材质名称"
@@ -225,7 +233,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               {/* 颜色 */}
               <div className="form-row">
                 <Text className="form-label">颜色</Text>
-                <ColorPicker
+                <RColorPicker
+                  record={record}
+                  field="color"
                   value={materialState.appearance.color}
                   onChange={(color) => handleAppearanceChange('color', color.toHexString())}
                   showText={(color) => color.toHexString()}
@@ -236,7 +246,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               {/* 自发光 */}
               <div className="form-row">
                 <Text className="form-label">自发光</Text>
-                <ColorPicker
+                <RColorPicker
+                  record={record}
+                  field="emissive"
                   value={materialState.appearance.emissive}
                   onChange={(color) => handleAppearanceChange('emissive', color.toHexString())}
                   showText={(color) => color.toHexString()}
@@ -248,7 +260,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               <div className="slider-row">
                 <Text className="slider-label">自发光强度</Text>
                 <div className="slider-control">
-                  <Slider
+                  <RSlider
+                    record={record}
+                    field="emissiveIntensity"
                     value={materialState.appearance.emissiveIntensity}
                     onChange={(value) => handleAppearanceChange('emissiveIntensity', value)}
                     min={0}
@@ -264,7 +278,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               <div className="slider-row">
                 <Text className="slider-label">粗糙度</Text>
                 <div className="slider-control">
-                  <Slider
+                  <RSlider
+                    record={record}
+                    field="roughness"
                     value={materialState.appearance.roughness}
                     onChange={(value) => handleAppearanceChange('roughness', value)}
                     min={0}
@@ -280,7 +296,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               <div className="slider-row">
                 <Text className="slider-label">金属度</Text>
                 <div className="slider-control">
-                  <Slider
+                  <RSlider
+                    record={record}
+                    field="metalness"
                     value={materialState.appearance.metalness}
                     onChange={(value) => handleAppearanceChange('metalness', value)}
                     min={0}
@@ -296,7 +314,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               <div className="slider-row">
                 <Text className="slider-label">透明度</Text>
                 <div className="slider-control">
-                  <Slider
+                  <RSlider
+                    record={record}
+                    field="opacity"
                     value={materialState.appearance.opacity}
                     onChange={(value) => handleAppearanceChange('opacity', value)}
                     min={0}
@@ -312,9 +332,11 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               <div className="switch-group">
                 <div className="switch-item">
                   <Text>透明性</Text>
-                  <Switch
+                  <RSwitch
+                    record={record}
+                    field="transparent"
                     checked={materialState.appearance.transparent}
-                    onChange={(checked) => handleAppearanceChange('transparent', checked)}
+                    onChange={(checked: boolean) => handleAppearanceChange('transparent', checked)}
                   />
                 </div>
               </div>
@@ -323,7 +345,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               <div className="slider-row">
                 <Text className="slider-label">α测试</Text>
                 <div className="slider-control">
-                  <Slider
+                  <RSlider
+                    record={record}
+                    field="alphaTest"
                     value={materialState.appearance.alphaTest}
                     onChange={(value) => handleAppearanceChange('alphaTest', value)}
                     min={0}
@@ -339,23 +363,29 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               <div className="switch-group">
                 <div className="switch-item">
                   <Text>深度测试</Text>
-                  <Switch
+                  <RSwitch
+                    record={record}
+                    field="depthTest"
                     checked={materialState.render.depthTest}
-                    onChange={(checked) => handleRenderChange('depthTest', checked)}
+                    onChange={(checked: boolean) => handleRenderChange('depthTest', checked)}
                   />
                 </div>
                 <div className="switch-item">
                   <Text>深度缓冲</Text>
-                  <Switch
+                  <RSwitch
+                    record={record}
+                    field="depthWrite"
                     checked={materialState.render.depthWrite}
-                    onChange={(checked) => handleRenderChange('depthWrite', checked)}
+                    onChange={(checked: boolean) => handleRenderChange('depthWrite', checked)}
                   />
                 </div>
                 <div className="switch-item">
                   <Text>线框</Text>
-                  <Switch
+                  <RSwitch
+                    record={record}
+                    field="wireframe"
                     checked={materialState.render.wireframe}
-                    onChange={(checked) => handleRenderChange('wireframe', checked)}
+                    onChange={(checked: boolean) => handleRenderChange('wireframe', checked)}
                   />
                 </div>
               </div>
@@ -407,7 +437,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
               {/* 面 */}
               <div className="form-row">
                 <Text className="form-label">面</Text>
-                <Select
+                <RSelect
+                  record={record}
+                  field="materialSide"
                   value={materialState.render.side}
                   onChange={(value) => handleRenderChange('side', value)}
                   className="side-selector"
@@ -417,22 +449,26 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                       {option.label}
                     </Option>
                   ))}
-                </Select>
+                </RSelect>
               </div>
 
               {/* 平面着色 */}
               <div className="switch-item">
                 <Text>平面着色</Text>
-                <Switch
+                <RSwitch
+                  record={record}
+                  field="flatShading"
                   checked={materialState.render.flatShading}
-                  onChange={(checked) => handleRenderChange('flatShading', checked)}
+                  onChange={(checked: boolean) => handleRenderChange('flatShading', checked)}
                 />
               </div>
 
               {/* 混合 */}
               <div className="form-row">
                 <Text className="form-label">混合</Text>
-                <Select
+                <RSelect
+                  record={record}
+                  field="materialBlending"
                   value={materialState.render.blending}
                   onChange={(value) => handleRenderChange('blending', value)}
                   className="blending-selector"
@@ -442,7 +478,7 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                       {option.label}
                     </Option>
                   ))}
-                </Select>
+                </RSelect>
               </div>
             </div>
           </Panel>

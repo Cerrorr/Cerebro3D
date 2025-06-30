@@ -8,19 +8,24 @@ import {
 import type { WeatherConfigPanelProps, WeatherConfig, FogConfig, RainConfig, SnowConfig } from './types';
 import './styles/WeatherConfigPanel.scss';
 import ModernCollapse from '@/components/common/ModernCollapse';
+import { useRecord } from '@/hooks/common/useRecord';
 
 /**
  * 天气配置面板组件
  * 提供雾、雨、雪三种天气效果的详细配置选项
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
   config,
   onChange
 }) => {
+  // 记录器
+  const record = useRecord('天气');
+
   // 雾配置更新处理函数
   const handleFogConfigChange = useCallback((updates: Partial<FogConfig>) => {
+    record(`雾 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: WeatherConfig = {
       ...config,
       fog: { ...config.fog, ...updates }
@@ -30,6 +35,7 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
 
   // 雨配置更新处理函数
   const handleRainConfigChange = useCallback((updates: Partial<RainConfig>) => {
+    record(`雨 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: WeatherConfig = {
       ...config,
       rain: { ...config.rain, ...updates }
@@ -39,6 +45,7 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
 
   // 雪配置更新处理函数
   const handleSnowConfigChange = useCallback((updates: Partial<SnowConfig>) => {
+    record(`雪 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: WeatherConfig = {
       ...config,
       snow: { ...config.snow, ...updates }

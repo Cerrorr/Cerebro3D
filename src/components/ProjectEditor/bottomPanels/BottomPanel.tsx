@@ -19,7 +19,8 @@ import './styles/BottomPanel.scss';
 const BottomPanel: React.FC<BottomPanelProps> = ({
   defaultActiveType = 'assets',
   onTypeChange,
-  height = 300
+  height = 300,
+  logs = [],
 }) => {
   // 当高度为0时，面板处于收起状态
   const isCollapsed = height <= 40;
@@ -103,7 +104,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({
         return <AnimationTimeline />;
       
       case 'console':
-        return <ConsolePanel />;
+        return <ConsolePanel logs={logs} />;
       
       default:
         return null;

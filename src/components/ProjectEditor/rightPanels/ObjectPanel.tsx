@@ -2,7 +2,7 @@
  * 对象面板组件
  * 提供对象属性配置界面
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 
 import React, { useCallback } from 'react';
@@ -12,9 +12,7 @@ import {
   Switch,
   Select,
   ColorPicker,
-  Typography,
-  Tooltip,
-  Button
+  Typography
 } from 'antd';
 import {
   AppstoreOutlined,
@@ -36,6 +34,8 @@ import type {
 } from './types';
 import './styles/ObjectPanel.scss';
 import ModernCollapse from '@/components/common/ModernCollapse';
+import { useRecord } from '@/hooks/common/useRecord';
+import { RInput, RSelect, RButton } from '@/components/common/recordable';
 
 const { Panel } = ModernCollapse;
 const { Text } = Typography;
@@ -57,10 +57,14 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
   onExplodeChange,
   onCustomDataChange
 }) => {
+  // 记录器
+  const record = useRecord('对象');
+
   // 处理对象信息变更
   const handleInfoChange = useCallback((field: keyof ObjectInfo, value: any) => {
+    record(`信息 ${field} = ${value}`);
     onInfoChange?.({ [field]: value });
-  }, [onInfoChange]);
+  }, [onInfoChange, record]);
 
   // 处理向量变更
   const handleVectorChange = useCallback((
@@ -71,28 +75,33 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
     if (!objectState) return;
     const currentVector = objectState.transform[field] as ObjectVector3;
     const newVector = { ...currentVector, [axis]: value };
+    record(`变换 ${field}.${axis} = ${value}`);
     onTransformChange?.({ [field]: newVector });
-  }, [objectState, onTransformChange]);
+  }, [objectState, onTransformChange, record]);
 
   // 处理阴影配置变更
   const handleShadowChange = useCallback((field: keyof ObjectShadowConfig, value: boolean) => {
+    record(`阴影 ${field} = ${value}`);
     onShadowChange?.({ [field]: value });
-  }, [onShadowChange]);
+  }, [onShadowChange, record]);
 
   // 处理可见性变更
   const handleVisibilityChange = useCallback((field: keyof VisibilityConfig, value: boolean) => {
+    record(`可见性 ${field} = ${value}`);
     onVisibilityChange?.({ [field]: value });
-  }, [onVisibilityChange]);
+  }, [onVisibilityChange, record]);
 
   // 处理渲染次序变更
   const handleRenderOrderChange = useCallback((value: number) => {
+    record(`渲染次序 = ${value}`);
     onRenderOrderChange?.({ renderOrder: value });
-  }, [onRenderOrderChange]);
+  }, [onRenderOrderChange, record]);
 
   // 处理剖切配置变更
   const handleClippingChange = useCallback((field: keyof ClippingConfig, value: any) => {
+    record(`剖切 ${field} = ${value}`);
     onClippingChange?.({ [field]: value });
-  }, [onClippingChange]);
+  }, [onClippingChange, record]);
 
   // 处理剖切向量变更
   const handleClippingVectorChange = useCallback((
@@ -103,13 +112,15 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
     if (!objectState) return;
     const currentVector = objectState.clipping[field] as ObjectVector3;
     const newVector = { ...currentVector, [axis]: value };
+    record(`剖切 ${field}.${axis} = ${value}`);
     onClippingChange?.({ [field]: newVector });
-  }, [objectState, onClippingChange]);
+  }, [objectState, onClippingChange, record]);
 
   // 处理爆炸配置变更
   const handleExplodeChange = useCallback((field: keyof ExplodeConfig, value: any) => {
+    record(`爆炸 ${field} = ${value}`);
     onExplodeChange?.({ [field]: value });
-  }, [onExplodeChange]);
+  }, [onExplodeChange, record]);
 
   // 处理爆炸向量变更
   const handleExplodeVectorChange = useCallback((
@@ -120,11 +131,13 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
     if (!objectState) return;
     const currentVector = objectState.explode[field] as ObjectVector3;
     const newVector = { ...currentVector, [axis]: value };
+    record(`爆炸 ${field}.${axis} = ${value}`);
     onExplodeChange?.({ [field]: newVector });
-  }, [objectState, onExplodeChange]);
+  }, [objectState, onExplodeChange, record]);
 
   // 处理自定义数据变更
   const handleCustomDataChange = useCallback((dataString: string) => {
+    record('修改自定义数据');
     try {
       const customData = JSON.parse(dataString);
       onCustomDataChange?.(customData);
@@ -132,14 +145,15 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
       // 解析失败时不更新
       console.warn('无效的JSON格式');
     }
-  }, [onCustomDataChange]);
+  }, [onCustomDataChange, record]);
 
   // 复制识别码到剪贴板
   const handleCopyId = useCallback(() => {
     if (objectState?.info.id) {
       navigator.clipboard.writeText(objectState.info.id);
+      record('复制识别码');
     }
-  }, [objectState?.info.id]);
+  }, [objectState?.info?.id, record]);
 
   if (!objectState) {
     return (
@@ -186,26 +200,44 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
               <Text className="form-label">识别码</Text>
               <div className="id-field">
                 <Text className="id-text">{objectState.info.id}</Text>
-                <Tooltip title="刷新识别码">
-                  <Button
-                    type="text"
-                    size="small"
-                    icon={<ReloadOutlined />}
-                    onClick={handleCopyId}
-                    className="refresh-btn"
-                  />
-                </Tooltip>
+                <RButton
+                  record={record}
+                  desc="复制识别码"
+                  type="text"
+                  size="small"
+                  icon={<ReloadOutlined />}
+                  onClick={handleCopyId}
+                />
               </div>
             </div>
 
             {/* 名称 */}
             <div className="form-row">
               <Text className="form-label">名称</Text>
-              <Input
+              <RInput
                 value={objectState.info.name}
                 onChange={(e) => handleInfoChange('name', e.target.value)}
-                placeholder="输入对象名称"
+                record={record}
+                field="info.name"
+                placeholder="请输入名称"
+                size="small"
               />
+            </div>
+
+            {/* 材质 */}
+            <div className="form-row">
+              <Text className="form-label">材质</Text>
+              <RSelect
+                value={objectState.info.material || ''}
+                onChange={(value) => handleInfoChange('material', value)}
+                record={record}
+                field="info.material"
+                size="small"
+              >
+                <Option value={objectState.info.material || ''}>
+                  {objectState.info.material || '默认材质'}
+                </Option>
+              </RSelect>
             </div>
           </div>
         </Panel>

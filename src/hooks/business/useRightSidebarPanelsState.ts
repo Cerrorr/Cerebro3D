@@ -11,9 +11,7 @@ import {
   DEFAULT_WEATHER_CONFIG,
   RendererConfig,
   DEFAULT_RENDERER_CONFIG,
-  HistoryState,
   HistoryPanelConfig,
-  DEFAULT_HISTORY_STATE,
   DEFAULT_HISTORY_CONFIG,
   AnimationPanelState,
   ObjectState,
@@ -24,6 +22,9 @@ import {
   DEFAULT_GEOMETRY_STATE,
 } from '@/components/projectEditor/rightPanels/types';
 import { devLog } from '@/utils/devLog';
+import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
+import type { HistoryActionType, HistoryTargetType } from '@/components/projectEditor/rightPanels/types/HistoryPanel.types';
+import type { HistorySliceState } from '@/store/types/historySlice.types';
 
 export interface UseRightSidebarPanelsStateResult {
   panelsProps: Record<string, any>;
@@ -34,7 +35,7 @@ export interface UseRightSidebarPanelsStateResult {
   postProcessingConfig: PostProcessingConfig;
   weatherConfig: WeatherConfig;
   rendererConfig: RendererConfig;
-  historyState: HistoryState;
+  historyState: HistorySliceState;
   historyConfig: HistoryPanelConfig;
   animationState: AnimationPanelState;
   objectState: ObjectState;
@@ -58,7 +59,7 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
     coverImage: undefined,
   });
 
-  const [sceneConfig, setSceneConfig] = useState<SceneConfiguration>({
+  const [sceneConfig] = useState<SceneConfiguration>({
     background: { type: 'texture', value: 'Texture' },
     environment: { type: 'equirect', map: '/images/environment-preview.jpg', intensity: 1 },
     helpers: { enabled: true, axes: true, cameraHelper: false, lightHelper: false },
@@ -88,11 +89,15 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   const [weatherConfig] = useState<WeatherConfig>(DEFAULT_WEATHER_CONFIG);
   const [rendererConfig] = useState<RendererConfig>(DEFAULT_RENDERER_CONFIG);
 
-  const [historyState] = useState<HistoryState>({
-    ...DEFAULT_HISTORY_STATE,
-    currentIndex: -1,
-  });
-  const [historyConfig] = useState<HistoryPanelConfig>(DEFAULT_HISTORY_CONFIG);
+  /* --------- 历史记录（使用统一 Hook） --------- */
+  const {
+    historyState,
+    addHistory,
+    clearHistory,
+    setHistoryFilter,
+  } = useHistoryRecorder();
+
+  const historyConfig = DEFAULT_HISTORY_CONFIG;
 
   const [animationState] = useState<AnimationPanelState>({
     animations: [],
@@ -120,12 +125,19 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
     setProjectInfo(prev => ({ ...prev, ...info }));
   }, []);
 
-  const handleSceneConfigChange = useCallback((cfg: Partial<SceneConfiguration>) => {
-    setSceneConfig(prev => ({ ...prev, ...cfg }));
-  }, []);
+  /* --------- 通用记录器 --------- */
+  const record = (description: string, actionType: HistoryActionType = 'modify', targetType: HistoryTargetType = 'scene') => {
+    addHistory({
+      actionType,
+      targetType,
+      targetName: description,
+      description,
+    });
+  };
 
-  // 此处省略大量相似 onChange 回调，为保持简洁
-  const noop = () => devLog('callback skip');
+  const gen = (desc: string, action: HistoryActionType = 'modify', target: HistoryTargetType = 'scene') => () => record(desc, action, target);
+
+  const noop = gen('未实现操作');
 
   const panelsProps: Record<string, any> = {
     projectInfo,
@@ -143,13 +155,15 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
     geometryState,
     /* 回调函数 */
     onProjectInfoChange: handleProjectInfoChange,
-    onSceneConfigChange: handleSceneConfigChange,
-    onCameraConfigChange: noop,
-    onLightingConfigChange: noop,
-    onChange: noop,
-    onClearHistory: noop,
-    onJumpToRecord: noop,
-    onFilterChange: noop,
+    onSceneConfigChange: () => record('修改场景配置'),
+    onCameraConfigChange: () => record('修改相机配置', 'camera', 'camera'),
+    onLightingConfigChange: () => record('修改灯光配置', 'lighting', 'light'),
+    onChange: () => record('面板参数修改'),
+    onClearHistory: clearHistory,
+    onJumpToRecord: (recordId: string) => {
+      devLog(`jump to record ${recordId}`);
+    },
+    onFilterChange: setHistoryFilter,
     onConfigChange: noop,
     onAnimationPlay: noop,
     onAnimationPause: noop,

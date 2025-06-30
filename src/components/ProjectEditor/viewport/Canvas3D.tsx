@@ -5,6 +5,7 @@ import type { Canvas3DProps, ViewType } from './types';
 import ViewportScene from './ViewportScene';
 import CanvasControls from './CanvasControls';
 import './styles/Canvas3D.scss';
+import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 
 const Canvas3D: React.FC<Canvas3DProps> = ({
   settings,
@@ -15,15 +16,45 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
 }) => {
   const [currentView, setCurrentView] = useState<ViewType>('perspective');
 
+  // history recorder
+  const { addHistory } = useHistoryRecorder();
+
   /* ---------- 交互回调 ---------- */
-  const handleViewReset = useCallback(() => setCurrentView('perspective'), []);
+  const handleViewReset = useCallback(() => {
+    setCurrentView('perspective');
+    addHistory({
+      actionType: 'camera',
+      targetType: 'scene',
+      targetName: 'Canvas',
+      description: '重置视角',
+    });
+  }, [addHistory]);
   const handleZoomExtents = useCallback(() => {
-    /* TODO: 实现包围盒缩放逻辑 */
-  }, []);
+    addHistory({
+      actionType: 'camera',
+      targetType: 'scene',
+      targetName: 'Canvas',
+      description: '缩放到全景',
+    });
+  }, [addHistory]);
   const handleToggleGrid = useCallback(() => {
     onSettingsChange?.({ ...settings, gridVisible: !settings.gridVisible });
-  }, [onSettingsChange, settings]);
-  const handleViewChange = useCallback((view: ViewType) => setCurrentView(view), []);
+    addHistory({
+      actionType: 'scene',
+      targetType: 'scene',
+      targetName: 'Grid',
+      description: settings.gridVisible ? '隐藏网格' : '显示网格',
+    });
+  }, [onSettingsChange, settings, addHistory]);
+  const handleViewChange = useCallback((view: ViewType) => {
+    setCurrentView(view);
+    addHistory({
+      actionType: 'camera',
+      targetType: 'scene',
+      targetName: 'Canvas',
+      description: `切换视图: ${view}`,
+    });
+  }, [addHistory]);
 
   return (
     <div className={`canvas-3d ${className || ''}`} style={{ width, height }}>

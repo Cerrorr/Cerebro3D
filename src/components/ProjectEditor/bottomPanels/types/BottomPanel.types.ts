@@ -17,6 +17,8 @@ export interface BottomPanelProps {
   visible?: boolean;
   /** 自定义类名 */
   className?: string;
+  /** 日志列表（传递给 ConsolePanel） */
+  logs?: LogEntry[];
 }
 
 export interface BottomPanelOption {

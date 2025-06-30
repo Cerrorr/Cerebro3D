@@ -21,6 +21,7 @@ import {
   ANIMATION_TYPE_ICONS,
   ANIMATION_TYPE_COLORS
 } from './types';
+import { useRecord } from '@/hooks/common/useRecord';
 
 const { Text } = Typography;
 
@@ -39,6 +40,9 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
   // 安全地获取播放速度，提供默认值
   const initialSpeed = animationState?.playbackConfig?.playbackSpeed ?? 1.0;
   const [localSpeedValue, setLocalSpeedValue] = useState(initialSpeed);
+
+  // 记录器
+  const record = useRecord('动画');
 
   // 如果 animationState 不存在，显示空状态或加载中
   if (!animationState) {
@@ -96,6 +100,7 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
   // 处理动画项点击
   const handleAnimationClick = useCallback(
     (animationId: string) => {
+      record(`选择动画 ${animationId}`);
       onAnimationSelect?.(animationId);
     },
     [onAnimationSelect]
@@ -105,7 +110,7 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
   const handlePlayClick = useCallback(
     (animationId: string, status: AnimationStatus, event: React.MouseEvent) => {
       event.stopPropagation();
-
+      record(`${status === 'playing' ? '暂停' : '播放'}动画 ${animationId}`);
       if (status === 'playing') {
         onAnimationPause?.(animationId);
       } else {
@@ -119,6 +124,7 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
   const handleStopClick = useCallback(
     (animationId: string, event: React.MouseEvent) => {
       event.stopPropagation();
+      record(`停止动画 ${animationId}`);
       onAnimationStop?.(animationId);
     },
     [onAnimationStop]
@@ -127,6 +133,7 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
   // 处理进度条变化
   const handleProgressChange = useCallback(
     (animationId: string, progress: number) => {
+      record(`调整动画 ${animationId} 进度 = ${progress}`);
       onProgressChange?.(animationId, progress);
     },
     [onProgressChange]
@@ -136,6 +143,7 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
   const handleSpeedChange = useCallback(
     (speed: number) => {
       setLocalSpeedValue(speed);
+      record(`修改播放速度 = ${speed}`);
       onSpeedChange?.(speed);
     },
     [onSpeedChange]

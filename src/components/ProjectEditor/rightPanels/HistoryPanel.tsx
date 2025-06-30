@@ -1,7 +1,7 @@
 /**
  * 历史记录面板组件
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 
 import React, { useState, useMemo, useCallback } from 'react';
@@ -65,7 +65,7 @@ const ACTION_ICONS: Record<HistoryActionType, React.ReactNode> = {
  * 历史记录面板组件
  * 提供操作历史记录的查看和管理功能
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 const HistoryPanel: React.FC<HistoryPanelProps> = ({
   historyState,

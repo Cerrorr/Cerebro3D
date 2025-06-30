@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   Button,
-  Input,
-  Select,
+  Select as AntSelect,
   Space,
   Typography,
   Divider,
@@ -23,16 +22,18 @@ import type { GeometryPanelProps } from './types';
 import { GEOMETRY_TYPE_OPTIONS } from './types';
 import './styles/GeometryPanel.scss';
 import ModernCollapse from '@/components/common/ModernCollapse';
+import { RButton, RInput, RSelect } from '@/components/common/recordable';
+import { useRecord } from '@/hooks/common/useRecord';
 
 const { Panel } = ModernCollapse;
 const { Text } = Typography;
-const { Option } = Select;
+const { Option } = AntSelect;
 
 /**
  * 几何面板组件
  * 提供几何体信息编辑和显示功能
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 const GeometryPanel: React.FC<GeometryPanelProps> = ({
   geometryState,
@@ -43,6 +44,8 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
   onCenter,
   onRefreshBounds,
 }) => {
+  const record = useRecord('几何');
+
   const handleTypeChange = (type: string) => {
     onInfoChange?.({ type: type as any });
   };
@@ -97,7 +100,9 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
           <div className="geometry-basic-info">
             <div className="info-row">
               <Text className="info-label">类型</Text>
-              <Select
+              <RSelect
+                record={record}
+                field="geometryType"
                 value={info.type}
                 onChange={handleTypeChange}
                 className="info-select"
@@ -108,7 +113,7 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
                     {option.label}
                   </Option>
                 ))}
-              </Select>
+              </RSelect>
             </div>
 
             <div className="info-row">
@@ -129,7 +134,9 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
 
             <div className="info-row">
               <Text className="info-label">名称</Text>
-              <Input
+              <RInput
+                record={record}
+                field="name"
                 value={info.name}
                 onChange={handleNameChange}
                 placeholder="请输入名称"
@@ -144,7 +151,9 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
           {/* 操作按钮 */}
           <div className="geometry-operations">
             <Space direction="vertical" style={{ width: '100%' }}>
-              <Button
+              <RButton
+                record={record}
+                desc="显示顶点法线"
                 type="default"
                 icon={<EyeOutlined />}
                 onClick={onShowVertexNormals}
@@ -152,8 +161,10 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
                 block
               >
                 显示顶点法线
-              </Button>
-              <Button
+              </RButton>
+              <RButton
+                record={record}
+                desc="计算顶点法线"
                 type="default"
                 icon={<CalculatorOutlined />}
                 onClick={onComputeVertexNormals}
@@ -161,8 +172,10 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
                 block
               >
                 计算顶点法线
-              </Button>
-              <Button
+              </RButton>
+              <RButton
+                record={record}
+                desc="居中几何"
                 type="default"
                 icon={<AimOutlined />}
                 onClick={onCenter}
@@ -170,7 +183,7 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
                 block
               >
                 居中
-              </Button>
+              </RButton>
             </Space>
           </div>
         </Panel>

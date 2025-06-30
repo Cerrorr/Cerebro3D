@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import { 
-  Select, 
-  InputNumber, 
-  Button,
+  Select as AntSelect, 
   Space,
   Typography
 } from 'antd';
@@ -18,8 +16,10 @@ import {
 import type { CameraConfigPanelProps, CameraType } from './types';
 import './styles/CameraConfigPanel.scss';
 import ModernCollapse from '@/components/common/ModernCollapse';
+import { RSelect, RInputNumber, RButton } from '@/components/common/recordable';
+import { useRecord } from '@/hooks/common/useRecord';
 
-const { Option } = Select;
+const { Option } = AntSelect;
 const { Panel } = ModernCollapse;
 const { Text } = Typography;
 
@@ -34,6 +34,9 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
   onCameraConfigChange
 }) => {
   const [activeKey, setActiveKey] = React.useState<string[]>(['type', 'parameters', 'transform']);
+
+  // 记录函数
+  const record = useRecord('相机配置');
 
   /**
    * 处理相机类型变更
@@ -127,7 +130,9 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
           <div className="config-section">
             <div className="config-item">
               <label className="config-label">类型</label>
-              <Select
+              <RSelect
+                record={record}
+                field="cameraType"
                 value={cameraConfig.type}
                 onChange={handleCameraTypeChange}
                 className="config-select"
@@ -145,7 +150,7 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                     <span>正交相机</span>
                   </Space>
                 </Option>
-              </Select>
+              </RSelect>
             </div>
           </div>
         </Panel>
@@ -166,9 +171,11 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
               <>
                 <div className="config-item">
                   <label className="config-label">视野角度 (FOV)</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="fov"
                     value={cameraConfig.perspective.fov}
-                    onChange={(value) => handlePerspectiveChange('fov', value || 75)}
+                    onChange={(value) => handlePerspectiveChange('fov', Number(value ?? 75))}
                     min={10}
                     max={160}
                     step={1}
@@ -178,9 +185,11 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                 
                 <div className="config-item">
                   <label className="config-label">宽高比</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="aspect"
                     value={cameraConfig.perspective.aspect}
-                    onChange={(value) => handlePerspectiveChange('aspect', value || 1)}
+                    onChange={(value) => handlePerspectiveChange('aspect', Number(value ?? 1))}
                     min={0.1}
                     max={10}
                     step={0.1}
@@ -190,9 +199,11 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                 
                 <div className="config-item">
                   <label className="config-label">近裁剪面</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="near"
                     value={cameraConfig.perspective.near}
-                    onChange={(value) => handlePerspectiveChange('near', value || 0.1)}
+                    onChange={(value) => handlePerspectiveChange('near', Number(value ?? 0.1))}
                     min={0.01}
                     max={100}
                     step={0.1}
@@ -202,9 +213,11 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                 
                 <div className="config-item">
                   <label className="config-label">远裁剪面</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="far"
                     value={cameraConfig.perspective.far}
-                    onChange={(value) => handlePerspectiveChange('far', value || 1000)}
+                    onChange={(value) => handlePerspectiveChange('far', Number(value ?? 1000))}
                     min={1}
                     max={10000}
                     step={10}
@@ -218,17 +231,21 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                 <div className="config-row">
                   <div className="config-item config-item--half">
                     <label className="config-label">左边界</label>
-                    <InputNumber
+                    <RInputNumber
+                      record={record}
+                      field="left"
                       value={cameraConfig.orthographic.left}
-                      onChange={(value) => handleOrthographicChange('left', value || -10)}
+                      onChange={(value) => handleOrthographicChange('left', Number(value ?? -10))}
                       className="config-input-number"
                     />
                   </div>
                   <div className="config-item config-item--half">
                     <label className="config-label">右边界</label>
-                    <InputNumber
+                    <RInputNumber
+                      record={record}
+                      field="right"
                       value={cameraConfig.orthographic.right}
-                      onChange={(value) => handleOrthographicChange('right', value || 10)}
+                      onChange={(value) => handleOrthographicChange('right', Number(value ?? 10))}
                       className="config-input-number"
                     />
                   </div>
@@ -237,17 +254,21 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                 <div className="config-row">
                   <div className="config-item config-item--half">
                     <label className="config-label">上边界</label>
-                    <InputNumber
+                    <RInputNumber
+                      record={record}
+                      field="top"
                       value={cameraConfig.orthographic.top}
-                      onChange={(value) => handleOrthographicChange('top', value || 10)}
+                      onChange={(value) => handleOrthographicChange('top', Number(value ?? 10))}
                       className="config-input-number"
                     />
                   </div>
                   <div className="config-item config-item--half">
                     <label className="config-label">下边界</label>
-                    <InputNumber
+                    <RInputNumber
+                      record={record}
+                      field="bottom"
                       value={cameraConfig.orthographic.bottom}
-                      onChange={(value) => handleOrthographicChange('bottom', value || -10)}
+                      onChange={(value) => handleOrthographicChange('bottom', Number(value ?? -10))}
                       className="config-input-number"
                     />
                   </div>
@@ -255,9 +276,11 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                 
                 <div className="config-item">
                   <label className="config-label">缩放系数</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="zoom"
                     value={cameraConfig.orthographic.zoom}
-                    onChange={(value) => handleOrthographicChange('zoom', value || 1)}
+                    onChange={(value) => handleOrthographicChange('zoom', Number(value ?? 1))}
                     min={0.1}
                     max={10}
                     step={0.1}
@@ -268,9 +291,11 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                 <div className="config-row">
                   <div className="config-item config-item--half">
                     <label className="config-label">近裁剪面</label>
-                    <InputNumber
+                    <RInputNumber
+                      record={record}
+                      field="near"
                       value={cameraConfig.orthographic.near}
-                      onChange={(value) => handleOrthographicChange('near', value || 0.1)}
+                      onChange={(value) => handleOrthographicChange('near', Number(value ?? 0.1))}
                       min={0.01}
                       max={100}
                       step={0.1}
@@ -279,9 +304,11 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                   </div>
                   <div className="config-item config-item--half">
                     <label className="config-label">远裁剪面</label>
-                    <InputNumber
+                    <RInputNumber
+                      record={record}
+                      field="far"
                       value={cameraConfig.orthographic.far}
-                      onChange={(value) => handleOrthographicChange('far', value || 1000)}
+                      onChange={(value) => handleOrthographicChange('far', Number(value ?? 1000))}
                       min={1}
                       max={10000}
                       step={10}
@@ -311,27 +338,33 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
               <div className="config-row">
                 <div className="config-item config-item--third">
                   <label className="config-label">X</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="position.x"
                     value={cameraConfig.transform.position.x}
-                    onChange={(value) => handleTransformChange('position', 'x', value || 0)}
+                    onChange={(value) => handleTransformChange('position', 'x', Number(value ?? 0))}
                     step={0.1}
                     className="config-input-number"
                   />
                 </div>
                 <div className="config-item config-item--third">
                   <label className="config-label">Y</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="position.y"
                     value={cameraConfig.transform.position.y}
-                    onChange={(value) => handleTransformChange('position', 'y', value || 0)}
+                    onChange={(value) => handleTransformChange('position', 'y', Number(value ?? 0))}
                     step={0.1}
                     className="config-input-number"
                   />
                 </div>
                 <div className="config-item config-item--third">
                   <label className="config-label">Z</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="position.z"
                     value={cameraConfig.transform.position.z}
-                    onChange={(value) => handleTransformChange('position', 'z', value || 0)}
+                    onChange={(value) => handleTransformChange('position', 'z', Number(value ?? 0))}
                     step={0.1}
                     className="config-input-number"
                   />
@@ -345,27 +378,33 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
               <div className="config-row">
                 <div className="config-item config-item--third">
                   <label className="config-label">X</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="rotation.x"
                     value={cameraConfig.transform.rotation.x}
-                    onChange={(value) => handleTransformChange('rotation', 'x', value || 0)}
+                    onChange={(value) => handleTransformChange('rotation', 'x', Number(value ?? 0))}
                     step={1}
                     className="config-input-number"
                   />
                 </div>
                 <div className="config-item config-item--third">
                   <label className="config-label">Y</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="rotation.y"
                     value={cameraConfig.transform.rotation.y}
-                    onChange={(value) => handleTransformChange('rotation', 'y', value || 0)}
+                    onChange={(value) => handleTransformChange('rotation', 'y', Number(value ?? 0))}
                     step={1}
                     className="config-input-number"
                   />
                 </div>
                 <div className="config-item config-item--third">
                   <label className="config-label">Z</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="rotation.z"
                     value={cameraConfig.transform.rotation.z}
-                    onChange={(value) => handleTransformChange('rotation', 'z', value || 0)}
+                    onChange={(value) => handleTransformChange('rotation', 'z', Number(value ?? 0))}
                     step={1}
                     className="config-input-number"
                   />
@@ -379,27 +418,33 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
               <div className="config-row">
                 <div className="config-item config-item--third">
                   <label className="config-label">X</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="target.x"
                     value={cameraConfig.transform.target.x}
-                    onChange={(value) => handleTransformChange('target', 'x', value || 0)}
+                    onChange={(value) => handleTransformChange('target', 'x', Number(value ?? 0))}
                     step={0.1}
                     className="config-input-number"
                   />
                 </div>
                 <div className="config-item config-item--third">
                   <label className="config-label">Y</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="target.y"
                     value={cameraConfig.transform.target.y}
-                    onChange={(value) => handleTransformChange('target', 'y', value || 0)}
+                    onChange={(value) => handleTransformChange('target', 'y', Number(value ?? 0))}
                     step={0.1}
                     className="config-input-number"
                   />
                 </div>
                 <div className="config-item config-item--third">
                   <label className="config-label">Z</label>
-                  <InputNumber
+                  <RInputNumber
+                    record={record}
+                    field="target.z"
                     value={cameraConfig.transform.target.z}
-                    onChange={(value) => handleTransformChange('target', 'z', value || 0)}
+                    onChange={(value) => handleTransformChange('target', 'z', Number(value ?? 0))}
                     step={0.1}
                     className="config-input-number"
                   />
@@ -410,22 +455,26 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
             {/* 操作按钮 */}
             <div className="config-actions">
               <Space size={12}>
-                <Button 
+                <RButton 
+                  record={record}
+                  desc="重置相机参数"
                   size="small" 
                   icon={<ReloadOutlined />}
                   onClick={handleResetCamera}
                   className="action-btn"
                 >
                   重置
-                </Button>
-                <Button 
+                </RButton>
+                <RButton 
+                  record={record}
+                  desc="聚焦到原点"
                   size="small" 
                   icon={<AimOutlined />}
                   onClick={handleFocusOrigin}
                   className="action-btn"
                 >
                   聚焦原点
-                </Button>
+                </RButton>
               </Space>
             </div>
           </div>

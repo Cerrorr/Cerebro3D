@@ -1,7 +1,7 @@
 /**
  * 后期处理配置面板组件
  * @author Cerror
- * @since 2024-01-22
+ * @since 2025-06-26
  */
 
 import React, { useCallback } from 'react';
@@ -30,6 +30,7 @@ import type {
   HalftoneConfig
 } from './types';
 import './styles/PostProcessingPanel.scss';
+import { useRecord } from '@/hooks/common/useRecord';
 
 const { Option } = Select;
 
@@ -37,8 +38,12 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
   config,
   onChange
 }) => {
+  // 记录器
+  const record = useRecord('后期处理');
+
   // 抗锯齿配置更新
   const handleAntialiasingChange = useCallback((updates: Partial<AntialiasingConfig>) => {
+    record(`抗锯齿 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: PostProcessingConfig = {
       ...config,
       antialiasing: { ...config.antialiasing, ...updates }
@@ -48,6 +53,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
   // 描边线配置更新
   const handleOutlineChange = useCallback((updates: Partial<OutlineConfig>) => {
+    record(`描边线 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: PostProcessingConfig = {
       ...config,
       outline: { ...config.outline, ...updates }
@@ -57,6 +63,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
   // 辉光配置更新
   const handleBloomChange = useCallback((updates: Partial<BloomConfig>) => {
+    record(`辉光 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: PostProcessingConfig = {
       ...config,
       bloom: { ...config.bloom, ...updates }
@@ -66,6 +73,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
   // LUT配置更新
   const handleLUTChange = useCallback((updates: Partial<LUTConfig>) => {
+    record(`LUT ${Object.keys(updates).join(',')} 修改`);
     const newConfig: PostProcessingConfig = {
       ...config,
       lut: { ...config.lut, ...updates }
@@ -75,6 +83,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
   // 运动残影配置更新
   const handleMotionBlurChange = useCallback((updates: Partial<MotionBlurConfig>) => {
+    record(`运动残影 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: PostProcessingConfig = {
       ...config,
       motionBlur: { ...config.motionBlur, ...updates }
@@ -84,6 +93,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
   // 变焦配置更新
   const handleZoomChange = useCallback((updates: Partial<ZoomConfig>) => {
+    record(`变焦 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: PostProcessingConfig = {
       ...config,
       zoom: { ...config.zoom, ...updates }
@@ -93,6 +103,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
   // 像素风配置更新
   const handlePixelChange = useCallback((updates: Partial<PixelConfig>) => {
+    record(`像素风 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: PostProcessingConfig = {
       ...config,
       pixel: { ...config.pixel, ...updates }
@@ -102,6 +113,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
   // 半色调配置更新
   const handleHalftoneChange = useCallback((updates: Partial<HalftoneConfig>) => {
+    record(`半色调 ${Object.keys(updates).join(',')} 修改`);
     const newConfig: PostProcessingConfig = {
       ...config,
       halftone: { ...config.halftone, ...updates }
