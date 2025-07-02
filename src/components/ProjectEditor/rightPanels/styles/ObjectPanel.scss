@@ -275,17 +275,81 @@
     }
   }
 
-  // 剖切区域样式
-  .clipping-section {
-    .vector-group {
-      margin: 16px 0;
-    }
-  }
-
   // 爆炸区域样式
   .explode-section {
+    .switch-item {
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      .form-label {
+        font-size: 12px;
+        color: #d1d5db; // text-gray-300
+      }
+
+      .ant-input-number,
+      .ant-select,
+      .ant-input-number-input {
+        max-width: 120px;
+      }
+    }
+
     .vector-group {
       margin: 16px 0;
+      .vector-label {
+        font-size: 12px;
+        color: #d1d5db;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .vector-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
+
+        .ant-input-number {
+          min-width: 0;
+          width: 100%;
+          font-size: 12px;
+
+          .ant-input-number-input {
+            padding: 4px 8px;
+            font-size: 12px;
+          }
+          .ant-input-number-handler-wrap {
+            width: 16px;
+            .ant-input-number-handler {
+              height: 12px;
+            }
+          }
+        }
+      }
+    }
+
+    .axis-input {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+
+      .axis-label {
+        font-size: 10px;
+        color: #9ca3af; // gray-400
+      }
+
+      .ant-input-number {
+        width: 100%;
+      }
     }
   }
 
@@ -361,8 +425,8 @@
     }
 
     .ant-input-number-handler-wrap {
-      background: #374151 !important; // bg-gray-700
-      border-left-color: #4b5563 !important; // border-gray-600
+      background: #111827 !important; // match camera panel dark bg
+      border-left-color: #4b5563 !important;
     }
 
     .ant-input-number-handler {
@@ -372,6 +436,13 @@
       &:hover {
         color: #f3f4f6 !important; // text-gray-100
       }
+    }
+
+    // 统一上下箭头样式，确保继承父级颜色
+    .ant-input-number-handler-up-inner,
+    .ant-input-number-handler-down-inner {
+      font-size: 10px;
+      color: inherit;
     }
   }
 

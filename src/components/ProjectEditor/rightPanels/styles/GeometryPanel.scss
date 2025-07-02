@@ -429,21 +429,27 @@
   .ant-input-number {
     .ant-input-number-input {
       background: transparent !important;
-      color: #f3f4f6 !important; // text-gray-100
+      color: #f3f4f6 !important;
     }
 
     .ant-input-number-handler-wrap {
-      background: #374151 !important; // bg-gray-700
-      border-left-color: #4b5563 !important; // border-gray-600
+      background: #111827 !important;
+      border-left-color: #4b5563 !important;
     }
 
     .ant-input-number-handler {
-      color: #9ca3af !important; // text-gray-400
-      border-color: #4b5563 !important; // border-gray-600
-
+      color: #9ca3af !important;
+      border-color: #4b5563 !important;
       &:hover {
-        color: #f3f4f6 !important; // text-gray-100
+        color: #ffffff !important;
       }
+    }
+
+    // 统一上下箭头样式，确保继承父级颜色
+    .ant-input-number-handler-up-inner,
+    .ant-input-number-handler-down-inner {
+      font-size: 10px;
+      color: inherit;
     }
   }
 

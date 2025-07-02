@@ -558,27 +558,33 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                 <div className="vector-group">
                   <Text className="vector-label">爆炸中心</Text>
                   <div className="vector-inputs">
-                    <InputNumber
-                      value={objectState.explode.center.x}
-                      onChange={(value) => handleExplodeVectorChange('center', 'x', value || 0)}
-                      placeholder="X"
-                      step={0.1}
-                      precision={2}
-                    />
-                    <InputNumber
-                      value={objectState.explode.center.y}
-                      onChange={(value) => handleExplodeVectorChange('center', 'y', value || 0)}
-                      placeholder="Y"
-                      step={0.1}
-                      precision={2}
-                    />
-                    <InputNumber
-                      value={objectState.explode.center.z}
-                      onChange={(value) => handleExplodeVectorChange('center', 'z', value || 0)}
-                      placeholder="Z"
-                      step={0.1}
-                      precision={2}
-                    />
+                    <div className="axis-input">
+                      <span className="axis-label">X</span>
+                      <InputNumber
+                        value={objectState.explode.center.x}
+                        onChange={(value) => handleExplodeVectorChange('center', 'x', value || 0)}
+                        step={0.1}
+                        precision={2}
+                      />
+                    </div>
+                    <div className="axis-input">
+                      <span className="axis-label">Y</span>
+                      <InputNumber
+                        value={objectState.explode.center.y}
+                        onChange={(value) => handleExplodeVectorChange('center', 'y', value || 0)}
+                        step={0.1}
+                        precision={2}
+                      />
+                    </div>
+                    <div className="axis-input">
+                      <span className="axis-label">Z</span>
+                      <InputNumber
+                        value={objectState.explode.center.z}
+                        onChange={(value) => handleExplodeVectorChange('center', 'z', value || 0)}
+                        step={0.1}
+                        precision={2}
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -605,7 +611,6 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                     min={100}
                     max={10000}
                     step={100}
-                    addonAfter="ms"
                   />
                 </div>
 

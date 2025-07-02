@@ -66,12 +66,12 @@ const RightSidebarContent: React.FC<RightSidebarContentProps> = ({ currentTab, p
         ) : currentTab === 'weather' ? (
           <WeatherConfigPanel
             config={weatherConfig}
-            onChange={handlers.onChange}
+            onChange={handlers.onWeatherChange ?? handlers.onChange}
           />
         ) : currentTab === 'renderer' ? (
           <RendererConfigPanel
             config={rendererConfig}
-            onChange={handlers.onChange}
+            onChange={handlers.onRendererChange ?? handlers.onChange}
           />
         ) : currentTab === 'history' ? (
           <HistoryPanel
@@ -97,37 +97,37 @@ const RightSidebarContent: React.FC<RightSidebarContentProps> = ({ currentTab, p
         ) : currentTab === 'object' ? (
           <ObjectPanel
             objectState={objectState}
-            onInfoChange={handlers.onInfoChange}
-            onTransformChange={handlers.onTransformChange}
-            onShadowChange={handlers.onShadowChange}
-            onVisibilityChange={handlers.onVisibilityChange}
-            onRenderOrderChange={handlers.onRenderOrderChange}
-            onClippingChange={handlers.onClippingChange}
-            onExplodeChange={handlers.onExplodeChange}
-            onCustomDataChange={handlers.onCustomDataChange}
+            onInfoChange={handlers.onObjectInfoChange}
+            onTransformChange={handlers.onObjectTransformChange}
+            onShadowChange={handlers.onObjectShadowChange}
+            onVisibilityChange={handlers.onObjectVisibilityChange}
+            onRenderOrderChange={handlers.onObjectRenderOrderChange}
+            onClippingChange={handlers.onObjectClippingChange}
+            onExplodeChange={handlers.onObjectExplodeChange}
+            onCustomDataChange={handlers.onObjectCustomDataChange}
           />
         ) : currentTab === 'material' ? (
           <MaterialPanel
             materialState={materialState}
-            onInfoChange={handlers.onInfoChange}
-            onAppearanceChange={handlers.onAppearanceChange}
-            onTextureChange={handlers.onTextureChange}
-            onRenderChange={handlers.onRenderChange}
-            onCustomDataChange={handlers.onCustomDataChange}
+            onInfoChange={handlers.onMaterialInfoChange}
+            onAppearanceChange={handlers.onMaterialAppearanceChange}
+            onTextureChange={handlers.onMaterialTextureChange}
+            onRenderChange={handlers.onMaterialRenderChange}
+            onCustomDataChange={handlers.onMaterialCustomDataChange}
             onMaterialSelect={handlers.onMaterialSelect}
             onMaterialApply={handlers.onMaterialApply}
           />
         ) : currentTab === 'geometry' ? (
           <GeometryPanel
             geometryState={geometryState}
-            onInfoChange={handlers.onInfoChange}
-            onMorphSettingsChange={handlers.onMorphSettingsChange}
-            onOperationsChange={handlers.onOperationsChange}
+            onInfoChange={handlers.onGeometryInfoChange}
+            onMorphSettingsChange={handlers.onGeometryMorphSettingsChange}
+            onOperationsChange={handlers.onGeometryOperationsChange}
             onShowVertexNormals={handlers.onShowVertexNormals}
             onComputeVertexNormals={handlers.onComputeVertexNormals}
             onCenter={handlers.onCenter}
             onRefreshBounds={handlers.onRefreshBounds}
-            onCustomDataChange={handlers.onCustomDataChange}
+            onCustomDataChange={handlers.onGeometryCustomDataChange}
           />
         ) : (
           <>

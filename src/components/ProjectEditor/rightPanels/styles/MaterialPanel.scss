@@ -501,6 +501,29 @@
       color: #9ca3af !important; // text-gray-400
     }
   }
+
+  .ant-input-number {
+    .ant-input-number-handler-wrap {
+      background: #111827 !important; // align with camera panel
+      border-left-color: #4b5563 !important; // border-gray-600
+    }
+
+    .ant-input-number-handler {
+      color: #9ca3af !important; // text-gray-400
+      border-color: #4b5563 !important; // border-gray-600
+
+      &:hover {
+        color: #f3f4f6 !important; // text-gray-100
+      }
+    }
+
+    // 统一上下箭头样式，确保继承父级颜色
+    .ant-input-number-handler-up-inner,
+    .ant-input-number-handler-down-inner {
+      font-size: 10px;
+      color: inherit;
+    }
+  }
 }
 
 // 全局下拉菜单样式

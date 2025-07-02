@@ -11,7 +11,6 @@ import type {
   HistoryActionType,
   HistoryTargetType,
 } from '@/components/projectEditor/rightPanels/types/HistoryPanel.types';
-import { useDebouncedCallback } from './useDebounce';
 import type { AddHistoryParams } from '@/hooks/business/types/useHistoryRecorder.types';
 
 /**
@@ -22,16 +21,24 @@ import type { AddHistoryParams } from '@/hooks/business/types/useHistoryRecorder
 export const useRecord = (panelName: string) => {
   const { addHistory } = useHistoryRecorder();
 
-  // 保存不同 desc 的 debounced 函数
-  const debounceMap = useRef<Record<string, (...args: any[]) => void>>({});
+  // 存储各条记录对应的定时器 ID，实现手动防抖
+  const timerMap = useRef<Record<string, number | undefined>>({});
 
-  const getDebounced = (key: string) => {
-    if (!debounceMap.current[key]) {
-      debounceMap.current[key] = useDebouncedCallback<[
-        AddHistoryParams
-      ]>((record) => addHistory(record), 300);
+  /**
+   * 触发记录（带防抖）
+   * @param key 唯一键（desc）
+   * @param params 记录参数
+   */
+  const triggerRecord = (key: string, params: AddHistoryParams) => {
+    // 如果已存在计时器，则重置
+    if (timerMap.current[key]) {
+      clearTimeout(timerMap.current[key]);
     }
-    return debounceMap.current[key];
+    // @ts-ignore
+    timerMap.current[key] = window.setTimeout(() => {
+      addHistory(params);
+      delete timerMap.current[key];
+    }, 300);
   };
 
   return (
@@ -48,7 +55,7 @@ export const useRecord = (panelName: string) => {
     } as const;
 
     if (debounce) {
-      (getDebounced(desc) as (p: AddHistoryParams) => void)(params);
+      triggerRecord(desc, params);
     } else {
       addHistory(params);
     }
