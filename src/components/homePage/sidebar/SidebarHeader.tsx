@@ -4,10 +4,8 @@ import './styles/SidebarHeader.scss';
 
 // 类型声明已移至 @/components/homePage/sidebar/types/SidebarHeader.types.ts
 
-/**
- * 侧边栏头部组件
- * 展示应用logo和名称
- */
+// 侧边栏头部组件
+// 展示应用logo和名称
 const SidebarHeader: React.FC<SidebarHeaderProps> = ({ appName }) => {
   return (
     <div className="sidebar-header">

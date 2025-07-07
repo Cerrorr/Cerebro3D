@@ -1,22 +1,16 @@
 import { useState, useCallback } from 'react';
-import { RightSidebarTabType } from '@/components/projectEditor/rightPanels/types';
+import type {
+  UseRightSidebarStateOptions,
+  UseRightSidebarStateResult
+} from './types/useRightSidebarState.types';
+import type { RightSidebarTabType } from '@/components/projectEditor/rightPanels/types';
 
-interface UseRightSidebarStateOptions {
-  defaultTab: RightSidebarTabType;
-  defaultCollapsed?: boolean;
-}
-
-interface UseRightSidebarStateResult {
-  collapsed: boolean;
-  currentTab: RightSidebarTabType;
-  toggleCollapsed: () => void;
-  handleTabChange: (tab: RightSidebarTabType) => void;
-}
-
+// 右侧边栏状态管理Hook
+// 封装 RightSidebar 的折叠/标签页状态及基本回调
 /**
  * useRightSidebarState
- * 封装 RightSidebar 的折叠/标签页状态及基本回调
- * 详细的面板内部 state 将在后续迭代拆分
+ * @param options 配置选项
+ * @returns Hook返回值，包含状态和操作方法
  */
 export const useRightSidebarState = (
   options: UseRightSidebarStateOptions
@@ -25,10 +19,15 @@ export const useRightSidebarState = (
   const [collapsed, setCollapsed] = useState<boolean>(defaultCollapsed);
   const [currentTab, setCurrentTab] = useState<RightSidebarTabType>(defaultTab);
 
+  // 切换折叠状态
   const toggleCollapsed = useCallback(() => {
     setCollapsed(prev => !prev);
   }, []);
 
+  /**
+   * 处理标签页切换
+   * @param tab - 要切换到的标签页类型
+   */
   const handleTabChange = useCallback((tab: RightSidebarTabType) => {
     setCurrentTab(tab);
   }, []);

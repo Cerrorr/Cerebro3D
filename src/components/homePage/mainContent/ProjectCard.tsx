@@ -10,7 +10,7 @@ import './styles/ProjectCard.scss';
 
 /**
  * 获取项目类型对应的渐变背景和图标
- * @param type - 项目类型
+ * @param type 项目类型
  */
 const getProjectTypeStyle = (type: string) => {
   return PROJECT_TYPE_STYLES[type] || DEFAULT_PROJECT_TYPE_STYLE;
@@ -18,17 +18,11 @@ const getProjectTypeStyle = (type: string) => {
 
 /**
  * 项目卡片组件
- * 展示单个项目的缩略图、信息和操作按钮
- *
- * @param project - 项目数据对象
- * @param onClick - 项目点击处理函数
- * @author Cerror
- * @since 2025-06-25
+ * @param project 项目数据对象
+ * @param onClick 项目点击处理函数
  */
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
-  /**
-   * 处理卡片点击事件
-   */
+  // 处理卡片点击事件
   const handleClick = () => {
     onClick(project);
   };

@@ -5,9 +5,11 @@ import { addRecord, appendLog, undo, redo, clearHistory, setFilter } from '@/sto
 import type { LogLevel } from '@/store/types/historySlice.types';
 import { devLog } from '@/utils/devLog';
 
+// 统一管理历史记录与日志记录
 /**
  * useHistoryRecorder
- * 统一管理历史记录与日志记录
+ * @param options 配置选项
+ * @returns Hook返回值，包含历史记录操作方法
  */
 export const useHistoryRecorder = (
   options: UseHistoryRecorderOptions = {}

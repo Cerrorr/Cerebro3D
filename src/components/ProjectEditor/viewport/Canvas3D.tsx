@@ -7,6 +7,14 @@ import CanvasControls from './CanvasControls';
 import './styles/Canvas3D.scss';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 
+/**
+ * Canvas3D
+ * @param settings 3D场景设置
+ * @param onSettingsChange 设置变更回调
+ * @param width 宽度
+ * @param height 高度
+ * @param className CSS类名
+ */
 const Canvas3D: React.FC<Canvas3DProps> = ({
   settings,
   onSettingsChange,

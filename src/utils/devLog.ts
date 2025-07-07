@@ -1,10 +1,6 @@
-/**
- * devLog
- * 开发环境日志工具，支持函数调用和 log / warn / error 方法
- * 生产环境自动静默
- * @author Cerror
- * @since 2025-06-29
- */
+// devLog
+// 开发环境日志工具，支持函数调用和 log / warn / error 方法
+// 生产环境自动静默
 // 基础输出函数
 function baseLogger(...args: unknown[]): void {
   if (import.meta.env.DEV) {
@@ -14,14 +10,17 @@ function baseLogger(...args: unknown[]): void {
 }
 
 /* eslint-disable no-console */
+// 输出普通日志
 baseLogger.log = (...args: unknown[]): void => {
   if (import.meta.env.DEV) console.log(...args);
 };
 
+// 输出警告日志
 baseLogger.warn = (...args: unknown[]): void => {
   if (import.meta.env.DEV) console.warn(...args);
 };
 
+// 输出错误日志
 baseLogger.error = (...args: unknown[]): void => {
   if (import.meta.env.DEV) console.error(...args);
 };

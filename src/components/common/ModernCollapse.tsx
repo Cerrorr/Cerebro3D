@@ -1,19 +1,14 @@
 import React from 'react';
 import { Collapse } from 'antd';
 import type { CollapseProps } from 'antd';
+import type { PanelProps } from './types/ModernCollapse.types';
 
 /**
  * ModernCollapse
- * 向后兼容旧版 <Collapse><Panel/></Collapse> 写法，同时内部仍使用 items API，
- * 这样即可立即消除 rc-collapse 关于 children 的弃用警告。
- *
- * 用法：
- * import ModernCollapse from '@/components/common/ModernCollapse';
- * const { Panel } = ModernCollapse;
- * ...
- * <ModernCollapse ghost>...</ModernCollapse>
+ * @param children Panel 子组件
+ * @param rest 其他 Collapse 属性
  */
-const ModernCollapse: React.FC<CollapseProps> & { Panel: React.FC<any> } = ({ children, ...rest }) => {
+const ModernCollapse: React.FC<CollapseProps> & { Panel: React.FC<PanelProps> } = ({ children, ...rest }) => {
   // 若调用方已经使用 items API，直接透传
   if ('items' in rest && rest.items) {
     return <Collapse {...rest} />;
@@ -21,7 +16,7 @@ const ModernCollapse: React.FC<CollapseProps> & { Panel: React.FC<any> } = ({ ch
 
   // 将子 Panel 节点映射为 items 数组
   const items = React.Children.toArray(children).map(child => {
-    const el = child as React.ReactElement<any>;
+    const el = child as React.ReactElement<PanelProps>;
     return {
       key: el.key as string,
       label: el.props.header,

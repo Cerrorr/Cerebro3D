@@ -6,11 +6,7 @@ import './styles/NewProjectCard.scss';
 
 /**
  * 新建项目卡片组件
- * 显示在项目列表第一位，用于创建新项目
- *
- * @param onClick - 点击处理函数
- * @author Cerror
- * @since 2025-06-24
+ * @param onClick 点击处理函数
  */
 const NewProjectCard: React.FC<NewProjectCardProps> = ({ onClick }) => {
   return (

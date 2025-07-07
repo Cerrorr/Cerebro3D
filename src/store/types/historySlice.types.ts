@@ -21,6 +21,22 @@ export interface LogEntry {
   message: string;
 }
 
+/** 历史记录元数据 */
+export interface HistoryMetadata {
+  /** 时间戳 */
+  timestamp?: number;
+  /** 用户ID */
+  userId?: string;
+  /** 操作上下文 */
+  context?: string;
+  /** 操作来源 */
+  source?: 'user' | 'system' | 'import';
+  /** 批处理ID */
+  batchId?: string;
+  /** 其他扩展数据 */
+  [key: string]: unknown;
+}
+
 /** 历史记录条目 */
 export interface HistoryRecord {
   id: string;
@@ -30,10 +46,13 @@ export interface HistoryRecord {
   targetId?: string;
   targetName: string;
   description: string;
-  oldValue?: any;
-  newValue?: any;
+  /** 操作前的值 */
+  oldValue?: unknown;
+  /** 操作后的值 */
+  newValue?: unknown;
   isUndone: boolean;
-  metadata?: Record<string, any>;
+  /** 历史记录元数据 */
+  metadata?: HistoryMetadata;
 }
 
 /** Slice 根状态 */

@@ -14,18 +14,15 @@ import './styles/CarouselSection.scss';
 
 /**
  * 轮播图区域组件
- * 使用 Ant Design Carousel 组件展示3D编辑器特性
- *
- * @param items - 轮播图数据列表
- * @author Cerror
- * @since 2025-06-25
+ * @param items 轮播图数据列表
  */
+
 const CarouselSection: React.FC<CarouselSectionProps> = ({
   items = DEFAULT_CAROUSEL_ITEMS,
 }) => {
   /**
    * 获取轮播项的渐变背景样式
-   * @param index - 轮播项索引
+   * @param index 轮播项索引
    */
   const getGradientStyle = (index: number) => {
     return {

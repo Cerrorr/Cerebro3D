@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button } from 'antd';
-import type { ButtonProps } from 'antd';
+import type { RecordableButtonProps } from './types/recordable.types';
 
-interface RecordableButtonProps extends ButtonProps {
-  record: (msg: string) => void;
-  desc: string;
-}
-
+/**
+ * RecordableButton - 带记录功能的按钮组件
+ * @param record 记录函数
+ * @param desc 操作描述
+ * @param onClick 点击事件
+ * @param rest 其他 Button 属性
+ */
 export const RecordableButton: React.FC<RecordableButtonProps> = ({ record, desc, onClick, ...rest }) => {
   return (
     <Button

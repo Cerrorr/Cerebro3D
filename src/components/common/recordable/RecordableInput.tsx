@@ -1,18 +1,16 @@
 import { Input } from 'antd';
-import type { InputProps } from 'antd';
-import type { FC, ComponentType } from 'react';
+import type { FC } from 'react';
+import type { RecordableInputProps } from './types/recordable.types';
+import type { InputChangeHandler } from '@/types/events.types';
 
-interface RecordableInputProps extends InputProps {
-  record: (msg: string) => void;
-  field: string;
-  /** 可替换为 TextArea 等组件 */
-  as?: ComponentType<any>;
-  /** 行数，仅在 TextArea 时使用 */
-  rows?: number;
-  /** 列数，仅在 TextArea 时使用 */
-  cols?: number;
-}
-
+/**
+ * RecordableInput - 带记录功能的输入框组件
+ * @param record 记录函数
+ * @param field 字段名称
+ * @param onChange 变化事件
+ * @param as 组件类型
+ * @param rest 其他属性
+ */
 export const RecordableInput: FC<RecordableInputProps> = ({
   record,
   field,
@@ -23,7 +21,7 @@ export const RecordableInput: FC<RecordableInputProps> = ({
   return (
     <Component
       {...rest}
-      onChange={(e: any) => {
+      onChange={(e: Parameters<InputChangeHandler>[0]) => {
         record(`${field} = ${e.target?.value ?? ''}`);
         onChange?.(e);
       }}

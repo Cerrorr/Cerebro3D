@@ -7,7 +7,18 @@
 /**
  * 动画类型枚举
  */
-export type AnimationType = 'position' | 'rotation' | 'scale' | 'opacity' | 'material' | 'camera' | 'light' | 'custom';
+export type AnimationType = 
+  | 'position'    // 位置动画
+  | 'rotation'    // 旋转动画
+  | 'scale'       // 缩放动画
+  | 'opacity'     // 透明度动画
+  | 'material'    // 材质动画
+  | 'camera'      // 相机动画
+  | 'light'       // 灯光动画
+  | 'keyframe'    // 关键帧动画
+  | 'morph'       // 形变动画
+  | 'skeletal'    // 骨骼动画
+  | 'custom';     // 自定义动画
 
 /**
  * 动画状态枚举
@@ -146,6 +157,9 @@ export const ANIMATION_TYPE_ICONS: Record<AnimationType, string> = {
   material: '🎨',
   camera: '📷',
   light: '💡',
+  keyframe: '🎬',
+  morph: '🔄',
+  skeletal: '🦴',
   custom: '⚙️'
 };
 
@@ -160,6 +174,9 @@ export const ANIMATION_TYPE_COLORS: Record<AnimationType, string> = {
   material: '#eb2f96',
   camera: '#13c2c2',
   light: '#fadb14',
+  keyframe: '#2f54eb',
+  morph: '#f759ab',
+  skeletal: '#d48806',
   custom: '#8c8c8c'
 };
 

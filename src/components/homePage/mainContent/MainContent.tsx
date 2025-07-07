@@ -8,14 +8,10 @@ import './styles/MainContent.scss';
 
 /**
  * 主内容区组件
- * 包含轮播图和项目网格展示，支持新建项目功能
- *
- * @param carouselItems - 轮播图数据
- * @param projects - 项目列表数据
- * @param onProjectClick - 项目点击处理函数
- * @param onNewProject - 新建项目处理函数
- * @author Cerror
- * @since 2025-06-24
+ * @param carouselItems 轮播图数据
+ * @param projects 项目列表数据
+ * @param onProjectClick 项目点击处理函数
+ * @param onNewProject 新建项目处理函数
  */
 const MainContent: React.FC<MainContentProps> = ({
   carouselItems,

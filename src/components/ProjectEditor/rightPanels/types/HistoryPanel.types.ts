@@ -30,6 +30,7 @@ export type HistoryTargetType =
   | 'texture'         // 纹理
   | 'geometry'        // 几何体
   | 'group'           // 群组
+  | 'animation'       // 动画
   | 'helper';         // 辅助对象
 
 // 单个历史记录项

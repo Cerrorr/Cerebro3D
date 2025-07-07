@@ -46,14 +46,27 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
 }) => {
   const record = useRecord('几何');
 
+  /**
+   * 处理几何体类型改变
+   * @param type - 新的几何体类型
+   */
   const handleTypeChange = (type: string) => {
     onInfoChange?.({ type: type as any });
   };
 
+  /**
+   * 处理几何体名称改变
+   * @param e - 输入框事件对象
+   */
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onInfoChange?.({ name: e.target.value });
   };
 
+  /**
+   * 处理 Morph 属性改变
+   * @param key - 属性键名
+   * @param checked - 是否勾选
+   */
   const handleMorphAttributeChange = (key: string, checked: boolean) => {
     const newMorphAttributes = {
       ...geometryState?.morphSettings.morphAttributes,
@@ -64,12 +77,21 @@ const GeometryPanel: React.FC<GeometryPanelProps> = ({
     });
   };
 
+  /**
+   * 处理 Morph 相对模式改变
+   * @param checked - 是否开启相对模式
+   */
   const handleMorphRelativeChange = (checked: boolean) => {
     onMorphSettingsChange?.({
       morphRelative: checked
     });
   };
 
+  /**
+   * 格式化数字显示
+   * @param num - 需要格式化的数字
+   * @returns 格式化后的数字字符串
+   */
   const formatNumber = (num: number): string => {
     return num.toLocaleString();
   };
