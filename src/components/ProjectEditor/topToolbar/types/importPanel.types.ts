@@ -2,7 +2,8 @@ import type { FileImportResult } from '@/hooks/three';
 
 /**
  * 导入面板组件属性接口
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export interface ImportPanelProps {
   /** 面板是否可见 */
   visible: boolean;

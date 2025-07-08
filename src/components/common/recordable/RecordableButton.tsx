@@ -8,7 +8,8 @@ import type { RecordableButtonProps } from './types/recordable.types';
  * @param desc 操作描述
  * @param onClick 点击事件
  * @param rest 其他 Button 属性
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export const RecordableButton: React.FC<RecordableButtonProps> = ({ record, desc, onClick, ...rest }) => {
   return (
     <Button

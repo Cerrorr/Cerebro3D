@@ -1,3 +1,9 @@
+/**
+ * index工具模块
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 export { default as Sidebar } from './sidebar/Sidebar';
 export { default as SidebarHeader } from './sidebar/SidebarHeader';
 export { default as SidebarMenu } from './sidebar/SidebarMenu';

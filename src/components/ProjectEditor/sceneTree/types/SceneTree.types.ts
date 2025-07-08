@@ -1,7 +1,10 @@
+import { Object3D } from 'three';
+
 /**
  * 场景树节点接口
  * 定义3D场景中各种对象的基本结构和属性
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export interface SceneNode {
   /** 节点唯一标识符 */
   id: string;
@@ -21,6 +24,8 @@ export interface SceneNode {
   rotation?: { x: number; y: number; z: number };
   /** 3D空间缩放比例 */
   scale?: { x: number; y: number; z: number };
+  /** 导入的 Three.js 对象（可选） */
+  importedObject?: Object3D;
 }
 
 /**

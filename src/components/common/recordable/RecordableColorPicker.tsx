@@ -1,3 +1,9 @@
+/**
+ * RecordableColorPicker组件
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import React from 'react';
 import { ColorPicker } from 'antd';
 import type { ColorPickerProps } from 'antd/es/color-picker';

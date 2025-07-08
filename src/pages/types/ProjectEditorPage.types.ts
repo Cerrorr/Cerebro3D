@@ -6,7 +6,8 @@ import type {
 /**
  * 项目页面组件属性接口
  * 定义项目页面的配置参数
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export interface ProjectEditorPageProps {
   /** 项目标题（可选，默认为"特效材质贴图"） */
   projectTitle?: string;

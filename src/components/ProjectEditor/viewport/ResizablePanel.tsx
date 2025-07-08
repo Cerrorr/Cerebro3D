@@ -2,6 +2,13 @@ import React, { useRef, useCallback, useState, useEffect } from 'react';
 import type { ResizablePanelProps } from './types';
 import './styles/ResizablePanel.scss';
 
+/**
+ * ResizablePanel组件
+ * 可调整大小的面板容器，支持拖拽调整高度
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 const ResizablePanel: React.FC<ResizablePanelProps> = ({
   children,
   initialHeight = 120,

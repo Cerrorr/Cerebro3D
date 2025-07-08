@@ -12,7 +12,8 @@ import './styles/MainContent.scss';
  * @param projects 项目列表数据
  * @param onProjectClick 项目点击处理函数
  * @param onNewProject 新建项目处理函数
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const MainContent: React.FC<MainContentProps> = ({
   carouselItems,
   projects,

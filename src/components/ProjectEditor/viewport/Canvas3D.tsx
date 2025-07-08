@@ -8,7 +8,10 @@ import './styles/Canvas3D.scss';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 
 /**
- * Canvas3D
+ * Canvas3D组件
+ * 3D画布容器组件，负责渲染Three.js场景
+ * @author Cerror
+ * @since 2025-07-08
  * @param settings 3D场景设置
  * @param onSettingsChange 设置变更回调
  * @param width 宽度

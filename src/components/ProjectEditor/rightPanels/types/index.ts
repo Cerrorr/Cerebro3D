@@ -1,3 +1,9 @@
+/**
+ * index工具模块
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 /* RightPanels local type exports */
 export * from './AnimationPanel.types';
 export * from './CameraConfig.types';

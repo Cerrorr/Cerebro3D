@@ -9,7 +9,8 @@ import './styles/Toolbar.scss';
  * 提供项目标题编辑、左右两侧工具按钮区域
  * @param props 工具栏属性
  * @returns 工具栏React组件
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const Toolbar: React.FC<ToolbarProps> = ({
   projectTitle,
   onTitleChange,

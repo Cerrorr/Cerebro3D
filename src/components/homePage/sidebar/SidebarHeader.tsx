@@ -1,3 +1,9 @@
+/**
+ * SidebarHeader组件
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import React from 'react';
 import { SidebarHeaderProps } from './types';
 import './styles/SidebarHeader.scss';

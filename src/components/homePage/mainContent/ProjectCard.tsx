@@ -11,7 +11,8 @@ import './styles/ProjectCard.scss';
 /**
  * 获取项目类型对应的渐变背景和图标
  * @param type 项目类型
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const getProjectTypeStyle = (type: string) => {
   return PROJECT_TYPE_STYLES[type] || DEFAULT_PROJECT_TYPE_STYLE;
 };

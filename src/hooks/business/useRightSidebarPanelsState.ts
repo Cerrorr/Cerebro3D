@@ -49,7 +49,8 @@ import type {
  * 右侧面板状态管理Hook
  * 管理右侧面板的所有状态和回调函数，包括项目信息、场景配置、相机设置等
  * @returns 返回右侧面板的所有状态和操作函数
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult => {
   /* ---------------- 基础状态 ---------------- */
   // 项目信息
@@ -179,6 +180,7 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
    * @returns 返回一个无参数的记录函数
    * @deprecated 当前未使用，保留供将来扩展使用
    */
+  // @ts-ignore - 保留供将来使用
   const gen = (desc: string, action: HistoryActionType = 'modify', target: HistoryTargetType = 'scene') => () => record(desc, action, target);
 
   /**

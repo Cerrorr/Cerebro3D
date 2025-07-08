@@ -1,3 +1,9 @@
+/**
+ * RecordableInputNumber组件
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import React from 'react';
 import { InputNumber } from 'antd';
 import type { InputNumberProps } from 'antd';

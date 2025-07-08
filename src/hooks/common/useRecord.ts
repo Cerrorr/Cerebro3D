@@ -13,7 +13,8 @@ import type { AddHistoryParams } from '@/hooks/business/types/useHistoryRecorder
  * useRecord
  * @param panelName 面板名称，用于前缀描述
  * @returns record(desc, actionType?, targetType?)
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export const useRecord = (panelName: string) => {
   const { addHistory } = useHistoryRecorder();
 

@@ -31,7 +31,8 @@ import type { HistorySliceState } from '@/store/types/historySlice.types';
 
 /**
  * 右侧面板状态管理Hook返回值
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export interface UseRightSidebarPanelsStateResult {
   /** 面板属性配置 */
   panelsProps: Record<string, any>;

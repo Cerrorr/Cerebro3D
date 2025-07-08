@@ -7,7 +7,8 @@ import './styles/NewProjectCard.scss';
 /**
  * 新建项目卡片组件
  * @param onClick 点击处理函数
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const NewProjectCard: React.FC<NewProjectCardProps> = ({ onClick }) => {
   return (
     <article className="new-project-card" onClick={onClick}>

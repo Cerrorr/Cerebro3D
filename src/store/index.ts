@@ -1,3 +1,9 @@
+/**
+ * index工具模块
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import historyReducer from './slices/historySlice';

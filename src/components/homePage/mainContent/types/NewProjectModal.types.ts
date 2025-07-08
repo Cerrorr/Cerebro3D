@@ -1,3 +1,9 @@
+/**
+ * NewProjectModal.types工具模块
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 export type ProjectType = 'Web3D' | 'VR' | 'AR' | 'Game' | 'App';
 
 export interface ProjectTemplate {

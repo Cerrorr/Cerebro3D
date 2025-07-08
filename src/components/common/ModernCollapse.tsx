@@ -7,7 +7,8 @@ import type { PanelProps } from './types/ModernCollapse.types';
  * ModernCollapse
  * @param children Panel 子组件
  * @param rest 其他 Collapse 属性
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const ModernCollapse: React.FC<CollapseProps> & { Panel: React.FC<PanelProps> } = ({ children, ...rest }) => {
   // 若调用方已经使用 items API，直接透传
   if ('items' in rest && rest.items) {

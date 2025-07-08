@@ -1,3 +1,9 @@
+/**
+ * SidebarFooter组件
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import React from 'react';
 import { SidebarFooterProps } from './types';
 import './styles/SidebarFooter.scss';

@@ -1,3 +1,9 @@
+/**
+ * RecordableSwitch组件
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import React from 'react';
 import { Switch } from 'antd';
 import type { SwitchProps } from 'antd';

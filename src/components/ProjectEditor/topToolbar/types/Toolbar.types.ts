@@ -3,7 +3,8 @@ import React from 'react';
 /**
  * 工具栏按钮操作接口
  * 定义工具栏中每个按钮的基本属性和行为
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export interface ToolbarAction {
   /** 按钮唯一标识符 */
   id: string;

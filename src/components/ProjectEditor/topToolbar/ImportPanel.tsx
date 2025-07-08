@@ -15,7 +15,8 @@ const { Text } = Typography;
  * 支持GLB、GLTF、OBJ、FBX格式和ZIP压缩包
  * @param props 组件属性
  * @returns 导入面板React组件
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const ImportPanel: React.FC<ImportPanelProps> = ({
   visible,
   onClose,

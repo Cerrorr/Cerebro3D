@@ -1,3 +1,9 @@
+/**
+ * RightSidebarTabList组件
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import React from 'react';
 import { Tooltip } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';

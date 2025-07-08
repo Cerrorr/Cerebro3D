@@ -1,12 +1,8 @@
 import React from 'react';
-import { CanvasSettings } from './types/Canvas3D.types';
+import type { ViewportSceneProps } from './types';
 import { useThree } from '@react-three/fiber';
 import { useMemo } from 'react';
 import * as THREE from 'three';
-
-interface ViewportSceneProps {
-  settings: CanvasSettings;
-}
 
 /**
  * ViewportScene

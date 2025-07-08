@@ -2,7 +2,8 @@ import { Object3D } from 'three';
 
 /**
  * 文件导入结果接口
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export interface FileImportResult {
   /** 导入的3D对象 */
   object: Object3D;

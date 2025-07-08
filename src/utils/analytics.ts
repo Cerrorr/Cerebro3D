@@ -1,15 +1,26 @@
-// 百度统计工具类
-// 提供页面访问追踪和自定义事件追踪功能
+/**
+ * 百度统计工具类
+ * 提供页面访问追踪和自定义事件追踪功能
+ * @author Cerror
+ * @since 2025-07-08
+ */
 
 import './types/Analytics.types';
 import { devLog } from './devLog';
 
-// 百度统计分析工具类
+/**
+ * 百度统计分析工具类
+ * 提供页面访问追踪和自定义事件追踪功能
+ * @author Cerror
+ * @since 2025-07-08
+ */
 export class BaiduAnalytics {
   private static initialized = false;
 
-  // 初始化百度统计
-  // 从环境变量读取统计ID并动态加载脚本
+  /**
+   * 初始化百度统计
+   * 从环境变量读取统计ID并动态加载脚本
+   */
   static init(): void {
     if (this.initialized || typeof window === 'undefined') {
       return;
@@ -102,8 +113,7 @@ export class BaiduAnalytics {
 
     try {
       // 构建事件数据
-      type EventData = ['_trackEvent', string, string, string?, number?];
-      const eventData: EventData = ['_trackEvent', category, action];
+      const eventData: (string | number)[] = ['_trackEvent', category, action];
 
       if (label) {
         eventData.push(label);

@@ -6,7 +6,8 @@ import ProjectEditorPage from '@/pages/ProjectEditorPage';
 /**
  * 路由配置
  * 定义应用的所有路由规则
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const router = createBrowserRouter([
   {
     path: '/',

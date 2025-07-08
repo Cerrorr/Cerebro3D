@@ -1,3 +1,9 @@
+/**
+ * RecordableCheckbox组件
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import React from 'react';
 import { Checkbox } from 'antd';
 import type { CheckboxProps } from 'antd';

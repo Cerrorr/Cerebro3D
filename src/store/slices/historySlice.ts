@@ -1,3 +1,10 @@
+/**
+ * 历史记录状态管理
+ * 管理用户操作历史记录和系统日志
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { DEFAULT_HISTORY_STATE } from '@/components/projectEditor/rightPanels/types/HistoryPanel.types';
 import type {
@@ -17,7 +24,6 @@ const historySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    /* 日志 */
     appendLog: {
       prepare: (level: LogLevel, message: string) => ({
         payload: {

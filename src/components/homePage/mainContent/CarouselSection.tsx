@@ -15,7 +15,8 @@ import './styles/CarouselSection.scss';
 /**
  * 轮播图区域组件
  * @param items 轮播图数据列表
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 
 const CarouselSection: React.FC<CarouselSectionProps> = ({
   items = DEFAULT_CAROUSEL_ITEMS,

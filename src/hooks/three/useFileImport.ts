@@ -13,7 +13,8 @@ import {
 
 /**
  * 默认文件导入配置选项
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const DEFAULT_OPTIONS: Required<FileImportOptions> = {
   maxFileSize: 50 * 1024 * 1024, // 50MB 最大文件大小限制
   allowedTypes: Object.keys(SUPPORTED_FILE_TYPES), // 允许的文件类型

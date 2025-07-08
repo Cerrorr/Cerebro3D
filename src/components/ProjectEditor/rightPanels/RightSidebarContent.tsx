@@ -1,5 +1,5 @@
 import React from 'react';
-import { RightSidebarTabType } from './types';
+import type { RightSidebarTabType } from './types';
 import SceneConfigPanel from './SceneConfigPanel';
 import CameraConfigPanel from './CameraConfigPanel';
 import LightingConfigPanel from './LightingConfigPanel';
@@ -13,11 +13,24 @@ import MaterialPanel from './MaterialPanel';
 import GeometryPanel from './GeometryPanel';
 import { EMPTY_STATE_ICONS, TAB_TITLE_MAP } from './constants/RightSidebar.constants';
 
+/**
+ * RightSidebarContent组件属性接口
+ * @author Cerror
+ * @since 2025-07-08
+ */
 interface RightSidebarContentProps {
+  /** 当前激活的标签页类型 */
   currentTab: RightSidebarTabType;
-  // 所有面板状态 + 回调函数 (简化为 any，后续可细化)
+  /** 所有面板状态和回调函数集合 */
   panelsProps: Record<string, any>;
 }
+
+/**
+ * RightSidebarContent组件
+ * 右侧边栏内容区域，根据当前标签页渲染对应的面板
+ * @author Cerror
+ * @since 2025-07-08
+ */
 
 const RightSidebarContent: React.FC<RightSidebarContentProps> = ({ currentTab, panelsProps }) => {
   const {

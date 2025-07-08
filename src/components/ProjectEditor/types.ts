@@ -1,3 +1,9 @@
+/**
+ * types工具模块
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 /*
  * ProjectEditor global type re-exports (generated on demand)
  * NOTE: keep only one import line per subdirectory to avoid circular deps.

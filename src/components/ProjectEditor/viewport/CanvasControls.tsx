@@ -14,20 +14,13 @@ import {
   UpOutlined,
   DownOutlined
 } from '@ant-design/icons';
-import { ViewType, CanvasSettings } from './types/Canvas3D.types';
-
-interface CanvasControlsProps {
-  currentView: ViewType;
-  settings: CanvasSettings;
-  onViewReset: () => void;
-  onZoomExtents: () => void;
-  onToggleGrid: () => void;
-  onViewChange: (view: ViewType) => void;
-}
+import type { CanvasControlsProps, ViewType } from './types';
 
 /**
  * CanvasControls
  * 负责渲染左上角的视图/网格控制按钮
+ * @author Cerror
+ * @since 2025-07-08
  */
 const CanvasControls: React.FC<CanvasControlsProps> = ({
   currentView,

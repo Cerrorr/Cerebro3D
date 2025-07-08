@@ -7,7 +7,8 @@ import type { RecordableSelectProps } from './types/recordable.types';
  * @param field 字段名称
  * @param onChange 变化事件
  * @param rest 其他属性
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export const RecordableSelect = <T extends unknown = string>(props: RecordableSelectProps<T>) => {
   const { record, field, onChange, ...rest } = props;
   return (

@@ -1,3 +1,9 @@
+/**
+ * index工具模块
+ * @author Cerror
+ * @since 2025-07-08
+ */
+
 export { useR3FFileImport } from './useFileImport';
 export type {
   FileImportResult,

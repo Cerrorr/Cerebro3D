@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 import {
   Toolbar,
   SceneTree,
@@ -8,12 +9,14 @@ import {
   RightSidebar,
   BottomPanel,
 } from '@/components/projectEditor';
+import ImportPanel from '@/components/projectEditor/topToolbar/ImportPanel';
 import type {
   SceneNode,
   CanvasSettings,
   RightSidebarTabType,
   BottomPanelType,
 } from '@/components/projectEditor/types';
+import type { FileImportResult } from '@/hooks/three';
 import { ProjectEditorPageProps } from './types';
 import {
   DEFAULT_CANVAS_SETTINGS,
@@ -32,7 +35,8 @@ import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
  * 提供3D编辑器界面，包含工具栏、场景树、3D画布和可调整面板
  * @param props 组件属性
  * @returns 项目页面React组件
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   projectTitle: initialTitle,
   projectLogo = '/images/logo.png',
@@ -70,9 +74,88 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   const [canvasSettings, setCanvasSettings] = useState<CanvasSettings>({
     ...DEFAULT_CANVAS_SETTINGS,
   });
+  const [importPanelVisible, setImportPanelVisible] = useState(false);
 
   // 历史记录 & 日志 Hook
   const { addHistory, logs } = useHistoryRecorder();
+
+  /**
+   * 打开导入面板
+   */
+  const handleOpenImportPanel = useCallback(() => {
+    setImportPanelVisible(true);
+    addHistory({
+      actionType: 'import',
+      targetType: 'scene',
+      targetName: projectTitle,
+      description: '打开导入面板',
+      logLevel: 'info'
+    });
+  }, [addHistory, projectTitle]);
+  const handleImportSuccess = useCallback((results: FileImportResult[]) => {
+    console.log('导入成功:', results);
+    
+    // 创建新的场景节点
+    const newNodes: SceneNode[] = results.map((result, index) => ({
+      id: `imported_${Date.now()}_${index}`,
+      name: result.fileName,
+      type: 'mesh',
+      visible: true,
+      // 这里可以添加更多属性，如导入的3D对象引用
+      importedObject: result.object
+    }));
+
+    // 将新导入的对象添加到场景中的"模型"文件夹
+    setSceneNodes(prev => {
+      const updatedNodes = [...prev];
+      const findMeshesFolder = (nodes: SceneNode[]): SceneNode[] => {
+        return nodes.map(node => {
+          if (node.id === 'meshes') {
+            return {
+              ...node,
+              children: [...(node.children || []), ...newNodes]
+            };
+          }
+          if (node.children) {
+            return {
+              ...node,
+              children: findMeshesFolder(node.children)
+            };
+          }
+          return node;
+        });
+      };
+      return findMeshesFolder(updatedNodes);
+    });
+
+    // 记录导入历史
+    results.forEach(result => {
+      addHistory({
+        actionType: 'import',
+        targetType: 'object',
+        targetName: result.fileName,
+        description: `导入3D模型: ${result.fileName} (${result.fileType.toUpperCase()})`,
+        logLevel: 'info'
+      });
+    });
+
+    message.success(`成功导入 ${results.length} 个3D模型`);
+  }, [addHistory]);
+
+  /**
+   * 处理文件导入错误
+   * @param error 错误信息
+   */
+  const handleImportError = useCallback((error: string) => {
+    console.error('导入错误:', error);
+    addHistory({
+      actionType: 'import',
+      targetType: 'scene',
+      targetName: projectTitle,
+      description: `导入失败: ${error}`,
+      logLevel: 'error'
+    });
+  }, [addHistory, projectTitle]);
 
   // 监听路由变化，更新项目标题
   useEffect(() => {
@@ -90,31 +173,23 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   // 使用常量文件中的工具栏配置
   const rawLeftActions = getLeftToolbarActions();
 
-  const leftActions = rawLeftActions.map(act => {
-    switch (act.id) {
+  const leftActions = rawLeftActions.map(item => {
+    // 处理工具栏按钮
+    switch (item.id) {
       case 'import':
-        return {
-          ...act,
-          onClick: () =>
-            addHistory({
-              actionType: 'import',
-              targetType: 'scene',
-              targetName: projectTitle,
-              description: `导入资源到项目：${projectTitle}`,
-            }),
-        };
+        return { ...item, onClick: handleOpenImportPanel };
       case 'undo':
-        return { ...act, onClick: () => addHistory({ actionType: 'undo', targetType: 'scene', targetName: projectTitle, description: '撤回一次操作' }) };
+        return { ...item, onClick: () => addHistory({ actionType: 'undo', targetType: 'scene', targetName: projectTitle, description: '撤回一次操作' }) };
       case 'redo':
-        return { ...act, onClick: () => addHistory({ actionType: 'redo', targetType: 'scene', targetName: projectTitle, description: '重做一次操作' }) };
+        return { ...item, onClick: () => addHistory({ actionType: 'redo', targetType: 'scene', targetName: projectTitle, description: '重做一次操作' }) };
       case 'delete':
-        return { ...act, onClick: () => addHistory({ actionType: 'delete', targetType: 'scene', targetName: projectTitle, description: '删除选中对象' }) };
+        return { ...item, onClick: () => addHistory({ actionType: 'delete', targetType: 'scene', targetName: projectTitle, description: '删除选中对象' }) };
       case 'clear':
-        return { ...act, onClick: () => addHistory({ actionType: 'scene', targetType: 'scene', targetName: projectTitle, description: '清空场景对象' }) };
+        return { ...item, onClick: () => addHistory({ actionType: 'scene', targetType: 'scene', targetName: projectTitle, description: '清空场景对象' }) };
       case 'copy':
-        return { ...act, onClick: () => addHistory({ actionType: 'create', targetType: 'scene', targetName: projectTitle, description: '复制选中对象' }) };
+        return { ...item, onClick: () => addHistory({ actionType: 'create', targetType: 'scene', targetName: projectTitle, description: '复制选中对象' }) };
       default:
-        return act;
+        return item;
     }
   });
 
@@ -277,6 +352,14 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
           </div>
         </div>
       </div>
+
+      {/* 导入面板 */}
+      <ImportPanel
+        visible={importPanelVisible}
+        onClose={() => setImportPanelVisible(false)}
+        onImportSuccess={handleImportSuccess}
+        onImportError={handleImportError}
+      />
     </div>
   );
 };

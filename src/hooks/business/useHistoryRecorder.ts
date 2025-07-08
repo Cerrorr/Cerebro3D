@@ -10,7 +10,8 @@ import { devLog } from '@/utils/devLog';
  * useHistoryRecorder
  * @param options 配置选项
  * @returns Hook返回值，包含历史记录操作方法
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export const useHistoryRecorder = (
   options: UseHistoryRecorderOptions = {}
 ): UseHistoryRecorderResult => {

@@ -10,7 +10,8 @@ import type { InputChangeHandler } from '@/types/events.types';
  * @param onChange 变化事件
  * @param as 组件类型
  * @param rest 其他属性
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export const RecordableInput: FC<RecordableInputProps> = ({
   record,
   field,

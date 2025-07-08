@@ -11,7 +11,8 @@ import type { RightSidebarTabType } from '@/components/projectEditor/rightPanels
  * useRightSidebarState
  * @param options 配置选项
  * @returns Hook返回值，包含状态和操作方法
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export const useRightSidebarState = (
   options: UseRightSidebarStateOptions
 ): UseRightSidebarStateResult => {

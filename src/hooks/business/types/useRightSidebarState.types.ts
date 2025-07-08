@@ -2,7 +2,8 @@ import { RightSidebarTabType } from '../../../components/projectEditor/rightPane
 
 /**
  * 右侧边栏状态管理Hook选项
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 export interface UseRightSidebarStateOptions {
   /** 默认标签页 */
   defaultTab: RightSidebarTabType;

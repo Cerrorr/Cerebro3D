@@ -20,7 +20,8 @@ import './styles/SceneTree.scss';
  * 显示3D场景的层级结构，支持节点搜索、展开/折叠、可见性切换等功能
  * @param props 组件属性
  * @returns 场景树React组件
- */
+ * @author Cerror
+ * @since 2025-07-08 */
 const SceneTree: React.FC<SceneTreeProps> = ({
   sceneData,
   selectedNodeId,

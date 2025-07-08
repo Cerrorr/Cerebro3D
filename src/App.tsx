@@ -6,6 +6,8 @@ import './App.css';
 /**
  * 应用根组件
  * 整合路由和全局状态管理
+ * @author Cerror
+ * @since 2025-07-08
  */
 const App: React.FC = () => {
   // 初始化百度统计
