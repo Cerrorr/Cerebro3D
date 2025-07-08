@@ -1,7 +1,5 @@
-import { useState, useCallback, useRef } from 'react';
-import { GLTFLoader } from 'three-stdlib';
-import { OBJLoader } from 'three-stdlib';
-import { FBXLoader } from 'three-stdlib';
+import { useState, useCallback } from 'react';
+import { GLTFLoader, OBJLoader, FBXLoader } from 'three-stdlib';
 import JSZip from 'jszip';
 import {
   FileImportHookReturn,
@@ -11,17 +9,26 @@ import {
   FileImportError,
   SupportedFileType,
   SUPPORTED_FILE_TYPES,
-} from './types/useFileImport.types';
+} from './types';
 
+/**
+ * 默认文件导入配置选项
+ */
 const DEFAULT_OPTIONS: Required<FileImportOptions> = {
-  maxFileSize: 50 * 1024 * 1024, // 50MB
-  allowedTypes: Object.keys(SUPPORTED_FILE_TYPES),
-  onProgress: () => {},
-  onError: () => {},
-  onSuccess: () => {},
+  maxFileSize: 50 * 1024 * 1024, // 50MB 最大文件大小限制
+  allowedTypes: Object.keys(SUPPORTED_FILE_TYPES), // 允许的文件类型
+  onProgress: () => {}, // 进度回调函数
+  onError: () => {}, // 错误回调函数
+  onSuccess: () => {}, // 成功回调函数
 };
 
-export const useFileImport = (
+/**
+ * React Three Fiber 文件导入 Hook
+ * 提供3D模型文件导入功能，支持 GLB、GLTF、OBJ、FBX 格式和 ZIP 压缩包
+ * @param options 导入配置选项
+ * @returns 文件导入状态和操作方法
+ */
+export const useR3FFileImport = (
   options: FileImportOptions = {}
 ): FileImportHookReturn => {
   const config = { ...DEFAULT_OPTIONS, ...options };
@@ -32,17 +39,22 @@ export const useFileImport = (
     results: [],
   });
 
-  const loadersRef = useRef({
-    gltf: new GLTFLoader(),
-    glb: new GLTFLoader(),
-    obj: new OBJLoader(),
-    fbx: new FBXLoader(),
-  });
-
+  /**
+   * 更新导入状态
+   * @param updates 要更新的状态字段
+   */
   const updateState = useCallback((updates: Partial<FileImportState>) => {
     setState(prev => ({ ...prev, ...updates }));
   }, []);
 
+  /**
+   * 创建错误对象
+   * @param message 错误消息
+   * @param code 错误代码
+   * @param fileName 文件名（可选）
+   * @param originalError 原始错误对象（可选）
+   * @returns 格式化的错误对象
+   */
   const createError = useCallback(
     (
       message: string,
@@ -58,6 +70,11 @@ export const useFileImport = (
     []
   );
 
+  /**
+   * 获取文件类型
+   * @param fileName 文件名
+   * @returns 支持的文件类型或null
+   */
   const getFileType = useCallback(
     (fileName: string): SupportedFileType | null => {
       const extension = fileName.split('.').pop()?.toLowerCase();
@@ -73,8 +90,14 @@ export const useFileImport = (
     []
   );
 
+  /**
+   * 验证文件是否符合导入要求
+   * @param file 要验证的文件
+   * @returns 验证错误或null（通过验证）
+   */
   const validateFile = useCallback(
     (file: File): FileImportError | null => {
+      // 检查文件大小限制
       if (file.size > config.maxFileSize) {
         return createError(
           `文件大小超过限制 (${Math.round(config.maxFileSize / 1024 / 1024)}MB)`,
@@ -83,6 +106,7 @@ export const useFileImport = (
         );
       }
 
+      // 检查文件类型是否支持
       const fileType = getFileType(file.name);
       if (!fileType || !config.allowedTypes.includes(fileType)) {
         return createError(
@@ -97,33 +121,39 @@ export const useFileImport = (
     [config.maxFileSize, config.allowedTypes, createError, getFileType]
   );
 
+  /**
+   * 使用 React Three Fiber 加载文件
+   * @param file 要加载的文件
+   * @returns Promise 返回加载结果
+   */
   const loadFile = useCallback(
     async (file: File): Promise<FileImportResult> => {
       return new Promise((resolve, reject) => {
         const startTime = Date.now();
         const fileType = getFileType(file.name);
-
+        
         if (!fileType) {
-          reject(
-            createError('无法确定文件类型', 'UNKNOWN_FILE_TYPE', file.name)
-          );
+          reject(createError('无法确定文件类型', 'UNKNOWN_FILE_TYPE', file.name));
           return;
         }
 
         const reader = new FileReader();
-        const loader = loadersRef.current[fileType];
-
-        reader.onload = event => {
+        
+        // 读取文件完成后的处理
+        reader.onload = (event) => {
           try {
             const arrayBuffer = event.target?.result as ArrayBuffer;
-
+            
+            // 根据文件类型使用对应的加载器
             if (fileType === 'gltf') {
               const decoder = new TextDecoder('utf-8');
               const jsonString = decoder.decode(arrayBuffer);
+              const loader = new GLTFLoader();
+              
               loader.parse(
                 jsonString,
                 '',
-                gltf => {
+                (gltf) => {
                   resolve({
                     object: gltf.scene,
                     fileName: file.name,
@@ -132,7 +162,7 @@ export const useFileImport = (
                     loadTime: Date.now() - startTime,
                   });
                 },
-                error => {
+                (error) => {
                   reject(
                     createError(
                       'GLTF 加载失败',
@@ -144,10 +174,12 @@ export const useFileImport = (
                 }
               );
             } else if (fileType === 'glb') {
-              (loader as GLTFLoader).parse(
+              const loader = new GLTFLoader();
+              
+              loader.parse(
                 arrayBuffer,
                 '',
-                gltf => {
+                (gltf) => {
                   resolve({
                     object: gltf.scene,
                     fileName: file.name,
@@ -156,7 +188,7 @@ export const useFileImport = (
                     loadTime: Date.now() - startTime,
                   });
                 },
-                error => {
+                (error) => {
                   reject(
                     createError(
                       'GLB 加载失败',
@@ -170,7 +202,9 @@ export const useFileImport = (
             } else if (fileType === 'obj') {
               const decoder = new TextDecoder('utf-8');
               const objString = decoder.decode(arrayBuffer);
-              const object = (loader as OBJLoader).parse(objString);
+              const loader = new OBJLoader();
+              const object = loader.parse(objString);
+              
               resolve({
                 object,
                 fileName: file.name,
@@ -179,7 +213,9 @@ export const useFileImport = (
                 loadTime: Date.now() - startTime,
               });
             } else if (fileType === 'fbx') {
-              const object = (loader as FBXLoader).parse(arrayBuffer, '');
+              const loader = new FBXLoader();
+              const object = loader.parse(arrayBuffer, '');
+              
               resolve({
                 object,
                 fileName: file.name,
@@ -200,6 +236,7 @@ export const useFileImport = (
           }
         };
 
+        // 文件读取错误处理
         reader.onerror = () => {
           reject(
             createError(
@@ -211,12 +248,18 @@ export const useFileImport = (
           );
         };
 
+        // 开始读取文件为 ArrayBuffer
         reader.readAsArrayBuffer(file);
       });
     },
     [getFileType, createError]
   );
 
+  /**
+   * 从 ZIP 文件中提取支持的 3D 文件
+   * @param file ZIP 文件
+   * @returns Promise 返回提取的文件列表
+   */
   const extractZipFiles = useCallback(
     async (file: File): Promise<File[]> => {
       const zip = new JSZip();
@@ -224,6 +267,7 @@ export const useFileImport = (
       const zipData = await zip.loadAsync(arrayBuffer);
       const extractedFiles: File[] = [];
 
+      // 遍历 ZIP 文件中的所有文件
       for (const [fileName, zipEntry] of Object.entries(zipData.files)) {
         if (!zipEntry.dir && getFileType(fileName)) {
           const blob = await zipEntry.async('blob');
@@ -237,21 +281,29 @@ export const useFileImport = (
     [getFileType]
   );
 
+  /**
+   * 批量处理文件
+   * @param files 要处理的文件列表
+   * @returns Promise 返回处理结果列表
+   */
   const processFiles = useCallback(
     async (files: File[]): Promise<FileImportResult[]> => {
       const results: FileImportResult[] = [];
       let processedCount = 0;
 
+      // 逐个处理文件
       for (const file of files) {
         try {
           let filesToProcess: File[] = [];
 
+          // 如果是 ZIP 文件，先解压
           if (file.name.toLowerCase().endsWith('.zip')) {
             filesToProcess = await extractZipFiles(file);
           } else {
             filesToProcess = [file];
           }
 
+          // 处理每个文件
           for (const processFile of filesToProcess) {
             const validationError = validateFile(processFile);
             if (validationError) {
@@ -268,6 +320,7 @@ export const useFileImport = (
           config.onError(fileError);
         }
 
+        // 更新处理进度
         processedCount++;
         const progress = (processedCount / files.length) * 100;
         updateState({ progress });
