@@ -5,6 +5,8 @@
  * @since 2025-06-25
  */
 
+import type { SceneNode } from '../../sceneTree/types';
+
 /**
  * 3D视图类型枚举
  * 定义3D画布支持的视角类型
@@ -44,6 +46,8 @@ export interface Canvas3DProps {
   onObjectSelect?: (objectId: string) => void;
   /** 当前选中的对象ID */
   selectedObjectId?: string;
+  /** 场景节点数据 */
+  sceneNodes?: SceneNode[];
 }
 
 /**

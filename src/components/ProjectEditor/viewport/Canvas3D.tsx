@@ -23,7 +23,8 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
   onSettingsChange,
   width = '100%',
   height = '100%',
-  className
+  className,
+  sceneNodes = []
 }) => {
   const [currentView, setCurrentView] = useState<ViewType>('perspective');
 
@@ -71,7 +72,7 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
     <div className={`canvas-3d ${className || ''}`} style={{ width, height }}>
       {/* R3F Canvas */}
       <Canvas camera={{ position: settings.cameraPosition || [6, 4, 6], fov: 60 }}>
-        <ViewportScene settings={settings} />
+        <ViewportScene settings={settings} sceneNodes={sceneNodes} />
         <OrbitControls makeDefault />
       </Canvas>
 

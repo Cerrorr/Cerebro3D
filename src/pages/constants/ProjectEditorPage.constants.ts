@@ -130,82 +130,31 @@ export const RIGHT_TOOLBAR_ACTIONS: ToolbarAction[] = [
 export const MOCK_SCENE_NODES: readonly SceneNode[] = [
   {
     id: 'scene',
-    name: '特效材质贴图',
-    type: 'folder',
+    name: 'Scene',
+    type: 'scene',
     expanded: true,
     visible: true,
     children: [
+      // 透视相机（二级节点）
       {
-        id: 'cameras',
-        name: '默认相机',
-        type: 'folder',
-        expanded: true,
+        id: 'perspective-camera',
+        name: '透视相机',
+        type: 'camera',
         visible: true,
-        children: [
-          {
-            id: 'camera1',
-            name: '正交视图',
-            type: 'camera',
-            visible: true,
-          },
-          {
-            id: 'camera2',
-            name: '透视视图',
-            type: 'camera',
-            visible: true,
-          },
-        ],
       },
+      // 环境光（二级节点）
       {
-        id: 'lights',
-        name: '灯光',
-        type: 'folder',
-        expanded: true,
+        id: 'ambient-light',
+        name: '环境光',
+        type: 'light',
         visible: true,
-        children: [
-          {
-            id: 'light1',
-            name: '环境光',
-            type: 'light',
-            visible: true,
-          },
-          {
-            id: 'light2',
-            name: '方向光',
-            type: 'light',
-            visible: true,
-          },
-        ],
       },
+      // 方向光（二级节点）
       {
-        id: 'meshes',
-        name: '模型',
-        type: 'folder',
-        expanded: true,
+        id: 'directional-light',
+        name: '方向光',
+        type: 'light',
         visible: true,
-        children: [
-          {
-            id: 'cube1',
-            name: '立方体',
-            type: 'mesh',
-            visible: true,
-          },
-          {
-            id: 'materials',
-            name: '材质',
-            type: 'folder',
-            expanded: false,
-            visible: true,
-            children: [
-              {
-                id: 'material1',
-                name: '默认材质',
-                type: 'material',
-                visible: true,
-              },
-            ],
-          },
-        ],
       },
     ],
   },

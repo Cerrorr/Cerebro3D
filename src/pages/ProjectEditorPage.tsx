@@ -25,6 +25,7 @@ import {
   RIGHT_TOOLBAR_ACTIONS,
   MOCK_SCENE_NODES,
 } from './constants';
+import { extractModelStructure } from '@/utils/threeUtils';
 import './styles/ProjectEditorPage.scss';
 import {usePageTracking } from '@/utils/analytics';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
@@ -92,40 +93,30 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       logLevel: 'info'
     });
   }, [addHistory, projectTitle]);
+
   const handleImportSuccess = useCallback((results: FileImportResult[]) => {
-    console.log('导入成功:', results);
-    
     // 创建新的场景节点
     const newNodes: SceneNode[] = results.map((result, index) => ({
       id: `imported_${Date.now()}_${index}`,
       name: result.fileName,
       type: 'mesh',
       visible: true,
-      // 这里可以添加更多属性，如导入的3D对象引用
-      importedObject: result.object
+      expanded: true, // 展开以显示模型结构
+      importedObject: result.object,
+      children: extractModelStructure(result.object, result.fileName) // 提取模型结构树
     }));
 
-    // 将新导入的对象添加到场景中的"模型"文件夹
+    // 将导入的模型添加到Scene节点下
     setSceneNodes(prev => {
-      const updatedNodes = [...prev];
-      const findMeshesFolder = (nodes: SceneNode[]): SceneNode[] => {
-        return nodes.map(node => {
-          if (node.id === 'meshes') {
-            return {
-              ...node,
-              children: [...(node.children || []), ...newNodes]
-            };
-          }
-          if (node.children) {
-            return {
-              ...node,
-              children: findMeshesFolder(node.children)
-            };
-          }
-          return node;
-        });
-      };
-      return findMeshesFolder(updatedNodes);
+      return prev.map(node => {
+        if (node.id === 'scene') {
+          return {
+            ...node,
+            children: [...(node.children || []), ...newNodes]
+          };
+        }
+        return node;
+      });
     });
 
     // 记录导入历史
@@ -319,6 +310,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
               <Canvas3D
                 settings={canvasSettings}
                 onSettingsChange={setCanvasSettings}
+                sceneNodes={sceneNodes}
               />
             </div>
 
