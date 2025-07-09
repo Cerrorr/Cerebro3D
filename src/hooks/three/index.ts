@@ -4,7 +4,7 @@
  * @since 2025-07-08
  */
 
-export { useR3FFileImport } from './useFileImport';
+export { useFileImport } from './useFileImport';
 export type {
   FileImportResult,
   FileImportError,

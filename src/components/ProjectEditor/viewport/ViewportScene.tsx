@@ -2,7 +2,7 @@ import React from 'react';
 import type { ViewportSceneProps } from './types';
 import { useThree } from '@react-three/fiber';
 import { useMemo } from 'react';
-import * as THREE from 'three';
+import { Color } from 'three';
 
 /**
  * ViewportScene
@@ -16,7 +16,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({ settings, sceneNodes = []
 
   // 设置背景色
   useMemo(() => {
-    scene.background = new THREE.Color(settings.backgroundColor);
+    scene.background = new Color(settings.backgroundColor);
   }, [scene, settings.backgroundColor]);
 
   /**

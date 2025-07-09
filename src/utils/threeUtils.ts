@@ -5,8 +5,178 @@
  * @since 2025-07-08
  */
 
-import { Object3D } from 'three';
+import { Object3D, Mesh, Material, MeshStandardMaterial, WebGLRenderer } from 'three';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types';
+
+/**
+ * 诊断模型的UV坐标和材质问题
+ * @param object Three.js对象
+ * @returns 诊断报告
+ */
+export const diagnoseModelIssues = (object: Object3D) => {
+  const issues: string[] = [];
+  const stats = {
+    totalMeshes: 0,
+    meshesWithUV: 0,
+    meshesWithUV1: 0,
+    materialsWithTextures: 0,
+    materialsWithLightMap: 0,
+    materialsWithAoMap: 0,
+    fixedMaterials: 0,
+  };
+
+  object.traverse((child) => {
+    if (child instanceof Mesh && child.material) {
+      stats.totalMeshes++;
+      
+      const geometry = child.geometry;
+      const hasUV = !!geometry.attributes.uv;
+      const hasUV1 = !!geometry.attributes.uv1;
+      
+      if (hasUV) stats.meshesWithUV++;
+      if (hasUV1) stats.meshesWithUV1++;
+      
+      const materials = Array.isArray(child.material) ? child.material : [child.material];
+      
+      materials.forEach((material: Material) => {
+        if (material instanceof MeshStandardMaterial) {
+          if (material.map || material.normalMap || material.bumpMap) {
+            stats.materialsWithTextures++;
+          }
+          if (material.lightMap) {
+            stats.materialsWithLightMap++;
+          }
+          if (material.aoMap) {
+            stats.materialsWithAoMap++;
+          }
+          
+          // 检查潜在问题
+          if ((material.map || material.normalMap || material.bumpMap) && !hasUV) {
+            issues.push(`Mesh "${child.name || 'unnamed'}" has textures but missing UV coordinates`);
+          }
+          if (material.lightMap && !hasUV1) {
+            issues.push(`Mesh "${child.name || 'unnamed'}" has lightMap but missing UV1 coordinates`);
+          }
+          if (material.aoMap && !hasUV1) {
+            issues.push(`Mesh "${child.name || 'unnamed'}" has aoMap but missing UV1 coordinates`);
+          }
+        }
+      });
+    }
+  });
+
+  return { issues, stats };
+};
+
+/**
+ * 修复模型材质兼容性问题
+ * 解决导入模型时的着色器错误，特别是UV坐标相关问题
+ * @param object Three.js对象
+ * @returns 修复报告
+ */
+export const fixModelMaterials = (object: Object3D) => {
+  // 先诊断问题
+  const diagnosis = diagnoseModelIssues(object);
+  
+  console.log(`[Material Fix] 诊断结果:`, {
+    总网格数: diagnosis.stats.totalMeshes,
+    有UV坐标: diagnosis.stats.meshesWithUV,
+    有UV1坐标: diagnosis.stats.meshesWithUV1,
+    发现问题: diagnosis.issues.length,
+  });
+  
+  if (diagnosis.issues.length > 0) {
+    console.warn(`[Material Fix] 发现的问题:`, diagnosis.issues);
+  }
+  
+  let fixedCount = 0;
+  
+  object.traverse((child) => {
+    if (child instanceof Mesh && child.material) {
+      const materials = Array.isArray(child.material) ? child.material : [child.material];
+      
+      materials.forEach((material: Material) => {
+        // 检查并修复材质的UV坐标问题
+        if (material instanceof MeshStandardMaterial) {
+          const geometry = child.geometry;
+          
+          // 检查UV坐标可用性
+          const hasUV = !!geometry.attributes.uv;
+          const hasUV1 = !!geometry.attributes.uv1;
+          let materialFixed = false;
+          
+          // 如果缺少基本UV坐标，禁用所有需要UV的纹理
+          if (!hasUV) {
+            const textureCount = [material.map, material.normalMap, material.bumpMap, material.roughnessMap, material.metalnessMap, material.emissiveMap].filter(Boolean).length;
+            if (textureCount > 0) {
+              console.warn(`[Material Fix] Mesh "${child.name || 'unnamed'}" missing UV coordinates, disabling ${textureCount} textures`);
+              material.map = null;
+              material.normalMap = null;
+              material.bumpMap = null;
+              material.roughnessMap = null;
+              material.metalnessMap = null;
+              material.emissiveMap = null;
+              materialFixed = true;
+            }
+          }
+          
+          // 处理需要UV1的纹理 - 优先尝试复制UV到UV1
+          if (!hasUV1 && hasUV) {
+            if (material.lightMap || material.aoMap) {
+              console.log(`[Material Fix] Mesh "${child.name || 'unnamed'}" copying UV to UV1 for lightMap/aoMap compatibility`);
+              geometry.setAttribute('uv1', geometry.attributes.uv.clone());
+              materialFixed = true;
+            }
+          } else if (!hasUV1 && !hasUV) {
+            // 如果完全没有UV坐标，才禁用这些纹理
+            if (material.lightMap) {
+              console.warn(`[Material Fix] Mesh "${child.name || 'unnamed'}" has lightMap but missing UV coordinates, disabling lightMap`);
+              material.lightMap = null;
+              materialFixed = true;
+            }
+            if (material.aoMap) {
+              console.warn(`[Material Fix] Mesh "${child.name || 'unnamed'}" has aoMap but missing UV coordinates, disabling aoMap`);
+              material.aoMap = null;
+              materialFixed = true;
+            }
+          }
+          
+          if (materialFixed) {
+            fixedCount++;
+            material.needsUpdate = true;
+          }
+        }
+      });
+    }
+  });
+  
+  console.log(`[Material Fix] 修复完成，共修复 ${fixedCount} 个材质`);
+  return { diagnosis, fixedCount };
+};
+
+/**
+ * 检查浏览器对 DRACO 和 KTX2 压缩格式的支持
+ * @param renderer WebGL 渲染器实例
+ * @returns 支持的压缩格式信息
+ */
+export const checkCompressionSupport = (renderer: WebGLRenderer) => {
+  const gl = renderer.getContext();
+  
+  return {
+    draco: true, // DRACO 几何体压缩总是支持的
+    ktx2: {
+      astc: gl.getExtension('WEBGL_compressed_texture_astc'),
+      etc1: gl.getExtension('WEBGL_compressed_texture_etc1'),
+      etc2: gl.getExtension('WEBGL_compressed_texture_etc'),
+      dxt: gl.getExtension('WEBGL_compressed_texture_s3tc'),
+      pvrtc: gl.getExtension('WEBGL_compressed_texture_pvrtc'),
+      bptc: gl.getExtension('EXT_texture_compression_bptc'),
+    },
+    // 通用支持信息
+    webgl2: renderer.capabilities.isWebGL2,
+    maxTextureSize: renderer.capabilities.maxTextureSize,
+  };
+};
 
 /**
  * 提取3D模型的内部结构树

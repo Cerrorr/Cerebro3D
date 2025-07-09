@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Modal, Tabs, Upload, Button, Input, Progress, message, Space, Typography } from 'antd';
 import { InboxOutlined, LinkOutlined, FileOutlined } from '@ant-design/icons';
-import { useR3FFileImport } from '@/hooks/three';
+import { useFileImport } from '@/hooks/three';
 import type { UploadProps } from 'antd';
 import type { ImportPanelProps } from './types';
 import './styles/ImportPanel.scss';
@@ -29,7 +29,7 @@ const ImportPanel: React.FC<ImportPanelProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null); // 文件输入框引用
 
   // 使用React Three Fiber文件导入Hook
-  const { state, uploadFiles, importFromUrl } = useR3FFileImport({
+  const { state, uploadFiles, importFromUrl } = useFileImport({
     maxFileSize: 100 * 1024 * 1024, // 100MB 最大文件大小
     onProgress: (progress) => {
       console.log(`导入进度: ${progress}%`);

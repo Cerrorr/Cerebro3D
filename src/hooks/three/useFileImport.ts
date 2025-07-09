@@ -1,6 +1,14 @@
 import { useState, useCallback } from 'react';
-import { GLTFLoader, OBJLoader, FBXLoader } from 'three-stdlib';
+import {
+  GLTFLoader,
+  OBJLoader,
+  FBXLoader,
+  DRACOLoader,
+  KTX2Loader,
+} from 'three-stdlib';
+import { WebGLRenderer } from 'three';
 import JSZip from 'jszip';
+import { fixModelMaterials } from '@/utils/threeUtils';
 import {
   FileImportHookReturn,
   FileImportState,
@@ -24,12 +32,46 @@ const DEFAULT_OPTIONS: Required<FileImportOptions> = {
 };
 
 /**
- * React Three Fiber 文件导入 Hook
+ * 设置和配置加载器
+ * 为 GLTFLoader 配置 DRACOLoader 和 KTX2Loader 以支持压缩资源
+ * @param renderer 可选的 WebGL 渲染器实例，用于 KTX2Loader
+ * @returns 配置好的加载器实例
+ */
+const setupLoaders = (renderer?: WebGLRenderer) => {
+  // 创建 DRACO 解码器用于几何体压缩
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath('/draco/'); // 设置 DRACO 解码器文件路径
+
+  // 创建 KTX2 解码器用于纹理压缩
+  const ktx2Loader = new KTX2Loader();
+  ktx2Loader.setTranscoderPath('/basis/'); // 设置 Basis Universal 解码器文件路径
+
+  // 如果提供了渲染器，为 KTX2Loader 设置渲染器
+  if (renderer) {
+    ktx2Loader.detectSupport(renderer);
+  }
+
+  // 创建 GLTF 加载器并配置扩展支持
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.setDRACOLoader(dracoLoader); // 支持 DRACO 压缩几何体
+  gltfLoader.setKTX2Loader(ktx2Loader); // 支持 KTX2 压缩纹理
+
+  return {
+    gltfLoader,
+    objLoader: new OBJLoader(),
+    fbxLoader: new FBXLoader(),
+    dracoLoader,
+    ktx2Loader,
+  };
+};
+
+/**
+ * 文件件导入 Hook
  * 提供3D模型文件导入功能，支持 GLB、GLTF、OBJ、FBX 格式和 ZIP 压缩包
  * @param options 导入配置选项
  * @returns 文件导入状态和操作方法
  */
-export const useR3FFileImport = (
+export const useFileImport = (
   options: FileImportOptions = {}
 ): FileImportHookReturn => {
   const config = { ...DEFAULT_OPTIONS, ...options };
@@ -132,128 +174,83 @@ export const useR3FFileImport = (
       return new Promise((resolve, reject) => {
         const startTime = Date.now();
         const fileType = getFileType(file.name);
-        
+
         if (!fileType) {
-          reject(createError('无法确定文件类型', 'UNKNOWN_FILE_TYPE', file.name));
+          reject(
+            createError('无法确定文件类型', 'UNKNOWN_FILE_TYPE', file.name)
+          );
           return;
         }
 
-        const reader = new FileReader();
-        
-        // 读取文件完成后的处理
-        reader.onload = (event) => {
-          try {
-            const arrayBuffer = event.target?.result as ArrayBuffer;
-            
-            // 根据文件类型使用对应的加载器
-            if (fileType === 'gltf') {
-              const decoder = new TextDecoder('utf-8');
-              const jsonString = decoder.decode(arrayBuffer);
-              const loader = new GLTFLoader();
-              
-              loader.parse(
-                jsonString,
-                '',
-                (gltf) => {
-                  resolve({
-                    object: gltf.scene,
-                    fileName: file.name,
-                    fileSize: file.size,
-                    fileType,
-                    loadTime: Date.now() - startTime,
-                  });
-                },
-                (error) => {
-                  reject(
-                    createError(
-                      'GLTF 加载失败',
-                      'GLTF_LOAD_ERROR',
-                      file.name,
-                      error as unknown as Error
-                    )
-                  );
-                }
-              );
-            } else if (fileType === 'glb') {
-              const loader = new GLTFLoader();
-              
-              loader.parse(
-                arrayBuffer,
-                '',
-                (gltf) => {
-                  resolve({
-                    object: gltf.scene,
-                    fileName: file.name,
-                    fileSize: file.size,
-                    fileType,
-                    loadTime: Date.now() - startTime,
-                  });
-                },
-                (error) => {
-                  reject(
-                    createError(
-                      'GLB 加载失败',
-                      'GLB_LOAD_ERROR',
-                      file.name,
-                      error as unknown as Error
-                    )
-                  );
-                }
-              );
-            } else if (fileType === 'obj') {
-              const decoder = new TextDecoder('utf-8');
-              const objString = decoder.decode(arrayBuffer);
-              const loader = new OBJLoader();
-              const object = loader.parse(objString);
-              
-              resolve({
-                object,
-                fileName: file.name,
-                fileSize: file.size,
-                fileType,
-                loadTime: Date.now() - startTime,
-              });
-            } else if (fileType === 'fbx') {
-              const loader = new FBXLoader();
-              const object = loader.parse(arrayBuffer, '');
-              
-              resolve({
-                object,
-                fileName: file.name,
-                fileSize: file.size,
-                fileType,
-                loadTime: Date.now() - startTime,
-              });
-            }
-          } catch (error) {
-            reject(
-              createError(
-                `文件解析失败: ${file.name}`,
-                'PARSE_ERROR',
-                file.name,
-                error as Error
-              )
-            );
+        // 获取配置好的加载器
+        const loaders = setupLoaders();
+
+        // 创建文件 URL
+        const url = URL.createObjectURL(file);
+
+        const onLoad = (result: any) => {
+          // 清理文件 URL
+          URL.revokeObjectURL(url);
+          
+          // 获取3D对象
+          const object = fileType === 'gltf' || fileType === 'glb' ? result.scene : result;
+          
+          // 在导入时立即检查和修复材质问题
+          console.log(`[Import] 正在检查模型材质: ${file.name}`);
+          fixModelMaterials(object);
+          console.log(`[Import] 材质检查完成: ${file.name}`);
+          
+          resolve({
+            object,
+            fileName: file.name,
+            fileSize: file.size,
+            fileType,
+            loadTime: Date.now() - startTime,
+          });
+        };
+
+        const onProgress = (xhr: ProgressEvent) => {
+          // 可以在这里处理进度
+          if (xhr.lengthComputable) {
+            const progress = (xhr.loaded / xhr.total) * 100;
+            config.onProgress(progress);
           }
         };
 
-        // 文件读取错误处理
-        reader.onerror = () => {
+        const onError = (error: any) => {
+          // 清理文件 URL
+          URL.revokeObjectURL(url);
+
           reject(
             createError(
-              '文件读取失败',
-              'FILE_READ_ERROR',
+              `${fileType.toUpperCase()} 加载失败`,
+              `${fileType.toUpperCase()}_LOAD_ERROR`,
               file.name,
-              new Error('FileReader error')
+              error as Error
             )
           );
         };
 
-        // 开始读取文件为 ArrayBuffer
-        reader.readAsArrayBuffer(file);
+        // 根据文件类型使用对应的加载器
+        if (fileType === 'gltf' || fileType === 'glb') {
+          loaders.gltfLoader.load(url, onLoad, onProgress, onError);
+        } else if (fileType === 'obj') {
+          loaders.objLoader.load(url, onLoad, onProgress, onError);
+        } else if (fileType === 'fbx') {
+          loaders.fbxLoader.load(url, onLoad, onProgress, onError);
+        } else {
+          URL.revokeObjectURL(url);
+          reject(
+            createError(
+              `不支持的文件类型: ${fileType}`,
+              'UNSUPPORTED_FILE_TYPE',
+              file.name
+            )
+          );
+        }
       });
     },
-    [getFileType, createError]
+    [getFileType, createError, config]
   );
 
   /**
