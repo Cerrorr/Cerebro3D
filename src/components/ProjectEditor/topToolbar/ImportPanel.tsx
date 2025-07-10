@@ -225,7 +225,7 @@ const ImportPanel: React.FC<ImportPanelProps> = ({
       width={600}
       maskClosable={!isImporting}
       closable={!isImporting}
-      destroyOnClose
+      destroyOnHidden
       className="import-panel-modal"
     >
       {state.isLoading && (

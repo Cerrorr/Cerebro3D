@@ -103,6 +103,14 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       visible: true,
       expanded: true, // 展开以显示模型结构
       importedObject: result.object,
+      // 使用计算的位置信息，如果没有则默认为原点
+      position: result.position ? {
+        x: result.position.x,
+        y: result.position.y,
+        z: result.position.z
+      } : { x: 0, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+      scale: { x: 1, y: 1, z: 1 },
       children: extractModelStructure(result.object, result.fileName) // 提取模型结构树
     }));
 

@@ -1,4 +1,4 @@
-import { Object3D } from 'three';
+import { Object3D, Vector3 } from 'three';
 
 /**
  * 文件导入结果接口
@@ -15,6 +15,8 @@ export interface FileImportResult {
   fileType: string;
   /** 加载耗时（毫秒） */
   loadTime: number;
+  /** 计算的位置信息（可选） */
+  position?: Vector3;
 }
 
 /**

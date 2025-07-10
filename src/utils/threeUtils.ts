@@ -5,7 +5,7 @@
  * @since 2025-07-08
  */
 
-import { Object3D, Mesh, Material, MeshStandardMaterial, WebGLRenderer } from 'three';
+import { Object3D, Mesh, Material, MeshStandardMaterial, WebGLRenderer, Box3, Vector3 } from 'three';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types';
 
 /**
@@ -305,5 +305,102 @@ export const calculateObjectStats = (object: Object3D) => {
     lightCount,
     cameraCount,
     totalObjects: meshCount + lightCount + cameraCount,
+  };
+};
+
+/**
+ * 计算3D对象的包围盒
+ * @param object Three.js对象
+ * @returns 包围盒信息
+ */
+export const calculateBoundingBox = (object: Object3D) => {
+  const box = new Box3().setFromObject(object);
+  const size = box.getSize(new Vector3());
+  const center = box.getCenter(new Vector3());
+  
+  return {
+    box,
+    size,
+    center,
+    min: box.min,
+    max: box.max,
+  };
+};
+
+/**
+ * 将3D对象居中并放置在网格上
+ * @param object Three.js对象
+ * @param options 居中选项
+ * @returns 调整后的位置信息
+ */
+export const centerObjectOnGrid = (object: Object3D, options: {
+  centerX?: boolean;
+  centerZ?: boolean;
+  placeOnGround?: boolean;
+} = {}) => {
+  const { centerX = true, centerZ = true, placeOnGround = true } = options;
+  
+  // 计算对象的包围盒
+  const boundingInfo = calculateBoundingBox(object);
+  const { center, size, min } = boundingInfo;
+  
+  // 计算需要的位置调整
+  const offsetX = centerX ? -center.x : 0;
+  const offsetZ = centerZ ? -center.z : 0;
+  const offsetY = placeOnGround ? -min.y : 0;
+  
+  // 应用位置调整
+  object.position.set(offsetX, offsetY, offsetZ);
+  
+  console.log(`[CenterObject] 对象居中完成:`, {
+    原始中心: center,
+    对象尺寸: size,
+    位置调整: { x: offsetX, y: offsetY, z: offsetZ },
+    最终位置: object.position.toArray(),
+  });
+  
+  return {
+    originalCenter: center,
+    objectSize: size,
+    appliedOffset: { x: offsetX, y: offsetY, z: offsetZ },
+    finalPosition: object.position.clone(),
+  };
+};
+
+/**
+ * 智能放置3D对象到网格上
+ * 将对象的几何体中心移动到原点(0,0,0)，底部放置在网格平面上
+ * @param object Three.js对象
+ * @param targetY 目标Y坐标（默认为0，即网格平面）
+ * @returns 放置信息
+ */
+export const placeObjectOnGrid = (object: Object3D, targetY: number = 0) => {
+  const boundingInfo = calculateBoundingBox(object);
+  const { min, max, size, center } = boundingInfo;
+  
+  // 计算需要的偏移量，使几何体中心位于原点，底部位于网格平面
+  const offsetX = -center.x;  // X轴居中到原点
+  const offsetZ = -center.z;  // Z轴居中到原点
+  const offsetY = targetY - min.y;  // Y轴：底部放置在目标平面上
+  
+  // 应用偏移量
+  object.position.set(offsetX, offsetY, offsetZ);
+  
+  console.log(`[PlaceOnGrid] 对象放置完成:`, {
+    对象尺寸: size.toArray(),
+    包围盒范围: { min: min.toArray(), max: max.toArray() },
+    原始中心: center.toArray(),
+    目标平面: targetY,
+    应用偏移: { x: offsetX, y: offsetY, z: offsetZ },
+    最终位置: object.position.toArray(),
+  });
+  
+  return {
+    objectSize: size,
+    boundingBox: { min, max },
+    originalCenter: center,
+    targetPlane: targetY,
+    appliedOffset: { x: offsetX, y: offsetY, z: offsetZ },
+    finalPosition: object.position.clone(),
   };
 };
