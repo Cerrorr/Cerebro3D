@@ -27,7 +27,6 @@ import {
 } from './constants';
 import { extractModelStructure } from '@/utils/threeUtils';
 import './styles/ProjectEditorPage.scss';
-import {usePageTracking } from '@/utils/analytics';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 // 使用来自常量的模拟场景数据
 
@@ -42,8 +41,6 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   projectTitle: initialTitle,
   projectLogo = '/images/logo.png',
 }) => {
-  usePageTracking('/project', 'Cerebro3D项目编辑器');
-
   // 路由相关hooks
   const { projectId } = useParams<{ projectId: string }>();
   const location = useLocation();

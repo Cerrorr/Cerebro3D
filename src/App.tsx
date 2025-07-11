@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import AppRouter from '@/routes/route';
-import { BaiduAnalytics } from '@/utils/analytics';
 import './App.css';
 
 /**
@@ -10,11 +9,6 @@ import './App.css';
  * @since 2025-07-08
  */
 const App: React.FC = () => {
-  // 初始化百度统计
-  useEffect(() => {
-    BaiduAnalytics.init();
-  }, []);
-
   return (
     <div className="App">
       <AppRouter />

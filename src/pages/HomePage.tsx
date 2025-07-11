@@ -14,7 +14,6 @@ import {
   HOME_PROJECT_ITEMS,
 } from './constants';
 import { Sidebar, MainContent } from '@/components/homePage';
-import { BaiduAnalytics, usePageTracking } from '@/utils/analytics';
 
 import './styles/HomePage.scss';
 
@@ -27,9 +26,6 @@ import './styles/HomePage.scss';
  * @since 2025-06-25
  */
 const HomePage: React.FC = () => {
-  // 页面访问追踪
-  usePageTracking('/', 'Cerebro3D首页');
-
   // 路由导航hook
   const navigate = useNavigate();
 
@@ -46,9 +42,7 @@ const HomePage: React.FC = () => {
    * @returns void
    */
   const handleMenuClick: MenuClickHandler = (item: SidebarMenuItem): void => {
-    // 追踪菜单点击事件
-    BaiduAnalytics.trackMenu.click(item.id, item.label);
-
+    console.log('Menu clicked:', item.label);
     // TODO: 实现路由跳转
   };
 
@@ -61,9 +55,6 @@ const HomePage: React.FC = () => {
   const handleProjectClick: ProjectClickHandler = (
     project: ProjectItem
   ): void => {
-    // 追踪项目打开事件
-    BaiduAnalytics.trackProject.open(project.id, project.type);
-
     // 跳转到项目编辑页面
     navigate(`/project/${project.id}`, {
       state: {
@@ -80,9 +71,6 @@ const HomePage: React.FC = () => {
    * @returns void
    */
   const handleNewProject = (formData: NewProjectFormData): void => {
-    // 追踪项目创建事件
-    BaiduAnalytics.trackProject.create(formData.category);
-
     // 生成新项目ID
     const newProjectId = `project_${Date.now()}`;
 
