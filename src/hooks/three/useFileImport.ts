@@ -6,7 +6,7 @@
  */
 
 import { useState, useCallback } from 'react';
-import { FileImportService } from './services/FileImportService';
+import { FileImportService } from './services';
 import type {
   FileImportHookReturn,
   FileImportState,

@@ -5,8 +5,6 @@
  * @since 2025-06-25
  */
 
-import type { SceneNode } from '../../sceneTree/types';
-
 /**
  * 3D视图类型枚举
  * 定义3D画布支持的视角类型
@@ -32,10 +30,6 @@ export interface CanvasSettings {
  * 3D画布组件属性接口
  */
 export interface Canvas3DProps {
-  /** 画布设置 */
-  settings: CanvasSettings;
-  /** 设置变更回调函数 */
-  onSettingsChange?: (settings: CanvasSettings) => void;
   /** 画布宽度（可选） */
   width?: number | string;
   /** 画布高度（可选） */
@@ -44,10 +38,6 @@ export interface Canvas3DProps {
   className?: string;
   /** 对象选择回调函数 */
   onObjectSelect?: (objectId: string) => void;
-  /** 当前选中的对象ID */
-  selectedObjectId?: string;
-  /** 场景节点数据 */
-  sceneNodes?: SceneNode[];
 }
 
 /**

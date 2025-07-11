@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import {
@@ -11,117 +11,97 @@ import {
 } from '@/components/projectEditor';
 import ImportPanel from '@/components/projectEditor/topToolbar/ImportPanel';
 import type {
-  SceneNode,
-  CanvasSettings,
   RightSidebarTabType,
   BottomPanelType,
 } from '@/components/projectEditor/types';
 import type { FileImportResult } from '@/hooks/three';
 import { ProjectEditorPageProps } from './types';
 import {
-  DEFAULT_CANVAS_SETTINGS,
   DEFAULT_PANEL_CONFIG,
-  getLeftToolbarActions,
   RIGHT_TOOLBAR_ACTIONS,
-  MOCK_SCENE_NODES,
+  getLeftToolbarActions,
 } from './constants';
 import { extractModelStructure } from '@/utils/threeUtils';
 import './styles/ProjectEditorPage.scss';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
-// 使用来自常量的模拟场景数据
+import { useAppSelector, useAppDispatch } from '@/store';
+import { 
+  addSceneNode, 
+  selectNode, 
+  toggleNodeVisibility
+} from '@/store/slices/sceneSlice';
 
 /**
- * 项目页面主组件
- * 提供3D编辑器界面，包含工具栏、场景树、3D画布和可调整面板
+ * 项目页面主组件 (重构版)
+ * 业务逻辑通过Redux管理，3D渲染完全分离
  * @param props 组件属性
  * @returns 项目页面React组件
  * @author Cerror
- * @since 2025-07-08 */
+ * @since 2025-07-11 */
 const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   projectTitle: initialTitle,
   projectLogo = '/images/logo.png',
 }) => {
   // 路由相关hooks
-  const { projectId } = useParams<{ projectId: string }>();
+  const { } = useParams<{ projectId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  // 从路由状态中获取项目信息
-  const routeState = location.state as {
-    projectTitle?: string;
-    projectType?: string;
-    isNewProject?: boolean;
-  } | null;
-
-  // 确定项目标题（优先使用路由状态，其次是props，最后是默认值）
-  const finalProjectTitle =
-    routeState?.projectTitle || initialTitle || '新建项目';
-
-  const [projectTitle, setProjectTitle] = useState(finalProjectTitle);
-  const [sceneNodes, setSceneNodes] = useState<SceneNode[]>([
-    ...MOCK_SCENE_NODES,
-  ]);
-  const [selectedNodeId, setSelectedNodeId] = useState<string>('cube1');
-  const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(
+  // 从Redux获取状态
+  const { nodes: sceneNodes, selectedNodeId } = useAppSelector(state => state.scene);
+  
+  // 本地UI状态（不涉及3D或业务逻辑）
+  const [projectTitle, setProjectTitle] = React.useState('');
+  const [bottomPanelHeight, setBottomPanelHeight] = React.useState<number>(
     DEFAULT_PANEL_CONFIG.BOTTOM_PANEL_HEIGHT
   );
   const [rightSidebarTab, setRightSidebarTab] =
-    useState<RightSidebarTabType>('scene');
+    React.useState<RightSidebarTabType>('scene');
   const [bottomPanelType, setBottomPanelType] =
-    useState<BottomPanelType>('assets');
-  const [canvasSettings, setCanvasSettings] = useState<CanvasSettings>({
-    ...DEFAULT_CANVAS_SETTINGS,
-  });
-  const [importPanelVisible, setImportPanelVisible] = useState(false);
+    React.useState<BottomPanelType>('assets');
+  const [importPanelVisible, setImportPanelVisible] = React.useState(false);
 
   // 历史记录 & 日志 Hook
   const { addHistory, logs } = useHistoryRecorder();
 
-  /**
-   * 打开导入面板
-   */
-  const handleOpenImportPanel = useCallback(() => {
-    setImportPanelVisible(true);
-    addHistory({
-      actionType: 'import',
-      targetType: 'scene',
-      targetName: projectTitle,
-      description: '打开导入面板',
-      logLevel: 'info'
-    });
-  }, [addHistory, projectTitle]);
+  // 初始化项目标题
+  React.useEffect(() => {
+    const routeState = location.state as {
+      projectTitle?: string;
+      projectType?: string;
+      isNewProject?: boolean;
+    } | null;
+
+    const finalProjectTitle =
+      routeState?.projectTitle || initialTitle || '新建项目';
+    setProjectTitle(finalProjectTitle);
+  }, [location.state, initialTitle]);
 
   const handleImportSuccess = useCallback((results: FileImportResult[]) => {
-    // 创建新的场景节点
-    const newNodes: SceneNode[] = results.map((result, index) => ({
-      id: `imported_${Date.now()}_${index}`,
-      name: result.fileName,
-      type: 'mesh',
-      visible: true,
-      expanded: true, // 展开以显示模型结构
-      importedObject: result.object,
-      // 使用计算的位置信息，如果没有则默认为原点
-      position: result.position ? {
-        x: result.position.x,
-        y: result.position.y,
-        z: result.position.z
-      } : { x: 0, y: 0, z: 0 },
-      rotation: { x: 0, y: 0, z: 0 },
-      scale: { x: 1, y: 1, z: 1 },
-      children: extractModelStructure(result.object, result.fileName) // 提取模型结构树
-    }));
+    // 通过Redux添加场景节点
+    results.forEach(result => {
+      const newNode = {
+        name: result.fileName,
+        type: 'mesh' as const,
+        visible: true,
+        expanded: true,
+        importedObject: result.object,
+        position: result.position ? {
+          x: result.position.x,
+          y: result.position.y,
+          z: result.position.z
+        } : { x: 0, y: 0, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 },
+        scale: { x: 1, y: 1, z: 1 },
+        children: extractModelStructure(result.object, result.fileName)
+      };
 
-    // 将导入的模型添加到Scene节点下
-    setSceneNodes(prev => {
-      return prev.map(node => {
-        if (node.id === 'scene') {
-          return {
-            ...node,
-            children: [...(node.children || []), ...newNodes]
-          };
-        }
-        return node;
-      });
+      // 添加到Scene节点下
+      dispatch(addSceneNode({
+        parentId: 'scene',
+        node: newNode
+      }));
     });
 
     // 记录导入历史
@@ -136,7 +116,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
     });
 
     message.success(`成功导入 ${results.length} 个3D模型`);
-  }, [addHistory]);
+  }, [addHistory, dispatch]);
 
   /**
    * 处理文件导入错误
@@ -153,91 +133,47 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
     });
   }, [addHistory, projectTitle]);
 
-  // 监听路由变化，更新项目标题
-  useEffect(() => {
-    if (routeState?.projectTitle) {
-      setProjectTitle(routeState.projectTitle);
-    }
-
-    // 如果有projectId，可以在这里加载对应的项目数据
-    if (projectId) {
-      console.log('加载项目:', projectId);
-      // TODO: 根据projectId从API加载项目数据
-    }
-  }, [routeState?.projectTitle, projectId]);
-
-  // 使用常量文件中的工具栏配置
-  const rawLeftActions = getLeftToolbarActions();
-
-  const leftActions = rawLeftActions.map(item => {
-    // 处理工具栏按钮
-    switch (item.id) {
-      case 'import':
-        return { ...item, onClick: handleOpenImportPanel };
-      case 'undo':
-        return { ...item, onClick: () => addHistory({ actionType: 'undo', targetType: 'scene', targetName: projectTitle, description: '撤回一次操作' }) };
-      case 'redo':
-        return { ...item, onClick: () => addHistory({ actionType: 'redo', targetType: 'scene', targetName: projectTitle, description: '重做一次操作' }) };
-      case 'delete':
-        return { ...item, onClick: () => addHistory({ actionType: 'delete', targetType: 'scene', targetName: projectTitle, description: '删除选中对象' }) };
-      case 'clear':
-        return { ...item, onClick: () => addHistory({ actionType: 'scene', targetType: 'scene', targetName: projectTitle, description: '清空场景对象' }) };
-      case 'copy':
-        return { ...item, onClick: () => addHistory({ actionType: 'create', targetType: 'scene', targetName: projectTitle, description: '复制选中对象' }) };
-      default:
-        return item;
-    }
-  });
-
   /**
-   * 处理场景树节点选择
+   * 处理场景树节点选择 - 通过Redux管理
    * @param nodeId 节点ID
    */
   const handleNodeSelect = useCallback((nodeId: string) => {
-    setSelectedNodeId(nodeId);
+    dispatch(selectNode(nodeId));
     console.log('选中节点:', nodeId);
-  }, []);
+  }, [dispatch]);
 
   /**
-   * 处理场景树节点可见性切换
+   * 处理场景树节点可见性切换 - 通过Redux管理
    * @param nodeId 节点ID
    */
   const handleNodeVisibilityToggle = useCallback(
     (nodeId: string) => {
-      let prevVisible: boolean | undefined;
-      let nodeName: string = nodeId;
-
-      const toggleVisibility = (nodes: SceneNode[]): SceneNode[] => {
-        return nodes.map(node => {
-          if (node.id === nodeId) {
-            prevVisible = node.visible !== false;
-            nodeName = node.name ?? node.id;
-            return { ...node, visible: !prevVisible };
-          }
+      dispatch(toggleNodeVisibility(nodeId));
+      
+      // 查找节点名称用于历史记录
+      const findNodeName = (nodes: any[], id: string): string => {
+        for (const node of nodes) {
+          if (node.id === id) return node.name || id;
           if (node.children) {
-            return { ...node, children: toggleVisibility(node.children) };
+            const found = findNodeName(node.children, id);
+            if (found) return found;
           }
-          return node;
-        });
+        }
+        return id;
       };
 
-      setSceneNodes(prev => toggleVisibility(prev));
-
-      const newVisible = !(prevVisible ?? true);
-      const actionText = newVisible ? '显示' : '隐藏';
-
+      const nodeName = findNodeName(sceneNodes, nodeId);
+      
       addHistory({
         actionType: 'modify',
         targetType: 'object',
         targetId: nodeId,
         targetName: nodeName,
-        description: `${actionText}对象：${nodeName}`,
-        oldValue: { visible: prevVisible },
-        newValue: { visible: newVisible },
+        description: `切换对象可见性：${nodeName}`,
         logLevel: 'info',
       });
     },
-    [addHistory]
+    [dispatch, addHistory, sceneNodes]
   );
 
   /**
@@ -284,6 +220,26 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
     return act;
   });
 
+  // 工具栏左侧按钮 - 使用原有的配置并覆盖onClick
+  const leftActions = getLeftToolbarActions().map(action => {
+    switch (action.id) {
+      case 'import':
+        return { ...action, onClick: () => setImportPanelVisible(true) };
+      case 'undo':
+        return { ...action, onClick: () => addHistory({ actionType: 'undo', targetType: 'scene', targetName: projectTitle, description: '撤回一次操作' }) };
+      case 'redo':
+        return { ...action, onClick: () => addHistory({ actionType: 'redo', targetType: 'scene', targetName: projectTitle, description: '重做一次操作' }) };
+      case 'delete':
+        return { ...action, onClick: () => addHistory({ actionType: 'delete', targetType: 'scene', targetName: projectTitle, description: '删除选中对象' }) };
+      case 'clear':
+        return { ...action, onClick: () => addHistory({ actionType: 'scene', targetType: 'scene', targetName: projectTitle, description: '清空场景对象' }) };
+      case 'copy':
+        return { ...action, onClick: () => addHistory({ actionType: 'create', targetType: 'scene', targetName: projectTitle, description: '复制选中对象' }) };
+      default:
+        return action;
+    }
+  });
+
   return (
     <div className="project-page">
       <div className="project-layout">
@@ -303,19 +259,19 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
           <div className="layout-sidebar">
             <SceneTree
               sceneData={sceneNodes}
-              selectedNodeId={selectedNodeId}
+              selectedNodeId={selectedNodeId || ''}
               onNodeSelect={handleNodeSelect}
               onNodeVisibilityChange={handleNodeVisibilityToggle}
             />
           </div>
 
-          {/* 中间画布区域 */}
+          {/* 中间画布区域 - 现在完全通过Redux管理状态 */}
           <div className="layout-center">
             <div className="canvas-container">
               <Canvas3D
-                settings={canvasSettings}
-                onSettingsChange={setCanvasSettings}
-                sceneNodes={sceneNodes}
+                width="100%"
+                height="100%"
+                className=""
               />
             </div>
 
