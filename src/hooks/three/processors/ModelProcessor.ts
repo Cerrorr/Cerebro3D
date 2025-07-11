@@ -6,7 +6,7 @@
  */
 
 import { Object3D, Vector3 } from 'three';
-import { fixModelMaterials, placeObjectOnGrid } from '@/utils/threeUtils';
+import { fixModelMaterials, placeObjectOnGrid } from '../utils/threeUtils';
 import type { SupportedFileType } from '../types';
 
 /**

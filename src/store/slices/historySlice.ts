@@ -6,7 +6,7 @@
  */
 
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
-import { DEFAULT_HISTORY_STATE } from '@/components/projectEditor/rightPanels/types/HistoryPanel.types';
+import { DEFAULT_HISTORY_STATE } from '@/components/projectEditor/rightPanels/constants/HistoryPanel.constants';
 import type {
   HistorySliceState,
   HistoryRecord,

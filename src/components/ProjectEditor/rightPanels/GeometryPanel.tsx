@@ -19,7 +19,7 @@ import {
   CompressOutlined
 } from '@ant-design/icons';
 import type { GeometryPanelProps } from './types';
-import { GEOMETRY_TYPE_OPTIONS } from './types';
+import { GEOMETRY_TYPE_OPTIONS } from './constants';
 import './styles/GeometryPanel.scss';
 import ModernCollapse from '@/components/common/ModernCollapse';
 import { RButton, RInput, RSelect } from '@/components/common/recordable';

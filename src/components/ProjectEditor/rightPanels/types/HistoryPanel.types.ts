@@ -103,28 +103,6 @@ export interface HistoryPanelConfig {
   realTimeUpdates: boolean;
 }
 
-// 默认历史记录配置
-export const DEFAULT_HISTORY_CONFIG: HistoryPanelConfig = {
-  maxDisplayRecords: 100,
-  groupSimilarActions: true,
-  autoSave: true,
-  showTimestamps: true,
-  compactMode: false,
-  realTimeUpdates: true,
-};
-
-// 默认历史记录状态
-export const DEFAULT_HISTORY_STATE: HistoryState = {
-  records: [],
-  groups: [],
-  currentIndex: -1,
-  maxRecords: 100,
-  filter: {
-    showUndone: true,
-  },
-  isRecording: true,
-};
-
 // 历史记录面板Props
 export interface HistoryPanelProps {
   historyState: HistoryState;
@@ -134,35 +112,4 @@ export interface HistoryPanelProps {
   onFilterChange: (filter: HistoryFilter) => void;
   onConfigChange: (config: Partial<HistoryPanelConfig>) => void;
 }
-
-// 操作类型图标映射
-export const ACTION_TYPE_ICONS: Record<HistoryActionType, string> = {
-  create: 'plus-circle',
-  delete: 'delete',
-  modify: 'edit',
-  transform: 'drag',
-  material: 'bg-colors',
-  lighting: 'bulb',
-  camera: 'video-camera',
-  scene: 'environment',
-  import: 'import',
-  export: 'export',
-  undo: 'undo',
-  redo: 'redo',
-};
-
-// 操作类型颜色映射
-export const ACTION_TYPE_COLORS: Record<HistoryActionType, string> = {
-  create: '#52c41a',      // 绿色
-  delete: '#ff4d4f',      // 红色
-  modify: '#1890ff',      // 蓝色
-  transform: '#fa8c16',   // 橙色
-  material: '#722ed1',    // 紫色
-  lighting: '#fadb14',    // 黄色
-  camera: '#13c2c2',      // 青色
-  scene: '#eb2f96',       // 洋红
-  import: '#2f54eb',      // 靛蓝
-  export: '#52c41a',      // 绿色
-  undo: '#8c8c8c',        // 灰色
-  redo: '#595959',        // 深灰
-}; 
+ 

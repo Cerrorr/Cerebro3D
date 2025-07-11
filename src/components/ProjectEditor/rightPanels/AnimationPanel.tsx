@@ -20,7 +20,7 @@ import type {
 import {
   ANIMATION_TYPE_ICONS,
   ANIMATION_TYPE_COLORS
-} from './types';
+} from './constants';
 import { useRecord } from '@/hooks/common/useRecord';
 
 const { Text } = Typography;

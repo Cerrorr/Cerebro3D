@@ -1,13 +1,5 @@
 import { useState, useCallback } from 'react';
 import {
-  DEFAULT_LIGHTING_CONFIG,
-  DEFAULT_POST_PROCESSING_CONFIG,
-  DEFAULT_WEATHER_CONFIG,
-  DEFAULT_RENDERER_CONFIG,
-  DEFAULT_HISTORY_CONFIG,
-  DEFAULT_OBJECT_STATE,
-  DEFAULT_MATERIAL_STATE,
-  DEFAULT_GEOMETRY_STATE,
   ProjectInfo,
   SceneConfiguration,
   CameraConfiguration,
@@ -38,6 +30,16 @@ import {
   MorphSettings,
   GeometryOperations
 } from '@/components/projectEditor/rightPanels/types';
+import { 
+  DEFAULT_LIGHTING_CONFIG,
+  DEFAULT_POST_PROCESSING_CONFIG,
+  DEFAULT_WEATHER_CONFIG,
+  DEFAULT_RENDERER_CONFIG,
+  DEFAULT_MATERIAL_STATE,
+  DEFAULT_GEOMETRY_STATE,
+  DEFAULT_OBJECT_STATE,
+  DEFAULT_HISTORY_CONFIG
+} from '@/components/projectEditor/rightPanels/constants';
 import { devLog } from '@/utils/devLog';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 import type { HistoryActionType, HistoryTargetType } from '@/components/projectEditor/rightPanels/types/HistoryPanel.types';

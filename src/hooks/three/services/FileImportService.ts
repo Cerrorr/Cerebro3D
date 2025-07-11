@@ -14,7 +14,7 @@ import type {
   FileImportError, 
   FileImportOptions
 } from '../types';
-import { SUPPORTED_FILE_TYPES } from '../types';
+import { SUPPORTED_FILE_TYPES } from '../constants';
 
 /**
  * 文件大小常量定义

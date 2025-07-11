@@ -15,8 +15,6 @@ export type {
   SupportedFileType
 } from './useFileImport.types';
 
-export { SUPPORTED_FILE_TYPES, SUPPORTED_MIME_TYPES } from './useFileImport.types';
-
 // 3D服务相关类型
 export type {
   Scene3DConfig,

@@ -21,7 +21,7 @@ import {
   RIGHT_TOOLBAR_ACTIONS,
   getLeftToolbarActions,
 } from './constants';
-import { extractModelStructure } from '@/utils/threeUtils';
+import { extractModelStructure } from '@/hooks/three/utils/threeUtils';
 import './styles/ProjectEditorPage.scss';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 import { useAppSelector, useAppDispatch } from '@/store';

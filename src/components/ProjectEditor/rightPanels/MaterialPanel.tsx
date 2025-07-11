@@ -32,7 +32,7 @@ import {
   MATERIAL_TYPE_OPTIONS,
   BLENDING_MODE_OPTIONS,
   SIDE_OPTIONS
-} from './types';
+} from './constants';
 import './styles/MaterialPanel.scss';
 import ModernCollapse from '@/components/common/ModernCollapse';
 import { RButton, RSelect, RSwitch, RColorPicker, RSlider, RCheckbox } from '@/components/common/recordable';

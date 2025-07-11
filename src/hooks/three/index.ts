@@ -14,7 +14,7 @@ export type {
   FileImportHookReturn,
   SupportedFileType
 } from './types';
-export { SUPPORTED_FILE_TYPES, SUPPORTED_MIME_TYPES } from './types';
+export { SUPPORTED_FILE_TYPES, SUPPORTED_MIME_TYPES } from './constants';
 
 // Three.js Hooks
 export { useScene } from './useScene';
