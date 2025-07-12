@@ -6,12 +6,7 @@
 
 import React from 'react';
 import { Checkbox } from 'antd';
-import type { CheckboxProps } from 'antd';
-
-interface RecordableCheckboxProps extends CheckboxProps {
-  record: (msg: string) => void;
-  field: string;
-}
+import type { RecordableCheckboxProps } from './types/recordable.types';
 
 export const RecordableCheckbox: React.FC<RecordableCheckboxProps> = ({ record, field, onChange, ...rest }) => {
   return (

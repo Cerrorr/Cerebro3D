@@ -6,20 +6,24 @@
 
 import React from 'react';
 
-/** Panel 组件的 Props 接口 */
+/**
+ * Panel 组件的 Props 接口
+ */
 export interface PanelProps {
-  /** Panel 头部内容 */
+  // Panel 头部内容
   header: React.ReactNode;
-  /** Panel 子内容 */
+  // Panel 子内容
   children: React.ReactNode;
-  /** Panel 唯一标识 */
+  // Panel 唯一标识
   key?: string;
 }
 
-/** ModernCollapse 组件的 Props 接口 */
+/**
+ * ModernCollapse 组件的 Props 接口
+ */
 export interface ModernCollapseProps {
-  /** Panel 子组件 */
+  // Panel 子组件
   children: React.ReactNode;
-  /** 其他 Collapse 属性 */
+  // 其他 Collapse 属性
   [key: string]: any;
 }

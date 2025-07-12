@@ -6,12 +6,7 @@
 
 import React from 'react';
 import { Slider } from 'antd';
-import type { SliderSingleProps } from 'antd/es/slider';
-
-interface RecordableSliderProps extends SliderSingleProps {
-  record: (msg: string) => void;
-  field: string;
-}
+import type { RecordableSliderProps } from './types/recordable.types';
 
 export const RecordableSlider: React.FC<RecordableSliderProps> = ({ record, field, onChange, ...rest }) => {
   return (

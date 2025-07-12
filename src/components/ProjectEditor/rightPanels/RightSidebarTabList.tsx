@@ -10,21 +10,39 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { RightSidebarTabType } from './types';
 import { DEFAULT_CONFIG } from './constants/RightSidebar.constants';
 
+/**
+ * 标签项接口
+ */
 interface TabItem {
+  // 标签唯一标识
   id: RightSidebarTabType;
+  // 标签图标
   icon: React.ReactNode;
+  // 标签显示标签
   label: string;
+  // 是否启用
   enabled: boolean;
+  // 分组标识
   group: string;
 }
 
+/**
+ * 右侧边栏标签列表组件属性
+ */
 interface RightSidebarTabListProps {
+  // 标签项列表
   tabItems: TabItem[];
+  // 是否折叠
   collapsed: boolean;
+  // 是否可折叠
   collapsible: boolean;
+  // 当前激活标签
   currentTab: RightSidebarTabType;
+  // 切换折叠状态回调
   onToggleCollapse: () => void;
+  // 标签切换回调
   onTabChange: (tab: RightSidebarTabType) => void;
+  // 双击事件回调
   onDoubleClick: () => void;
 }
 

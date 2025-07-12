@@ -20,17 +20,17 @@ import React from 'react';
  * @property {(height: number) => void} [onHeightChange] - 高度变更回调函数
  */
 export interface ResizablePanelProps {
-  /** 面板内容 */
+  // 面板内容
   children: React.ReactNode;
-  /** 初始高度（像素，默认120） */
+  // 初始高度（像素，默认120）
   initialHeight?: number;
-  /** 最小高度（像素，默认0） */
+  // 最小高度（像素，默认0）
   minHeight?: number;
-  /** 最大高度（像素，默认300） */
+  // 最大高度（像素，默认300）
   maxHeight?: number;
-  /** 面板位置（默认bottom） */
+  // 面板位置（默认bottom）
   position?: 'top' | 'bottom';
-  /** 高度变更回调函数 */
+  // 高度变更回调函数
   onHeightChange?: (height: number) => void;
 }
 
@@ -43,8 +43,8 @@ export interface ResizablePanelProps {
  * @property {boolean} isDragging - 是否正在拖拽
  */
 export interface ResizablePanelState {
-  /** 当前高度（像素） */
+  // 当前高度（像素）
   height: number;
-  /** 是否正在拖拽调整大小 */
+  // 是否正在拖拽调整大小
   isDragging: boolean;
 } 

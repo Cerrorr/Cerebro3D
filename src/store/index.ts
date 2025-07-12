@@ -17,15 +17,18 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ignore these field paths in all actions
+        // 在所有操作中忽略这些字段路径
         ignoredActionsPaths: ['payload.importedObject', 'payload.node.importedObject'],
-        // Ignore these paths in the state
+        // 在状态中忽略这些路径
         ignoredPaths: ['scene.nodes'],
       },
     }),
 });
 
+/** Redux store的根状态类型 */
 export type RootState = ReturnType<typeof store.getState>;
+
+/** Redux store的dispatch类型 */
 export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();

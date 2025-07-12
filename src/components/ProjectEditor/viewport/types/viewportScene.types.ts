@@ -7,8 +7,8 @@ import type { SceneNode } from '../../sceneTree/types';
  * @since 2025-07-08
  */
 export interface ViewportSceneProps {
-  /** 3D场景设置 */
+  // 3D场景设置
   settings: CanvasSettings;
-  /** 场景节点数据 */
+  // 场景节点数据
   sceneNodes?: SceneNode[];
 }

@@ -30,17 +30,17 @@ export type RightSidebarTabType =
  * 定义单个标签的配置信息
  */
 export interface RightSidebarTabItem {
-  /** 标签唯一标识 */
+  // 标签唯一标识
   id: RightSidebarTabType;
-  /** 标签显示名称 */
+  // 标签显示名称
   label: string;
-  /** 标签图标 */
+  // 标签图标
   icon: ReactNode;
-  /** 是否启用 */
+  // 是否启用
   enabled?: boolean;
-  /** 是否为分割线 */
+  // 是否为分割线
   isDivider?: boolean;
-  /** 标签组别（用于分组显示） */
+  // 标签组别（用于分组显示）
   group?: 'config' | 'content';
 }
 
@@ -49,17 +49,17 @@ export interface RightSidebarTabItem {
  * 定义RightSidebar组件的配置选项
  */
 export interface RightSidebarProps {
-  /** 当前激活的标签 */
+  // 当前激活的标签
   activeTab?: RightSidebarTabType;
-  /** 标签切换回调 */
+  // 标签切换回调
   onTabChange?: (tab: RightSidebarTabType) => void;
-  /** 是否显示右侧栏 */
+  // 是否显示右侧栏
   visible?: boolean;
-  /** 右侧栏宽度 */
+  // 右侧栏宽度
   width?: number;
-  /** 是否可折叠 */
+  // 是否可折叠
   collapsible?: boolean;
-  /** 默认折叠状态 */
+  // 默认折叠状态
   defaultCollapsed?: boolean;
 }
 
@@ -68,9 +68,9 @@ export interface RightSidebarProps {
  * 定义内容区域的配置
  */
 export interface RightSidebarContentProps {
-  /** 当前激活的标签 */
+  // 当前激活的标签
   activeTab: RightSidebarTabType;
-  /** 内容区域高度 */
+  // 内容区域高度
   height?: number;
 }
 
@@ -79,8 +79,8 @@ export interface RightSidebarContentProps {
  * 定义组件内部状态
  */
 export interface RightSidebarState {
-  /** 当前激活的标签 */
+  // 当前激活的标签
   activeTab: RightSidebarTabType;
-  /** 是否折叠 */
+  // 是否折叠
   collapsed: boolean;
 } 

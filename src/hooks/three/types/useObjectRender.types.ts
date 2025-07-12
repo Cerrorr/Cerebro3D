@@ -10,11 +10,11 @@ import { Object3D, Vector3 } from 'three';
  * useObjectRender Hook 参数
  */
 export interface UseObjectRenderOptions {
-  /** 是否启用自动动画 */
+  // 是否启用自动动画
   enableAnimation?: boolean;
-  /** 动画速度 */
+  // 动画速度
   animationSpeed?: number;
-  /** 选中时的高亮效果 */
+  // 选中时的高亮效果
   highlightSelected?: boolean;
 }
 
@@ -22,7 +22,10 @@ export interface UseObjectRenderOptions {
  * useObjectRender Hook 返回值类型
  */
 export interface UseObjectRenderResult {
+  // 3D对象引用
   objectRef: React.RefObject<Object3D>;
+  // 可渲染节点数组
   renderableNodes: JSX.Element[];
+  // 更新对象变换
   updateObjectTransform: (nodeId: string, transform: { position?: Vector3; rotation?: Vector3; scale?: Vector3 }) => void;
 }

@@ -8,15 +8,15 @@
  * 项目信息配置接口
  */
 export interface ProjectInfo {
-  /** 场景名称 */
+  // 场景名称
   sceneName: string;
-  /** 场景分类 */
+  // 场景分类
   sceneCategory: string;
-  /** 场景说明 */
+  // 场景说明
   sceneDescription: string;
-  /** 项目类型 */
+  // 项目类型
   projectType: string;
-  /** 封面图片 */
+  // 封面图片
   coverImage?: string;
 }
 
@@ -24,18 +24,18 @@ export interface ProjectInfo {
  * 场景配置接口
  */
 export interface SceneConfiguration {
-  /** 背景设置 */
+  // 背景设置
   background: {
     type: 'color' | 'texture' | 'skybox';
     value: string;
   };
-  /** 环境设置 */
+  // 环境设置
   environment: {
     type: 'none' | 'equirect' | 'cube';
     map?: string;
     intensity: number;
   };
-  /** 辅助显示 */
+  // 辅助显示
   helpers: {
     enabled: boolean;
     axes: boolean;
@@ -48,13 +48,13 @@ export interface SceneConfiguration {
  * 场景配置组件属性接口
  */
 export interface SceneConfigPanelProps {
-  /** 项目信息 */
+  // 项目信息
   projectInfo: ProjectInfo;
-  /** 场景配置 */
+  // 场景配置
   sceneConfig: SceneConfiguration;
-  /** 项目信息变更回调 */
+  // 项目信息变更回调
   onProjectInfoChange: (info: Partial<ProjectInfo>) => void;
-  /** 场景配置变更回调 */
+  // 场景配置变更回调
   onSceneConfigChange: (config: Partial<SceneConfiguration>) => void;
 }
 

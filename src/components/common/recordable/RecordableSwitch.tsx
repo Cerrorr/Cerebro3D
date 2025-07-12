@@ -6,12 +6,7 @@
 
 import React from 'react';
 import { Switch } from 'antd';
-import type { SwitchProps } from 'antd';
-
-interface RecordableSwitchProps extends SwitchProps {
-  record: (msg: string) => void;
-  field: string;
-}
+import type { RecordableSwitchProps } from './types/recordable.types';
 
 export const RecordableSwitch: React.FC<RecordableSwitchProps> = ({ record, field, onChange, ...rest }) => {
   return (

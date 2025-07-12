@@ -6,13 +6,8 @@
 
 import React from 'react';
 import { ColorPicker } from 'antd';
-import type { ColorPickerProps } from 'antd/es/color-picker';
 import type { Color } from 'antd/es/color-picker';
-
-interface RecordableColorPickerProps extends ColorPickerProps {
-  record: (msg: string) => void;
-  field: string;
-}
+import type { RecordableColorPickerProps } from './types/recordable.types';
 
 export const RecordableColorPicker: React.FC<RecordableColorPickerProps> = ({ record, field, onChange, ...rest }) => {
   return (

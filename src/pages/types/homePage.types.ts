@@ -15,8 +15,6 @@ import type {
 /**
  * 首页组件Props接口
  * 虽然首页组件当前不接收外部props，但为扩展性预留
- *
- * @interface HomePageProps
  */
 export interface HomePageProps {
   // 预留扩展属性
@@ -25,16 +23,14 @@ export interface HomePageProps {
 /**
  * 首页状态接口
  * 定义首页组件内部状态类型
- *
- * @interface HomePageState
- * @property {readonly ProjectItem[]} projects - 项目列表（只读）
- * @property {readonly SidebarMenuItem[]} menuItems - 菜单项列表（只读）
- * @property {readonly CarouselItem[]} carouselItems - 轮播图列表（只读）
- * @property {AppInfo} appInfo - 应用信息
  */
 export interface HomePageState {
+  // 项目列表（只读）
   readonly projects: readonly ProjectItem[];
+  // 菜单项列表（只读）
   readonly menuItems: readonly SidebarMenuItem[];
+  // 轮播图列表（只读）
   readonly carouselItems: readonly CarouselItem[];
+  // 应用信息
   readonly appInfo: AppInfo;
 }

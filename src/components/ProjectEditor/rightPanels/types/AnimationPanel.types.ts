@@ -34,33 +34,33 @@ export type AnimationEasing = 'linear' | 'easeIn' | 'easeOut' | 'easeInOut' | 'b
  * 动画项接口
  */
 export interface AnimationItem {
-  /** 动画唯一标识 */
+  // 动画唯一标识
   id: string;
-  /** 动画名称 */
+  // 动画名称
   name: string;
-  /** 动画类型 */
+  // 动画类型
   type: AnimationType;
-  /** 目标对象ID */
+  // 目标对象ID
   targetId: string;
-  /** 目标对象名称 */
+  // 目标对象名称
   targetName: string;
-  /** 动画时长（毫秒） */
+  // 动画时长（毫秒）
   duration: number;
-  /** 当前进度百分比 (0-100) */
+  // 当前进度百分比 (0-100)
   progress: number;
-  /** 动画状态 */
+  // 动画状态
   status: AnimationStatus;
-  /** 缓动类型 */
+  // 缓动类型
   easing: AnimationEasing;
-  /** 是否循环播放 */
+  // 是否循环播放
   loop: boolean;
-  /** 延迟开始时间（毫秒） */
+  // 延迟开始时间（毫秒）
   delay: number;
-  /** 创建时间 */
+  // 创建时间
   createdAt: Date;
-  /** 最后修改时间 */
+  // 最后修改时间
   updatedAt: Date;
-  /** 是否启用 */
+  // 是否启用
   enabled: boolean;
 }
 
@@ -68,13 +68,13 @@ export interface AnimationItem {
  * 动画播放控制配置
  */
 export interface AnimationPlaybackConfig {
-  /** 全局播放速度倍率 (0.1 - 5.0) */
+  // 全局播放速度倍率 (0.1 - 5.0)
   playbackSpeed: number;
-  /** 是否自动播放 */
+  // 是否自动播放
   autoPlay: boolean;
-  /** 是否循环播放全部动画 */
+  // 是否循环播放全部动画
   loopAll: boolean;
-  /** 混合模式 */
+  // 混合模式
   blendMode: 'replace' | 'add' | 'multiply';
 }
 
@@ -82,17 +82,17 @@ export interface AnimationPlaybackConfig {
  * 动画面板配置
  */
 export interface AnimationPanelConfig {
-  /** 是否显示预览 */
+  // 是否显示预览
   showPreview: boolean;
-  /** 是否显示时间轴 */
+  // 是否显示时间轴
   showTimeline: boolean;
-  /** 是否自动保存 */
+  // 是否自动保存
   autoSave: boolean;
-  /** 列表显示模式 */
+  // 列表显示模式
   listMode: 'compact' | 'detailed';
-  /** 排序方式 */
+  // 排序方式
   sortBy: 'name' | 'type' | 'created' | 'duration' | 'status';
-  /** 排序顺序 */
+  // 排序顺序
   sortOrder: 'asc' | 'desc';
 }
 
@@ -100,19 +100,19 @@ export interface AnimationPanelConfig {
  * 动画面板状态
  */
 export interface AnimationPanelState {
-  /** 动画列表 */
+  // 动画列表
   animations: AnimationItem[];
-  /** 当前选中的动画ID */
+  // 当前选中的动画ID
   selectedAnimationId: string | null;
-  /** 播放配置 */
+  // 播放配置
   playbackConfig: AnimationPlaybackConfig;
-  /** 面板配置 */
+  // 面板配置
   config: AnimationPanelConfig;
-  /** 搜索关键词 */
+  // 搜索关键词
   searchKeyword: string;
-  /** 过滤类型 */
+  // 过滤类型
   filterType: AnimationType | 'all';
-  /** 过滤状态 */
+  // 过滤状态
   filterStatus: AnimationStatus | 'all';
 }
 
@@ -120,28 +120,28 @@ export interface AnimationPanelState {
  * 动画面板组件属性接口
  */
 export interface AnimationPanelProps {
-  /** 动画面板状态 */
+  // 动画面板状态
   animationState: AnimationPanelState;
-  /** 动画选择回调 */
+  // 动画选择回调
   onAnimationSelect?: (animationId: string) => void;
-  /** 动画播放回调 */
+  // 动画播放回调
   onAnimationPlay?: (animationId: string) => void;
-  /** 动画暂停回调 */
+  // 动画暂停回调
   onAnimationPause?: (animationId: string) => void;
-  /** 动画停止回调 */
+  // 动画停止回调
   onAnimationStop?: (animationId: string) => void;
-  /** 动画删除回调 */
+  // 动画删除回调
   onAnimationDelete?: (animationId: string) => void;
-  /** 动画进度变更回调 */
+  // 动画进度变更回调
   onProgressChange?: (animationId: string, progress: number) => void;
-  /** 播放速度变更回调 */
+  // 播放速度变更回调
   onSpeedChange?: (speed: number) => void;
-  /** 播放配置变更回调 */
+  // 播放配置变更回调
   onPlaybackConfigChange?: (config: Partial<AnimationPlaybackConfig>) => void;
-  /** 面板配置变更回调 */
+  // 面板配置变更回调
   onConfigChange?: (config: Partial<AnimationPanelConfig>) => void;
-  /** 搜索回调 */
+  // 搜索回调
   onSearch?: (keyword: string) => void;
-  /** 过滤回调 */
+  // 过滤回调
   onFilter?: (type: AnimationType | 'all', status: AnimationStatus | 'all') => void;
 } 

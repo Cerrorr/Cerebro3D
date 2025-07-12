@@ -6,12 +6,7 @@
 
 import React from 'react';
 import { InputNumber } from 'antd';
-import type { InputNumberProps } from 'antd';
-
-interface RecordableInputNumberProps extends InputNumberProps {
-  record: (msg: string) => void;
-  field: string;
-}
+import type { RecordableInputNumberProps } from './types/recordable.types';
 
 export const RecordableInputNumber: React.FC<RecordableInputNumberProps> = ({ record, field, onChange, ...rest }) => {
   return (

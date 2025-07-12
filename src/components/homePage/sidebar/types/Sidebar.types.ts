@@ -18,10 +18,10 @@ import type { AppInfo } from './SidebarFooter.types';
  * @property {MenuClickHandler} onMenuClick - 菜单项点击事件处理函数
  */
 export interface SidebarProps {
-  /** 菜单项列表 */
+  // 菜单项列表
   readonly menuItems: readonly SidebarMenuItem[];
-  /** 应用信息 */
+  // 应用信息
   readonly appInfo: AppInfo;
-  /** 菜单点击事件处理函数 */
+  // 菜单点击事件处理函数
   readonly onMenuClick: MenuClickHandler;
 }

@@ -10,8 +10,8 @@ import type { AssetItem } from './BottomPanel.types';
  * 资源面板组件属性接口
  */
 export interface AssetsPanelProps {
-  /** 搜索关键词 */
+  // 搜索关键词
   searchKeyword?: string;
-  /** 资源选择回调 */
+  // 资源选择回调
   onAssetSelect?: (asset: AssetItem) => void;
 } 

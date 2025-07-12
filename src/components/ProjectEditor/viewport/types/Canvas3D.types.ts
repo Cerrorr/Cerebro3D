@@ -16,13 +16,13 @@ export type ViewType = 'perspective' | 'front' | 'back' | 'left' | 'right' | 'to
  * 定义3D渲染环境的配置选项
  */
 export interface CanvasSettings {
-  /** 是否显示网格 */
+  // 是否显示网格
   gridVisible: boolean;
-  /** 是否显示坐标轴 */
+  // 是否显示坐标轴
   axisVisible: boolean;
-  /** 背景颜色（十六进制格式） */
+  // 背景颜色（十六进制格式）
   backgroundColor: string;
-  /** 相机初始位置坐标 [x, y, z] */
+  // 相机初始位置坐标 [x, y, z]
   cameraPosition?: [number, number, number];
 }
 
@@ -30,13 +30,13 @@ export interface CanvasSettings {
  * 3D画布组件属性接口
  */
 export interface Canvas3DProps {
-  /** 画布宽度（可选） */
+  // 画布宽度（可选）
   width?: number | string;
-  /** 画布高度（可选） */
+  // 画布高度（可选）
   height?: number | string;
-  /** CSS类名 */
+  // CSS类名
   className?: string;
-  /** 对象选择回调函数 */
+  // 对象选择回调函数
   onObjectSelect?: (objectId: string) => void;
 }
 
@@ -44,13 +44,13 @@ export interface Canvas3DProps {
  * 3D场景性能统计接口
  */
 export interface SceneStats {
-  /** 帧率 */
+  // 帧率
   fps: number;
-  /** 渲染时间（毫秒） */
+  // 渲染时间（毫秒）
   renderTime: number;
-  /** 三角形数量 */
+  // 三角形数量
   triangles: number;
-  /** 顶点数量 */
+  // 顶点数量
   vertices: number;
 }
 
@@ -59,8 +59,8 @@ export interface SceneStats {
  * 定义Canvas3D组件的内部状态类型
  */
 export interface Canvas3DState {
-  /** 是否正在加载 */
+  // 是否正在加载
   isLoading: boolean;
-  /** 当前视图类型 */
+  // 当前视图类型
   currentView: ViewType;
 } 

@@ -34,37 +34,37 @@ import type { HistorySliceState } from '@/store/types/historySlice.types';
  * @author Cerror
  * @since 2025-07-08 */
 export interface UseRightSidebarPanelsStateResult {
-  /** 面板属性配置 */
+  // 面板属性配置
   panelsProps: Record<string, any>;
-  /** 项目信息 */
+  // 项目信息
   projectInfo: ProjectInfo;
-  /** 场景配置 */
+  // 场景配置
   sceneConfig: SceneConfiguration;
-  /** 相机配置 */
+  // 相机配置
   cameraConfig: CameraConfiguration;
-  /** 光照配置 */
+  // 光照配置
   lightingConfig: LightingConfig;
-  /** 后处理配置 */
+  // 后处理配置
   postProcessingConfig: PostProcessingConfig;
-  /** 天气配置 */
+  // 天气配置
   weatherConfig: WeatherConfig;
-  /** 渲染器配置 */
+  // 渲染器配置
   rendererConfig: RendererConfig;
-  /** 历史记录状态 */
+  // 历史记录状态
   historyState: HistorySliceState;
-  /** 历史面板配置 */
+  // 历史面板配置
   historyConfig: any;
-  /** 动画面板状态 */
+  // 动画面板状态
   animationState: AnimationPanelState;
-  /** 对象状态 */
+  // 对象状态
   objectState: ObjectState;
-  /** 材质状态 */
+  // 材质状态
   materialState: MaterialState;
-  /** 几何体状态 */
+  // 几何体状态
   geometryState: GeometryState;
-  /** 处理项目信息变更 */
+  // 处理项目信息变更
   handleProjectInfoChange: (info: Partial<ProjectInfo>) => void;
-  /** 标签页特定回调 */
+  // 标签页特定回调
   handleTabSpecificCallbacks: Record<string, any>;
 }
 
