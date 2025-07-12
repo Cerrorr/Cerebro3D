@@ -1,6 +1,7 @@
 /**
- * 几何面板样式
+ * 几何面板样式 - 已移除 Ant Design 组件样式覆盖
  * 深色主题设计，与项目整体风格保持一致
+ * 注意：Ant Design 组件样式已迁移到主题配置 (src/config/theme.ts)
  * @author Cerror
  * @since 2024-01-22
  */
@@ -14,7 +15,7 @@
   font-size: 12px;
   overflow-y: auto;
 
-  // 自定义滚动条
+  // 自定义滚动条样式
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -29,52 +30,6 @@
 
     &:hover {
       background: #6b7280; // bg-gray-500 - 统一hover色
-    }
-  }
-
-  // 折叠面板样式 - 统一样式
-  .ant-collapse {
-    background: transparent !important;
-    border: none !important;
-
-    &-header {
-      background: #1f2937 !important; // bg-gray-800 - 统一header背景
-      border-bottom: 1px solid #374151 !important; // border-gray-700 - 统一边框
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-      padding: 12px 16px !important;
-
-      &:hover {
-        background: #374151 !important; // bg-gray-700 - 统一hover背景
-      }
-
-      .ant-collapse-arrow {
-        color: #9ca3af !important; // text-gray-400 - 统一箭头色
-      }
-    }
-
-    &-content {
-      background: #111827 !important; // bg-gray-900 - 统一content背景
-      border: none !important;
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-
-      &-box {
-        padding: 16px !important;
-      }
-    }
-
-    &-item {
-      border: none !important;
-      border-bottom: 1px solid #374151 !important; // border-gray-700 - 统一分割线
-
-      &:last-child {
-        border-bottom: none !important;
-      }
-
-      &-active {
-        .ant-collapse-header {
-          background: #374151 !important; // bg-gray-700 - 统一激活状态
-        }
-      }
     }
   }
 
@@ -100,33 +55,6 @@
 
       .info-select {
         flex: 1;
-        
-        .ant-select-selector {
-          background: #111827 !important; // bg-gray-900 - 统一输入背景
-          border-color: #4b5563 !important; // border-gray-600 - 统一边框
-          color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-          font-size: 12px;
-          min-height: 24px !important;
-          padding: 2px 8px !important;
-        }
-
-        &:hover .ant-select-selector {
-          border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-        }
-
-        &.ant-select-focused .ant-select-selector {
-          border-color: #4facfe !important; // 统一focus色
-          box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-        }
-
-        .ant-select-selection-item {
-          color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-          font-size: 12px;
-        }
-
-        .ant-select-arrow {
-          color: #9ca3af !important; // text-gray-400 - 统一箭头色
-        }
       }
 
       .id-display {
@@ -147,38 +75,24 @@
         }
 
         .refresh-btn {
-          color: #9ca3af !important; // text-gray-400 - 统一按钮色
-          border: none !important;
-          background: transparent !important;
+          color: #9ca3af; // text-gray-400 - 统一按钮色
+          border: none;
+          background: transparent;
           flex-shrink: 0;
           margin-left: 8px;
           margin-right: 8px; // 增加右侧间距
 
           &:hover {
-            color: #4facfe !important; // 统一hover色
-            background: rgba(79, 172, 254, 0.1) !important;
+            color: #4facfe; // 统一hover色
+            background: rgba(79, 172, 254, 0.1);
           }
         }
       }
 
       .name-input {
         flex: 1;
-        background-color: #111827 !important;
-        border-color: #4b5563 !important;
-        color: #f3f4f6 !important;
         font-size: 12px;
-        padding: 2px 8px !important;
-        min-height: 24px !important;
-
-        &:hover {
-          border-color: #6b7280 !important;
-        }
-
-        &:focus,
-        &.ant-input-focused {
-          border-color: #4facfe !important;
-          box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-        }
+        min-height: 24px;
 
         &::placeholder {
           color: #9ca3af;
@@ -208,28 +122,12 @@
   // 操作按钮区域
   .geometry-operations {
     .operation-btn {
-      background: #374151 !important; // bg-gray-700 - 统一按钮背景
-      border-color: #4b5563 !important; // border-gray-600 - 统一边框
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
       font-size: 11px;
       height: 28px;
       margin-bottom: 6px;
 
       &:last-child {
         margin-bottom: 0;
-      }
-
-      &:hover {
-        background: #4b5563 !important; // bg-gray-600 - 统一hover背景
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-        color: #ffffff !important;
-      }
-
-      &:focus {
-        background: #4b5563 !important; // bg-gray-600 - 统一hover背景
-        border-color: #4facfe !important;
-        color: #ffffff !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
       }
 
       .anticon {
@@ -288,31 +186,6 @@
           font-weight: 500;
           flex: 1;
         }
-
-        .ant-checkbox-wrapper {
-          .ant-checkbox {
-            .ant-checkbox-inner {
-              background: #374151 !important; // bg-gray-700 - 统一checkbox背景
-              border-color: #4b5563 !important; // border-gray-600 - 统一边框
-              width: 14px;
-              height: 14px;
-
-              &:after {
-                width: 4px;
-                height: 7px;
-              }
-            }
-
-            &:hover .ant-checkbox-inner {
-              border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-            }
-
-            &.ant-checkbox-checked .ant-checkbox-inner {
-              background: #4facfe !important; // 统一选中背景
-              border-color: #4facfe !important; // 统一选中边框
-            }
-          }
-        }
       }
     }
 
@@ -322,28 +195,8 @@
     }
 
     .morph-relative {
-      .ant-checkbox-wrapper {
-        color: #f3f4f6; // text-gray-100 - 统一文字色
-        font-size: 12px;
-
-        .ant-checkbox {
-          .ant-checkbox-inner {
-            background: #374151 !important; // bg-gray-700 - 统一checkbox背景
-            border-color: #4b5563 !important; // border-gray-600 - 统一边框
-            width: 14px;
-            height: 14px;
-          }
-
-          &:hover .ant-checkbox-inner {
-            border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-          }
-
-          &.ant-checkbox-checked .ant-checkbox-inner {
-            background: #4facfe !important; // 统一选中背景
-            border-color: #4facfe !important; // 统一选中边框
-          }
-        }
-      }
+      color: #f3f4f6; // text-gray-100 - 统一文字色
+      font-size: 12px;
     }
   }
 
@@ -399,166 +252,5 @@
         }
       }
     }
-  }
-
-  // 通用输入框和按钮样式 - 与对象面板保持一致
-  .ant-input-number,
-  .ant-select-selector,
-  .ant-input-number-input {
-    background: #111827 !important; // bg-gray-900 - 更深的背景色
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-    font-family: inherit !important;
-
-    &:hover {
-      border-color: #6b7280 !important; // border-gray-500
-    }
-
-    &:focus,
-    &:focus-within {
-      border-color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-
-    &::placeholder {
-      color: #6b7280 !important; // text-gray-500
-    }
-  }
-
-  // 数字输入框样式
-  .ant-input-number {
-    .ant-input-number-input {
-      background: transparent !important;
-      color: #f3f4f6 !important;
-    }
-
-    .ant-input-number-handler-wrap {
-      background: #111827 !important;
-      border-left-color: #4b5563 !important;
-    }
-
-    .ant-input-number-handler {
-      color: #9ca3af !important;
-      border-color: #4b5563 !important;
-      &:hover {
-        color: #ffffff !important;
-      }
-    }
-
-    // 统一上下箭头样式，确保继承父级颜色
-    .ant-input-number-handler-up-inner,
-    .ant-input-number-handler-down-inner {
-      font-size: 10px;
-      color: inherit;
-    }
-  }
-
-  // 选择器样式
-  .ant-select {
-    .ant-select-selection-item {
-      color: #f3f4f6 !important; // text-gray-100
-    }
-
-    .ant-select-arrow {
-      color: #9ca3af !important; // text-gray-400
-    }
-
-    &-open {
-      .ant-select-selector {
-        border-color: #4facfe !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-      }
-    }
-  }
-
-  // 开关样式
-  .ant-switch {
-    background: #4b5563 !important; // bg-gray-600
-
-    &.ant-switch-checked {
-      background: #4facfe !important;
-    }
-
-    &:hover:not(.ant-switch-disabled) {
-      background: #6b7280 !important; // bg-gray-500
-
-      &.ant-switch-checked {
-        background: #69b7ff !important;
-      }
-    }
-  }
-
-  // 按钮样式
-  .ant-btn {
-    background: #374151 !important; // bg-gray-700
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-
-    &:hover {
-      background: #4b5563 !important; // bg-gray-600
-      border-color: #6b7280 !important; // border-gray-500
-      color: #4facfe !important;
-    }
-
-    &:focus {
-      background: #4b5563 !important; // bg-gray-600
-      border-color: #4facfe !important;
-      color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-
-    &.ant-btn-text {
-      background: transparent !important;
-      border: none !important;
-      
-      &:hover {
-        background: rgba(79, 172, 254, 0.1) !important;
-      }
-    }
-  }
-
-  // 文本样式
-  .ant-typography {
-    color: #f3f4f6 !important; // text-gray-100
-
-    &.ant-typography-secondary {
-      color: #9ca3af !important; // text-gray-400
-    }
-  }
-}
-
-// 下拉菜单全局样式覆盖 - 统一样式
-.ant-select-dropdown {
-  background: #1f2937 !important; // bg-gray-800 - 统一下拉背景
-  border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-  border-radius: 4px !important;
-
-  .ant-select-item {
-    color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-    font-size: 12px !important;
-
-    &:hover {
-      background: #374151 !important; // bg-gray-700 - 统一hover背景
-    }
-
-    &.ant-select-item-option-selected {
-      background: #4facfe !important; // 统一选中背景
-      color: #ffffff !important;
-    }
-  }
-}
-
-// Tooltip样式覆盖 - 统一样式
-.ant-tooltip {
-  .ant-tooltip-inner {
-    background: #1f2937; // bg-gray-800 - 统一tooltip背景
-    color: #f3f4f6; // text-gray-100 - 统一文字色
-    font-size: 12px;
-    border: 1px solid #4b5563; // border-gray-600 - 统一边框
-  }
-
-  .ant-tooltip-arrow::before {
-    background: #1f2937; // bg-gray-800 - 统一箭头背景
-    border: 1px solid #4b5563; // border-gray-600 - 统一边框
   }
 } 

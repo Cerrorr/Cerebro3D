@@ -1,6 +1,7 @@
 /**
  * 材质面板样式
  * 深色主题的材质编辑器样式
+ * 注意：Ant Design 组件样式已迁移到主题配置文件中，此文件仅保留自定义样式
  * @author Cerror
  * @since 2024-01-22
  */
@@ -41,23 +42,6 @@
 
     .material-selector {
       flex: 1;
-      
-      .ant-select-selector {
-        background: #111827 !important; // bg-gray-900
-        border-color: #4b5563 !important; // border-gray-600
-        color: #f3f4f6 !important; // text-gray-100
-
-        &:hover {
-          border-color: #6b7280 !important; // border-gray-500
-        }
-      }
-
-      &.ant-select-focused {
-        .ant-select-selector {
-          border-color: #4facfe !important;
-          box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-        }
-      }
     }
   }
 
@@ -66,7 +50,7 @@
     height: 100%;
     overflow-y: auto;
 
-    // 自定义滚动条
+    // 自定义滚动条样式
     &::-webkit-scrollbar {
       width: 6px;
     }
@@ -81,52 +65,6 @@
       
       &:hover {
         background: #6b7280; // bg-gray-500
-      }
-    }
-
-    // 覆盖Ant Design折叠面板样式
-    .ant-collapse {
-      background: transparent !important;
-      border: none !important;
-
-      &-header {
-        background: #1f2937 !important; // bg-gray-800
-        border-bottom: 1px solid #374151 !important; // border-gray-700
-        color: #f3f4f6 !important; // text-gray-100
-        padding: 12px 16px !important;
-
-        &:hover {
-          background: #374151 !important; // bg-gray-700
-        }
-
-        .ant-collapse-arrow {
-          color: #9ca3af !important; // text-gray-400
-        }
-      }
-
-      &-content {
-        background: #111827 !important; // bg-gray-900
-        border: none !important;
-        color: #f3f4f6 !important; // text-gray-100
-
-        &-box {
-          padding: 16px !important;
-        }
-      }
-
-      &-item {
-        border: none !important;
-        border-bottom: 1px solid #374151 !important; // border-gray-700
-
-        &:last-child {
-          border-bottom: none !important;
-        }
-
-        &-active {
-          .ant-collapse-header {
-            background: #374151 !important; // bg-gray-700
-          }
-        }
       }
     }
   }
@@ -189,15 +127,15 @@
       }
 
       .refresh-btn {
-        color: #9ca3af !important; // text-gray-400
-        border: none !important;
-        background: transparent !important;
+        color: #9ca3af;
+        border: none;
+        background: transparent;
         flex-shrink: 0;
         margin-right: 8px;
 
         &:hover {
-          color: #4facfe !important;
-          background: rgba(79, 172, 254, 0.1) !important;
+          color: #4facfe;
+          background: rgba(79, 172, 254, 0.1);
         }
       }
     }
@@ -216,17 +154,6 @@
         color: #d1d5db; // text-gray-300
         font-weight: 500;
         min-width: 60px;
-      }
-
-      .color-picker {
-        .ant-color-picker-trigger {
-          background: #1f2937 !important; // bg-gray-800
-          border-color: #4b5563 !important; // border-gray-600
-
-          &:hover {
-            border-color: #6b7280 !important; // border-gray-500
-          }
-        }
       }
     }
 
@@ -248,28 +175,6 @@
 
         .slider {
           flex: 1;
-
-          .ant-slider-rail {
-            background: #374151 !important; // bg-gray-700
-          }
-
-          .ant-slider-track {
-            background: #4facfe !important;
-          }
-
-          .ant-slider-handle {
-            border-color: #4facfe !important;
-            background: #4facfe !important;
-
-            &:hover {
-              border-color: #69b7ff !important;
-            }
-
-            &:focus {
-              border-color: #69b7ff !important;
-              box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2) !important;
-            }
-          }
         }
 
         .slider-value {
@@ -325,34 +230,10 @@
           align-items: center;
           gap: 8px;
 
-          .ant-checkbox {
-            .ant-checkbox-inner {
-              background: #374151 !important; // bg-gray-700
-              border-color: #4b5563 !important; // border-gray-600
-
-              &::after {
-                border-color: #f3f4f6 !important; // text-gray-100
-              }
-            }
-
-            &.ant-checkbox-checked {
-              .ant-checkbox-inner {
-                background: #4facfe !important;
-                border-color: #4facfe !important;
-              }
-            }
-
-            &:hover {
-              .ant-checkbox-inner {
-                border-color: #6b7280 !important; // border-gray-500
-              }
-            }
-          }
-
           .texture-add-btn {
-            color: #9ca3af !important; // text-gray-400
-            border: 1px dashed #4b5563 !important; // border-gray-600
-            background: transparent !important;
+            color: #9ca3af;
+            border: 1px dashed #4b5563;
+            background: transparent;
             width: 24px;
             height: 24px;
             padding: 0;
@@ -361,9 +242,9 @@
             justify-content: center;
 
             &:hover {
-              color: #4facfe !important;
-              border-color: #4facfe !important;
-              background: rgba(79, 172, 254, 0.1) !important;
+              color: #4facfe;
+              border-color: #4facfe;
+              background: rgba(79, 172, 254, 0.1);
             }
           }
         }
@@ -401,173 +282,6 @@
         font-size: 12px;
         color: #d1d5db; // text-gray-300
       }
-    }
-  }
-
-  // 统一输入框样式覆盖
-  .ant-input,
-  .ant-input-number,
-  .ant-select-selector,
-  .ant-input-number-input {
-    background: #111827 !important; // bg-gray-900
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-    font-family: inherit !important;
-
-    &:hover {
-      border-color: #6b7280 !important; // border-gray-500
-    }
-
-    &:focus,
-    &:focus-within {
-      border-color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-
-    &::placeholder {
-      color: #6b7280 !important; // text-gray-500
-    }
-  }
-
-  // 按钮样式
-  .ant-btn {
-    background: #374151 !important; // bg-gray-700
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-
-    &:hover {
-      background: #4b5563 !important; // bg-gray-600
-      border-color: #6b7280 !important; // border-gray-500
-      color: #4facfe !important;
-    }
-
-    &:focus {
-      background: #4b5563 !important; // bg-gray-600
-      border-color: #4facfe !important;
-      color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-
-    &.ant-btn-primary {
-      background: #4facfe !important;
-      border-color: #4facfe !important;
-      color: #ffffff !important;
-
-      &:hover {
-        background: #69b7ff !important;
-        border-color: #69b7ff !important;
-        color: #ffffff !important;
-      }
-
-      &:focus {
-        background: #69b7ff !important;
-        border-color: #69b7ff !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.3) !important;
-      }
-    }
-
-    &.ant-btn-text {
-      background: transparent !important;
-      border: none !important;
-      
-      &:hover {
-        background: rgba(79, 172, 254, 0.1) !important;
-      }
-    }
-  }
-
-  // 开关样式
-  .ant-switch {
-    background: #4b5563 !important; // bg-gray-600
-
-    &.ant-switch-checked {
-      background: #4facfe !important;
-    }
-
-    &:hover:not(.ant-switch-disabled) {
-      background: #6b7280 !important; // bg-gray-500
-
-      &.ant-switch-checked {
-        background: #69b7ff !important;
-      }
-    }
-  }
-
-  // 文本样式
-  .ant-typography {
-    color: #f3f4f6 !important; // text-gray-100
-
-    &.ant-typography-secondary {
-      color: #9ca3af !important; // text-gray-400
-    }
-  }
-
-  .ant-input-number {
-    .ant-input-number-handler-wrap {
-      background: #111827 !important; // align with camera panel
-      border-left-color: #4b5563 !important; // border-gray-600
-    }
-
-    .ant-input-number-handler {
-      color: #9ca3af !important; // text-gray-400
-      border-color: #4b5563 !important; // border-gray-600
-
-      &:hover {
-        color: #f3f4f6 !important; // text-gray-100
-      }
-    }
-
-    // 统一上下箭头样式，确保继承父级颜色
-    .ant-input-number-handler-up-inner,
-    .ant-input-number-handler-down-inner {
-      font-size: 10px;
-      color: inherit;
-    }
-  }
-}
-
-// 全局下拉菜单样式
-.material-dropdown,
-.ant-select-dropdown {
-  background: #1f2937 !important; // bg-gray-800
-  border: 1px solid #4b5563 !important; // border-gray-600
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-
-  .ant-select-item {
-    color: #f3f4f6 !important; // text-gray-100
-
-    &:hover {
-      background: #374151 !important; // bg-gray-700
-    }
-
-    &.ant-select-item-option-selected {
-      background: rgba(79, 172, 254, 0.2) !important;
-      color: #4facfe !important;
-    }
-  }
-}
-
-// 全局颜色选择器面板样式
-.ant-color-picker-panel {
-  background: #1f2937 !important; // bg-gray-800
-  border: 1px solid #4b5563 !important; // border-gray-600
-
-  .ant-color-picker-panel-header {
-    background: #374151 !important; // bg-gray-700
-  }
-
-  .ant-color-picker-panel-body {
-    background: #1f2937 !important; // bg-gray-800
-  }
-
-  input {
-    background: #374151 !important; // bg-gray-700
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-
-    &:focus {
-      border-color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
     }
   }
 } 

@@ -60,10 +60,10 @@
     }
   }
   
-  // 输入框样式重置
-  input,
-  textarea,
-  select {
+  // 输入框样式重置 - 排除Ant Design组件
+  input:not([class*="ant-"]),
+  textarea:not([class*="ant-"]),
+  select:not([class*="ant-"]) {
     font: inherit;
     color: inherit;
     border: none;
@@ -255,6 +255,79 @@
   }
 
   .ant-select-item-option-content {
+    color: inherit !important;
+  }
+}
+
+// Ant Design Input组件深色主题强制覆盖 - 确保输入框背景始终为深色
+.ant-input, 
+.ant-input:hover, 
+.ant-input:focus,
+.ant-input-affix-wrapper,
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused,
+.ant-input-number,
+.ant-input-number:hover,
+.ant-input-number:focus,
+.ant-input-number-focused {
+  background-color: #252a31 !important;
+  background: #252a31 !important;
+  color: #e1e8f0 !important;
+  border-color: rgba(79, 172, 254, 0.4) !important;
+  
+  &::placeholder {
+    color: #5a626c !important;
+  }
+  
+  // 确保focus状态样式正确
+  &:focus, &:focus-within, &.ant-input-focused, &.ant-input-affix-wrapper-focused {
+    border-color: #4facfe !important;
+    box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+    outline: none !important;
+  }
+}
+
+// 确保禁用状态也使用深色主题
+.ant-input:disabled,
+.ant-input-affix-wrapper.ant-input-affix-wrapper-disabled,
+.ant-input-number.ant-input-number-disabled {
+  background-color: #2a2f36 !important;
+  background: #2a2f36 !important;
+  color: #5a626c !important;
+  border-color: rgba(79, 172, 254, 0.2) !important;
+}
+
+// 确保只读状态也使用深色主题
+.ant-input[readonly],
+.ant-input-affix-wrapper.ant-input-affix-wrapper-readonly {
+  background-color: #252a31 !important;
+  background: #252a31 !important;
+  color: #e1e8f0 !important;
+}
+
+// Ant Design Button组件文字颜色修复
+.ant-btn {
+  color: #e1e8f0 !important;
+  
+  &:hover, &:focus {
+    color: #ffffff !important;
+  }
+  
+  &.ant-btn-primary {
+    color: #ffffff !important;
+    
+    &:hover, &:focus {
+      color: #ffffff !important;
+    }
+  }
+  
+  // 确保按钮内的图标和文字都可见
+  .anticon {
+    color: inherit !important;
+  }
+  
+  span {
     color: inherit !important;
   }
 } 

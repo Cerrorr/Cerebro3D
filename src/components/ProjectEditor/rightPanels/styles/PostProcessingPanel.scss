@@ -2,6 +2,9 @@
  * 后期处理配置面板样式
  * @author Cerror
  * @since 2024-01-22
+ * 
+ * 注意：Ant Design 组件样式已迁移到主题配置文件
+ * 相关配置位置：/src/styles/theme/antd-theme.ts
  */
 
 @use '@/styles/variables' as *;
@@ -35,48 +38,6 @@
     }
   }
 
-  // Collapse组件样式重写
-  .ant-collapse {
-    background: transparent;
-    border: none;
-
-    .ant-collapse-item {
-      border: none;
-      background: transparent;
-
-      .ant-collapse-header {
-        padding: 12px 16px;
-        background: rgba(255, 255, 255, 0.05);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        color: #d1d9e0 !important;
-        font-weight: 500;
-        
-        .ant-collapse-arrow {
-          color: #8892a0 !important;
-          font-size: 10px;
-        }
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.08);
-        }
-
-        .anticon {
-          color: #4facfe;
-          margin-right: 8px;
-        }
-      }
-
-      .ant-collapse-content {
-        background: transparent;
-        border: none;
-
-        .ant-collapse-content-box {
-          padding: 0;
-        }
-      }
-    }
-  }
-
   // 通用配置项样式
   .config-section {
     padding: 16px;
@@ -106,113 +67,9 @@
     }
   }
 
-  // Switch开关样式
-  .config-switch {
-    .ant-switch-handle {
-      background: #fff;
-      border-radius: 50% !important;
-    }
-
-    &.ant-switch-checked {
-      background: #4facfe !important;
-      
-      .ant-switch-handle {
-        border-radius: 50% !important;
-      }
-    }
-
-    &:not(.ant-switch-checked) {
-      background: #4b5563 !important; // bg-gray-600 - 统一开关背景
-      
-      .ant-switch-handle {
-        border-radius: 50% !important;
-      }
-    }
-
-    &.ant-switch-disabled {
-      background: rgba(64, 64, 64, 0.5) !important;
-      
-      .ant-switch-handle {
-        background: rgba(255, 255, 255, 0.5) !important;
-        border-radius: 50% !important;
-      }
-    }
-
-    // 确保开关本身是圆角的
-    border-radius: 100px !important;
-  }
-
-  // Slider滑块样式 - 只改变颜色，保持原有位置和大小
-  .config-slider {
-    .ant-slider-rail {
-      background: #4b5563 !important; // bg-gray-600 - 统一滑块轨道色
-    }
-
-    .ant-slider-track {
-      background: #4facfe !important;
-    }
-
-    .ant-slider-handle {
-      background: #fff !important;
-      border-color: #4facfe !important;
-    }
-
-    &.ant-slider-disabled {
-      .ant-slider-rail {
-        background: rgba(64, 64, 64, 0.5) !important;
-      }
-
-      .ant-slider-track {
-        background: rgba(79, 172, 254, 0.3) !important;
-      }
-
-      .ant-slider-handle {
-        border-color: rgba(79, 172, 254, 0.3) !important;
-        background: rgba(255, 255, 255, 0.5) !important;
-      }
-    }
-  }
-
-  // Select下拉框样式
+  // 后期处理特定组件样式
   .config-select {
     width: 100%;
-
-    .ant-select-selector {
-      background: #111827 !important; // bg-gray-900 - 统一输入背景
-      border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-      border-radius: 4px;
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-      font-size: 12px;
-      height: 32px;
-
-      .ant-select-selection-item {
-        color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-        line-height: 30px;
-      }
-    }
-
-    &:hover .ant-select-selector {
-      border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-    }
-
-    &.ant-select-focused .ant-select-selector {
-      border-color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-
-    &.ant-select-disabled .ant-select-selector {
-      background: rgba(45, 45, 45, 0.5) !important;
-      border-color: rgba(64, 64, 64, 0.5) !important;
-      color: #8892a0 !important;
-
-      .ant-select-selection-item {
-        color: #8892a0 !important;
-      }
-    }
-
-    .ant-select-arrow {
-      color: #9ca3af !important; // text-gray-400 - 统一箭头色
-    }
   }
 
   // 颜色输入框样式
@@ -266,64 +123,54 @@
     }
   }
 
-  // 通用组件样式统一 - 确保所有输入组件风格一致
-  // 输入框统一样式
-  .ant-input,
-  .ant-input-number {
-    background: #111827 !important; // bg-gray-900 - 统一输入背景
-    border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-    color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+  // 效果预览相关样式
+  .effect-preview {
+    margin-top: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 
-    &:hover {
-      border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-    }
+  .effect-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-    &:focus,
-    &:focus-within {
-      border-color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
+  .effect-group {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
 
-    &::placeholder {
-      color: #6b7280 !important; // text-gray-500 - 统一placeholder色
-    }
+  .effect-group-title {
+    margin-bottom: 12px;
+    color: #e5e7eb;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
 
-    .ant-input-number-input {
-      background: transparent !important;
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+  // 参数调整控件的容器样式
+  .parameter-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
     }
   }
 
-  // 按钮统一样式
-  .ant-btn {
-    &:not(.ant-btn-primary):not(.ant-btn-link) {
-      background: #374151 !important; // bg-gray-700 - 统一按钮背景
-      border-color: #4b5563 !important; // border-gray-600 - 统一边框
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-
-      &:hover {
-        background: #4b5563 !important; // bg-gray-600 - 统一hover背景
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-      }
-    }
-  }
-
-  // 复选框统一样式
-  .ant-checkbox {
-    .ant-checkbox-inner {
-      background: #374151 !important; // bg-gray-700 - 统一checkbox背景
-      border-color: #4b5563 !important; // border-gray-600 - 统一边框
-
-      &:hover {
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-      }
-    }
-
-    &.ant-checkbox-checked {
-      .ant-checkbox-inner {
-        background: #4facfe !important;
-        border-color: #4facfe !important;
-      }
-    }
+  .parameter-value {
+    min-width: 50px;
+    text-align: right;
+    color: #9ca3af;
+    font-size: 11px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   }
 } 

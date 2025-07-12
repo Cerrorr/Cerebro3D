@@ -128,9 +128,9 @@ button:focus-visible {
 }
 
 /* 输入框样式重置 */
-input,
-textarea,
-select {
+input:not([class*="ant-"]),
+textarea:not([class*="ant-"]),
+select:not([class*="ant-"]) {
   font: inherit;
   color: inherit;
   border: none;

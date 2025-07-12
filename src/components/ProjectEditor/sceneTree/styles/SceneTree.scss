@@ -1,3 +1,12 @@
+/**
+ * 场景树组件样式
+ * @author Cerror
+ * @since 2024-01-22
+ * 
+ * 注意：Ant Design 组件样式已迁移到主题配置文件
+ * 相关配置位置：/src/theme/antd-theme.ts
+ */
+
 @use '@/styles/variables' as *;
 @use 'sass:map';
 
@@ -28,82 +37,7 @@
 
     .search-box {
       position: relative;
-
-      // Ant Design Input 样式覆盖
-      .ant-input-affix-wrapper {
-        background: rgba(30, 35, 40, 0.8) !important;
-        border: 1px solid rgba(79, 172, 254, 0.3) !important;
-        border-radius: 4px;
-        
-        &:hover {
-          border-color: rgba(79, 172, 254, 0.5) !important;
-        }
-        
-        &:focus-within {
-          border-color: map.get($primary-colors, 500) !important;
-          box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-        }
-        
-        .ant-input {
-          background: transparent !important;
-          border: none !important;
-          color: #e1e8f0 !important;
-          font-size: 12px;
-          
-          &::placeholder {
-            color: #b8c5d1 !important;
-          }
-        }
-        
-        .ant-input-prefix {
-          color: #b8c5d1 !important;
-          cursor: text;
-          
-          .anticon {
-            color: #b8c5d1 !important;
-            cursor: text;
-            
-            &:hover {
-              color: #d1d9e0 !important;
-            }
-          }
-        }
-        
-        .ant-input-suffix {
-          .ant-input-clear-icon {
-            color: #b8c5d1 !important;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 12px;
-            padding: 2px;
-            
-            &:hover {
-              color: #e1e8f0 !important;
-              background: rgba(255, 255, 255, 0.1);
-              border-radius: 50%;
-              transform: scale(1.1);
-            }
-            
-            &:active {
-              transform: scale(0.95);
-            }
-          }
-          
-          // 清空按钮的圆圈背景
-          .anticon-close-circle {
-            color: #b8c5d1 !important;
-            
-            &:hover {
-              color: #ff6b6b !important;
-            }
-          }
-        }
-        
-        // 确保所有图标都有正确的样式
-        .anticon {
-          transition: all 0.2s ease;
-        }
-      }
+      // Input 组件样式由主题配置管理
 
       .search-input {
         width: 100%;
@@ -167,7 +101,16 @@
       }
     }
     
-    // Ant Design Tree 组件样式覆盖
+    // Tree 组件自定义样式
+    .tree-container {
+      background: transparent;
+      color: inherit;
+      width: 100%;
+      min-width: 0;
+      // Tree 组件样式由主题配置管理
+    }
+
+    // Ant Design Tree 组件样式覆盖 - 修复节点对齐问题
     .ant-tree {
       background: transparent;
       color: inherit;
@@ -199,7 +142,7 @@
           }
           
           &.ant-tree-node-selected {
-            background: rgba(map.get($primary-colors, 600), 0.3);
+            background: rgba(79, 172, 254, 0.3);
           }
         }
         
@@ -275,15 +218,29 @@
           }
         }
         
+        .ant-tree-switcher {
+          width: 16px;
+          height: 28px;
+          min-width: 16px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          .ant-tree-switcher-icon {
+            font-size: 10px;
+          }
+        }
+        
         // 隐藏节点的样式
-        &.ant-tree-treenode-disabled {
+        &.node-hidden {
           .ant-tree-node-content-wrapper {
             opacity: 0.5;
-            background: rgba(120, 120, 120, 0.1);
+            background: rgba(120, 120, 120, 0.1) !important;
             color: #6b7280 !important;
             
             &:hover {
-              background: rgba(120, 120, 120, 0.2);
+              background: rgba(120, 120, 120, 0.2) !important;
               opacity: 0.7;
             }
           }
@@ -305,61 +262,6 @@
               .node-actions .visibility-btn {
                 color: #ef4444 !important;
                 opacity: 1;
-              }
-            }
-          }
-        }
-        
-        .ant-tree-switcher {
-          width: 16px;
-          height: 28px;
-          min-width: 16px;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          
-          .ant-tree-switcher-icon {
-            font-size: 10px;
-          }
-        }
-        
-        // 通过自定义class处理隐藏节点
-        &.node-hidden {
-          .ant-tree-node-content-wrapper {
-            opacity: 0.5;
-            background: rgba(120, 120, 120, 0.1) !important;
-            color: #6b7280 !important;
-            
-            &:hover {
-              background: rgba(120, 120, 120, 0.2) !important;
-              opacity: 0.7;
-            }
-            
-            .ant-tree-iconEle {
-              opacity: 0.6;
-              filter: grayscale(0.8);
-            }
-            
-            .ant-tree-title {
-              color: #6b7280 !important;
-              font-style: italic;
-              
-              .scene-tree-node {
-                .node-label {
-                  color: #6b7280 !important;
-                  text-decoration: line-through;
-                }
-                
-                .node-actions .visibility-btn {
-                  color: #ef4444 !important;
-                  opacity: 1;
-                  
-                  &:hover {
-                    color: #dc2626 !important;
-                    background: rgba(239, 68, 68, 0.1);
-                  }
-                }
               }
             }
           }
@@ -528,6 +430,58 @@
     .empty-text {
       text-align: center;
       line-height: 1.5;
+    }
+  }
+
+  // 场景树特定功能样式
+  .tree-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+
+    .action-btn {
+      padding: 4px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.02);
+      color: #d1d5db;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: #4facfe;
+      }
+    }
+  }
+
+  .node-details {
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    margin: 4px 8px;
+    font-size: 11px;
+    color: #9ca3af;
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .label {
+        font-weight: 500;
+      }
+
+      .value {
+        font-family: 'Monaco', 'Consolas', monospace;
+        color: #f3f4f6;
+      }
     }
   }
 }

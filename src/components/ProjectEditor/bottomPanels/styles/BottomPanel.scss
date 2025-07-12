@@ -2,7 +2,12 @@
  * 底部面板组件样式
  * @author Cerror
  * @since 2025-06-25
+ * 
+ * 注意：Ant Design 组件样式已迁移到主题配置文件
+ * 相关配置位置：/src/theme/antd-theme.ts
  */
+
+@use '@/styles/variables' as *;
 
 .bottom-panel {
   @apply flex flex-col;
@@ -23,34 +28,7 @@
 
     .panel-controls {
       @apply flex items-center flex-shrink-0;
-
-      .ant-select {
-        .ant-select-selector {
-          background: rgba(255, 255, 255, 0.08) !important;
-          border: 1px solid rgba(79, 172, 254, 0.2) !important;
-          color: #d1d9e0 !important;
-        }
-
-        .ant-select-selection-item {
-          @apply flex items-center;
-          color: #d1d9e0 !important;
-        }
-
-        .ant-select-arrow {
-          color: #d1d9e0 !important;
-        }
-
-        &:hover .ant-select-selector {
-          background: rgba(255, 255, 255, 0.12) !important;
-          border-color: rgba(79, 172, 254, 0.4) !important;
-        }
-
-        &.ant-select-focused .ant-select-selector {
-          background: rgba(255, 255, 255, 0.12) !important;
-          border-color: rgba(79, 172, 254, 0.6) !important;
-          box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.1) !important;
-        }
-      }
+      // Select 组件样式由主题配置管理
     }
 
     // 中间居中区域样式
@@ -93,94 +71,13 @@
 
       .console-level-filter {
         @apply flex items-center;
-
-        .ant-space {
-          @apply items-center;
-        }
-
-        .ant-select {
-          .ant-select-selector {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(79, 172, 254, 0.2) !important;
-            color: #d1d9e0 !important;
-          }
-
-          .ant-select-selection-item {
-            color: #d1d9e0 !important;
-          }
-
-          .ant-select-arrow {
-            color: #d1d9e0 !important;
-          }
-
-          &:hover .ant-select-selector {
-            background: rgba(255, 255, 255, 0.12) !important;
-            border-color: rgba(79, 172, 254, 0.4) !important;
-          }
-
-          &.ant-select-focused .ant-select-selector {
-            background: rgba(255, 255, 255, 0.12) !important;
-            border-color: rgba(79, 172, 254, 0.6) !important;
-            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.1) !important;
-          }
-        }
+        // Space 和 Select 组件样式由主题配置管理
       }
     }
 
     .panel-search {
       @apply flex-1 flex justify-center;
-
-      .ant-input-affix-wrapper {
-        background: rgba(30, 35, 40, 0.8) !important;
-        border: 1px solid rgba(79, 172, 254, 0.3) !important;
-        border-radius: 4px !important;
-        height: 28px !important;
-        
-        &:hover {
-          border-color: rgba(79, 172, 254, 0.5) !important;
-        }
-        
-        &:focus-within {
-          border-color: #4facfe !important;
-          box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-        }
-        
-        .ant-input {
-          background: transparent !important;
-          border: none !important;
-          color: #e1e8f0 !important;
-          font-size: 12px !important;
-          
-          &::placeholder {
-            color: #b8c5d1 !important;
-          }
-        }
-        
-        .ant-input-prefix {
-          color: #b8c5d1 !important;
-          
-          .anticon {
-            color: #b8c5d1 !important;
-            
-            &:hover {
-              color: #d1d9e0 !important;
-            }
-          }
-        }
-        
-        .ant-input-suffix {
-          .ant-input-clear-icon {
-            color: #b8c5d1 !important;
-            font-size: 12px !important;
-            
-            &:hover {
-              color: #e1e8f0 !important;
-              background: rgba(255, 255, 255, 0.1) !important;
-              border-radius: 50% !important;
-            }
-          }
-        }
-      }
+      // Input 组件样式由主题配置管理
     }
 
     .panel-info {
@@ -215,17 +112,8 @@
           font-size: 12px;
         }
       }
-
-      .ant-btn {
-        background: rgba(255, 255, 255, 0.06) !important;
-        border: 1px solid rgba(79, 172, 254, 0.2) !important;
-        color: #d1d9e0 !important;
-
-        &:hover {
-          background: rgba(79, 172, 254, 0.1) !important;
-          border-color: rgba(79, 172, 254, 0.4) !important;
-        }
-      }
+      
+      // Button 组件样式由主题配置管理
     }
   }
 
@@ -531,9 +419,7 @@
       @apply px-2;
 
       .panel-controls {
-        .ant-select {
-          width: 140px !important;
-        }
+        // Select 组件样式由主题配置管理
       }
 
       .panel-info {
@@ -560,23 +446,52 @@
     }
   }
 
-  // 下拉框全局样式覆盖
-  :global(.ant-select-dropdown) {
-    background: #2a2f36 !important;
-    border: 1px solid rgba(79, 172, 254, 0.2) !important;
-    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.5) !important;
+  // 底部面板特定功能样式
+  .panel-resize-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    cursor: row-resize;
+    background: transparent;
+    z-index: 10;
 
-    .ant-select-item {
-      color: #d1d9e0 !important;
-      background: transparent !important;
+    &:hover {
+      background: rgba(79, 172, 254, 0.2);
+    }
+  }
+
+  .timeline-scrubber {
+    position: relative;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin: 8px 0;
+
+    .scrubber-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-50%);
+    }
+
+    .scrubber-thumb {
+      position: absolute;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      background: #4facfe;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      transition: all 0.2s ease;
 
       &:hover {
-        background: rgba(79, 172, 254, 0.1) !important;
-      }
-
-      &.ant-select-item-option-selected {
-        background: rgba(79, 172, 254, 0.2) !important;
-        color: #fff !important;
+        transform: translate(-50%, -50%) scale(1.2);
       }
     }
   }

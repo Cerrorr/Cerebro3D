@@ -2,6 +2,9 @@
  * 灯光配置面板样式
  * @author Cerror
  * @since 2024-01-22
+ * 
+ * 注意：Ant Design 组件样式已迁移到主题配置文件
+ * 相关配置位置：/src/theme/antd-theme.ts
  */
 
 @use '@/styles/variables' as *;
@@ -79,197 +82,105 @@
     }
   }
 
-  // 输入组件样式
+  // 输入组件容器样式 - 实际样式由主题配置控制
   .config-input-number {
     width: 100%;
-
-    &.ant-input-number {
-      background: #111827 !important; // bg-gray-900 - 统一输入背景
-      border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-      border-radius: 4px;
-      width: 100%;
-      height: 32px;
-      box-shadow: none !important;
-      outline: none !important;
-
-      &:hover {
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-      }
-
-      &:focus,
-      &.ant-input-number-focused,
-      &:focus-within {
-        border-color: #4facfe !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-        outline: none !important;
-      }
-
-      &.ant-input-number-disabled {
-        background: rgba(45, 45, 45, 0.5) !important;
-        border-color: rgba(64, 64, 64, 0.5) !important;
-        color: #8892a0 !important;
-      }
-
-      // 输入区域组合（输入框+后缀）
-      .ant-input-number-input-wrap {
-        background: #111827 !important; // bg-gray-900 - 统一输入背景
-        border: none !important;
-        height: 100%;
-      }
-
-      // 实际输入框
-      .ant-input-number-input {
-        background: #111827 !important; // bg-gray-900 - 统一输入背景
-        border: none !important;
-        color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-        font-size: 12px;
-        height: 30px;
-        line-height: 30px;
-        box-shadow: none !important;
-        outline: none !important;
-
-        &::placeholder {
-          color: #6b7280 !important; // text-gray-500 - 统一placeholder色
-        }
-
-        &:focus,
-        &:focus-visible {
-          background: #111827 !important; // bg-gray-900 - 统一输入背景
-          border: none !important;
-          box-shadow: none !important;
-          outline: none !important;
-        }
-      }
-
-      // 上下控制按钮容器
-      .ant-input-number-handler-wrap {
-        background: #111827 !important; // bg-gray-900 - 统一输入背景
-        border-left: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-        border-radius: 0 4px 4px 0;
-        opacity: 1 !important;
-
-        .ant-input-number-handler {
-          border: none !important;
-          color: #9ca3af !important; // text-gray-400 - 统一按钮色
-          background: #111827 !important; // bg-gray-900 - 统一输入背景
-          height: 15px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          &:hover {
-            color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-            background: rgba(79, 172, 254, 0.1) !important;
-          }
-
-          &:active {
-            background: rgba(79, 172, 254, 0.2) !important;
-          }
-
-          .ant-input-number-handler-up-inner,
-          .ant-input-number-handler-down-inner {
-            font-size: 10px;
-            color: inherit;
-          }
-        }
-      }
-    }
+    // InputNumber 样式由主题配置管理
   }
 
   .config-color-picker {
-    .ant-color-picker-trigger {
-      background: #111827 !important; // bg-gray-900 - 统一输入背景
-      border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-      border-radius: 4px;
-      width: 80px;
-      height: 32px;
-
-      &:hover {
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-      }
-
-      &.ant-color-picker-trigger-disabled {
-        background: rgba(45, 45, 45, 0.5) !important;
-        border-color: rgba(64, 64, 64, 0.5) !important;
-      }
-    }
+    // ColorPicker 样式由主题配置管理
   }
 
-  // Collapse组件样式重写
-  .ant-collapse {
+  // 折叠面板自定义样式 - 实际样式由主题配置控制
+  .config-collapse {
     background: transparent;
     border: none;
 
-    .ant-collapse-item {
-      border: none;
-      background: transparent;
-
-      .ant-collapse-header {
-        padding: 12px 16px;
-        background: rgba(255, 255, 255, 0.05);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        color: #d1d9e0 !important;
-        font-weight: 500;
-        
-        .ant-collapse-arrow {
-          color: #8892a0 !important;
-          font-size: 10px;
-        }
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.08);
-        }
-
-        .anticon {
-          color: #4facfe;
-          margin-right: 8px;
-        }
-      }
-
-      .ant-collapse-content {
-        background: transparent;
-        border: none;
-
-        .ant-collapse-content-box {
-          padding: 0;
-        }
+    .collapse-header {
+      .anticon {
+        color: #4facfe;
+        margin-right: 8px;
       }
     }
   }
 
   .config-switch {
-    .ant-switch-handle {
-      background: #fff;
-      border-radius: 50% !important;
-    }
-
-    &.ant-switch-checked {
-      background: #4facfe !important;
-      
-      .ant-switch-handle {
-        border-radius: 50% !important;
-      }
-    }
-
-    &:not(.ant-switch-checked) {
-      background: #4b5563 !important; // bg-gray-600 - 统一开关背景
-      
-      .ant-switch-handle {
-        border-radius: 50% !important;
-      }
-    }
-
-    &.ant-switch-disabled {
-      background: rgba(64, 64, 64, 0.5) !important;
-      
-      .ant-switch-handle {
-        background: rgba(255, 255, 255, 0.5) !important;
-        border-radius: 50% !important;
-      }
-    }
-
-    // 确保开关本身是圆角的
-    border-radius: 100px !important;
+    // Switch 开关样式由主题配置管理
   }
 
+  // 灯光特定功能样式
+  .light-preview {
+    margin-top: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .light-types {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .light-type-btn {
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    color: #d1d5db;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #4facfe;
+    }
+
+    &.active {
+      background: rgba(79, 172, 254, 0.1);
+      border-color: #4facfe;
+      color: #4facfe;
+    }
+  }
+
+  .light-intensity {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    .intensity-label {
+      min-width: 60px;
+      font-size: 12px;
+      color: #d1d5db;
+    }
+
+    .intensity-value {
+      min-width: 40px;
+      text-align: right;
+      font-size: 11px;
+      color: #9ca3af;
+      font-family: 'Monaco', 'Consolas', monospace;
+    }
+  }
+
+  .shadow-settings {
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    .shadow-title {
+      margin-bottom: 12px;
+      color: #e5e7eb;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
 } 

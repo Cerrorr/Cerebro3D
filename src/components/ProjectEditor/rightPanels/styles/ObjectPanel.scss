@@ -1,8 +1,9 @@
 /**
  * 对象面板样式
- * 深色主题的对象配置界面样式
+ * 自定义样式和布局，Ant Design 组件样式已迁移到主题配置
  * @author Cerror
  * @since 2024-01-22
+ * @updated 2025-07-12 - 移除 Ant Design 样式覆盖，迁移到主题配置
  */
 
 .object-panel {
@@ -53,51 +54,7 @@
       }
     }
 
-    // 覆盖Ant Design折叠面板样式
-    .ant-collapse {
-      background: transparent !important;
-      border: none !important;
-
-      &-header {
-        background: #1f2937 !important; // bg-gray-800
-        border-bottom: 1px solid #374151 !important; // border-gray-700
-        color: #f3f4f6 !important; // text-gray-100
-        padding: 12px 16px !important;
-
-        &:hover {
-          background: #374151 !important; // bg-gray-700
-        }
-
-        .ant-collapse-arrow {
-          color: #9ca3af !important; // text-gray-400
-        }
-      }
-
-      &-content {
-        background: #111827 !important; // bg-gray-900
-        border: none !important;
-        color: #f3f4f6 !important; // text-gray-100
-
-        &-box {
-          padding: 16px !important;
-        }
-      }
-
-      &-item {
-        border: none !important;
-        border-bottom: 1px solid #374151 !important; // border-gray-700
-
-        &:last-child {
-          border-bottom: none !important;
-        }
-
-        &-active {
-          .ant-collapse-header {
-            background: #374151 !important; // bg-gray-700
-          }
-        }
-      }
-    }
+    // 注意：Ant Design 折叠面板样式已迁移到主题配置
   }
 
   // 面板头部样式
@@ -177,15 +134,15 @@
       }
 
       .refresh-btn {
-        color: #9ca3af !important; // text-gray-400
-        border: none !important;
-        background: transparent !important;
+        color: #9ca3af; // text-gray-400
+        border: none;
+        background: transparent;
         flex-shrink: 0;
         margin-right: 8px; // 增加右侧间距
 
         &:hover {
-          color: #4facfe !important;
-          background: rgba(79, 172, 254, 0.1) !important;
+          color: #4facfe;
+          background: rgba(79, 172, 254, 0.1);
         }
       }
     }
@@ -212,23 +169,10 @@
         grid-template-columns: 1fr 1fr 1fr;
         gap: 6px;
         
-        .ant-input-number {
-          min-width: 0; // 确保输入框能够正确缩小
+        // 使用自定义类名，避免影响其他ant-input组件
+        .vector-input {
           width: 100%;
-          font-size: 12px;
-          
-          .ant-input-number-input {
-            padding: 4px 8px; // 减小内边距
-            font-size: 12px;
-          }
-          
-          .ant-input-number-handler-wrap {
-            width: 16px; // 减小控制按钮宽度
-            
-            .ant-input-number-handler {
-              height: 12px; // 减小控制按钮高度
-            }
-          }
+          min-width: 0;
         }
       }
     }
@@ -269,6 +213,7 @@
         color: #d1d5db; // text-gray-300
       }
 
+      // 注意：Ant Design 输入框样式已迁移到主题配置
       .render-order-input {
         max-width: 100px;
       }
@@ -296,9 +241,8 @@
         color: #d1d5db; // text-gray-300
       }
 
-      .ant-input-number,
-      .ant-select,
-      .ant-input-number-input {
+      // 爆炸输入框容器 - 实际样式由主题配置管理
+      .explode-input-container {
         max-width: 120px;
       }
     }
@@ -317,22 +261,7 @@
         grid-template-columns: 1fr 1fr 1fr;
         gap: 6px;
 
-        .ant-input-number {
-          min-width: 0;
-          width: 100%;
-          font-size: 12px;
-
-          .ant-input-number-input {
-            padding: 4px 8px;
-            font-size: 12px;
-          }
-          .ant-input-number-handler-wrap {
-            width: 16px;
-            .ant-input-number-handler {
-              height: 12px;
-            }
-          }
-        }
+        // 轴向输入组件 - 实际样式由主题配置管理
       }
     }
 
@@ -347,30 +276,28 @@
         color: #9ca3af; // gray-400
       }
 
-      .ant-input-number {
-        width: 100%;
-      }
+      // 注意：Ant Design 数字输入框样式已迁移到主题配置
     }
   }
 
   // 自定义数据区域样式
   .custom-data-section {
     .custom-data-input {
-      background: #1f2937 !important; // bg-gray-800
-      border-color: #4b5563 !important; // border-gray-600
-      color: #f3f4f6 !important; // text-gray-100
+      background: #1f2937; // bg-gray-800
+      border-color: #4b5563; // border-gray-600
+      color: #f3f4f6; // text-gray-100
 
       &:hover {
-        border-color: #6b7280 !important; // border-gray-500
+        border-color: #6b7280; // border-gray-500
       }
 
       &:focus {
-        border-color: #4facfe !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+        border-color: #4facfe;
+        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
       }
 
       &::placeholder {
-        color: #6b7280 !important; // text-gray-500
+        color: #6b7280; // text-gray-500
       }
     }
   }
@@ -391,213 +318,7 @@
       color: #d1d5db; // text-gray-300
     }
   }
-
-  // 统一输入框样式覆盖
-  .ant-input,
-  .ant-input-number,
-  .ant-select-selector,
-  .ant-input-number-input {
-    background: #111827 !important; // bg-gray-900 - 更深的背景色
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-    font-family: inherit !important;
-
-    &:hover {
-      border-color: #6b7280 !important; // border-gray-500
-    }
-
-    &:focus,
-    &:focus-within {
-      border-color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-
-    &::placeholder {
-      color: #6b7280 !important; // text-gray-500
-    }
-  }
-
-  // 数字输入框样式
-  .ant-input-number {
-    .ant-input-number-input {
-      background: transparent !important;
-      color: #f3f4f6 !important; // text-gray-100
-    }
-
-    .ant-input-number-handler-wrap {
-      background: #111827 !important; // match camera panel dark bg
-      border-left-color: #4b5563 !important;
-    }
-
-    .ant-input-number-handler {
-      color: #9ca3af !important; // text-gray-400
-      border-color: #4b5563 !important; // border-gray-600
-
-      &:hover {
-        color: #f3f4f6 !important; // text-gray-100
-      }
-    }
-
-    // 统一上下箭头样式，确保继承父级颜色
-    .ant-input-number-handler-up-inner,
-    .ant-input-number-handler-down-inner {
-      font-size: 10px;
-      color: inherit;
-    }
-  }
-
-  // 选择器样式
-  .ant-select {
-    .ant-select-selection-item {
-      color: #f3f4f6 !important; // text-gray-100
-    }
-
-    .ant-select-arrow {
-      color: #9ca3af !important; // text-gray-400
-    }
-
-    &-open {
-      .ant-select-selector {
-        border-color: #4facfe !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-      }
-    }
-  }
-
-  // 开关样式
-  .ant-switch {
-    background: #4b5563 !important; // bg-gray-600
-
-    &.ant-switch-checked {
-      background: #4facfe !important;
-    }
-
-    &:hover:not(.ant-switch-disabled) {
-      background: #6b7280 !important; // bg-gray-500
-
-      &.ant-switch-checked {
-        background: #69b7ff !important;
-      }
-    }
-  }
-
-  // 颜色选择器样式
-  .ant-color-picker {
-    .ant-color-picker-trigger {
-      background: #1f2937 !important; // bg-gray-800
-      border-color: #4b5563 !important; // border-gray-600
-
-      &:hover {
-        border-color: #6b7280 !important; // border-gray-500
-      }
-    }
-  }
-
-  // 文本区域和其他输入样式
-  .ant-input {
-    background: #111827 !important; // bg-gray-900 - 更深的背景色
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-
-    &:hover {
-      border-color: #6b7280 !important; // border-gray-500
-    }
-
-    &:focus {
-      border-color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-
-    &::placeholder {
-      color: #6b7280 !important; // text-gray-500
-    }
-
-    // 后缀图标样式
-    .anticon {
-      color: #9ca3af !important; // text-gray-400
-    }
-  }
-
-  // 按钮样式
-  .ant-btn {
-    background: #374151 !important; // bg-gray-700
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-
-    &:hover {
-      background: #4b5563 !important; // bg-gray-600
-      border-color: #6b7280 !important; // border-gray-500
-      color: #4facfe !important;
-    }
-
-    &:focus {
-      background: #4b5563 !important; // bg-gray-600
-      border-color: #4facfe !important;
-      color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-
-    &.ant-btn-text {
-      background: transparent !important;
-      border: none !important;
-      
-      &:hover {
-        background: rgba(79, 172, 254, 0.1) !important;
-      }
-    }
-  }
-
-  // 文本样式
-  .ant-typography {
-    color: #f3f4f6 !important; // text-gray-100
-
-    &.ant-typography-secondary {
-      color: #9ca3af !important; // text-gray-400
-    }
-  }
 }
 
-// 全局下拉菜单样式（Ant Design下拉菜单会挂载到body）
-.ant-select-dropdown {
-  background: #1f2937 !important; // bg-gray-800
-  border: 1px solid #4b5563 !important; // border-gray-600
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-
-  .ant-select-item {
-    color: #f3f4f6 !important; // text-gray-100
-
-    &:hover {
-      background: #374151 !important; // bg-gray-700
-    }
-
-    &.ant-select-item-option-selected {
-      background: rgba(79, 172, 254, 0.2) !important;
-      color: #4facfe !important;
-    }
-  }
-}
-
-// 全局颜色选择器面板样式
-.ant-color-picker-panel {
-  background: #1f2937 !important; // bg-gray-800
-  border: 1px solid #4b5563 !important; // border-gray-600
-
-  .ant-color-picker-panel-header {
-    background: #374151 !important; // bg-gray-700
-  }
-
-  .ant-color-picker-panel-body {
-    background: #1f2937 !important; // bg-gray-800
-  }
-
-  input {
-    background: #374151 !important; // bg-gray-700
-    border-color: #4b5563 !important; // border-gray-600
-    color: #f3f4f6 !important; // text-gray-100
-
-    &:focus {
-      border-color: #4facfe !important;
-      box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-    }
-  }
-} 
+// 注意：所有 Ant Design 组件样式（collapse、input、select、checkbox、switch、button 等）
+// 已迁移到主题配置文件，不再需要在此处进行样式覆盖 

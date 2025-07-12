@@ -20,7 +20,8 @@ import {
   EyeOutlined,
   ScissorOutlined,
   ThunderboltOutlined,
-  ReloadOutlined
+  ReloadOutlined,
+  CodeOutlined
 } from '@ant-design/icons';
 import type { 
   ObjectPanelProps, 
@@ -263,6 +264,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   placeholder="X"
                   step={0.1}
                   precision={2}
+                  className="vector-input"
                 />
                 <InputNumber
                   value={objectState.transform.position.y}
@@ -270,6 +272,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   placeholder="Y"
                   step={0.1}
                   precision={2}
+                  className="vector-input"
                 />
                 <InputNumber
                   value={objectState.transform.position.z}
@@ -277,6 +280,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   placeholder="Z"
                   step={0.1}
                   precision={2}
+                  className="vector-input"
                 />
               </div>
             </div>
@@ -291,6 +295,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   placeholder="X"
                   step={1}
                   precision={1}
+                  className="vector-input"
                 />
                 <InputNumber
                   value={objectState.transform.rotation.y}
@@ -298,6 +303,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   placeholder="Y"
                   step={1}
                   precision={1}
+                  className="vector-input"
                 />
                 <InputNumber
                   value={objectState.transform.rotation.z}
@@ -305,6 +311,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   placeholder="Z"
                   step={1}
                   precision={1}
+                  className="vector-input"
                 />
               </div>
             </div>
@@ -320,6 +327,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   step={0.1}
                   precision={2}
                   min={0.01}
+                  className="vector-input"
                 />
                 <InputNumber
                   value={objectState.transform.scale.y}
@@ -328,6 +336,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   step={0.1}
                   precision={2}
                   min={0.01}
+                  className="vector-input"
                 />
                 <InputNumber
                   value={objectState.transform.scale.z}
@@ -336,6 +345,7 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
                   step={0.1}
                   precision={2}
                   min={0.01}
+                  className="vector-input"
                 />
               </div>
             </div>
@@ -632,7 +642,15 @@ const ObjectPanel: React.FC<ObjectPanelProps> = ({
         </Panel>
 
         {/* 自定义数据 */}
-        <Panel header="自定义数据" key="customData">
+        <Panel 
+          header={
+            <div className="panel-header">
+              <CodeOutlined className="panel-icon" />
+              <span>自定义数据</span>
+            </div>
+          } 
+          key="customData"
+        >
           <div className="custom-data-section">
             <TextArea
               value={JSON.stringify(objectState.customData, null, 2)}

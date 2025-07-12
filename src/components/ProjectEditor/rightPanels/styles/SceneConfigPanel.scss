@@ -1,3 +1,12 @@
+/**
+ * 场景配置面板样式
+ * @author Cerror
+ * @since 2024-01-22
+ * 
+ * 注意：Ant Design 组件样式已迁移到主题配置文件
+ * 相关配置位置：/src/theme/antd-theme.ts
+ */
+
 @use '@/styles/variables' as *;
 
 .scene-config-panel {
@@ -28,55 +37,10 @@
     }
   }
 
-  // Collapse组件样式重写 - 统一样式
-  .ant-collapse {
-    background: transparent !important;
-    border: none !important;
-
-    &-header {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-      padding: 12px 16px !important;
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.08) !important;
-      }
-
-      .ant-collapse-arrow {
-        color: #9ca3af !important; // text-gray-400 - 统一箭头色
-      }
-    }
-
-    &-content {
-      background: transparent !important;
-      border: none !important;
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-
-      &-box {
-        padding: 16px !important;
-      }
-    }
-
-    &-item {
-      border: none !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-      border-radius: 0 !important; // 确保没有圆角
-
-      &:last-child {
-        border-bottom: none !important;
-      }
-
-      .ant-collapse-header {
-        border-radius: 0 !important; // 确保头部也没有圆角
-      }
-
-      &-active {
-        .ant-collapse-header {
-          background: rgba(255, 255, 255, 0.08) !important;
-        }
-      }
-    }
+  // 折叠面板自定义样式 - 实际样式由主题配置控制
+  .config-collapse {
+    background: transparent;
+    border: none;
   }
 
   .config-section {
@@ -95,103 +59,55 @@
     }
 
     .config-input {
-      background: #111827 !important; // bg-gray-900 - 统一输入背景
-      border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
+      background: #111827;
+      border: 1px solid #4b5563;
       border-radius: 4px;
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+      color: #f3f4f6;
       font-size: 12px;
 
       &:hover {
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
+        border-color: #6b7280;
       }
 
       &:focus {
-        border-color: #4facfe !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+        border-color: #4facfe;
+        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
       }
 
       &::placeholder {
-        color: #6b7280; // text-gray-500 - 统一placeholder色
+        color: #6b7280;
       }
     }
 
     .config-textarea {
-      background: #111827 !important; // bg-gray-900 - 统一输入背景
-      border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
+      background: #111827;
+      border: 1px solid #4b5563;
       border-radius: 4px;
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
+      color: #f3f4f6;
       font-size: 12px;
       resize: none;
 
       &:hover {
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
+        border-color: #6b7280;
       }
 
       &:focus {
-        border-color: #4facfe !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
+        border-color: #4facfe;
+        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
       }
 
       &::placeholder {
-        color: #6b7280; // text-gray-500 - 统一placeholder色
+        color: #6b7280;
       }
     }
 
     .config-select {
       width: 100%;
-
-      .ant-select-selector {
-        background: #111827 !important; // bg-gray-900 - 统一输入背景
-        border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-        border-radius: 4px;
-        color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-        font-size: 12px;
-        height: 32px;
-
-        .ant-select-selection-item {
-          color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-          line-height: 30px;
-        }
-      }
-
-      &:hover .ant-select-selector {
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-      }
-
-      &.ant-select-focused .ant-select-selector {
-        border-color: #4facfe !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-      }
-
-      .ant-select-arrow {
-        color: #9ca3af !important; // text-gray-400 - 统一箭头色
-      }
+      // Select 组件样式由主题配置管理
     }
 
     .config-switch {
-      .ant-switch-handle {
-        background: #fff;
-        border-radius: 50% !important;
-      }
-
-      &.ant-switch-checked {
-        background: #4facfe !important;
-        
-        .ant-switch-handle {
-          border-radius: 50% !important;
-        }
-      }
-
-      &:not(.ant-switch-checked) {
-        background: #4b5563 !important; // bg-gray-600 - 统一开关背景
-        
-        .ant-switch-handle {
-          border-radius: 50% !important;
-        }
-      }
-
-      // 确保开关本身是圆角的
-      border-radius: 100px !important;
+      // Switch 组件样式由主题配置管理
     }
   }
 
@@ -223,13 +139,13 @@
     }
   }
 
-  // 封面上传
+  // 按钮容器样式 - 实际样式由主题配置控制
   .cover-upload {
     .cover-preview {
       width: 100%;
       height: 120px;
-      background: #111827; // bg-gray-900 - 统一输入背景
-      border: 1px solid #4b5563; // border-gray-600 - 统一边框
+      background: #111827;
+      border: 1px solid #4b5563;
       border-radius: 4px;
       margin-bottom: 8px;
       overflow: hidden;
@@ -260,27 +176,8 @@
         }
       }
     }
-
-    .cover-upload-btn {
-      background: #374151 !important; // bg-gray-700 - 统一按钮背景
-      border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-      color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-      border-radius: 4px;
-      height: 28px;
-      font-size: 12px;
-
-      &:hover {
-        background: #4b5563 !important; // bg-gray-600 - 统一hover背景
-        border-color: #6b7280 !important; // border-gray-500 - 统一hover边框
-      }
-
-      &:focus {
-        background: #4b5563 !important; // bg-gray-600 - 统一hover背景
-        border-color: #4facfe !important;
-        color: #ffffff !important;
-        box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2) !important;
-      }
-    }
+    
+    // Button 组件样式由主题配置管理
   }
 
   // 环境配置
@@ -291,7 +188,7 @@
       height: 60px;
       border-radius: 4px;
       overflow: hidden;
-      border: 1px solid #4b5563; // border-gray-600 - 统一边框
+      border: 1px solid #4b5563;
 
       img {
         width: 100%;
@@ -324,25 +221,69 @@
       }
     }
   }
-}
 
-// Ant Design 下拉菜单样式重写
-.ant-select-dropdown {
-  background: #1f2937 !important; // bg-gray-800 - 统一下拉背景
-  border: 1px solid #4b5563 !important; // border-gray-600 - 统一边框
-  border-radius: 4px;
+  // 场景配置特定功能样式
+  .scene-stats {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    margin: 8px 0;
 
-  .ant-select-item {
-    color: #f3f4f6 !important; // text-gray-100 - 统一文字色
-    font-size: 12px;
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
 
-    &:hover {
-      background: #374151 !important; // bg-gray-700 - 统一hover背景
+      .stat-item {
+        text-align: center;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 4px;
+
+        .stat-value {
+          font-size: 18px;
+          font-weight: 600;
+          color: #4facfe;
+          margin-bottom: 4px;
+        }
+
+        .stat-label {
+          font-size: 11px;
+          color: #9ca3af;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
     }
+  }
 
-    &.ant-select-item-option-selected {
-      background: #4facfe !important; // 统一选中背景
-      color: #ffffff !important;
+  .quality-presets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+
+    .preset-btn {
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.02);
+      color: #d1d5db;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: #4facfe;
+      }
+
+      &.active {
+        background: rgba(79, 172, 254, 0.1);
+        border-color: #4facfe;
+        color: #4facfe;
+      }
     }
   }
 } 

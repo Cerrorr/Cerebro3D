@@ -1,3 +1,12 @@
+/**
+ * 3D画布组件样式
+ * @author Cerror
+ * @since 2024-01-22
+ * 
+ * 注意：Ant Design 组件样式已迁移到主题配置文件
+ * 相关配置位置：/src/theme/antd-theme.ts
+ */
+
 @use '@/styles/variables' as *;
 @use 'sass:map';
 
@@ -322,35 +331,9 @@
   }
 }
 
-// 自定义下拉菜单样式
-.ant-dropdown {
-  .ant-dropdown-menu {
-    background: rgba(0, 0, 0, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 8px !important;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-    padding: 4px !important;
-
-    .ant-dropdown-menu-item {
-      border-radius: 6px !important;
-      margin: 2px 0 !important;
-      
-      &:hover {
-        background: rgba(79, 172, 254, 0.2) !important;
-        
-        .view-menu-item {
-          .anticon {
-            color: #4facfe !important;
-          }
-          
-          span {
-            color: #fff !important;
-          }
-        }
-      }
-    }
-  }
+// 自定义下拉菜单容器样式 - 实际样式由主题配置控制
+.dropdown-container {
+  // Dropdown 组件样式由主题配置管理
 }
 
 // 旋转动画
