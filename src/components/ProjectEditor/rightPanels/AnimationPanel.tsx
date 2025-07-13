@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { Button, List, Slider, Empty, Tooltip, Typography } from 'antd';
+import { Button, List, Empty, Tooltip, Typography } from 'antd';
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -22,6 +22,7 @@ import {
   ANIMATION_TYPE_COLORS
 } from './constants';
 import { useRecord } from '@/hooks/common/useRecord';
+import { RSlider } from '@/components/common/recordable';
 
 const { Text } = Typography;
 
@@ -248,12 +249,15 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
         <div className="control-row">
           <Text className="control-label">播放速度:</Text>
           <div className="control-slider">
-            <Slider
+            <RSlider
+              record={record}
+              field="animation.speed"
               min={0.1}
               max={5.0}
               step={0.1}
               value={localSpeedValue}
               onChange={handleSpeedChange}
+              onChangeComplete={handleSpeedChange}
               tooltip={{ formatter: value => formatSpeed(value || 0) }}
             />
             <Text className="control-value">{formatSpeed(localSpeedValue)}</Text>
@@ -264,7 +268,9 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
         <div className="control-row">
           <Text className="control-label">播放进度:</Text>
           <div className="control-slider">
-            <Slider
+            <RSlider
+              record={record}
+              field="animation.progress"
               min={0}
               max={100}
               step={0.1}
@@ -274,6 +280,12 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
                 )?.progress ?? 0
               }
               onChange={value =>
+                handleProgressChange(
+                  animationState.selectedAnimationId ?? '',
+                  value
+                )
+              }
+              onChangeComplete={value =>
                 handleProgressChange(
                   animationState.selectedAnimationId ?? '',
                   value

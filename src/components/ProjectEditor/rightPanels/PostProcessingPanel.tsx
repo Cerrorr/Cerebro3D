@@ -5,7 +5,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { Switch, Slider, Select, Input, Collapse } from 'antd';
+import { Switch, Select, Input, Collapse } from 'antd';
 import { 
   CameraOutlined, 
   BorderlessTableOutlined, 
@@ -30,6 +30,7 @@ import type {
 } from './types';
 import './styles/PostProcessingPanel.scss';
 import { useRecord } from '@/hooks/common/useRecord';
+import { RSlider } from '@/components/common/recordable';
 
 const { Option } = Select;
 
@@ -172,12 +173,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               <span className="config-label">边缘强度</span>
               <span className="config-value">{config.outline.edgeStrength}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="outline.edgeStrength"
               min={0}
               max={5}
               step={0.1}
               value={config.outline.edgeStrength}
               onChange={(edgeStrength) => handleOutlineChange({ edgeStrength })}
+              onChangeComplete={(edgeStrength) => handleOutlineChange({ edgeStrength })}
               disabled={!config.outline.enabled}
               className="config-slider"
             />
@@ -188,12 +192,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               <span className="config-label">边缘发光</span>
               <span className="config-value">{config.outline.edgeGlow}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="outline.edgeGlow"
               min={0}
               max={2}
               step={0.1}
               value={config.outline.edgeGlow}
               onChange={(edgeGlow) => handleOutlineChange({ edgeGlow })}
+              onChangeComplete={(edgeGlow) => handleOutlineChange({ edgeGlow })}
               disabled={!config.outline.enabled}
               className="config-slider"
             />
@@ -204,12 +211,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               <span className="config-label">边缘厚度</span>
               <span className="config-value">{config.outline.edgeThickness}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="outline.edgeThickness"
               min={0.1}
               max={5}
               step={0.1}
               value={config.outline.edgeThickness}
               onChange={(edgeThickness) => handleOutlineChange({ edgeThickness })}
+              onChangeComplete={(edgeThickness) => handleOutlineChange({ edgeThickness })}
               disabled={!config.outline.enabled}
               className="config-slider"
             />
@@ -266,12 +276,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               <span className="config-label">半径</span>
               <span className="config-value">{config.bloom.radius}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="bloom.radius"
               min={0.1}
               max={2}
               step={0.1}
               value={config.bloom.radius}
               onChange={(radius) => handleBloomChange({ radius })}
+              onChangeComplete={(radius) => handleBloomChange({ radius })}
               disabled={!config.bloom.enabled}
               className="config-slider"
             />
@@ -282,12 +295,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               <span className="config-label">阈值</span>
               <span className="config-value">{config.bloom.threshold}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="bloom.threshold"
               min={0}
               max={1}
               step={0.01}
               value={config.bloom.threshold}
               onChange={(threshold) => handleBloomChange({ threshold })}
+              onChangeComplete={(threshold) => handleBloomChange({ threshold })}
               disabled={!config.bloom.enabled}
               className="config-slider"
             />
@@ -298,12 +314,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               <span className="config-label">强度</span>
               <span className="config-value">{config.bloom.strength}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="bloom.strength"
               min={0}
               max={3}
               step={0.1}
               value={config.bloom.strength}
               onChange={(strength) => handleBloomChange({ strength })}
+              onChangeComplete={(strength) => handleBloomChange({ strength })}
               disabled={!config.bloom.enabled}
               className="config-slider"
             />
@@ -355,12 +374,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               <span className="config-label">强度</span>
               <span className="config-value">{config.lut.intensity}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="lut.intensity"
               min={0}
               max={1}
               step={0.1}
               value={config.lut.intensity}
               onChange={(intensity) => handleLUTChange({ intensity })}
+              onChangeComplete={(intensity) => handleLUTChange({ intensity })}
               disabled={!config.lut.enabled}
               className="config-slider"
             />
@@ -395,12 +417,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               <span className="config-label">衰减</span>
               <span className="config-value">{config.motionBlur.decay}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="motionBlur.decay"
               min={0.1}
               max={1}
               step={0.01}
               value={config.motionBlur.decay}
               onChange={(decay) => handleMotionBlurChange({ decay })}
+              onChangeComplete={(decay) => handleMotionBlurChange({ decay })}
               disabled={!config.motionBlur.enabled}
               className="config-slider"
             />
@@ -432,12 +457,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">焦距</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="zoom.focus"
               min={0.1}
               max={2.0}
               step={0.1}
               value={config.zoom.focus}
               onChange={(focus) => handleZoomChange({ focus })}
+              onChangeComplete={(focus) => handleZoomChange({ focus })}
               disabled={!config.zoom.enabled}
               className="config-slider"
             />
@@ -445,12 +473,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">孔径</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="zoom.aperture"
               min={0.001}
               max={0.1}
               step={0.001}
               value={config.zoom.aperture}
               onChange={(aperture) => handleZoomChange({ aperture })}
+              onChangeComplete={(aperture) => handleZoomChange({ aperture })}
               disabled={!config.zoom.enabled}
               className="config-slider"
             />
@@ -458,12 +489,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">最大模糊</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="zoom.maxBlur"
               min={0.001}
               max={0.05}
               step={0.001}
               value={config.zoom.maxBlur}
               onChange={(maxBlur) => handleZoomChange({ maxBlur })}
+              onChangeComplete={(maxBlur) => handleZoomChange({ maxBlur })}
               disabled={!config.zoom.enabled}
               className="config-slider"
             />
@@ -495,12 +529,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">像素大小</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="pixel.pixelSize"
               min={1}
               max={20}
               step={1}
               value={config.pixel.pixelSize}
               onChange={(pixelSize) => handlePixelChange({ pixelSize })}
+              onChangeComplete={(pixelSize) => handlePixelChange({ pixelSize })}
               disabled={!config.pixel.enabled}
               className="config-slider"
             />
@@ -508,12 +545,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">法向边缘强度</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="pixel.normalEdgeStrength"
               min={0}
               max={1}
               step={0.1}
               value={config.pixel.normalEdgeStrength}
               onChange={(normalEdgeStrength) => handlePixelChange({ normalEdgeStrength })}
+              onChangeComplete={(normalEdgeStrength) => handlePixelChange({ normalEdgeStrength })}
               disabled={!config.pixel.enabled}
               className="config-slider"
             />
@@ -521,12 +561,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">深度边缘强度</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="pixel.depthEdgeStrength"
               min={0}
               max={1}
               step={0.1}
               value={config.pixel.depthEdgeStrength}
               onChange={(depthEdgeStrength) => handlePixelChange({ depthEdgeStrength })}
+              onChangeComplete={(depthEdgeStrength) => handlePixelChange({ depthEdgeStrength })}
               disabled={!config.pixel.enabled}
               className="config-slider"
             />
@@ -574,12 +617,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">半径</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="halftone.radius"
               min={1}
               max={20}
               step={0.5}
               value={config.halftone.radius}
               onChange={(radius) => handleHalftoneChange({ radius })}
+              onChangeComplete={(radius) => handleHalftoneChange({ radius })}
               disabled={!config.halftone.enabled}
               className="config-slider"
             />
@@ -587,12 +633,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">R色旋转</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="halftone.rotateR"
               min={0}
               max={180}
               step={1}
               value={config.halftone.rotateR}
               onChange={(rotateR) => handleHalftoneChange({ rotateR })}
+              onChangeComplete={(rotateR) => handleHalftoneChange({ rotateR })}
               disabled={!config.halftone.enabled}
               className="config-slider"
             />
@@ -600,12 +649,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">G色旋转</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="halftone.rotateG"
               min={0}
               max={180}
               step={1}
               value={config.halftone.rotateG}
               onChange={(rotateG) => handleHalftoneChange({ rotateG })}
+              onChangeComplete={(rotateG) => handleHalftoneChange({ rotateG })}
               disabled={!config.halftone.enabled}
               className="config-slider"
             />
@@ -613,12 +665,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">B色旋转</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="halftone.rotateB"
               min={0}
               max={180}
               step={1}
               value={config.halftone.rotateB}
               onChange={(rotateB) => handleHalftoneChange({ rotateB })}
+              onChangeComplete={(rotateB) => handleHalftoneChange({ rotateB })}
               disabled={!config.halftone.enabled}
               className="config-slider"
             />
@@ -626,12 +681,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">散射</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="halftone.scatter"
               min={0}
               max={1}
               step={0.1}
               value={config.halftone.scatter}
               onChange={(scatter) => handleHalftoneChange({ scatter })}
+              onChangeComplete={(scatter) => handleHalftoneChange({ scatter })}
               disabled={!config.halftone.enabled}
               className="config-slider"
             />
@@ -639,12 +697,15 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
           <div className="config-item">
             <span className="config-label">混合度</span>
-            <Slider
+            <RSlider
+              record={record}
+              field="halftone.blending"
               min={0}
               max={1}
               step={0.1}
               value={config.halftone.blending}
               onChange={(blending) => handleHalftoneChange({ blending })}
+              onChangeComplete={(blending) => handleHalftoneChange({ blending })}
               disabled={!config.halftone.enabled}
               className="config-slider"
             />

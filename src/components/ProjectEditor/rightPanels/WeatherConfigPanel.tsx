@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Switch, Slider, Radio, Input, Collapse } from 'antd';
+import { Switch, Radio, Input, Collapse } from 'antd';
 import { 
   CloudOutlined,
   CloudDownloadOutlined,
@@ -8,6 +8,7 @@ import {
 import type { WeatherConfigPanelProps, WeatherConfig, FogConfig, RainConfig, SnowConfig } from './types';
 import './styles/WeatherConfigPanel.scss';
 import { useRecord } from '@/hooks/common/useRecord';
+import { RSlider } from '@/components/common/recordable';
 
 /**
  * 天气配置面板组件
@@ -107,12 +108,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">近点</span>
               <span className="config-value">{config.fog.near}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="fog.near"
               min={0}
               max={10}
               step={0.1}
               value={config.fog.near}
               onChange={(value) => handleFogConfigChange({ near: value })}
+              onChangeComplete={(value) => handleFogConfigChange({ near: value })}
               className="config-slider"
             />
           </div>
@@ -123,12 +127,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">远点</span>
               <span className="config-value">{config.fog.far}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="fog.far"
               min={1}
               max={100}
               step={1}
               value={config.fog.far}
               onChange={(value) => handleFogConfigChange({ far: value })}
+              onChangeComplete={(value) => handleFogConfigChange({ far: value })}
               className="config-slider"
             />
           </div>
@@ -164,12 +171,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">速度</span>
               <span className="config-value">{config.rain.speed}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="rain.speed"
               min={0}
               max={2}
               step={0.1}
               value={config.rain.speed}
               onChange={(value) => handleRainConfigChange({ speed: value })}
+              onChangeComplete={(value) => handleRainConfigChange({ speed: value })}
               className="config-slider"
             />
           </div>
@@ -191,12 +201,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">大小</span>
               <span className="config-value">{config.rain.size}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="rain.size"
               min={0.1}
               max={2}
               step={0.1}
               value={config.rain.size}
               onChange={(value) => handleRainConfigChange({ size: value })}
+              onChangeComplete={(value) => handleRainConfigChange({ size: value })}
               className="config-slider"
             />
           </div>
@@ -207,12 +220,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">弧度</span>
               <span className="config-value">{config.rain.arc}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="rain.arc"
               min={0}
               max={180}
               step={1}
               value={config.rain.arc}
               onChange={(value) => handleRainConfigChange({ arc: value })}
+              onChangeComplete={(value) => handleRainConfigChange({ arc: value })}
               className="config-slider"
             />
           </div>
@@ -223,12 +239,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">透明度</span>
               <span className="config-value">{config.rain.opacity}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="rain.opacity"
               min={0}
               max={1}
               step={0.1}
               value={config.rain.opacity}
               onChange={(value) => handleRainConfigChange({ opacity: value })}
+              onChangeComplete={(value) => handleRainConfigChange({ opacity: value })}
               className="config-slider"
             />
           </div>
@@ -264,12 +283,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">速度</span>
               <span className="config-value">{config.snow.speed}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="snow.speed"
               min={0.1}
               max={3}
               step={0.1}
               value={config.snow.speed}
               onChange={(value) => handleSnowConfigChange({ speed: value })}
+              onChangeComplete={(value) => handleSnowConfigChange({ speed: value })}
               className="config-slider"
             />
           </div>
@@ -280,12 +302,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">密度</span>
               <span className="config-value">{config.snow.density}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="snow.density"
               min={0.1}
               max={5}
               step={0.1}
               value={config.snow.density}
               onChange={(value) => handleSnowConfigChange({ density: value })}
+              onChangeComplete={(value) => handleSnowConfigChange({ density: value })}
               className="config-slider"
             />
           </div>
@@ -296,12 +321,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">大小</span>
               <span className="config-value">{config.snow.size}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="snow.size"
               min={0.1}
               max={2}
               step={0.1}
               value={config.snow.size}
               onChange={(value) => handleSnowConfigChange({ size: value })}
+              onChangeComplete={(value) => handleSnowConfigChange({ size: value })}
               className="config-slider"
             />
           </div>
@@ -312,12 +340,15 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               <span className="config-label">透明度</span>
               <span className="config-value">{config.snow.opacity}</span>
             </div>
-            <Slider
+            <RSlider
+              record={record}
+              field="snow.opacity"
               min={0}
               max={1}
               step={0.1}
               value={config.snow.opacity}
               onChange={(value) => handleSnowConfigChange({ opacity: value })}
+              onChangeComplete={(value) => handleSnowConfigChange({ opacity: value })}
               className="config-slider"
             />
           </div>

@@ -8,14 +8,16 @@ import React from 'react';
 import { Slider } from 'antd';
 import type { RecordableSliderProps } from './types/recordable.types';
 
-export const RecordableSlider: React.FC<RecordableSliderProps> = ({ record, field, onChange, ...rest }) => {
+export const RecordableSlider: React.FC<RecordableSliderProps> = ({ record, field, onChange, onAfterChange, onChangeComplete, ...rest }) => {
   return (
     <Slider
       {...rest}
-      onChange={(value) => {
+      onChange={onChange}
+      onChangeComplete={(value) => {
         record(`${field} = ${value}`);
-        // @ts-ignore
-        onChange?.(value);
+        // Support both old and new API for backward compatibility
+        onAfterChange?.(value);
+        onChangeComplete?.(value);
       }}
     />
   );

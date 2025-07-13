@@ -161,7 +161,11 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
           value={materialState.info.name}
           onChange={value => onMaterialSelect?.(value)}
           className="material-selector"
-          dropdownClassName="material-dropdown"
+          classNames={{
+            popup: {
+              root: "material-dropdown"
+            }
+          }}
         >
           <Option value="lambert5">lambert5</Option>
           <Option value="material1">material1</Option>
@@ -290,6 +294,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                         onChange={value =>
                           handleAppearanceChange('emissiveIntensity', value)
                         }
+                        onChangeComplete={value =>
+                          handleAppearanceChange('emissiveIntensity', value)
+                        }
                         min={0}
                         max={5}
                         step={0.1}
@@ -310,6 +317,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                         field="roughness"
                         value={materialState.appearance.roughness}
                         onChange={value =>
+                          handleAppearanceChange('roughness', value)
+                        }
+                        onChangeComplete={value =>
                           handleAppearanceChange('roughness', value)
                         }
                         min={0}
@@ -334,6 +344,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                         onChange={value =>
                           handleAppearanceChange('metalness', value)
                         }
+                        onChangeComplete={value =>
+                          handleAppearanceChange('metalness', value)
+                        }
                         min={0}
                         max={1}
                         step={0.01}
@@ -354,6 +367,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                         field="opacity"
                         value={materialState.appearance.opacity}
                         onChange={value =>
+                          handleAppearanceChange('opacity', value)
+                        }
+                        onChangeComplete={value =>
                           handleAppearanceChange('opacity', value)
                         }
                         min={0}
@@ -391,6 +407,9 @@ const MaterialPanel: React.FC<MaterialPanelProps> = ({
                         field="alphaTest"
                         value={materialState.appearance.alphaTest}
                         onChange={value =>
+                          handleAppearanceChange('alphaTest', value)
+                        }
+                        onChangeComplete={value =>
                           handleAppearanceChange('alphaTest', value)
                         }
                         min={0}

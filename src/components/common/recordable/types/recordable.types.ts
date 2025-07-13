@@ -85,6 +85,8 @@ export interface RecordableSliderProps extends SliderSingleProps {
   record: RecordFunction;
   // 字段名称
   field: string;
+  // 支持新的 onChangeComplete API
+  onChangeComplete?: (value: number) => void;
 }
 
 /**

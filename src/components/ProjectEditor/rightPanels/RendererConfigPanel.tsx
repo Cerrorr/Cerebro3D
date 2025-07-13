@@ -325,6 +325,7 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               step={0.01}
               value={config.globalIllumination.lightDirectionX}
               onChange={(lightDirectionX) => handleGlobalIlluminationChange({ lightDirectionX })}
+              onChangeComplete={(lightDirectionX) => handleGlobalIlluminationChange({ lightDirectionX })}
               disabled={!config.globalIllumination.enabled}
               className="config-slider"
             />
@@ -343,6 +344,7 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               step={0.01}
               value={config.globalIllumination.lightDirectionY}
               onChange={(lightDirectionY) => handleGlobalIlluminationChange({ lightDirectionY })}
+              onChangeComplete={(lightDirectionY) => handleGlobalIlluminationChange({ lightDirectionY })}
               disabled={!config.globalIllumination.enabled}
               className="config-slider"
             />
@@ -361,6 +363,7 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
               step={0.01}
               value={config.globalIllumination.lightDirectionZ}
               onChange={(lightDirectionZ) => handleGlobalIlluminationChange({ lightDirectionZ })}
+              onChangeComplete={(lightDirectionZ) => handleGlobalIlluminationChange({ lightDirectionZ })}
               disabled={!config.globalIllumination.enabled}
               className="config-slider"
             />
