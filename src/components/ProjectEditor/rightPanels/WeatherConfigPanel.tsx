@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Switch, Slider, Radio, Input } from 'antd';
+import { Switch, Slider, Radio, Input, Collapse } from 'antd';
 import { 
   CloudOutlined,
   CloudDownloadOutlined,
@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons';
 import type { WeatherConfigPanelProps, WeatherConfig, FogConfig, RainConfig, SnowConfig } from './types';
 import './styles/WeatherConfigPanel.scss';
-import ModernCollapse from '@/components/common/ModernCollapse';
 import { useRecord } from '@/hooks/common/useRecord';
 
 /**
@@ -329,7 +328,7 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
 
   return (
     <div className="weather-config-panel">
-      <ModernCollapse
+      <Collapse
         items={collapseItems}
         defaultActiveKey={['fog', 'rain', 'snow']}
         ghost

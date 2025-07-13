@@ -30,7 +30,6 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
   onProjectInfoChange,
   onSceneConfigChange
 }) => {
-  const [activeKey, setActiveKey] = useState<string[]>(['project', 'scene']);
 
   /* 记录器 */
   const record = useRecord('SceneConfig');
@@ -220,8 +219,7 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
     <div className="scene-config-panel">
       <Collapse
         items={items}
-        activeKey={activeKey}
-        onChange={setActiveKey}
+        defaultActiveKey={['project', 'scene']}
         ghost
         expandIcon={({ isActive }) => <DownOutlined rotate={isActive ? 180 : 0} />}
       />

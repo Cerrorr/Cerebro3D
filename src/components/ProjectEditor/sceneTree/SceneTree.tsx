@@ -188,7 +188,6 @@ const SceneTree: React.FC<SceneTreeProps> = ({
   return (
     <div className="scene-tree">
       <div className="scene-tree-header">
-        <h3>场景</h3>
         <div className="search-box">
           <Input
             className="search-input"

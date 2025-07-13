@@ -125,7 +125,7 @@
 // 动画内容区域
 .animation-content {
   @apply w-full h-full flex flex-col;
-  background: #1a1d22;
+  background: linear-gradient(135deg, #1e2328 0%, #252a31 50%, #1e2328 100%);
 }
 
 // 动画主区域
@@ -167,7 +167,7 @@
 // 控制台内容
 .console-content {
   @apply flex flex-col h-full;
-  background: #0f1419;
+  background: linear-gradient(135deg, #1e2328 0%, #252a31 50%, #1e2328 100%);
 }
 
 .console-content__messages {

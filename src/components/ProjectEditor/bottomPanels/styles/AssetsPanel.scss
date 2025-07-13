@@ -10,13 +10,13 @@
 
   .assets-sidebar {
     width: 200px;
-    background-color: #1f1f1f;
+    background: linear-gradient(135deg, #1e2328 0%, #252a31 50%, #1e2328 100%);
     overflow-y: auto;
   }
 
   .assets-main {
     flex: 1;
-    background-color: #141414;
+    background: linear-gradient(135deg, #1e2328 0%, #252a31 50%, #1e2328 100%);
     display: flex;
     flex-direction: column;
   }
@@ -30,11 +30,16 @@
       display: flex;
       align-items: center;
       border-radius: 4px;
-      transition: background-color 0.2s;
+      transition: all 0.2s ease;
 
-      &.active,
       &:hover {
-        background-color: #262626;
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+
+      &.active {
+        background: rgba(79, 172, 254, 0.15);
+        border: 1px solid rgba(79, 172, 254, 0.3);
+        color: #4facfe;
       }
 
       .category-icon {
@@ -93,11 +98,11 @@
       text-align: center;
       padding: 8px;
       border-radius: 6px;
-      background-color: #1f1f1f;
+      background-color: rgba(255, 255, 255, 0.05);
       transition: background 0.2s;
 
       &:hover {
-        background-color: #262626;
+        background-color: rgba(255, 255, 255, 0.1);
       }
 
       .asset-preview {

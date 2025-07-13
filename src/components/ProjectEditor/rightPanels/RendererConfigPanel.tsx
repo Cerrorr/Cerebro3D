@@ -5,10 +5,9 @@
  */
 
 import React, { useCallback } from 'react';
-import { Select as AntSelect } from 'antd';
+import { Select as AntSelect, Collapse } from 'antd';
 import { RSwitch, RSelect, RSlider, RInput, RInputNumber } from '@/components/common/recordable';
 import { useRecord } from '@/hooks/common/useRecord';
-import ModernCollapse from '@/components/common/ModernCollapse';
 import { 
   DesktopOutlined,
   CloudOutlined,
@@ -373,7 +372,7 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
 
   return (
     <div className="renderer-config-panel">
-      <ModernCollapse
+      <Collapse
         items={collapseItems}
         defaultActiveKey={['renderer', 'shadow', 'globalIllumination']}
         ghost

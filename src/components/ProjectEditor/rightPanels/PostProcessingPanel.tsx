@@ -5,8 +5,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { Switch, Slider, Select, Input } from 'antd';
-import ModernCollapse from '@/components/common/ModernCollapse';
+import { Switch, Slider, Select, Input, Collapse } from 'antd';
 import { 
   CameraOutlined, 
   BorderlessTableOutlined, 
@@ -687,7 +686,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
 
   return (
     <div className="post-processing-panel">
-      <ModernCollapse
+      <Collapse
         items={collapseItems}
         defaultActiveKey={['antialiasing', 'outline', 'bloom', 'lut', 'motionBlur', 'zoom', 'pixel', 'halftone']}
         ghost

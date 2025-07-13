@@ -330,4 +330,16 @@
   span {
     color: inherit !important;
   }
+}
+
+// Ant Design Collapse 头部样式
+.ant-collapse-header {
+  background: #ffffff0d !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #f3f4f6 !important;
+}
+
+// 激活状态的折叠头部
+.ant-collapse-item-active .ant-collapse-header {
+  background: #ffffff14 !important;
 } 
