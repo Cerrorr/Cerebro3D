@@ -68,212 +68,232 @@
     margin: 3px;
     backdrop-filter: blur(8px);
 
-    // 基础hover效果
-    &:hover {
-      background: rgba(0, 0, 0, 0.9);
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    &:active {
-      transform: translateY(0);
-    }
-
-    // 激活状态 - 简单的边框高亮
-    &--active {
-      background: rgba(79, 172, 254, 0.2);
-      border-color: #4facfe;
-    }
-
-    // 每个图标不同颜色
-    &[data-tab="scene"] .anticon {
-      color: #10b981; // 绿色 - 场景配置
-    }
-
-    &[data-tab="camera"] .anticon {
-      color: #f472b6; // 粉红色 - 相机配置
-    }
-
-    &[data-tab="lighting"] .anticon {
-      color: #f59e0b; // 黄色 - 灯光配置
-    }
-
-    &[data-tab="renderer"] .anticon {
-      color: #3b82f6; // 蓝色 - 渲染器配置
-    }
-
-    &[data-tab="postprocess"] .anticon {
-      color: #8b5cf6; // 紫色 - 后期处理
-    }
-
-    &[data-tab="weather"] .anticon {
-      color: #ef4444; // 红色 - 天气配置
-    }
-
-    &[data-tab="history"] .anticon {
-      color: #06b6d4; // 青色 - 历史记录
-    }
-
-    &[data-tab="object"] .anticon {
-      color: #f97316; // 橙色 - 对象
-    }
-
-    &[data-tab="geometry"] .anticon {
-      color: #84cc16; // lime绿色 - 几何
-    }
-
-    &[data-tab="material"] .anticon {
-      color: #ec4899; // 粉色 - 材质
-    }
-
-    &[data-tab="animation"] .anticon {
-      color: #a855f7; // 深紫色 - 动画
-    }
-
-    &[data-tab="script"] .anticon {
-      color: #64748b; // 灰蓝色 - 脚本
-    }
-
-    // 默认图标颜色
-    .anticon {
-      font-size: 16px;
-      color: #b8c5d1;
-      transition: color 0.2s ease;
-    }
-
-    &:hover .anticon {
-      color: #fff;
-    }
-
-    &--active .anticon {
-      color: #4facfe !important;
-    }
-
-    &--disabled {
-      @apply cursor-not-allowed;
-      background: rgba(0, 0, 0, 0.3);
-      border-color: rgba(255, 255, 255, 0.1);
-      
-      .anticon {
-        color: #666;
-      }
-      
-      &:hover {
-        background: rgba(0, 0, 0, 0.3);
-        border-color: rgba(255, 255, 255, 0.1);
-        transform: none;
-        box-shadow: none;
-        
-        .anticon {
-          color: #666;
-        }
-      }
-    }
-
     // Tooltip 组件样式由主题配置管理
     .tooltip-container {
       z-index: 1050;
     }
   }
 
-  // 分割线样式
-  &__divider {
-    @apply mx-2 my-2 h-px bg-gray-600;
-    flex-shrink: 0;
-  }
-
-  // 右侧内容区域
-  &__content {
-    position: absolute;
-    left: 48px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: opacity 0.3s ease-out, transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-    &--hidden {
-      @apply opacity-0 pointer-events-none;
+  // 响应式处理
+  @media (max-width: 1024px) {
+    &--expanded {
+      width: 280px;
     }
   }
 
-  // 内容区域内部布局
-  &__content-inner {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    background: #111827; // bg-gray-900
-    flex: 1;
+  @media (max-width: 768px) {
+    &--expanded {
+      width: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 100;
+      box-shadow: -4px 0 12px rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+// 图标按钮基础交互状态
+.right-sidebar__tab-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.right-sidebar__tab-button:active {
+  transform: translateY(0);
+}
+
+// 激活状态
+.right-sidebar__tab-button--active {
+  background: rgba(79, 172, 254, 0.2);
+  border-color: #4facfe;
+}
+
+// 禁用状态
+.right-sidebar__tab-button--disabled {
+  @apply cursor-not-allowed;
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.right-sidebar__tab-button--disabled:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: none;
+  box-shadow: none;
+}
+
+// 图标颜色配置
+.right-sidebar__tab-button .anticon {
+  font-size: 16px;
+  color: #b8c5d1;
+  transition: color 0.2s ease;
+}
+
+.right-sidebar__tab-button:hover .anticon {
+  color: #fff;
+}
+
+.right-sidebar__tab-button--active .anticon {
+  color: #4facfe !important;
+}
+
+.right-sidebar__tab-button--disabled .anticon {
+  color: #666;
+}
+
+.right-sidebar__tab-button--disabled:hover .anticon {
+  color: #666;
+}
+
+// 每个图标的特定颜色
+.right-sidebar__tab-button[data-tab="scene"] .anticon {
+  color: #10b981; // 绿色 - 场景配置
+}
+
+.right-sidebar__tab-button[data-tab="camera"] .anticon {
+  color: #f472b6; // 粉红色 - 相机配置
+}
+
+.right-sidebar__tab-button[data-tab="lighting"] .anticon {
+  color: #f59e0b; // 黄色 - 灯光配置
+}
+
+.right-sidebar__tab-button[data-tab="renderer"] .anticon {
+  color: #3b82f6; // 蓝色 - 渲染器配置
+}
+
+.right-sidebar__tab-button[data-tab="postprocess"] .anticon {
+  color: #8b5cf6; // 紫色 - 后期处理
+}
+
+.right-sidebar__tab-button[data-tab="weather"] .anticon {
+  color: #ef4444; // 红色 - 天气配置
+}
+
+.right-sidebar__tab-button[data-tab="history"] .anticon {
+  color: #06b6d4; // 青色 - 历史记录
+}
+
+.right-sidebar__tab-button[data-tab="object"] .anticon {
+  color: #f97316; // 橙色 - 对象
+}
+
+.right-sidebar__tab-button[data-tab="geometry"] .anticon {
+  color: #84cc16; // lime绿色 - 几何
+}
+
+.right-sidebar__tab-button[data-tab="material"] .anticon {
+  color: #ec4899; // 粉色 - 材质
+}
+
+.right-sidebar__tab-button[data-tab="animation"] .anticon {
+  color: #a855f7; // 深紫色 - 动画
+}
+
+.right-sidebar__tab-button[data-tab="script"] .anticon {
+  color: #64748b; // 灰蓝色 - 脚本
+}
+
+// 分割线样式
+.right-sidebar__divider {
+  @apply mx-2 my-2 h-px bg-gray-600;
+  flex-shrink: 0;
+}
+
+// 右侧内容区域
+.right-sidebar__content {
+  position: absolute;
+  left: 48px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.3s ease-out, transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.right-sidebar__content--hidden {
+  @apply opacity-0 pointer-events-none;
+}
+
+// 内容区域内部布局
+.right-sidebar__content-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #111827; // bg-gray-900
+  flex: 1;
+}
+
+// 内容头部
+.right-sidebar__content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #374151; // border-gray-700
+  background: #1f2937; // bg-gray-800
+  flex-shrink: 0;
+}
+
+.right-sidebar__content-header h3 {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+
+// 内容主体
+.right-sidebar__content-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+
+  // 自定义滚动条
+  &::-webkit-scrollbar {
+    width: 6px;
   }
 
-  // 内容头部
-  &__content-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-bottom: 1px solid #374151; // border-gray-700
+  &::-webkit-scrollbar-track {
     background: #1f2937; // bg-gray-800
-    flex-shrink: 0;
-
-    h3 {
-      color: white;
-      font-size: 14px;
-      font-weight: 500;
-      margin: 0;
-    }
   }
 
-  // 内容主体
-  &__content-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-
-    // 自定义滚动条
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #1f2937; // bg-gray-800
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #4b5563; // bg-gray-600
-      border-radius: 3px;
-      
-      &:hover {
-        background: #6b7280; // bg-gray-500
-      }
-    }
+  &::-webkit-scrollbar-thumb {
+    background: #4b5563; // bg-gray-600
+    border-radius: 3px;
   }
+}
 
-  // 空状态提示
-  &__empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: #6b7280; // text-gray-500
-    text-align: center;
+// 空状态提示
+.right-sidebar__empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280; // text-gray-500
+  text-align: center;
+}
 
-    .empty-icon {
-      font-size: 36px;
-      margin-bottom: 16px;
-      color: #4b5563; // text-gray-600
-    }
+.right-sidebar__empty-state .empty-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+  color: #4b5563; // text-gray-600
+}
 
-    .empty-text {
-      font-size: 14px;
-      line-height: 1.5;
-    }
-  }
+.right-sidebar__empty-state .empty-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+// 滚动条hover状态
+.right-sidebar__content-body::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; // bg-gray-500
 }
 
 // 相机配置面板样式
@@ -338,14 +358,7 @@
       gap: 8px;
 
       &.full-width {
-        .slider {
-          flex: 1;
-        }
-        
-        .number-input {
-          width: 60px;
-          flex-shrink: 0;
-        }
+        // 样式通过子元素选择器定义
       }
 
       label {
@@ -370,15 +383,8 @@
           box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
         }
 
-        &::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-
-        &[type=number] {
-          -moz-appearance: textfield;
-        }
+        // 数字输入框样式通过独立选择器定义
+      }
       }
 
       .slider {
@@ -388,23 +394,7 @@
         border-radius: 2px;
         outline: none;
 
-        &::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          width: 16px;
-          height: 16px;
-          background: #4facfe;
-          border-radius: 50%;
-          cursor: pointer;
-        }
-
-        &::-moz-range-thumb {
-          width: 16px;
-          height: 16px;
-          background: #4facfe;
-          border-radius: 50%;
-          cursor: pointer;
-          border: none;
-        }
+        // 滑块样式通过独立选择器定义
       }
 
       .number-input {
@@ -445,29 +435,51 @@
         background: rgba(79, 172, 254, 0.2);
         border-color: #4facfe;
         color: #4facfe;
-
-        &:hover {
-          background: rgba(79, 172, 254, 0.3);
-        }
       }
     }
   }
 
-  // 响应式处理
-  @media (max-width: 1024px) {
-    &--expanded {
-      width: 280px;
-    }
-  }
+// full-width输入行的子元素样式
+.camera-config .input-group .input-row.full-width .slider {
+  flex: 1;
+}
 
-  @media (max-width: 768px) {
-    &--expanded {
-      width: 100%;
-      position: absolute;
-      right: 0;
-      top: 0;
-      z-index: 100;
-      box-shadow: -4px 0 12px rgba(0, 0, 0, 0.5);
-    }
-  }
-} 
+.camera-config .input-group .input-row.full-width .number-input {
+  width: 60px;
+  flex-shrink: 0;
+}
+
+// 数字输入框的浏览器默认样式重置
+.camera-config .input-group .input-row input[type="number"]::-webkit-outer-spin-button,
+.camera-config .input-group .input-row input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.camera-config .input-group .input-row input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+// 滑块的浏览器样式定制
+.camera-config .input-group .input-row .slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #4facfe;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.camera-config .input-group .input-row .slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #4facfe;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+// 主要操作按钮的hover状态
+.camera-config .action-buttons .action-btn.primary:hover {
+  background: rgba(79, 172, 254, 0.3);
+}

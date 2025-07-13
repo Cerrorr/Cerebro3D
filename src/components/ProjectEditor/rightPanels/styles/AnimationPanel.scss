@@ -120,56 +120,6 @@
         gap: 8px;
         flex-shrink: 0;
         margin-left: 12px;
-
-        .control-btn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 28px;
-          height: 28px;
-          border-radius: 4px;
-          border: 1px solid transparent;
-          background: transparent;
-          color: #9ca3af; // text-gray-400
-          transition: all 0.2s ease;
-          cursor: pointer;
-
-          .anticon {
-            font-size: 16px;
-          }
-
-          &:hover {
-            background: #374151; // bg-gray-700
-            color: #f3f4f6; // text-gray-100
-            border-color: #4b5563; // border-gray-600
-          }
-
-          &:disabled {
-            color: #6b7280 !important; // text-gray-500
-            background: transparent !important;
-            cursor: not-allowed;
-          }
-
-          &.playing,
-          &.paused {
-            color: #ffffff;
-          }
-          
-          &.playing {
-            background: #4b5563; // bg-gray-600
-            border-color: #6b7280; // border-gray-500
-            
-            &:hover {
-              background: #6b7280; // bg-gray-500
-            }
-          }
-
-          &.paused {
-            background: transparent;
-            border-color: #4b5563; // border-gray-600
-            color: #f3f4f6; // text-gray-100
-          }
-        }
       }
     }
   }
@@ -183,6 +133,8 @@
 
   // 底部控制面板样式
   .animation-controls {
+    display: flex;
+    flex-direction: column;
     padding: 16px;
     background: #1f2937; // bg-gray-800
     border-top: 1px solid #374151; // border-gray-700
@@ -192,7 +144,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
 
       &:last-child {
         margin-bottom: 0;
@@ -209,16 +161,22 @@
       .control-slider {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 8px;
         flex: 1;
-        // Slider 样式由主题配置管理
+        min-width: 0;
+        
+        .ant-slider {
+          flex: 1;
+          min-width: 80px;
+        }
 
         .control-value {
           font-size: 12px;
           color: #f3f4f6; // text-gray-100
           font-weight: 500;
-          min-width: 50px;
+          min-width: 45px;
           text-align: right;
+          flex-shrink: 0;
         }
       }
     }
@@ -272,3 +230,79 @@
     }
   }
 } 
+
+// 滚动条hover状态
+.animation-panel .animation-list::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; // bg-gray-500
+}
+
+// 动画项详情样式
+.animation-panel .animation-item__content .item-info .item-details .item-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #f3f4f6; // text-gray-100
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.animation-panel .animation-item__content .item-info .item-details .item-target {
+  display: block;
+  font-size: 11px;
+  color: #9ca3af; // text-gray-400
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 控制按钮样式
+.animation-panel .animation-item__content .item-controls .control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #9ca3af; // text-gray-400
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.animation-panel .animation-item__content .item-controls .control-btn .anticon {
+  font-size: 16px;
+}
+
+.animation-panel .animation-item__content .item-controls .control-btn:hover {
+  background: #374151; // bg-gray-700
+  color: #f3f4f6; // text-gray-100
+  border-color: #4b5563; // border-gray-600
+}
+
+.animation-panel .animation-item__content .item-controls .control-btn:disabled {
+  color: #6b7280 !important; // text-gray-500
+  background: transparent !important;
+  cursor: not-allowed;
+}
+
+.animation-panel .animation-item__content .item-controls .control-btn.playing,
+.animation-panel .animation-item__content .item-controls .control-btn.paused {
+  color: #ffffff;
+}
+
+.animation-panel .animation-item__content .item-controls .control-btn.playing {
+  background: #4b5563; // bg-gray-600
+  border-color: #6b7280; // border-gray-500
+}
+
+.animation-panel .animation-item__content .item-controls .control-btn.playing:hover {
+  background: #6b7280; // bg-gray-500
+}
+
+.animation-panel .animation-item__content .item-controls .control-btn.paused {
+  background: transparent;
+  border-color: #4b5563; // border-gray-600
+  color: #f3f4f6; // text-gray-100
+}

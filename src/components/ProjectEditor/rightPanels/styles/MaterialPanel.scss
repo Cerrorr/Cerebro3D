@@ -19,16 +19,6 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    
-    .empty-state {
-      text-align: center;
-      
-      .empty-icon {
-        font-size: 48px;
-        margin-bottom: 16px;
-        opacity: 0.5;
-      }
-    }
   }
 
   // 材质头部
@@ -62,10 +52,6 @@
     &::-webkit-scrollbar-thumb {
       background: #4b5563; // bg-gray-600
       border-radius: 3px;
-      
-      &:hover {
-        background: #6b7280; // bg-gray-500
-      }
     }
   }
 
@@ -229,24 +215,6 @@
           display: flex;
           align-items: center;
           gap: 8px;
-
-          .texture-add-btn {
-            color: #9ca3af;
-            border: 1px dashed #4b5563;
-            background: transparent;
-            width: 24px;
-            height: 24px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            &:hover {
-              color: #4facfe;
-              border-color: #4facfe;
-              background: rgba(79, 172, 254, 0.1);
-            }
-          }
         }
       }
     }
@@ -285,3 +253,38 @@
     }
   }
 } 
+
+// 空状态样式
+.material-panel__empty .empty-state {
+  text-align: center;
+}
+
+.material-panel__empty .empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+// 滚动条hover状态
+.material-panel__collapse::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; // bg-gray-500
+}
+
+// 贴图添加按钮样式
+.material-panel .textures-section .texture-item .texture-header .texture-controls .texture-add-btn {
+  color: #9ca3af;
+  border: 1px dashed #4b5563;
+  background: transparent;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.material-panel .textures-section .texture-item .texture-header .texture-controls .texture-add-btn:hover {
+  color: #4facfe;
+  border-color: #4facfe;
+  background: rgba(79, 172, 254, 0.1);
+}

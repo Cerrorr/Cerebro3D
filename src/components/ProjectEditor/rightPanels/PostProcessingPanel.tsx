@@ -125,10 +125,10 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
     {
       key: 'antialiasing',
       label: (
-        <span>
-          <CheckCircleOutlined />
-          抗锯齿
-        </span>
+        <div className="panel-header">
+          <CheckCircleOutlined className="panel-icon" />
+          <span>抗锯齿</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -149,10 +149,10 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
     {
       key: 'outline',
       label: (
-        <span>
-          <BorderOutlined />
-          描边线
-        </span>
+        <div className="panel-header">
+          <BorderOutlined className="panel-icon" />
+          <span>描边线</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -243,10 +243,10 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
     {
       key: 'bloom',
       label: (
-        <span>
-          <GoldOutlined />
-          辉光
-        </span>
+        <div className="panel-header">
+          <GoldOutlined className="panel-icon" />
+          <span>辉光</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -315,10 +315,10 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
     {
       key: 'lut',
       label: (
-        <span>
-          <FilterOutlined />
-          LUT 颜色滤镜
-        </span>
+        <div className="panel-header">
+          <FilterOutlined className="panel-icon" />
+          <span>LUT 颜色滤镜</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -372,10 +372,10 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
     {
       key: 'motionBlur',
       label: (
-        <span>
-          <FastForwardOutlined />
-          运动残影
-        </span>
+        <div className="panel-header">
+          <FastForwardOutlined className="panel-icon" />
+          <span>运动残影</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -412,10 +412,10 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
     {
       key: 'zoom',
       label: (
-        <span>
-          <CameraOutlined />
-          变焦
-        </span>
+        <div className="panel-header">
+          <CameraOutlined className="panel-icon" />
+          <span>变焦</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -475,10 +475,10 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
     {
       key: 'pixel',
       label: (
-        <span>
-          <BorderlessTableOutlined />
-          像素风
-        </span>
+        <div className="panel-header">
+          <BorderlessTableOutlined className="panel-icon" />
+          <span>像素风</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -538,10 +538,10 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
     {
       key: 'halftone',
       label: (
-        <span>
-          <AppstoreOutlined />
-          半色调
-        </span>
+        <div className="panel-header">
+          <AppstoreOutlined className="panel-icon" />
+          <span>半色调</span>
+        </div>
       ),
       children: (
         <div className="config-section">

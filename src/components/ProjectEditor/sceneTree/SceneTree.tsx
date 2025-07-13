@@ -73,9 +73,9 @@ const SceneTree: React.FC<SceneTreeProps> = ({
         title: (
           <div className="scene-tree-node">
             <Tooltip title={node.name} placement="top" mouseEnterDelay={0.5}>
-              <span className="node-label">{node.name}</span>
+              <span className="scene-tree-node__label">{node.name}</span>
             </Tooltip>
-            <div className="node-actions">
+            <div className="scene-tree-node__actions">
               <Tooltip title={node.visible !== false ? "隐藏 (H)" : "显示 (H)"}>
                 <button
                   className="visibility-btn"

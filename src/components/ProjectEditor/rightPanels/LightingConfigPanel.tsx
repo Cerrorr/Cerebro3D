@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { Space, Typography } from 'antd';
+import { Typography } from 'antd';
 import ModernCollapse from '@/components/common/ModernCollapse';
 import type { Color } from 'antd/es/color-picker';
 import { 
@@ -172,8 +172,8 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         {/* 环境光 */}
         <Panel 
           header={
-            <Space>
-              <BulbOutlined />
+            <div className="panel-header">
+              <BulbOutlined className="panel-icon" />
               <span>环境光</span>
               <RSwitch
                 record={record}
@@ -182,7 +182,7 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
                 checked={lightingConfig.ambient.enabled}
                 onChange={(checked) => handleAmbientChange('enabled', checked)}
               />
-            </Space>
+            </div>
           } 
           key="ambient"
         >
@@ -219,8 +219,8 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         {/* 平行光 */}
         <Panel 
           header={
-            <Space>
-              <SunOutlined />
+            <div className="panel-header">
+              <SunOutlined className="panel-icon" />
               <span>平行光</span>
               <RSwitch
                 record={record}
@@ -229,7 +229,7 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
                 checked={lightingConfig.directional.enabled}
                 onChange={(checked) => handleDirectionalChange('enabled', checked)}
               />
-            </Space>
+            </div>
           } 
           key="directional"
         >
@@ -320,8 +320,8 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         {/* 半球光 */}
         <Panel 
           header={
-            <Space>
-              <GlobalOutlined />
+            <div className="panel-header">
+              <GlobalOutlined className="panel-icon" />
               <span>半球光</span>
               <RSwitch 
                 record={record}
@@ -330,7 +330,7 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
                 checked={lightingConfig.hemisphere.enabled}
                 onChange={(checked) => handleHemisphereChange('enabled', checked)}
               />
-            </Space>
+            </div>
           } 
           key="hemisphere"
         >
@@ -422,8 +422,8 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         {/* 点光源 */}
         <Panel 
           header={
-            <Space>
-              <EnvironmentOutlined />
+            <div className="panel-header">
+              <EnvironmentOutlined className="panel-icon" />
               <span>点光源</span>
               <RSwitch 
                 record={record}
@@ -432,7 +432,7 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
                 checked={lightingConfig.point.enabled}
                 onChange={(checked) => handlePointChange('enabled', checked)}
               />
-            </Space>
+            </div>
           } 
           key="point"
         >
@@ -569,8 +569,8 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         {/* 聚光灯 */}
         <Panel 
           header={
-            <Space>
-              <HighlightOutlined />
+            <div className="panel-header">
+              <HighlightOutlined className="panel-icon" />
               <span>聚光灯</span>
               <RSwitch 
                 record={record}
@@ -579,7 +579,7 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
                 checked={lightingConfig.spot.enabled}
                 onChange={(checked) => handleSpotChange('enabled', checked)}
               />
-            </Space>
+            </div>
           } 
           key="spot"
         >

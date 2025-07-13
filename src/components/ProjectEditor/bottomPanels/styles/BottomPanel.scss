@@ -9,490 +9,221 @@
 
 @use '@/styles/variables' as *;
 
+// 主容器
 .bottom-panel {
   @apply flex flex-col;
   background: linear-gradient(180deg, #1e2328 0%, #252a31 100%);
   border-top: 1px solid rgba(79, 172, 254, 0.15);
-  
-  // 确保面板在容器中正确显示
   width: 100%;
   position: relative;
+}
 
-  .bottom-panel-header {
-    @apply flex items-center px-4 py-2;
-    background: rgba(255, 255, 255, 0.03);
-    border-bottom: 1px solid rgba(79, 172, 254, 0.1);
-    height: 40px;
-    flex-shrink: 0;
-    gap: 16px;
+// 头部区域
+.bottom-panel__header {
+  @apply flex items-center px-4 py-2;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(79, 172, 254, 0.1);
+  height: 40px;
+  flex-shrink: 0;
+  gap: 16px;
+}
 
-    .panel-controls {
-      @apply flex items-center flex-shrink-0;
-      // Select 组件样式由主题配置管理
-    }
+// 面板控制区域
+.bottom-panel__controls {
+  @apply flex items-center flex-shrink-0;
+}
 
-    // 中间居中区域样式
-    .panel-center {
-      @apply flex-1 flex justify-center;
+// 中心区域
+.bottom-panel__center {
+  @apply flex-1 flex justify-center;
+}
 
-      .animation-controls-center {
-        @apply flex items-center gap-1;
+// 信息区域
+.bottom-panel__info {
+  @apply flex-shrink-0;
+}
 
-        .control-btn {
-          @apply flex items-center justify-center;
-          width: 32px;
-          height: 32px;
-          border: none !important;
-          background: transparent !important;
-          color: #8892a0 !important;
-          border-radius: 4px;
-          transition: all 0.2s ease;
+// 搜索区域
+.bottom-panel__search {
+  @apply flex-1 flex justify-center;
+}
 
-          &:hover {
-            background: rgba(255, 255, 255, 0.08) !important;
-            color: #d1d9e0 !important;
-          }
+// 内容区域
+.bottom-panel__content {
+  @apply flex-1 overflow-hidden;
+  min-height: 0;
+}
 
-          &.play-btn {
-            background: rgba(79, 172, 254, 0.1) !important;
-            color: #4facfe !important;
-
-            &:hover {
-              background: rgba(79, 172, 254, 0.2) !important;
-              color: #6bb6fe !important;
-            }
-          }
-
-          .anticon {
-            font-size: 16px;
-          }
-        }
-      }
-
-      .console-level-filter {
-        @apply flex items-center;
-        // Space 和 Select 组件样式由主题配置管理
-      }
-    }
-
-    .panel-search {
-      @apply flex-1 flex justify-center;
-      // Input 组件样式由主题配置管理
-    }
-
-    .panel-info {
-      @apply flex-shrink-0;
-
-      .panel-description {
-        @apply text-xs;
-        color: #bbb;
-      }
-
-      .console-clear-btn {
-        @apply px-3 py-1 text-xs rounded;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(79, 172, 254, 0.2);
-        color: #d1d9e0;
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        &:hover {
-          background: rgba(79, 172, 254, 0.1);
-          border-color: rgba(79, 172, 254, 0.4);
-        }
-      }
-
-      // 动画时间显示在头部的样式
-      .animation-time-header {
-        .time-display {
-          @apply font-mono text-sm;
-          color: #d1d9e0;
-          font-weight: 500;
-          letter-spacing: 0.5px;
-          font-size: 12px;
-        }
-      }
-      
-      // Button 组件样式由主题配置管理
-    }
+// 控制按钮基础样式
+.control-btn {
+  @apply flex items-center justify-center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #8892a0;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #d1d9e0;
   }
+}
 
-  .bottom-panel-content {
-    @apply flex-1 overflow-hidden;
-    min-height: 0; // 允许内容区域收缩
-
-    // 动画编辑器样式
-    .animation-content {
-      @apply w-full h-full flex flex-col;
-      background: #1a1d22;
-
-      .animation-main {
-        @apply flex-1 flex items-center justify-center;
-        padding: 40px 20px;
-
-        .empty-state {
-          @apply flex flex-col items-center justify-center text-center;
-          gap: 16px;
-          max-width: 300px;
-
-          .empty-icon {
-            @apply flex items-center justify-center;
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            border: 1px solid rgba(79, 172, 254, 0.1);
-
-            svg {
-              opacity: 0.6;
-            }
-          }
-
-          .empty-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #e1e8f0;
-            margin: 0;
-          }
-
-          .empty-description {
-            font-size: 14px;
-            color: #8892a0;
-            line-height: 1.5;
-            margin: 0;
-          }
-        }
-
-        .timeline-container {
-          @apply w-full h-full;
-          background: rgba(255, 255, 255, 0.02);
-          border-radius: 8px;
-          border: 1px solid rgba(79, 172, 254, 0.1);
-
-          .timeline-placeholder {
-            @apply flex items-center justify-center h-full;
-            color: #8892a0;
-            font-size: 14px;
-          }
-        }
-      }
-    }
-
-    // 资源中心布局
-    .assets-content {
-      @apply w-full h-full flex;
-      padding: 0;
-    }
-
-    // 资源中心特定样式
-    .assets-content {
-      .assets-sidebar {
-        @apply flex-shrink-0;
-        width: 200px;
-        background: rgba(255, 255, 255, 0.02);
-        border-right: 1px solid rgba(79, 172, 254, 0.1);
-
-        .asset-categories {
-          @apply p-4;
-
-          .category-item {
-            @apply flex items-center px-3 py-2 mb-2 rounded cursor-pointer;
-            transition: all 0.2s ease;
-            color: #d1d9e0;
-
-            &:hover {
-              background: rgba(79, 172, 254, 0.08);
-            }
-
-            &.active {
-              background: rgba(79, 172, 254, 0.15);
-              color: #4fc3f7;
-
-              .category-icon {
-                color: #4fc3f7;
-              }
-            }
-
-            .category-icon {
-              @apply mr-3;
-              color: #888;
-              transition: color 0.2s ease;
-            }
-
-            .category-label {
-              @apply text-sm;
-              font-weight: 500;
-            }
-          }
-        }
-      }
-
-      .assets-main {
-        @apply flex-1 flex flex-col;
-
-        .assets-toolbar {
-          @apply flex items-center px-4 py-3;
-          background: rgba(255, 255, 255, 0.02);
-          border-bottom: 1px solid rgba(79, 172, 254, 0.08);
-          flex-shrink: 0;
-
-          .asset-tabs {
-            @apply flex;
-
-            .asset-tab {
-              @apply px-4 py-1 mr-2 text-sm rounded cursor-pointer;
-              background: rgba(255, 255, 255, 0.05);
-              color: #888;
-              transition: all 0.2s ease;
-
-              &:hover {
-                background: rgba(79, 172, 254, 0.1);
-                color: #d1d9e0;
-              }
-
-              &.active {
-                background: rgba(79, 172, 254, 0.2);
-                color: #4fc3f7;
-              }
-            }
-          }
-
-
-        }
-
-        .assets-grid {
-          @apply flex-1 p-4 overflow-auto;
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-          gap: 12px;
-          align-content: start;
-
-          .asset-item {
-            @apply flex flex-col items-center p-2 rounded cursor-pointer;
-            transition: all 0.2s ease;
-
-            &:hover {
-              background: rgba(79, 172, 254, 0.08);
-              transform: translateY(-2px);
-            }
-
-            .asset-preview {
-              @apply mb-2;
-
-              .asset-icon {
-                @apply flex items-center justify-center rounded;
-                width: 60px;
-                height: 60px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-              }
-            }
-
-            .asset-name {
-              @apply text-xs text-center;
-              color: #d1d9e0;
-              line-height: 1.2;
-              max-width: 100%;
-              word-break: break-all;
-            }
-          }
-
-          // 自定义滚动条
-          &::-webkit-scrollbar {
-            width: 6px;
-          }
-
-          &::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-          }
-
-          &::-webkit-scrollbar-thumb {
-            background: rgba(79, 172, 254, 0.3);
-            border-radius: 3px;
-
-            &:hover {
-              background: rgba(79, 172, 254, 0.5);
-            }
-          }
-        }
-      }
-    }
-    
-    .console-content {
-      @apply w-full h-full flex flex-col;
-      padding: 0;
-
-      .console-logs {
-        @apply flex-1 w-full overflow-auto;
-        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        font-size: 13px;
-        line-height: 1.4;
-
-        .log-entry {
-          @apply flex items-center px-4 py-1;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-          min-height: 24px;
-          white-space: nowrap;
-
-          &:hover {
-            background: rgba(255, 255, 255, 0.02);
-          }
-
-          .log-time {
-            @apply flex-shrink-0 mr-3;
-            color: #888;
-            width: 140px;
-            font-size: 12px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-
-          .log-level {
-            @apply flex-shrink-0 mr-3;
-            width: 45px;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 11px;
-          }
-
-          .log-message {
-            @apply flex-1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-
-          // 不同级别的日志样式
-          &.log-info {
-            .log-level {
-              color: #4fc3f7;
-            }
-            .log-message {
-              color: #d1d9e0;
-            }
-          }
-
-          &.log-warn {
-            .log-level {
-              color: #ffb74d;
-            }
-            .log-message {
-              color: #ffcc80;
-            }
-          }
-
-          &.log-error {
-            .log-level {
-              color: #f48fb1;
-            }
-            .log-message {
-              color: #ffcdd2;
-            }
-          }
-        }
-
-        // 自定义滚动条
-        &::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.05);
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: rgba(79, 172, 254, 0.3);
-          border-radius: 3px;
-
-          &:hover {
-            background: rgba(79, 172, 254, 0.5);
-          }
-        }
-      }
-    }
+// 播放按钮特殊样式
+.control-btn--play {
+  background: rgba(79, 172, 254, 0.1);
+  color: #4facfe;
+  
+  &:hover {
+    background: rgba(79, 172, 254, 0.2);
+    color: #6bb6fe;
   }
+}
 
-  // 响应式设计
-  @media (max-width: 768px) {
-    .bottom-panel-header {
-      @apply px-2;
+// 控制按钮图标
+.control-btn__icon {
+  font-size: 16px;
+}
 
-      .panel-controls {
-        // Select 组件样式由主题配置管理
-      }
+// 动画控制中心
+.animation-controls {
+  @apply flex items-center gap-1;
+}
 
-      .panel-info {
-        display: none;
-      }
-    }
+// 面板描述文字
+.panel-description {
+  @apply text-xs;
+  color: #bbb;
+}
 
-    .bottom-panel-content {
-      .content-placeholder {
-        @apply px-4;
-
-        .placeholder-icon {
-          font-size: 36px;
-        }
-
-        .placeholder-text {
-          @apply text-base;
-        }
-
-        .placeholder-description {
-          @apply text-xs;
-        }
-      }
-    }
+// 控制台清除按钮
+.console-clear-btn {
+  @apply px-3 py-1 text-xs rounded;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(79, 172, 254, 0.2);
+  color: #d1d9e0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(79, 172, 254, 0.1);
+    border-color: rgba(79, 172, 254, 0.4);
   }
+}
 
-  // 底部面板特定功能样式
-  .panel-resize-handle {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    cursor: row-resize;
-    background: transparent;
-    z-index: 10;
+// 时间显示
+.time-display {
+  @apply font-mono text-sm;
+  color: #d1d9e0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+}
 
-    &:hover {
-      background: rgba(79, 172, 254, 0.2);
-    }
-  }
+// 动画内容区域
+.animation-content {
+  @apply w-full h-full flex flex-col;
+  background: #1a1d22;
+}
 
-  .timeline-scrubber {
-    position: relative;
-    height: 20px;
+// 动画主区域
+.animation-main {
+  @apply flex-1 flex items-center justify-center;
+  padding: 40px 20px;
+}
+
+// 空状态
+.empty-state {
+  @apply flex flex-col items-center justify-center text-center;
+  gap: 16px;
+  max-width: 300px;
+}
+
+.empty-state__icon {
+  @apply flex items-center justify-center;
+  width: 48px;
+  height: 48px;
+  background: rgba(79, 172, 254, 0.1);
+  border-radius: 50%;
+  color: #4facfe;
+  font-size: 24px;
+}
+
+.empty-state__title {
+  @apply text-base font-medium;
+  color: #d1d9e0;
+  margin: 0;
+}
+
+.empty-state__description {
+  @apply text-sm;
+  color: #8892a0;
+  line-height: 1.5;
+  margin: 0;
+}
+
+// 控制台内容
+.console-content {
+  @apply flex flex-col h-full;
+  background: #0f1419;
+}
+
+.console-content__messages {
+  @apply flex-1 overflow-y-auto;
+  padding: 8px;
+}
+
+.console-content__message {
+  @apply text-sm font-mono leading-relaxed;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.console-content__message--info {
+  color: #d1d9e0;
+  background: rgba(209, 217, 224, 0.05);
+}
+
+.console-content__message--warn {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.console-content__message--error {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+// 级别过滤器
+.console-level-filter {
+  @apply flex items-center;
+}
+
+// 资源面板
+.assets-content {
+  @apply h-full overflow-hidden;
+}
+
+.assets-content__grid {
+  @apply grid gap-4 p-4;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  height: 100%;
+  overflow-y: auto;
+}
+
+.assets-content__item {
+  @apply p-4 rounded border;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(79, 172, 254, 0.1);
+  transition: all 0.2s ease;
+  
+  &:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-    margin: 8px 0;
-
-    .scrubber-track {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-50%);
-    }
-
-    .scrubber-thumb {
-      position: absolute;
-      top: 50%;
-      width: 12px;
-      height: 12px;
-      background: #4facfe;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-      transition: all 0.2s ease;
-
-      &:hover {
-        transform: translate(-50%, -50%) scale(1.2);
-      }
-    }
+    border-color: rgba(79, 172, 254, 0.3);
   }
-} 
+}

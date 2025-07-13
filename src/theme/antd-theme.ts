@@ -189,6 +189,9 @@ export const antdTheme: ThemeConfig = {
       colorBorder: colors.border.primary,
       headerBg: colors.background.tertiary,
       contentBg: colors.background.primary,
+      colorIcon: colors.primary,
+      colorIconHover: colors.primaryHover,
+      marginSM: 8,
     },
     
     // Upload 组件主题

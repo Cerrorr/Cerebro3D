@@ -50,6 +50,33 @@
   .assets-toolbar {
     padding: 8px 12px;
     border-bottom: 1px solid #262626;
+
+    .asset-tabs {
+      display: flex;
+      gap: 4px;
+
+      .asset-tab {
+        cursor: pointer;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #9ca3af;
+        background-color: transparent;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+          color: #d1d5db;
+        }
+
+        &.active {
+          background-color: rgba(79, 172, 254, 0.2);
+          color: #4facfe;
+          border-color: rgba(79, 172, 254, 0.3);
+        }
+      }
+    }
   }
 
   .assets-grid {
@@ -58,6 +85,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 12px;
+    overflow-y: auto;
+    align-content: start;
 
     .asset-item {
       cursor: pointer;
@@ -82,6 +111,9 @@
           width: 48px;
           height: 48px;
           border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
 

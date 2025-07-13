@@ -30,11 +30,35 @@
     flex: 0 0 auto;
   }
 
+  .animation-controls-center {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .control-btn {
     color: #d9d9d9;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
   }
 
   .play-btn {
     font-size: 18px;
+    color: #4facfe;
+
+    &:hover {
+      color: #6bb6fe;
+      background-color: rgba(79, 172, 254, 0.1);
+    }
   }
 } 

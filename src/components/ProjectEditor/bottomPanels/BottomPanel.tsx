@@ -126,7 +126,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({
 
       {/* 面板内容 - 收起状态时隐藏 */}
       {!isCollapsed && (
-        <div className="bottom-panel-content">
+        <div className="bottom-panel__content">
           {renderContent(activeType)}
         </div>
       )}

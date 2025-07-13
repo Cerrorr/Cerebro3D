@@ -58,8 +58,8 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
     {
       key: 'fog',
       label: (
-        <div className="collapse-header">
-          <CloudOutlined />
+        <div className="panel-header">
+          <CloudOutlined className="panel-icon" />
           <span>雾</span>
         </div>
       ),
@@ -139,8 +139,8 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
     {
       key: 'rain',
       label: (
-        <div className="collapse-header">
-          <CloudDownloadOutlined />
+        <div className="panel-header">
+          <CloudDownloadOutlined className="panel-icon" />
           <span>雨</span>
         </div>
       ),
@@ -239,8 +239,8 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
     {
       key: 'snow',
       label: (
-        <div className="collapse-header">
-          <StarOutlined />
+        <div className="panel-header">
+          <StarOutlined className="panel-icon" />
           <span>雪</span>
         </div>
       ),

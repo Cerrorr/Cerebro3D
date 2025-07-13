@@ -89,10 +89,10 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
     {
       key: 'renderer',
       label: (
-        <span>
-          <DesktopOutlined />
-          渲染器
-        </span>
+        <div className="panel-header">
+          <DesktopOutlined className="panel-icon" />
+          <span>渲染器</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -150,10 +150,10 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
     {
       key: 'shadow',
       label: (
-        <span>
-          <CloudOutlined />
-          阴影
-        </span>
+        <div className="panel-header">
+          <CloudOutlined className="panel-icon" />
+          <span>阴影</span>
+        </div>
       ),
       children: (
         <div className="config-section">
@@ -194,10 +194,10 @@ const RendererConfigPanel: React.FC<RendererConfigPanelProps> = ({
     {
       key: 'globalIllumination',
       label: (
-        <span>
-          <BulbOutlined />
-          全局光影
-        </span>
+        <div className="panel-header">
+          <BulbOutlined className="panel-icon" />
+          <span>全局光影</span>
+        </div>
       ),
       children: (
         <div className="config-section">
