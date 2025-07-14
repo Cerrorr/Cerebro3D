@@ -30,65 +30,81 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const dispatch = useAppDispatch();
   
-  // 从Redux获取状态，而不是通过props
+  // 从Redux获取状态
   const { 
-    canvasSettings,
-    currentView,
-    selectedNodeId,
-    cameraPosition 
+    canvasSettings, 
+    currentView, 
+    selectedNodeId, 
+    cameraPosition,
+    cameraConfig 
   } = useAppSelector(state => state.scene);
 
-  /* ---------- 交互回调（通过Redux管理状态） ---------- */
+  // 处理视图切换
+  const handleViewChange = useCallback((view: ViewType) => {
+    dispatch(setCurrentView(view));
+    dispatch(addRecord({
+      actionType: 'modify',
+      targetType: 'camera',
+      targetName: '相机视图',
+      description: `切换到${view}视图`,
+    }));
+  }, [dispatch]);
+
+  // 处理视图重置
   const handleViewReset = useCallback(() => {
-    dispatch(setCurrentView('perspective'));
     dispatch(updateCameraPosition([6, 4, 6]));
     dispatch(addRecord({
-      actionType: 'camera',
-      targetType: 'scene',
-      targetName: 'Canvas',
-      description: '重置视角',
+      actionType: 'modify',
+      targetType: 'camera',
+      targetName: '相机位置',
+      description: '重置相机视图',
     }));
   }, [dispatch]);
 
+  // 处理缩放到全部
   const handleZoomExtents = useCallback(() => {
-    // 缩放到适合视图的逻辑可以委托给3D服务
     dispatch(addRecord({
-      actionType: 'camera',
-      targetType: 'scene',
-      targetName: 'Canvas',
-      description: '缩放到全景',
+      actionType: 'modify',
+      targetType: 'camera',
+      targetName: '相机视图',
+      description: '缩放到适合窗口',
     }));
   }, [dispatch]);
 
+  // 处理网格切换
   const handleToggleGrid = useCallback(() => {
     dispatch(updateCanvasSettings({ 
       gridVisible: !canvasSettings.gridVisible 
     }));
     dispatch(addRecord({
-      actionType: 'scene',
+      actionType: 'modify',
       targetType: 'scene',
-      targetName: 'Grid',
-      description: canvasSettings.gridVisible ? '隐藏网格' : '显示网格',
+      targetName: '网格显示',
+      description: `${canvasSettings.gridVisible ? '隐藏' : '显示'}网格`,
     }));
   }, [dispatch, canvasSettings.gridVisible]);
 
-  const handleViewChange = useCallback((view: ViewType) => {
-    dispatch(setCurrentView(view));
-    dispatch(addRecord({
-      actionType: 'camera',
-      targetType: 'scene',
-      targetName: 'Canvas',
-      description: `切换视图: ${view}`,
-    }));
-  }, [dispatch]);
+  // 计算相机配置
+  const cameraProps = {
+    position: cameraPosition,
+    fov: cameraConfig.type === 'perspective' ? cameraConfig.perspective.fov : 75,
+    near: cameraConfig.type === 'perspective' 
+      ? cameraConfig.perspective.near 
+      : cameraConfig.orthographic.near,
+    far: cameraConfig.type === 'perspective' 
+      ? cameraConfig.perspective.far 
+      : cameraConfig.orthographic.far,
+    aspect: cameraConfig.type === 'perspective' ? cameraConfig.perspective.aspect : 1,
+  };
 
-  // 初始化3D场景服务（如果需要）
-  useEffect(() => {
-    if (canvasRef.current) {
-      // 这里可以初始化Scene3DService，但现在主要通过R3F管理
-      console.log('Canvas3D mounted, container:', canvasRef.current);
-    }
-  }, []);
+  // 如果是正交相机，还需要额外的参数
+  const orthographicProps = cameraConfig.type === 'orthographic' ? {
+    left: cameraConfig.orthographic.left,
+    right: cameraConfig.orthographic.right,
+    top: cameraConfig.orthographic.top,
+    bottom: cameraConfig.orthographic.bottom,
+    zoom: cameraConfig.orthographic.zoom,
+  } : {};
 
   return (
     <div className={`canvas-3d ${className || ''}`} style={{ width, height }}>
@@ -96,9 +112,10 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
       <Canvas 
         ref={canvasRef}
         camera={{ 
-          position: cameraPosition, 
-          fov: 60 
+          ...cameraProps,
+          ...orthographicProps
         }}
+        orthographic={cameraConfig.type === 'orthographic'}
       >
         {/* 3D场景渲染，所有3D逻辑都在ViewportScene和R3F Hook中 */}
         <ViewportScene 
@@ -121,6 +138,9 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
       {/* 渲染信息 */}
       <div className="render-info">
         <span>视图: {currentView}</span>
+        <span>相机: {cameraConfig.type === 'perspective' ? '透视' : '正交'}</span>
+        <span>Near: {cameraProps.near}</span>
+        <span>Far: {cameraProps.far}</span>
         {selectedNodeId && <span>选中: {selectedNodeId}</span>}
       </div>
     </div>

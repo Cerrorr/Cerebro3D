@@ -46,6 +46,9 @@ import type { HistoryActionType, HistoryTargetType } from '@/components/projectE
 import type {
   UseRightSidebarPanelsStateResult
 } from './types/useRightSidebarPanelsState.types';
+import { useAppSelector, useAppDispatch } from '@/store';
+import { updateCameraConfig } from '@/store/slices/sceneSlice';
+import { addRecord } from '@/store/slices/historySlice';
 
 /**
  * 右侧面板状态管理Hook
@@ -54,6 +57,12 @@ import type {
  * @author Cerror
  * @since 2025-07-08 */
 export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult => {
+  const dispatch = useAppDispatch();
+  
+  /* ---------------- Redux状态 ---------------- */
+  // 从Redux获取相机配置
+  const cameraConfig = useAppSelector(state => state.scene.cameraConfig);
+
   /* ---------------- 基础状态 ---------------- */
   // 项目信息
   const [projectInfo, setProjectInfo] = useState<ProjectInfo>({
@@ -69,26 +78,6 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
     background: { type: 'texture', value: 'Texture' },
     environment: { type: 'equirect', map: '/images/environment-preview.jpg', intensity: 1 },
     helpers: { enabled: true, axes: true, cameraHelper: false, lightHelper: false },
-  });
-
-  // 相机配置
-  const [cameraConfig, setCameraConfig] = useState<CameraConfiguration>({
-    type: 'perspective',
-    perspective: { fov: 75, aspect: 16 / 9, near: 0.1, far: 1000 },
-    orthographic: {
-      left: -10,
-      right: 10,
-      top: 10,
-      bottom: -10,
-      near: 0.1,
-      far: 1000,
-      zoom: 1,
-    },
-    transform: {
-      position: { x: 0, y: 5, z: 10 },
-      rotation: { x: 0, y: 0, z: 0 },
-      target: { x: 0, y: 0, z: 0 },
-    },
   });
 
   // 灯光配置
@@ -285,13 +274,19 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
    * 相机配置变更回调
    * @param config - 相机配置的部分更新
    */
-  const handleCameraConfigChange = useCallback(
-    (config: Partial<CameraConfiguration>) => {
-      setCameraConfig(prev => ({ ...prev, ...config }));
-      record('修改相机配置', 'modify', 'camera');
-    },
-    [record]
-  );
+  const handleCameraConfigChange = useCallback((updates: Partial<CameraConfiguration>) => {
+    dispatch(updateCameraConfig(updates));
+    
+    // 记录历史操作
+    dispatch(addRecord({
+      actionType: 'modify',
+      targetType: 'camera',
+      targetName: '相机配置',
+      description: `修改相机参数: ${Object.keys(updates).join(', ')}`,
+      oldValue: cameraConfig,
+      newValue: { ...cameraConfig, ...updates },
+    }));
+  }, [dispatch, cameraConfig]);
 
   /**
    * 灯光配置变更回调

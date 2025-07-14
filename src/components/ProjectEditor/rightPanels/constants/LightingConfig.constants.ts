@@ -12,14 +12,14 @@ import { LightingConfig } from '../types/LightingConfig.types';
 export const DEFAULT_LIGHTING_CONFIG: LightingConfig = {
   ambient: {
     enabled: true,
-    intensity: 0.4,
+    intensity: 0.6,
     color: '#ffffff'
   },
   directional: {
     enabled: true,
-    intensity: 1.0,
+    intensity: 0.5,
     color: '#ffffff',
-    position: { x: 1, y: 1, z: 0.5 },
+    position: { x: 5, y: 10, z: 7 },
     castShadow: true,
     shadowMapSize: 1024
   },

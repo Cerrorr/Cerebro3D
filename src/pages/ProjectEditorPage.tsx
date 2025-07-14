@@ -94,7 +94,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
         } : { x: 0, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
         scale: { x: 1, y: 1, z: 1 },
-        children: extractModelStructure(result.object, result.fileName)
+        children: result.object ? extractModelStructure(result.object, result.fileName) : []
       };
 
       // 添加到Scene节点下
@@ -163,13 +163,13 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       };
 
       const nodeName = findNodeName(sceneNodes, nodeId);
-      
+      const visible = sceneNodes.find(node => node.id === nodeId)?.visible;
       addHistory({
         actionType: 'modify',
         targetType: 'object',
         targetId: nodeId,
         targetName: nodeName,
-        description: `切换对象可见性：${nodeName}`,
+        description: `切换对象可见性：${nodeName}${visible ? '显示' : '隐藏'}`,
         logLevel: 'info',
       });
     },

@@ -8,6 +8,7 @@
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types';
 import type { CanvasSettings } from '@/components/projectEditor/viewport/types';
+import type { CameraConfiguration } from '@/components/projectEditor/rightPanels/types';
 
 /**
  * 场景状态接口
@@ -25,6 +26,8 @@ export interface SceneState {
   cameraPosition: [number, number, number];
   /** 相机目标点 */
   cameraTarget: [number, number, number];
+  /** 相机配置 */
+  cameraConfig: CameraConfiguration;
   /** 场景是否加载中 */
   isLoading: boolean;
 }
@@ -35,8 +38,35 @@ export interface SceneState {
 const DEFAULT_CANVAS_SETTINGS: CanvasSettings = {
   gridVisible: true,
   axisVisible: true,
-  backgroundColor: '#f0f0f0',
+  backgroundColor: '#000000',
   cameraPosition: [6, 4, 6],
+};
+
+/**
+ * 默认相机配置
+ */
+const DEFAULT_CAMERA_CONFIG: CameraConfiguration = {
+  type: 'perspective',
+  perspective: { 
+    fov: 75, 
+    aspect: 16 / 9, 
+    near: 0.1, 
+    far: 10000  // 增加远截面距离，确保远处网格可见
+  },
+  orthographic: {
+    left: -10,
+    right: 10,
+    top: 10,
+    bottom: -10,
+    near: 0.1,
+    far: 10000,  // 同样增加正交相机的远截面
+    zoom: 1,
+  },
+  transform: {
+    position: { x: 6, y: 4, z: 6 },
+    rotation: { x: 0, y: 0, z: 0 },
+    target: { x: 0, y: 0, z: 0 },
+  },
 };
 
 /**
@@ -50,7 +80,34 @@ const initialState: SceneState = {
       type: 'scene',
       visible: true,
       expanded: true,
-      children: [],
+      children: [
+        {
+          id: 'perspective-camera',
+          name: '透视相机',
+          type: 'camera',
+          visible: true,
+          position: { x: 6, y: 4, z: 6 },
+          rotation: { x: 0, y: 0, z: 0 },
+          scale: { x: 1, y: 1, z: 1 },
+        },
+        {
+          id: 'ambient-light',
+          name: '环境光',
+          type: 'light',
+          visible: true,
+          rotation: { x: 0, y: 0, z: 0 },
+          scale: { x: 1, y: 1, z: 1 },
+        },
+        {
+          id: 'directional-light',
+          name: '平行光',
+          type: 'light',
+          visible: true,
+          position: { x: 5, y: 10, z: 7 },
+          rotation: { x: 0, y: 0, z: 0 },
+          scale: { x: 1, y: 1, z: 1 },
+        },
+      ],
     },
   ],
   selectedNodeId: null,
@@ -58,6 +115,7 @@ const initialState: SceneState = {
   currentView: 'perspective',
   cameraPosition: [6, 4, 6],
   cameraTarget: [0, 0, 0],
+  cameraConfig: DEFAULT_CAMERA_CONFIG,
   isLoading: false,
 };
 
@@ -197,11 +255,37 @@ const sceneSlice = createSlice({
     },
 
     /**
+     * 更新相机配置
+     */
+    updateCameraConfig: (state, action: PayloadAction<Partial<CameraConfiguration>>) => {
+      state.cameraConfig = { ...state.cameraConfig, ...action.payload };
+      
+      // 同步更新位置相关状态
+      if (action.payload.transform?.position) {
+        const { x, y, z } = action.payload.transform.position;
+        state.cameraPosition = [x, y, z];
+        state.canvasSettings.cameraPosition = [x, y, z];
+      }
+      
+      if (action.payload.transform?.target) {
+        const { x, y, z } = action.payload.transform.target;
+        state.cameraTarget = [x, y, z];
+      }
+    },
+
+    /**
      * 更新相机位置
      */
     updateCameraPosition: (state, action: PayloadAction<[number, number, number]>) => {
       state.cameraPosition = action.payload;
       state.canvasSettings.cameraPosition = action.payload;
+      
+      // 同步更新相机配置
+      state.cameraConfig.transform.position = {
+        x: action.payload[0],
+        y: action.payload[1],
+        z: action.payload[2],
+      };
     },
 
     /**
@@ -209,6 +293,13 @@ const sceneSlice = createSlice({
      */
     updateCameraTarget: (state, action: PayloadAction<[number, number, number]>) => {
       state.cameraTarget = action.payload;
+      
+      // 同步更新相机配置
+      state.cameraConfig.transform.target = {
+        x: action.payload[0],
+        y: action.payload[1],
+        z: action.payload[2],
+      };
     },
 
     /**
@@ -228,6 +319,7 @@ const sceneSlice = createSlice({
       state.currentView = 'perspective';
       state.cameraPosition = [6, 4, 6];
       state.cameraTarget = [0, 0, 0];
+      state.cameraConfig = DEFAULT_CAMERA_CONFIG;
       state.isLoading = false;
     },
   },
@@ -242,6 +334,7 @@ export const {
   selectNode,
   updateCanvasSettings,
   setCurrentView,
+  updateCameraConfig,
   updateCameraPosition,
   updateCameraTarget,
   setLoading,

@@ -87,7 +87,7 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
   const handleResetCamera = useCallback(() => {
     onCameraConfigChange({
       transform: {
-        position: { x: 0, y: 5, z: 10 },
+        position: { x: 6, y: 4, z: 6 },
         rotation: { x: 0, y: 0, z: 0 },
         target: { x: 0, y: 0, z: 0 }
       }
@@ -206,7 +206,7 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                   record={record}
                   field="far"
                   value={cameraConfig.perspective.far}
-                  onChange={(value) => handlePerspectiveChange('far', Number(value ?? 1000))}
+                  onChange={(value) => handlePerspectiveChange('far', Number(value ?? 10000))}
                   min={1}
                   max={10000}
                   step={10}
@@ -297,7 +297,7 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                     record={record}
                     field="far"
                     value={cameraConfig.orthographic.far}
-                    onChange={(value) => handleOrthographicChange('far', Number(value ?? 1000))}
+                    onChange={(value) => handleOrthographicChange('far', Number(value ?? 10000))}
                     min={1}
                     max={10000}
                     step={10}
