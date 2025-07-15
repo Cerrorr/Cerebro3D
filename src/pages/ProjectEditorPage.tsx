@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import {
@@ -14,7 +14,6 @@ import type {
   RightSidebarTabType,
   BottomPanelType,
 } from '@/components/projectEditor/types';
-import type { FileImportResult } from '@/hooks/three';
 import { ProjectEditorPageProps } from './types';
 import {
   DEFAULT_PANEL_CONFIG,
@@ -22,6 +21,7 @@ import {
   getLeftToolbarActions,
 } from './constants';
 import { extractModelStructure } from '@/hooks/three/utils/threeUtils';
+import { Scene3DService } from '@/hooks/three/services';
 import './styles/ProjectEditorPage.scss';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 import { useAppSelector, useAppDispatch } from '@/store';
@@ -65,6 +65,63 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   // 历史记录 & 日志 Hook
   const { addHistory, logs } = useHistoryRecorder();
 
+  // 3D场景服务实例
+  const [scene3DService] = useState(() => new Scene3DService({
+    container: null, // 将在ViewportScene中设置
+    onError: (error: Error) => {
+      console.error('3D场景错误:', error);
+      addHistory({
+        actionType: 'scene',
+        targetType: 'scene',
+        targetName: projectTitle,
+        description: `3D场景错误: ${error.message}`,
+        logLevel: 'error'
+      });
+    },
+    onSceneUpdate: (object) => {
+      console.log('场景更新:', object);
+    }
+  }));
+
+  // 场景初始化
+  React.useEffect(() => {
+    const initializeScene = async () => {
+      try {
+        const result = await scene3DService.initialize();
+        if (result.success) {
+          addHistory({
+            actionType: 'scene',
+            targetType: 'scene',
+            targetName: projectTitle,
+            description: '3D场景初始化成功',
+            logLevel: 'info'
+          });
+          console.log('3D场景初始化成功');
+        } else {
+          addHistory({
+            actionType: 'scene',
+            targetType: 'scene',
+            targetName: projectTitle,
+            description: `3D场景初始化失败: ${result.message}`,
+            logLevel: 'error'
+          });
+        }
+      } catch (error) {
+        console.error('场景初始化错误:', error);
+        addHistory({
+          actionType: 'scene',
+          targetType: 'scene',
+          targetName: projectTitle,
+          description: `场景初始化错误: ${error instanceof Error ? error.message : '未知错误'}`,
+          logLevel: 'error'
+        });
+      }
+    };
+
+    // 延迟初始化，确保组件已挂载
+    setTimeout(initializeScene, 100);
+  }, [scene3DService, addHistory, projectTitle]);
+
   // 初始化项目标题
   React.useEffect(() => {
     const routeState = location.state as {
@@ -78,15 +135,36 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
     setProjectTitle(finalProjectTitle);
   }, [location.state, initialTitle]);
 
-  const handleImportSuccess = useCallback((results: FileImportResult[]) => {
-    // 通过Redux添加场景节点
+  const handleImportSuccess = useCallback((results: any[]) => {
+    // 处理导入的模型
     results.forEach(result => {
+      // 生成唯一ID
+      const objectId = `imported_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+      
+      // 将Three.js对象存储到3D服务中
+      const addResult = scene3DService.addObject(objectId, result.object, {
+        position: result.position ? {
+          x: result.position.x,
+          y: result.position.y,
+          z: result.position.z
+        } : { x: 0, y: 0, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 },
+        scale: { x: 1, y: 1, z: 1 }
+      });
+
+      if (!addResult.success) {
+        console.error('添加3D对象失败:', addResult.message);
+        return;
+      }
+
+      // Redux只存储元数据，不包含Three.js对象
       const newNode = {
         name: result.fileName,
         type: 'mesh' as const,
         visible: true,
         expanded: true,
-        importedObject: result.object,
+        // 只存储对象ID引用，不存储Three.js对象
+        objectId: objectId,
         position: result.position ? {
           x: result.position.x,
           y: result.position.y,
@@ -272,6 +350,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
                 width="100%"
                 height="100%"
                 className=""
+                scene3DService={scene3DService}
               />
             </div>
 

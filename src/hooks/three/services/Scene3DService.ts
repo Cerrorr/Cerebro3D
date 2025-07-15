@@ -33,15 +33,13 @@ export class Scene3DService {
 
   /**
    * 初始化3D场景
-   * 仅处理3D渲染相关的初始化，不涉及业务逻辑
+   * 在React Three Fiber架构中，容器由Canvas组件管理
    */
   async initialize(): Promise<Scene3DOperationResult> {
     try {
-      // 验证容器
-      if (!this.config.container) {
-        throw new Error('Container element is required');
-      }
-
+      // 在React Three Fiber架构中，不需要验证DOM容器
+      // Canvas组件会自动处理渲染器和场景的创建
+      
       // 设置初始化状态
       this.state.initialized = true;
       this.state.rendererReady = true;
@@ -80,13 +78,13 @@ export class Scene3DService {
       // 应用变换
       if (transform) {
         if (transform.position) {
-          object.position.copy(transform.position);
+          object.position.set(transform.position.x, transform.position.y, transform.position.z);
         }
         if (transform.rotation) {
-          object.rotation.setFromVector3(transform.rotation);
+          object.rotation.set(transform.rotation.x, transform.rotation.y, transform.rotation.z);
         }
         if (transform.scale) {
-          object.scale.copy(transform.scale);
+          object.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
         }
       }
 
@@ -160,13 +158,13 @@ export class Scene3DService {
 
       // 应用变换
       if (transform.position) {
-        object.position.copy(transform.position);
+        object.position.set(transform.position.x, transform.position.y, transform.position.z);
       }
       if (transform.rotation) {
-        object.rotation.setFromVector3(transform.rotation);
+        object.rotation.set(transform.rotation.x, transform.rotation.y, transform.rotation.z);
       }
       if (transform.scale) {
-        object.scale.copy(transform.scale);
+        object.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
       }
 
       return {

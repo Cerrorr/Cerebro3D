@@ -38,6 +38,14 @@ export interface Canvas3DProps {
   className?: string;
   // 对象选择回调函数
   onObjectSelect?: (objectId: string) => void;
+  
+  // 新增属性 - 场景配置
+  backgroundColor?: string;
+  enableGrid?: boolean;
+  enableStats?: boolean;
+  
+  // 3D场景服务实例
+  scene3DService?: import('@/hooks/three/services').Scene3DService;
 }
 
 /**

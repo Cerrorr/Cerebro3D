@@ -1,41 +1,23 @@
 /**
- * Three.js 相关 Hook 和服务的统一导出
- * @author Cerror
- * @since 2025-07-11
+ * @author Claude  
+ * @createTime 2025-07-15
+ * @description Three.js Hook 模块导出文件
  */
 
+// 场景管理
+export { useThreeScene } from './useThreeScene';
+
+// 相机控制
+export { useCameraControl } from './useCameraControl';
+
+// 光照系统
+export { useLightingSystem } from './useLightingSystem';
+
+// 物体控制
+export { useObjectControl } from './useObjectControl';
+
+// 文件导入
 export { useFileImport } from './useFileImport';
-export type {
-  FileImportResult,
-  FileImportError,
-  FileImportOptions,
-  FileImportState,
-  DragDropHandlers,
-  FileImportHookReturn,
-  SupportedFileType
-} from './types';
-export { SUPPORTED_FILE_TYPES, SUPPORTED_MIME_TYPES } from './constants';
 
-// Three.js Hooks
-export { useScene } from './useScene';
-export { useCamera } from './useCamera';
-export { useObjectRender } from './useObjectRender';
-export { useEnvironment } from './useEnvironment';
-
-export type {
-  UseSceneResult,
-  UseCameraResult,
-  UseObjectRenderResult,
-  UseObjectRenderOptions,
-  UseEnvironmentResult,
-  LightConfig
-} from './types';
-
-// 3D Services
-export { Scene3DService } from './services';
-export type {
-  Scene3DConfig,
-  Scene3DState,
-  Transform3D,
-  Scene3DOperationResult
-} from './types';
+// 类型定义
+export * from './types';

@@ -4,5 +4,5 @@
  * @since 2025-07-11
  */
 
-export { Scene3DService } from './Scene3DService';
 export { FileImportService } from './FileImportService';
+export { Scene3DService } from './Scene3DService';

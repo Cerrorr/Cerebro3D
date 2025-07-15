@@ -4,14 +4,14 @@
  * @since 2025-07-11
  */
 
-import type { Object3D, Vector3 } from 'three';
+import type { Object3D } from 'three';
 
 /**
  * 3D场景初始化配置
  */
 export interface Scene3DConfig {
-  // 画布容器元素
-  container: HTMLElement;
+  // 画布容器元素 (可选，在页面级别可能暂时为null)
+  container: HTMLElement | null;
   // 初始相机位置
   cameraPosition?: [number, number, number];
   // 初始相机目标点
@@ -56,11 +56,11 @@ export interface Scene3DState {
  */
 export interface Transform3D {
   // 位置
-  position?: Vector3;
+  position?: { x: number; y: number; z: number };
   // 旋转
-  rotation?: Vector3;
+  rotation?: { x: number; y: number; z: number };
   // 缩放
-  scale?: Vector3;
+  scale?: { x: number; y: number; z: number };
 }
 
 /**

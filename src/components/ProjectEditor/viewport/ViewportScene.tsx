@@ -1,49 +1,183 @@
-import React from 'react';
-import type { ViewportSceneProps } from './types';
-import { useScene, useObjectRender, useEnvironment } from '@/hooks/three';
+/**
+ * @author Claude
+ * @createTime 2025-07-15
+ * @description 3D视口场景组件 - 使用自定义三维Hook实现场景渲染
+ */
+
+import React, { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Grid, Stats } from '@react-three/drei';
+import { useAppSelector } from '@/store';
+import { 
+  useThreeScene, 
+  useLightingSystem, 
+  useCameraControl 
+} from '@/hooks/three';
+import SceneObjects from './SceneObjects';
+import type { ViewportSceneProps } from './types/viewportScene.types';
 
 /**
- * ViewportScene (重构版)
- * R3F 场景节点，使用专门的R3F Hook，完全分离3D渲染逻辑
- * 业务逻辑通过Redux状态管理，3D逻辑通过R3F Hook管理
- * @author Cerror
- * @since 2025-07-11
+ * 3D场景组件
+ * 使用React Three Fiber和自定义Hook管理场景
  */
-const ViewportScene: React.FC<ViewportSceneProps> = ({ settings }) => {
-  // 使用场景管理Hook
-  const { updateBackgroundColor } = useScene();
-  
-  // 使用对象渲染Hook
-  const { renderableNodes } = useObjectRender({
-    enableAnimation: false,
-    highlightSelected: true,
-  });
-  
-  // 使用环境效果Hook
-  const { lightElements, gridElement, axisElement } = useEnvironment();
-
-  // 当背景色设置变化时更新
-  React.useEffect(() => {
-    if (settings.backgroundColor) {
-      updateBackgroundColor(settings.backgroundColor);
-    }
-  }, [settings.backgroundColor, updateBackgroundColor]);
+const ViewportScene: React.FC<ViewportSceneProps> = ({
+  backgroundColor = '#2a2a2a',
+  enableGrid = true,
+  enableStats = false,
+  enableFog = false,
+  fogNear = 10,
+  fogFar = 100,
+  scene3DService
+}) => {
+  // 从Redux获取场景数据
+  const { nodes: sceneNodes } = useAppSelector(state => state.scene);
 
   return (
-    <>
-      {/* 环境灯光 */}
-      {lightElements}
+    <div style={{ width: '100%', height: '100%' }}>
+      <Canvas
+        camera={{ 
+          position: [10, 10, 10], 
+          fov: 50,
+          near: 0.1,
+          far: 1000
+        }}
+        shadows
+        style={{ background: backgroundColor }}
+      >
+        {/* Suspense包装异步加载的组件 */}
+        <Suspense fallback={null}>
+          {/* 场景设置组件 */}
+          <SceneSetup 
+            backgroundColor={backgroundColor}
+            enableFog={enableFog}
+            fogNear={fogNear}
+            fogFar={fogFar}
+          />
 
-      {/* 网格（基于Redux状态控制显示） */}
-      {gridElement}
+          {/* 光照设置组件 */}
+          <SceneLighting />
 
-      {/* 坐标轴（基于Redux状态控制显示） */}
-      {axisElement}
+          {/* 相机控制组件 */}
+          <CameraManager />
 
-      {/* 渲染场景中的3D对象（来自Redux状态） */}
-      {renderableNodes}
-    </>
+          {/* 场景对象渲染 */}
+          <SceneObjects 
+            nodes={sceneNodes} 
+            scene3DService={scene3DService}
+          />
+
+          {/* 网格和辅助工具 */}
+          {enableGrid && (
+            <Grid 
+              args={[20, 20]} 
+              cellColor="#444444" 
+              sectionColor="#666666"
+              position={[0, -0.01, 0]}
+            />
+          )}
+
+          {/* 轨道控制器 */}
+          <OrbitControls 
+            enablePan={true}
+            enableZoom={true}
+            enableRotate={true}
+            minDistance={1}
+            maxDistance={100}
+            maxPolarAngle={Math.PI}
+          />
+
+          {/* 性能统计 */}
+          {enableStats && <Stats />}
+        </Suspense>
+      </Canvas>
+    </div>
   );
 };
 
-export default ViewportScene; 
+/**
+ * 场景设置组件 - 使用useThreeScene Hook
+ */
+const SceneSetup: React.FC<{
+  backgroundColor: string;
+  enableFog: boolean;
+  fogNear: number;
+  fogFar: number;
+}> = ({ backgroundColor, enableFog, fogNear, fogFar }) => {
+  const { setBackgroundColor, enableFog: setFog, disableFog, enableShadows } = useThreeScene({
+    backgroundColor,
+    enableShadows: true,
+    fog: enableFog ? {
+      color: '#cccccc',
+      near: fogNear,
+      far: fogFar
+    } : undefined
+  });
+
+  React.useEffect(() => {
+    setBackgroundColor(backgroundColor);
+    enableShadows();
+    
+    if (enableFog) {
+      setFog('#cccccc', fogNear, fogFar);
+    } else {
+      disableFog();
+    }
+  }, [backgroundColor, enableFog, fogNear, fogFar, setBackgroundColor, setFog, disableFog, enableShadows]);
+
+  return null;
+};
+
+/**
+ * 光照设置组件 - 使用useLightingSystem Hook
+ */
+const SceneLighting: React.FC = () => {
+  const { 
+    addAmbientLight, 
+    addDirectionalLight 
+  } = useLightingSystem({
+    enableAmbientLight: true,
+    ambientIntensity: 0.6,
+    enableDirectionalLight: true,
+    directionalIntensity: 1,
+    enableShadows: true
+  });
+
+  React.useEffect(() => {
+    // 添加环境光
+    addAmbientLight(0.6, '#ffffff');
+    
+    // 添加主光源
+    import('three').then(({ Vector3 }) => {
+      addDirectionalLight(new Vector3(10, 10, 5), 1);
+    });
+  }, [addAmbientLight, addDirectionalLight]);
+
+  return null;
+};
+
+/**
+ * 相机管理组件 - 使用useCameraControl Hook
+ */
+const CameraManager: React.FC = () => {
+  const { resetCamera } = useCameraControl({
+    autoRotate: false,
+    enableZoom: true,
+    enablePan: true
+  });
+
+  // 可以在这里添加相机相关的键盘快捷键或其他控制逻辑
+  React.useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'r' && event.ctrlKey) {
+        resetCamera();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [resetCamera]);
+
+  return null;
+};
+
+export default ViewportScene;
