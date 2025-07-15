@@ -4,9 +4,9 @@
  * @description 3D视口场景组件 - 使用自定义三维Hook实现场景渲染
  */
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Grid, Stats } from '@react-three/drei';
+import { OrbitControls, Grid, Stats, GizmoHelper, GizmoViewport } from '@react-three/drei';
 import { useAppSelector } from '@/store';
 import { 
   useThreeScene, 
@@ -78,6 +78,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
 
           {/* 轨道控制器 */}
           <OrbitControls 
+            makeDefault
             enablePan={true}
             enableZoom={true}
             enableRotate={true}
@@ -85,6 +86,19 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
             maxDistance={100}
             maxPolarAngle={Math.PI}
           />
+
+          {/* Gizmo 坐标轴指示器 - 右上角 */}
+          <GizmoHelper
+            alignment="top-right"
+            margin={[55, 55]}
+            renderPriority={1}
+          >
+            <GizmoViewport 
+              axisColors={['#ff4757', '#2ed573', '#3742fa']} 
+              labelColor="white"
+              hideNegativeAxes={true}
+            />
+          </GizmoHelper>
 
           {/* 性能统计 */}
           {enableStats && <Stats />}
@@ -113,7 +127,7 @@ const SceneSetup: React.FC<{
     } : undefined
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     setBackgroundColor(backgroundColor);
     enableShadows();
     
@@ -142,7 +156,7 @@ const SceneLighting: React.FC = () => {
     enableShadows: true
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     // 添加环境光
     addAmbientLight(0.6, '#ffffff');
     
@@ -166,7 +180,7 @@ const CameraManager: React.FC = () => {
   });
 
   // 可以在这里添加相机相关的键盘快捷键或其他控制逻辑
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === 'r' && event.ctrlKey) {
         resetCamera();

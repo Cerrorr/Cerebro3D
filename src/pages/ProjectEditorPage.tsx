@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { App } from 'antd';
 import {
@@ -52,15 +52,15 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   const { nodes: sceneNodes, selectedNodeId } = useAppSelector(state => state.scene);
   
   // 本地UI状态（不涉及3D或业务逻辑）
-  const [projectTitle, setProjectTitle] = React.useState('');
-  const [bottomPanelHeight, setBottomPanelHeight] = React.useState<number>(
+  const [projectTitle, setProjectTitle] = useState('');
+  const [bottomPanelHeight, setBottomPanelHeight] = useState<number>(
     DEFAULT_PANEL_CONFIG.BOTTOM_PANEL_HEIGHT
   );
   const [rightSidebarTab, setRightSidebarTab] =
-    React.useState<RightSidebarTabType>('scene');
+    useState<RightSidebarTabType>('scene');
   const [bottomPanelType, setBottomPanelType] =
-    React.useState<BottomPanelType>('assets');
-  const [importPanelVisible, setImportPanelVisible] = React.useState(false);
+    useState<BottomPanelType>('assets');
+  const [importPanelVisible, setImportPanelVisible] = useState(false);
 
   // 历史记录 & 日志 Hook
   const { addHistory, logs } = useHistoryRecorder();
@@ -69,7 +69,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   const { message } = App.useApp();
 
   // 场景初始化状态标记
-  const [sceneInitialized, setSceneInitialized] = React.useState(false);
+  const [sceneInitialized, setSceneInitialized] = useState(false);
 
   // 3D场景服务实例
   const [scene3DService] = useState(() => new Scene3DService({
@@ -90,7 +90,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   }));
 
   // 场景初始化
-  React.useEffect(() => {
+  useEffect(() => {
     // 防止重复初始化
     if (sceneInitialized) return;
 
@@ -135,7 +135,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   }, [scene3DService, addHistory]); // 移除projectTitle依赖
 
   // 初始化项目标题
-  React.useEffect(() => {
+  useEffect(() => {
     const routeState = location.state as {
       projectTitle?: string;
       projectType?: string;
