@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { Modal, Tabs, Upload, Button, Input, Progress, message, Space, Typography } from 'antd';
+import { Modal, Tabs, Upload, Button, Input, Progress, Space, Typography, App } from 'antd';
 import { InboxOutlined, LinkOutlined, FileOutlined } from '@ant-design/icons';
 import { useFileImport } from '@/hooks/three';
 import type { UploadProps } from 'antd';
@@ -27,6 +27,9 @@ const ImportPanel: React.FC<ImportPanelProps> = ({
   const [urlValue, setUrlValue] = useState(''); // URL输入框的值
   const [isImporting, setIsImporting] = useState(false); // 是否正在导入
   const fileInputRef = useRef<HTMLInputElement>(null); // 文件输入框引用
+  
+  // 使用 App 组件的 message API
+  const { message } = App.useApp();
 
   // 使用React Three Fiber文件导入Hook
   const { state, uploadFiles, importFromUrl } = useFileImport({
@@ -34,11 +37,11 @@ const ImportPanel: React.FC<ImportPanelProps> = ({
     onProgress: (progress) => {
       console.log(`导入进度: ${progress}%`);
     },
-    onSuccess: (result) => {
-      message.success(`成功导入文件: ${result.fileName}`);
+    onSuccess: () => {
+      // 成功回调已在父组件处理，这里不需要重复显示message
     },
     onError: (error) => {
-      message.error(`导入失败: ${error.message}`);
+      // 错误信息传递给父组件处理
       onImportError?.(error.message);
     }
   });
@@ -52,7 +55,7 @@ const ImportPanel: React.FC<ImportPanelProps> = ({
     try {
       const results = await uploadFiles(files);
       onImportSuccess?.(results);
-      message.success(`成功导入 ${results.length} 个文件`);
+      // 成功消息将在父组件中显示，避免重复
       onClose(); // 导入成功后关闭面板
     } catch (error) {
       console.error('文件导入失败:', error);
@@ -66,6 +69,7 @@ const ImportPanel: React.FC<ImportPanelProps> = ({
    */
   const handleUrlImport = useCallback(async () => {
     if (!urlValue.trim()) {
+      // 输入验证错误可以在组件内部显示
       message.error('请输入有效的URL');
       return;
     }
@@ -74,7 +78,7 @@ const ImportPanel: React.FC<ImportPanelProps> = ({
     try {
       const result = await importFromUrl(urlValue);
       onImportSuccess?.([result]);
-      message.success(`成功从URL导入: ${result.fileName}`);
+      // 成功消息将在父组件中显示，避免重复
       setUrlValue(''); // 清空URL输入框
       onClose(); // 导入成功后关闭面板
     } catch (error) {

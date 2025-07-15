@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { message } from 'antd';
+import { App } from 'antd';
 import {
   Toolbar,
   SceneTree,
@@ -64,6 +64,12 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
 
   // 历史记录 & 日志 Hook
   const { addHistory, logs } = useHistoryRecorder();
+  
+  // 使用 App 组件的 message API
+  const { message } = App.useApp();
+
+  // 场景初始化状态标记
+  const [sceneInitialized, setSceneInitialized] = React.useState(false);
 
   // 3D场景服务实例
   const [scene3DService] = useState(() => new Scene3DService({
@@ -85,23 +91,29 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
 
   // 场景初始化
   React.useEffect(() => {
+    // 防止重复初始化
+    if (sceneInitialized) return;
+
     const initializeScene = async () => {
       try {
         const result = await scene3DService.initialize();
         if (result.success) {
-          addHistory({
-            actionType: 'scene',
-            targetType: 'scene',
-            targetName: projectTitle,
-            description: '3D场景初始化成功',
-            logLevel: 'info'
-          });
-          console.log('3D场景初始化成功');
+          // 只有在真正的初始化成功时才记录日志，避免重复的"已初始化"消息
+          if (result.message === '3D场景初始化成功') {
+            addHistory({
+              actionType: 'scene',
+              targetType: 'scene',
+              targetName: projectTitle || '新建项目',
+              description: '3D场景初始化成功',
+              logLevel: 'info'
+            });
+          }
+          setSceneInitialized(true);
         } else {
           addHistory({
             actionType: 'scene',
             targetType: 'scene',
-            targetName: projectTitle,
+            targetName: projectTitle || '新建项目',
             description: `3D场景初始化失败: ${result.message}`,
             logLevel: 'error'
           });
@@ -111,7 +123,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
         addHistory({
           actionType: 'scene',
           targetType: 'scene',
-          targetName: projectTitle,
+          targetName: projectTitle || '新建项目',
           description: `场景初始化错误: ${error instanceof Error ? error.message : '未知错误'}`,
           logLevel: 'error'
         });
@@ -120,7 +132,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
 
     // 延迟初始化，确保组件已挂载
     setTimeout(initializeScene, 100);
-  }, [scene3DService, addHistory, projectTitle]);
+  }, [scene3DService, addHistory]); // 移除projectTitle依赖
 
   // 初始化项目标题
   React.useEffect(() => {
@@ -182,16 +194,16 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       }));
     });
 
-    // 记录导入历史
-    results.forEach(result => {
+    // 记录导入历史 - 合并为一条记录
+    if (results.length > 0) {
       addHistory({
         actionType: 'import',
-        targetType: 'object',
-        targetName: result.fileName,
-        description: `导入3D模型: ${result.fileName} (${result.fileType.toUpperCase()})`,
+        targetType: 'scene',
+        targetName: projectTitle,
+        description: `成功导入 ${results.length} 个3D模型: ${results.map(r => r.fileName).join(', ')}`,
         logLevel: 'info'
       });
-    });
+    }
 
     message.success(`成功导入 ${results.length} 个3D模型`);
   }, [addHistory, dispatch]);

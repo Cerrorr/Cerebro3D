@@ -37,6 +37,18 @@ export class Scene3DService {
    */
   async initialize(): Promise<Scene3DOperationResult> {
     try {
+      // 如果已经初始化过，直接返回成功状态
+      if (this.state.initialized) {
+        return {
+          success: true,
+          message: '3D场景已初始化',
+          data: {
+            config: this.config,
+            state: this.state,
+          },
+        };
+      }
+
       // 在React Three Fiber架构中，不需要验证DOM容器
       // Canvas组件会自动处理渲染器和场景的创建
       
