@@ -113,8 +113,25 @@ const SceneTree: React.FC<SceneTreeProps> = ({
      * @returns 过滤后的节点或null
      */
     const filterNode = (node: TreeDataNode): TreeDataNode | null => {
-      const nodeTitle = typeof node.title === 'string' ? node.title : '';
-      const matches = nodeTitle.toLowerCase().includes(searchText.toLowerCase());
+      // 从原始场景数据中获取节点名称
+      const findNodeName = (nodeKey: string): string => {
+        const findInNodes = (nodes: SceneNode[]): string => {
+          for (const sceneNode of nodes) {
+            if (sceneNode.id === nodeKey) {
+              return sceneNode.name;
+            }
+            if (sceneNode.children) {
+              const childResult = findInNodes(sceneNode.children);
+              if (childResult) return childResult;
+            }
+          }
+          return '';
+        };
+        return findInNodes(sceneData || []);
+      };
+      
+      const nodeName = findNodeName(node.key as string);
+      const matches = nodeName.toLowerCase().includes(searchText.toLowerCase());
       
       let filteredChildren: TreeDataNode[] = [];
       if (node.children) {
@@ -134,7 +151,7 @@ const SceneTree: React.FC<SceneTreeProps> = ({
     };
     
     return data.map(node => filterNode(node)).filter(Boolean) as TreeDataNode[];
-  }, []);
+  }, [sceneData]);
 
   /**
    * 处理搜索输入变更
@@ -208,7 +225,7 @@ const SceneTree: React.FC<SceneTreeProps> = ({
           treeData={filteredData}
           onExpand={handleExpand}
           onSelect={handleSelect}
-          virtual={false}
+          virtual={true}
         />
       </div>
 

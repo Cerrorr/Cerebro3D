@@ -28,7 +28,8 @@ import { useAppSelector, useAppDispatch } from '@/store';
 import { 
   addSceneNode, 
   selectNode, 
-  toggleNodeVisibility
+  toggleNodeVisibility,
+  clearSceneObjectsOnly
 } from '@/store/slices/sceneSlice';
 
 /**
@@ -322,7 +323,37 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       case 'delete':
         return { ...action, onClick: () => addHistory({ actionType: 'delete', targetType: 'scene', targetName: projectTitle, description: '删除选中对象' }) };
       case 'clear':
-        return { ...action, onClick: () => addHistory({ actionType: 'scene', targetType: 'scene', targetName: projectTitle, description: '清空场景对象' }) };
+        return { 
+          ...action, 
+          onClick: () => {
+            // 清空3D服务中的场景对象（恢复到初始状态）
+            const result = scene3DService.clearSceneObjectsOnly();
+            
+            // 清空Redux中的场景节点（恢复到初始状态）
+            dispatch(clearSceneObjectsOnly());
+            
+            // 记录操作历史
+            if (result.success) {
+              addHistory({ 
+                actionType: 'scene', 
+                targetType: 'scene', 
+                targetName: projectTitle, 
+                description: result.message || '清空场景对象，恢复到初始状态',
+                logLevel: 'info'
+              });
+              message.success(result.message);
+            } else {
+              addHistory({ 
+                actionType: 'scene', 
+                targetType: 'scene', 
+                targetName: projectTitle, 
+                description: `清空失败: ${result.message}`,
+                logLevel: 'error'
+              });
+              message.error(result.message);
+            }
+          }
+        };
       case 'copy':
         return { ...action, onClick: () => addHistory({ actionType: 'create', targetType: 'scene', targetName: projectTitle, description: '复制选中对象' }) };
       default:

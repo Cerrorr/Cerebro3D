@@ -322,6 +322,55 @@ const sceneSlice = createSlice({
       state.cameraConfig = DEFAULT_CAMERA_CONFIG;
       state.isLoading = false;
     },
+
+    /**
+     * 清空场景对象但保留初始相机和光照
+     * 恢复到场景初始状态，只保留透视相机、环境光和平行光
+     */
+    clearSceneObjectsOnly: (state) => {
+      // 直接恢复到初始状态的节点结构，只保留scene根节点和其初始子节点
+      const sceneRootNode = {
+        id: 'scene',
+        name: 'Scene',
+        type: 'scene' as const,
+        visible: true,
+        expanded: true,
+        children: [
+          {
+            id: 'perspective-camera',
+            name: '透视相机',
+            type: 'camera' as const,
+            visible: true,
+            position: { x: 6, y: 4, z: 6 },
+            rotation: { x: 0, y: 0, z: 0 },
+            scale: { x: 1, y: 1, z: 1 },
+          },
+          {
+            id: 'ambient-light',
+            name: '环境光',
+            type: 'light' as const,
+            visible: true,
+            rotation: { x: 0, y: 0, z: 0 },
+            scale: { x: 1, y: 1, z: 1 },
+          },
+          {
+            id: 'directional-light',
+            name: '平行光',
+            type: 'light' as const,
+            visible: true,
+            position: { x: 5, y: 10, z: 7 },
+            rotation: { x: 0, y: 0, z: 0 },
+            scale: { x: 1, y: 1, z: 1 },
+          },
+        ],
+      };
+
+      // 重置为初始节点结构
+      state.nodes = [sceneRootNode];
+      
+      // 清除选择（因为用户对象都被移除了）
+      state.selectedNodeId = null;
+    },
   },
 });
 
@@ -339,6 +388,7 @@ export const {
   updateCameraTarget,
   setLoading,
   resetScene,
+  clearSceneObjectsOnly,
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

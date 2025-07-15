@@ -243,6 +243,40 @@ export class Scene3DService {
   }
 
   /**
+   * 清空场景对象但保留初始相机和光照
+   * 移除所有导入的模型和用户对象，恢复到场景初始状态
+   */
+  clearSceneObjectsOnly(): Scene3DOperationResult {
+    try {
+      let removedCount = 0;
+
+      // 清理所有对象（在React Three Fiber架构下，相机和光照由组件管理，不在sceneObjects中）
+      this.sceneObjects.forEach((object) => {
+        if (object.parent) {
+          object.parent.remove(object);
+        }
+        removedCount++;
+      });
+
+      // 清空所有用户添加的对象
+      this.sceneObjects.clear();
+      this.state.loadedObjectsCount = 0;
+
+      return {
+        success: true,
+        message: `场景对象已清空`,
+        data: { removedCount },
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `清空场景对象失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  /**
    * 销毁服务
    */
   destroy(): void {
