@@ -1,10 +1,10 @@
 /**
- * @author Claude
+ * @author Cerror
  * @createTime 2025-07-15
  * @description 3D视口场景组件 - 使用自定义三维Hook实现场景渲染
  */
 
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import {
   OrbitControls,
@@ -26,7 +26,7 @@ import type { ViewportSceneProps } from './types/viewportScene.types';
  * 3D场景组件
  * 使用React Three Fiber和自定义Hook管理场景
  */
-const ViewportScene: React.FC<ViewportSceneProps> = ({
+const ViewportScene: React.FC<ViewportSceneProps> = ({ children,
   backgroundColor = '#2a2a2a',
   enableGrid = true,
   enableStats = false,
@@ -110,6 +110,9 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
 
           {/* 性能统计 */}
           {enableStats && <Stats />}
+          
+          {/* 子组件渲染 */}
+          {children}
         </Suspense>
       </Canvas>
     </div>

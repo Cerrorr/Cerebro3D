@@ -1,5 +1,5 @@
 /**
- * @author Claude
+ * @author Cerror
  * @createTime 2025-07-15
  * @description 物体控制和变换Hook
  */

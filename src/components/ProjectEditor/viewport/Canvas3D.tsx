@@ -1,5 +1,5 @@
 /**
- * @author Claude
+ * @author Cerror
  * @createTime 2025-07-15
  * @description Canvas3D组件 - 3D视口容器组件
  */

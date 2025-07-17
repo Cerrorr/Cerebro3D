@@ -1,5 +1,5 @@
 /**
- * @author Claude
+ * @author Cerror
  * @createTime 2025-07-15
  * @description 三维场景初始化和管理Hook
  */

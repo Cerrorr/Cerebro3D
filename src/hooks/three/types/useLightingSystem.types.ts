@@ -1,5 +1,5 @@
 /**
- * @author Claude
+ * @author Cerror
  * @createTime 2025-07-15
  * @description useLightingSystem Hook 类型定义
  */
