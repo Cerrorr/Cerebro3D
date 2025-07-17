@@ -52,20 +52,21 @@ export const getLeftToolbarActions = (): ToolbarAction[] => [
     icon: React.createElement(ImportOutlined),
     onClick: () => console.log('导入文件'),
   },
-  {
-    id: 'undo',
-    label: '撤回',
-    icon: React.createElement(UndoOutlined),
-    onClick: () => console.log('撤回操作'),
-    disabled: true,
-  },
-  {
-    id: 'redo',
-    label: '重做',
-    icon: React.createElement(RedoOutlined),
-    onClick: () => console.log('重做操作'),
-    disabled: true,
-  },
+  // 暂时隐藏撤回和重做按钮
+  // {
+  //   id: 'undo',
+  //   label: '撤回',
+  //   icon: React.createElement(UndoOutlined),
+  //   onClick: () => console.log('撤回操作'),
+  //   disabled: true,
+  // },
+  // {
+  //   id: 'redo',
+  //   label: '重做',
+  //   icon: React.createElement(RedoOutlined),
+  //   onClick: () => console.log('重做操作'),
+  //   disabled: true,
+  // },
   {
     id: 'delete',
     label: '删除',

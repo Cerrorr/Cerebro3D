@@ -82,15 +82,6 @@ const initialState: SceneState = {
       expanded: true,
       children: [
         {
-          id: 'perspective-camera',
-          name: '透视相机',
-          type: 'camera',
-          visible: true,
-          position: { x: 6, y: 4, z: 6 },
-          rotation: { x: 0, y: 0, z: 0 },
-          scale: { x: 1, y: 1, z: 1 },
-        },
-        {
           id: 'ambient-light',
           name: '环境光',
           type: 'light',
@@ -218,16 +209,33 @@ const sceneSlice = createSlice({
     toggleNodeVisibility: (state, action: PayloadAction<string>) => {
       const nodeId = action.payload;
       
-      const toggleVisibility = (nodes: SceneNode[]): void => {
+      const toggleVisibility = (nodes: SceneNode[]): boolean => {
         for (const node of nodes) {
           if (node.id === nodeId) {
-            node.visible = !(node.visible !== false);
-            return;
+            const newVisibility = !(node.visible !== false);
+            node.visible = newVisibility;
+            
+            // 递归设置所有子节点的可见性
+            const setChildrenVisibility = (children: SceneNode[], visible: boolean): void => {
+              children.forEach(child => {
+                child.visible = visible;
+                if (child.children) {
+                  setChildrenVisibility(child.children, visible);
+                }
+              });
+            };
+            
+            if (node.children) {
+              setChildrenVisibility(node.children, newVisibility);
+            }
+            
+            return true;
           }
-          if (node.children) {
-            toggleVisibility(node.children);
+          if (node.children && toggleVisibility(node.children)) {
+            return true;
           }
         }
+        return false;
       };
 
       toggleVisibility(state.nodes);
@@ -324,8 +332,8 @@ const sceneSlice = createSlice({
     },
 
     /**
-     * 清空场景对象但保留初始相机和光照
-     * 恢复到场景初始状态，只保留透视相机、环境光和平行光
+     * 清空场景对象但保留初始光照
+     * 恢复到场景初始状态，只保留环境光和平行光
      */
     clearSceneObjectsOnly: (state) => {
       // 直接恢复到初始状态的节点结构，只保留scene根节点和其初始子节点
@@ -336,15 +344,6 @@ const sceneSlice = createSlice({
         visible: true,
         expanded: true,
         children: [
-          {
-            id: 'perspective-camera',
-            name: '透视相机',
-            type: 'camera' as const,
-            visible: true,
-            position: { x: 6, y: 4, z: 6 },
-            rotation: { x: 0, y: 0, z: 0 },
-            scale: { x: 1, y: 1, z: 1 },
-          },
           {
             id: 'ambient-light',
             name: '环境光',

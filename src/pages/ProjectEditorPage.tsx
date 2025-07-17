@@ -236,35 +236,51 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   /**
    * 处理场景树节点可见性切换 - 通过Redux管理
    * @param nodeId 节点ID
+   * @param visible 新的可见性状态
    */
   const handleNodeVisibilityToggle = useCallback(
-    (nodeId: string) => {
+    (nodeId: string, visible: boolean) => {
+      // 更新Redux状态（这会递归更新所有子节点）
       dispatch(toggleNodeVisibility(nodeId));
       
-      // 查找节点名称用于历史记录
-      const findNodeName = (nodes: any[], id: string): string => {
+      // 查找节点信息和其根对象
+      const findNodeAndRoot = (nodes: any[], id: string, rootObjectId?: string): { node: any; rootObjectId?: string } | null => {
         for (const node of nodes) {
-          if (node.id === id) return node.name || id;
+          if (node.id === id) {
+            return { node, rootObjectId: node.objectId || rootObjectId };
+          }
           if (node.children) {
-            const found = findNodeName(node.children, id);
+            const found = findNodeAndRoot(node.children, id, node.objectId || rootObjectId);
             if (found) return found;
           }
         }
-        return id;
+        return null;
       };
 
-      const nodeName = findNodeName(sceneNodes, nodeId);
-      const visible = sceneNodes.find(node => node.id === nodeId)?.visible;
-      addHistory({
-        actionType: 'modify',
-        targetType: 'object',
-        targetId: nodeId,
-        targetName: nodeName,
-        description: `切换对象可见性：${nodeName}${visible ? '显示' : '隐藏'}`,
-        logLevel: 'info',
-      });
+      const result = findNodeAndRoot(sceneNodes, nodeId);
+      if (result) {
+        const { node, rootObjectId } = result;
+        
+        // 如果有根对象ID，同步可见性到Scene3DService
+        if (rootObjectId && scene3DService) {
+          const serviceResult = scene3DService.setObjectVisibility(rootObjectId, visible);
+          if (!serviceResult.success) {
+            console.warn('设置3D对象可见性失败:', serviceResult.message);
+          }
+        }
+
+        // 记录历史
+        addHistory({
+          actionType: 'modify',
+          targetType: 'object',
+          targetId: nodeId,
+          targetName: node.name || nodeId,
+          description: `切换对象可见性：${node.name || nodeId} ${visible ? '显示' : '隐藏'}`,
+          logLevel: 'info',
+        });
+      }
     },
-    [dispatch, addHistory, sceneNodes]
+    [dispatch, addHistory, sceneNodes, scene3DService]
   );
 
   /**

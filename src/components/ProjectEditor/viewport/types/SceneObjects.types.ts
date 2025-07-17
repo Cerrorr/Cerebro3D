@@ -15,4 +15,5 @@ export interface SceneObjectsProps {
 export interface SceneObjectProps {
   node: SceneNode;
   scene3DService?: Scene3DService;
+  allNodes?: SceneNode[];
 }

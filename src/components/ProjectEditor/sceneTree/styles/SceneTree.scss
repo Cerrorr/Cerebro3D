@@ -261,6 +261,33 @@
   &:hover {
     background: rgba(255, 255, 255, 0.2);
     opacity: 1;
+    transform: scale(1.1);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  // 显示状态 - 绿色
+  &.visible {
+    color: #10b981;
+    opacity: 0.8;
+    
+    &:hover {
+      color: #34d399;
+      opacity: 1;
+    }
+  }
+  
+  // 隐藏状态 - 红色
+  &.hidden {
+    color: #ef4444;
+    opacity: 0.8;
+    
+    &:hover {
+      color: #f87171;
+      opacity: 1;
+    }
   }
 }
 

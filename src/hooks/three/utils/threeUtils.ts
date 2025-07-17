@@ -181,6 +181,7 @@ export const checkCompressionSupport = (renderer: WebGLRenderer) => {
 /**
  * 提取3D模型的内部结构树
  * 递归解析Three.js Object3D对象，生成场景树节点
+ * 只显示mesh节点，不显示buffergeometry和材质节点
  * @param object Three.js对象
  * @param baseName 基础名称
  * @returns 场景节点数组
@@ -197,33 +198,7 @@ export const extractModelStructure = (object: Object3D, baseName: string): Scene
       // 根据Three.js对象类型确定节点类型
       if (child.isMesh) {
         nodeType = 'mesh';
-        const meshChildren: SceneNode[] = [];
-        
-        // 添加几何体信息
-        if (child.geometry) {
-          meshChildren.push({
-            id: `${child.uuid}_geometry`,
-            name: `几何体 (${child.geometry.type})`,
-            type: 'geometry',
-            visible: true,
-          });
-        }
-        
-        // 添加材质信息
-        if (child.material) {
-          const materialName = child.material.name || '材质';
-          meshChildren.push({
-            id: `${child.uuid}_material`,
-            name: materialName,
-            type: 'material',
-            visible: true,
-          });
-        }
-        
-        // 如果有几何体或材质，添加到子节点
-        if (meshChildren.length > 0) {
-          children.push(...meshChildren);
-        }
+        // 不再添加几何体和材质子节点，只显示mesh本身
       } else if (child.isGroup) {
         nodeType = 'folder';
         nodeName = child.name || `组_${index}`;

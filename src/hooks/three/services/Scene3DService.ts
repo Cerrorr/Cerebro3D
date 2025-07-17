@@ -208,6 +208,39 @@ export class Scene3DService {
   }
 
   /**
+   * 设置3D对象可见性
+   */
+  setObjectVisibility(id: string, visible: boolean): Scene3DOperationResult {
+    try {
+      const object = this.sceneObjects.get(id);
+      if (!object) {
+        return {
+          success: false,
+          message: `对象 ID "${id}" 不存在`,
+        };
+      }
+
+      // 设置对象及其所有子对象的可见性
+      object.visible = visible;
+      object.traverse((child) => {
+        child.visible = visible;
+      });
+
+      return {
+        success: true,
+        message: `成功设置对象可见性: ${id} -> ${visible ? '显示' : '隐藏'}`,
+        data: { objectId: id, visible },
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `设置对象可见性失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  /**
    * 获取场景状态
    */
   getState(): Scene3DState {
