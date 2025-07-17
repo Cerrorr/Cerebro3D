@@ -19,5 +19,7 @@ export { useObjectControl } from './useObjectControl';
 // 文件导入
 export { useFileImport } from './useFileImport';
 
+// 渲染统计
+export { useRenderStats } from './useRenderStats';
 // 类型定义
 export * from './types';

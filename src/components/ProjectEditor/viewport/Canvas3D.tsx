@@ -7,13 +7,17 @@
 import React, { useState } from 'react';
 import ViewportScene from './ViewportScene';
 import CanvasControls from './CanvasControls';
+import RenderStats from './RenderStats';
 import type {
   Canvas3DProps,
   ViewType,
   CanvasSettings,
 } from './types/Canvas3D.types';
 import './styles/Canvas3D.scss';
-import { Tooltip } from 'antd';
+import { useRenderStats } from '@/hooks/three/useRenderStats';
+
+
+
 
 /**
  * Canvas3D组件
@@ -30,6 +34,8 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
 }) => {
   // 当前视图状态
   const [currentView, setCurrentView] = useState<ViewType>('perspective');
+  // 渲染性能统计
+  const { stats } = useRenderStats(scene3DService);
 
   // 画布设置状态
   const [settings, setSettings] = useState<CanvasSettings>({
@@ -106,19 +112,7 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
         scene3DService={scene3DService}
       />
       {/* 渲染信息 - 右下角 */}
-      <div className="render-info">
-        <Tooltip title="实时渲染性能统计" placement="left">
-          <div className="render-stats">
-            <span>渲染时间: 16ms</span>
-            <span>物体: 3</span>
-            <span>顶点: 8</span>
-            <span>三角面: 12</span>
-            <span>
-              视图: {viewOptions.find(v => v.value === currentView)?.label}
-            </span>
-          </div>
-        </Tooltip>
-      </div>
+      <RenderStats currentView={currentView} viewOptions={viewOptions} stats={stats} />
     </div>
   );
 };
