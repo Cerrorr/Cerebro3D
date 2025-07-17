@@ -8,8 +8,6 @@
 import React from 'react';
 import {
   ImportOutlined,
-  UndoOutlined,
-  RedoOutlined,
   DeleteOutlined,
   ClearOutlined,
   CopyOutlined,

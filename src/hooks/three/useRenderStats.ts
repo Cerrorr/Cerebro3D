@@ -6,7 +6,6 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useThree } from '@react-three/fiber';
 import { Mesh, BufferGeometry, Material, Texture, Object3D } from 'three';
 import { useAppSelector } from '@/store';
 import type { 
@@ -32,14 +31,12 @@ const DEFAULT_OPTIONS: Required<UseRenderStatsOptions> = {
 const calculateModelStats = (object: Object3D, name: string, objectId: string): ModelStatistics => {
   let vertices = 0;
   let triangles = 0;
-  let materials = 0;
-  let textures = 0;
   const materialSet = new Set<Material>();
   const textureSet = new Set<Texture>();
 
   object.traverse((child) => {
     if (child instanceof Mesh) {
-      const geometry = child.geometry;
+      const geometry = (child as any).geometry;
       if (geometry instanceof BufferGeometry) {
         const positionAttribute = geometry.getAttribute('position');
         if (positionAttribute) {
@@ -59,7 +56,6 @@ const calculateModelStats = (object: Object3D, name: string, objectId: string): 
       childMaterials.forEach(material => {
         if (material) {
           materialSet.add(material);
-          
           // 收集纹理
           Object.values(material).forEach(value => {
             if (value instanceof Texture) {

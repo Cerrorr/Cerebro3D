@@ -4,7 +4,7 @@
  * @since 2025-07-17
  */
 
-import type { Object3D } from 'three';
+// （已移除未使用的Object3D导入）
 
 export interface RenderStatsData {
   // 场景物体数量
