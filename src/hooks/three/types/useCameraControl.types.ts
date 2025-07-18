@@ -5,7 +5,21 @@
  */
 
 import type { RootState } from '@react-three/fiber';
-import { Vector3 } from 'three';
+import { Vector3, Box3 } from 'three';
+
+/**
+ * 视图类型枚举
+ */
+export type ViewType = 'perspective' | 'front' | 'back' | 'left' | 'right' | 'top' | 'bottom';
+
+/**
+ * 预设视图配置
+ */
+export interface ViewPreset {
+  position: Vector3;
+  target: Vector3;
+  up?: Vector3;
+}
 
 export interface UseCameraControlOptions {
   autoRotate?: boolean;
@@ -14,6 +28,8 @@ export interface UseCameraControlOptions {
   minDistance?: number;
   maxDistance?: number;
   enablePan?: boolean;
+  // 动画持续时间（毫秒）
+  animationDuration?: number;
 }
 
 export interface UseCameraControlResult {
@@ -26,4 +42,12 @@ export interface UseCameraControlResult {
   resetCamera: () => void;
   animateToPosition: (position: Vector3, duration?: number) => void;
   isAnimating: boolean;
+  
+  // 六视图功能
+  setView: (view: ViewType, distance?: number) => void;
+  getCurrentView: () => ViewType | null;
+  
+  // 缩放功能
+  zoomToFit: (boundingBox?: Box3) => void;
+  zoomToFitAll: () => void;
 }

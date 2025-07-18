@@ -4,7 +4,7 @@
  * @description Canvas3D组件 - 3D视口容器组件
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ViewportScene from './ViewportScene';
 import CanvasControls from './CanvasControls';
 import RenderStats from './RenderStats';
@@ -13,11 +13,10 @@ import type {
   ViewType,
   CanvasSettings,
 } from './types/Canvas3D.types';
+import type { CameraControlRef } from './types/viewportScene.types';
+import type { SelectionState } from './types/canvasControls.types';
 import './styles/Canvas3D.scss';
 import { useRenderStats } from '@/hooks/three/useRenderStats';
-
-
-
 
 /**
  * Canvas3D组件
@@ -34,8 +33,12 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
 }) => {
   // 当前视图状态
   const [currentView, setCurrentView] = useState<ViewType>('perspective');
+  // 选择状态 - 默认设置为全选
+  const [selectionState, setSelectionState] = useState<SelectionState>('all');
   // 渲染性能统计
   const { stats } = useRenderStats(scene3DService);
+  // 相机控制引用
+  const cameraControlRef = useRef<CameraControlRef | null>(null);
 
   // 画布设置状态
   const [settings, setSettings] = useState<CanvasSettings>({
@@ -47,14 +50,17 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
 
   // 视图重置处理
   const handleViewReset = () => {
-    // TODO: 实现视图重置逻辑
-    console.log('重置视图');
+    if (cameraControlRef.current) {
+      cameraControlRef.current.resetCamera();
+      setCurrentView('perspective');
+    }
   };
 
   // 缩放到全部处理
   const handleZoomExtents = () => {
-    // TODO: 实现缩放到全部逻辑
-    console.log('缩放到全部');
+    if (cameraControlRef.current) {
+      cameraControlRef.current.zoomToFitAll();
+    }
   };
 
   // 切换网格显示
@@ -67,9 +73,15 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
 
   // 视图切换处理
   const handleViewChange = (view: ViewType) => {
-    setCurrentView(view);
-    // TODO: 实现视图切换逻辑
-    console.log('切换视图:', view);
+    if (cameraControlRef.current) {
+      cameraControlRef.current.setView(view);
+      setCurrentView(view);
+    }
+  };
+
+  // 选择状态切换处理（仅切换状态，不实现具体功能）
+  const handleSelectionToggle = () => {
+    setSelectionState(prev => prev === 'all' ? 'partial' : 'all');
   };
 
   const viewOptions = [
@@ -81,6 +93,7 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
     { value: 'top', label: '顶视图' },
     { value: 'bottom', label: '底视图' },
   ];
+  
   return (
     <div
       className={`canvas-3d ${className}`}
@@ -95,10 +108,12 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
       <CanvasControls
         currentView={currentView}
         settings={settings}
+        selectionState={selectionState}
         onViewReset={handleViewReset}
         onZoomExtents={handleZoomExtents}
         onToggleGrid={handleToggleGrid}
         onViewChange={handleViewChange}
+        onSelectionToggle={handleSelectionToggle}
       />
 
       {/* 3D场景视口 */}
@@ -110,6 +125,8 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
         fogNear={10}
         fogFar={100}
         scene3DService={scene3DService}
+        cameraControlRef={cameraControlRef}
+        onViewChange={setCurrentView}
       />
       {/* 渲染信息 - 右下角 */}
       <RenderStats currentView={currentView} viewOptions={viewOptions} stats={stats} />

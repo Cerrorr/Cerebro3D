@@ -178,12 +178,42 @@
             &.anticon-eye-invisible {
               color: #666;
             }
+
+            // 选择功能图标颜色
+            &.anticon-check-square {
+              color: #10b981; // 全选 - 绿色
+            }
+
+            &.anticon-minus-square {
+              color: #f59e0b; // 部分选择 - 黄色
+            }
+
+            &.anticon-border {
+              color: #6b7280; // 无选择 - 灰色
+            }
+
+            &.anticon-swap {
+              color: #8b5cf6; // 反选 - 紫色
+            }
           }
+        }
+
+        // 控制按钮组分隔线
+        .control-divider {
+          width: 1px;
+          height: 32px;
+          background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(255, 255, 255, 0.2) 20%,
+            rgba(255, 255, 255, 0.2) 80%,
+            transparent 100%
+          );
+          margin: 0 4px;
         }
       }
     }
   }
-
 
   // 右键菜单样式（未来扩展）
   .context-menu {
@@ -247,39 +277,56 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 8px;
+  padding: 8px 12px;
   font-size: 13px;
-  transition: all 0.2s ease;
+  color: #d1d9e0;
+  min-width: 120px;
 
   .anticon {
-    font-size: 14px;
-    
-    &.anticon-box-plot {
-      color: #8b5cf6; // 透视视图 - 紫色
-    }
-    &.anticon-arrow-up {
-      color: #10b981; // 前视图 - 绿色
-    }
-    &.anticon-arrow-down {
-      color: #ef4444; // 后视图 - 红色
-    }
-    &.anticon-arrow-left {
-      color: #3b82f6; // 左视图 - 蓝色
-    }
-    &.anticon-arrow-right {
-      color: #f59e0b; // 右视图 - 黄色
-    }
-    &.anticon-up {
-      color: #06b6d4; // 顶视图 - 青色
-    }
-    &.anticon-down {
-      color: #ec4899; // 底视图 - 粉色
-    }
+    width: 16px;
+    text-align: center;
   }
 
-  span {
-    color: #d1d9e0;
-    font-weight: 500;
+  &:hover {
+    background: rgba(79, 172, 254, 0.1);
+    color: #4facfe;
+  }
+}
+
+// 选择菜单项样式
+.selection-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #d1d9e0;
+  min-width: 140px;
+  position: relative;
+
+  .anticon {
+    width: 16px;
+    text-align: center;
+  }
+
+  .shortcut {
+    margin-left: auto;
+    font-size: 11px;
+    color: #6b7280;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &:hover {
+    background: rgba(79, 172, 254, 0.1);
+    color: #4facfe;
+
+    .shortcut {
+      color: #4facfe;
+      border-color: rgba(79, 172, 254, 0.3);
+    }
   }
 }
 

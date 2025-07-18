@@ -4,7 +4,7 @@
  * @description 3D视口场景组件 - 使用自定义三维Hook实现场景渲染
  */
 
-import React, { Suspense, useEffect, useRef } from 'react';
+import React, { Suspense, useEffect, useRef, useImperativeHandle, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import {
   OrbitControls,
@@ -20,7 +20,8 @@ import {
   useCameraControl,
 } from '@/hooks/three';
 import SceneObjects from './SceneObjects';
-import type { ViewportSceneProps } from './types/viewportScene.types';
+import type { ViewportSceneProps, CameraControlRef } from './types/viewportScene.types';
+import type { ViewType } from './types/Canvas3D.types';
 
 /**
  * 3D场景组件
@@ -34,6 +35,8 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
   fogNear = 10,
   fogFar = 100,
   scene3DService,
+  cameraControlRef,
+  onViewChange,
 }) => {
   // 从Redux获取场景数据
   const { nodes: sceneNodes } = useAppSelector(state => state.scene);
@@ -66,13 +69,19 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
           <SceneLighting sceneNodes={sceneNodes} />
 
           {/* 相机控制组件 */}
-          <CameraManager />
+          <CameraManager 
+            cameraControlRef={cameraControlRef}
+            onViewChange={onViewChange}
+          />
 
           {/* 窗口大小变化处理组件 */}
           <ResizeHandler />
 
           {/* 场景对象渲染 */}
-          <SceneObjects nodes={sceneNodes} scene3DService={scene3DService} />
+          <SceneObjects 
+            nodes={sceneNodes} 
+            scene3DService={scene3DService}
+          />
 
           {/* 网格和辅助工具 */}
           {enableGrid && (
@@ -93,6 +102,9 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
             minDistance={1}
             maxDistance={100}
             maxPolarAngle={Math.PI}
+            // 防止OrbitControls阻挡对象选择事件
+            enableDamping={true}
+            dampingFactor={0.1}
           />
 
           {/* Gizmo 坐标轴指示器 - 右上角 */}
@@ -262,24 +274,90 @@ const SceneLighting: React.FC<{ sceneNodes: any[] }> = ({ sceneNodes }) => {
 /**
  * 相机管理组件 - 使用useCameraControl Hook
  */
-const CameraManager: React.FC = () => {
-  const { resetCamera } = useCameraControl({
+const CameraManager: React.FC<{
+  cameraControlRef?: React.MutableRefObject<CameraControlRef | null>;
+  onViewChange?: React.Dispatch<React.SetStateAction<ViewType>>;
+}> = ({ cameraControlRef, onViewChange }) => {
+  const { 
+    resetCamera,
+    setView,
+    zoomToFitAll,
+    getCurrentView
+  } = useCameraControl({
     autoRotate: false,
     enableZoom: true,
     enablePan: true,
+    animationDuration: 800,
   });
+
+  // 暴露相机控制方法给父组件
+  useImperativeHandle(cameraControlRef, () => ({
+    resetCamera,
+    setView,
+    zoomToFitAll,
+  }), [resetCamera, setView, zoomToFitAll]);
+
+  // 监听视图变化，通知父组件
+  useEffect(() => {
+    const currentView = getCurrentView();
+    if (onViewChange && currentView) {
+      onViewChange(currentView);
+    }
+  }, [getCurrentView, onViewChange]);
 
   // 相机相关的键盘快捷键
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === 'r' && event.ctrlKey) {
-        resetCamera();
+      // 阻止在输入框中触发快捷键
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      switch (event.key.toLowerCase()) {
+        case 'h':
+        case 'home':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            resetCamera();
+          }
+          break;
+        case 'f':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            zoomToFitAll();
+          }
+          break;
+        case '1':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            setView('front');
+          }
+          break;
+        case '3':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            setView('right');
+          }
+          break;
+        case '7':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            setView('top');
+          }
+          break;
+        case '0':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            setView('perspective');
+          }
+          break;
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [resetCamera]);
+  }, [resetCamera, zoomToFitAll, setView]);
 
   return null;
 };

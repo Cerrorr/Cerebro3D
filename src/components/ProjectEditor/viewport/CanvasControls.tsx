@@ -12,23 +12,27 @@ import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
   UpOutlined,
-  DownOutlined
+  DownOutlined,
+  CheckSquareOutlined,
+  MinusSquareOutlined,
 } from '@ant-design/icons';
 import type { CanvasControlsProps, ViewType } from './types';
 
 /**
  * CanvasControls
- * 负责渲染左上角的视图/网格控制按钮
+ * 负责渲染左上角的视图/网格/选择控制按钮
  * @author Cerror
  * @since 2025-07-08
  */
 const CanvasControls: React.FC<CanvasControlsProps> = ({
   currentView,
   settings,
+  selectionState,
   onViewReset,
   onZoomExtents,
   onToggleGrid,
-  onViewChange
+  onViewChange,
+  onSelectionToggle
 }) => {
   // 六视图选项
   const viewOptions = [
@@ -55,10 +59,21 @@ const CanvasControls: React.FC<CanvasControlsProps> = ({
     onClick: () => onViewChange(option.value as ViewType)
   }));
 
+  // 获取选择状态图标
+  const getSelectionIcon = () => {
+    return selectionState === 'all' ? <CheckSquareOutlined /> : <MinusSquareOutlined />;
+  };
+
+  // 获取选择状态提示
+  const getSelectionTooltip = () => {
+    return selectionState === 'all' ? '切换为部分选择' : '切换为全选';
+  };
+
   return (
     <div className="canvas-controls">
       <div className="view-controls">
         <div className="control-buttons">
+          {/* 视图切换下拉菜单 */}
           <Dropdown menu={{ items: menuItems }} trigger={['click']} placement="bottomLeft">
             <Tooltip title={`当前: ${getCurrentViewOption().label}，点击选择视图`} placement="bottom">
               <button className="control-btn view-cycle-btn">
@@ -67,18 +82,31 @@ const CanvasControls: React.FC<CanvasControlsProps> = ({
             </Tooltip>
           </Dropdown>
 
+          {/* 重置视角按钮 */}
           <Tooltip title="重置视角 (Home)" placement="bottom">
             <button className="control-btn" onClick={onViewReset}>
               <HomeOutlined />
             </button>
           </Tooltip>
 
+          {/* 缩放到全部按钮 */}
           <Tooltip title="缩放到全部 (F)" placement="bottom">
             <button className="control-btn" onClick={onZoomExtents}>
               <ExpandOutlined />
             </button>
           </Tooltip>
 
+          {/* 选择功能按钮组 */}
+          <Tooltip title={getSelectionTooltip()} placement="bottom">
+            <button
+              className={`control-btn ${selectionState === 'all' ? 'active' : ''}`}
+              onClick={onSelectionToggle}
+            >
+              {getSelectionIcon()}
+            </button>
+          </Tooltip>
+
+          {/* 网格显示切换按钮 */}
           <Tooltip title={settings.gridVisible ? '隐藏网格 (G)' : '显示网格 (G)'} placement="bottom">
             <button
               className={`control-btn ${settings.gridVisible ? 'active' : ''}`}

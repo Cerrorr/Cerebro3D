@@ -23,7 +23,8 @@ export type {
 } from './ResizablePanel.types';
 
 export type {
-  ViewportSceneProps
+  ViewportSceneProps,
+  CameraControlRef
 } from './viewportScene.types';
 
 export type {
