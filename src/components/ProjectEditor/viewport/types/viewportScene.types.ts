@@ -1,6 +1,8 @@
 import type { CanvasSettings, ViewType } from './Canvas3D.types';
 import type { SceneNode } from '../../sceneTree/types';
 import type { Scene3DService } from '@/hooks/three/services';
+import type { PickedObject } from '@/hooks/three/types';
+import type { SelectionState } from './canvasControls.types';
 import type { MutableRefObject, Dispatch, SetStateAction } from 'react';
 
 /**
@@ -39,4 +41,13 @@ export interface ViewportSceneProps {
   
   // 视图变化回调
   onViewChange?: Dispatch<SetStateAction<ViewType>>;
+  
+  // 点击拾取回调
+  onObjectPicked?: (pickedObject: PickedObject) => void;
+  
+  // 点击空白区域回调
+  onEmptySpacePicked?: () => void;
+  
+  // 选择状态（控制拾取粒度）
+  selectionState?: SelectionState;
 }

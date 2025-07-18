@@ -6,6 +6,7 @@
 
 import { Fragment, useEffect, useState } from 'react';
 import { Object3D } from 'three';
+import { useClickPicker } from '@/hooks/three';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types';
 import type {
   SceneObjectsProps,
@@ -15,27 +16,53 @@ import type {
 /**
  * 场景对象集合组件
  */
-const SceneObjects = ({ nodes, scene3DService }: SceneObjectsProps) => {
+const SceneObjects = ({ nodes, scene3DService, onObjectPicked, onEmptySpacePicked, selectionState = 'all' }: SceneObjectsProps) => {
+  // 根据选择状态确定拾取粒度
+  const pickingGranularity = selectionState === 'all' ? 'object' : 'mesh';
+  
+  // 使用点击拾取Hook
+  const { createObjectClickHandler } = useClickPicker(nodes, {
+    enabled: true,
+    granularity: pickingGranularity,
+    debug: import.meta.env.DEV,
+    onObjectPicked,
+    onEmptySpacePicked,
+  });
+
   const renderNode = (node: SceneNode) => {
     return (
       <Fragment key={node.id}>
         <SceneObject
           node={node}
           scene3DService={scene3DService}
-          allNodes={nodes} // 传递所有节点，用于查找父子关系
+          allNodes={nodes}
+          onObjectPicked={onObjectPicked}
+          createObjectClickHandler={createObjectClickHandler}
         />
         {node.children?.map(renderNode)}
       </Fragment>
     );
   };
 
-  return <group name="scene-objects">{nodes.map(renderNode)}</group>;
+  return (
+    <group 
+      name="scene-objects"
+      onClick={(event) => {
+        // 如果点击的是group本身（空白区域），清空选择
+        if (event.target === event.currentTarget) {
+          onEmptySpacePicked?.();
+        }
+      }}
+    >
+      {nodes.map(renderNode)}
+    </group>
+  );
 };
 
 /**
  * 单个场景对象组件
  */
-const SceneObject = ({ node, scene3DService, allNodes }: SceneObjectProps) => {
+const SceneObject = ({ node, scene3DService, allNodes, onObjectPicked, createObjectClickHandler }: SceneObjectProps) => {
   const [importedObject, setImportedObject] = useState<Object3D | null>(null);
 
   // 检查节点及其所有父节点的可见性
@@ -168,8 +195,15 @@ const SceneObject = ({ node, scene3DService, allNodes }: SceneObjectProps) => {
   }
 
   // 如果有导入的对象，直接使用原始对象
-  if (importedObject) {
-    return <primitive object={importedObject} />;
+  if (importedObject && node.objectId && createObjectClickHandler) {
+    return (
+      <primitive 
+        object={importedObject} 
+        onClick={createObjectClickHandler(node.objectId)}
+        onPointerMissed={undefined}
+        userData={{ objectId: node.objectId, nodeName: node.name }}
+      />
+    );
   }
 
   // 只渲染导入的模型，不显示默认几何体

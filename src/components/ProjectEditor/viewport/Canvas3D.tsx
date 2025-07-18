@@ -15,6 +15,7 @@ import type {
 } from './types/Canvas3D.types';
 import type { CameraControlRef } from './types/viewportScene.types';
 import type { SelectionState } from './types/canvasControls.types';
+import type { PickedObject } from '@/hooks/three/types';
 import './styles/Canvas3D.scss';
 import { useRenderStats } from '@/hooks/three/useRenderStats';
 
@@ -35,6 +36,8 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
   const [currentView, setCurrentView] = useState<ViewType>('perspective');
   // 选择状态 - 默认设置为全选
   const [selectionState, setSelectionState] = useState<SelectionState>('all');
+  // 当前拾取的对象
+  const [pickedObject, setPickedObject] = useState<PickedObject | null>(null);
   // 渲染性能统计
   const { stats } = useRenderStats(scene3DService);
   // 相机控制引用
@@ -84,6 +87,43 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
     setSelectionState(prev => prev === 'all' ? 'partial' : 'all');
   };
 
+  // 处理对象拾取
+  const handleObjectPicked = (picked: PickedObject) => {
+    setPickedObject(picked);
+    if (import.meta.env.DEV) {
+      const mode = selectionState === 'all' ? '🔲 全选模式（整个模型）' : '🔳 部分选择模式（具体Mesh）';
+      
+      console.log('🎯 模型拾取详情:', {
+        '当前模式': mode,
+        '拾取粒度': picked.intersection?.granularity,
+        '拾取描述': picked.intersection?.objectDescription,
+        '模型ID': picked.id,
+        '模型名称': picked.node.name,
+        '被点击的Mesh': {
+          名称: picked.hitMesh?.name || 'unnamed',
+          类型: picked.hitMesh?.type,
+          材质: picked.intersection?.materialName
+        },
+        '点击位置': picked.hitPoint,
+        '3D交点': picked.intersection?.point,
+        '三角面索引': picked.intersection?.faceIndex,
+        '距离': picked.intersection?.distance?.toFixed(3),
+        '时间戳': new Date(picked.pickedAt).toLocaleTimeString()
+      });
+      
+      // 简化控制台输出
+      console.log(`📍 ${mode} 拾取: ${picked.intersection?.objectDescription || picked.node.name || picked.id}`);
+    }
+  };
+
+  // 处理空白区域点击
+  const handleEmptySpacePicked = () => {
+    setPickedObject(null);
+    if (import.meta.env.DEV) {
+      console.log('🔘 清空拾取');
+    }
+  };
+
   const viewOptions = [
     { value: 'perspective', label: '透视视图' },
     { value: 'front', label: '前视图' },
@@ -127,6 +167,9 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
         scene3DService={scene3DService}
         cameraControlRef={cameraControlRef}
         onViewChange={setCurrentView}
+        onObjectPicked={handleObjectPicked}
+        onEmptySpacePicked={handleEmptySpacePicked}
+        selectionState={selectionState}
       />
       {/* 渲染信息 - 右下角 */}
       <RenderStats currentView={currentView} viewOptions={viewOptions} stats={stats} />

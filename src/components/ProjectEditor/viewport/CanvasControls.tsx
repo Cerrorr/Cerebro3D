@@ -66,7 +66,9 @@ const CanvasControls: React.FC<CanvasControlsProps> = ({
 
   // 获取选择状态提示
   const getSelectionTooltip = () => {
-    return selectionState === 'all' ? '切换为部分选择' : '切换为全选';
+    return selectionState === 'all' 
+      ? '当前: 全选模式 (点击选中整个模型)，点击切换为部分选择模式' 
+      : '当前: 部分选择模式 (点击选中具体Mesh)，点击切换为全选模式';
   };
 
   return (

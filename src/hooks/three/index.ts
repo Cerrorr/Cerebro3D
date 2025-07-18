@@ -21,5 +21,9 @@ export { useFileImport } from './useFileImport';
 
 // 渲染统计
 export { useRenderStats } from './useRenderStats';
+
+// 点击拾取
+export { useClickPicker } from './useClickPicker';
+
 // 类型定义
 export * from './types';

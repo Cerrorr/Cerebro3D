@@ -4,7 +4,13 @@
  * @description 3D视口场景组件 - 使用自定义三维Hook实现场景渲染
  */
 
-import React, { Suspense, useEffect, useRef, useImperativeHandle, useState } from 'react';
+import React, {
+  Suspense,
+  useEffect,
+  useRef,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import {
   OrbitControls,
@@ -20,114 +26,11 @@ import {
   useCameraControl,
 } from '@/hooks/three';
 import SceneObjects from './SceneObjects';
-import type { ViewportSceneProps, CameraControlRef } from './types/viewportScene.types';
+import type {
+  ViewportSceneProps,
+  CameraControlRef,
+} from './types/viewportScene.types';
 import type { ViewType } from './types/Canvas3D.types';
-
-/**
- * 3D场景组件
- * 使用React Three Fiber和自定义Hook管理场景
- */
-const ViewportScene: React.FC<ViewportSceneProps> = ({
-  backgroundColor = '#2a2a2a',
-  enableGrid = true,
-  enableStats = false,
-  enableFog = false,
-  fogNear = 10,
-  fogFar = 100,
-  scene3DService,
-  cameraControlRef,
-  onViewChange,
-}) => {
-  // 从Redux获取场景数据
-  const { nodes: sceneNodes } = useAppSelector(state => state.scene);
-
-  return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <Canvas
-        camera={{
-          position: [10, 10, 10],
-          fov: 50,
-          near: 0.1,
-          far: 1000,
-        }}
-        shadows
-        style={{ background: backgroundColor }}
-        resize={{ scroll: false, debounce: { scroll: 50, resize: 50 } }}
-        dpr={[1, 2]}
-      >
-        {/* Suspense包装异步加载的组件 */}
-        <Suspense fallback={null}>
-          {/* 场景设置组件 */}
-          <SceneSetup
-            backgroundColor={backgroundColor}
-            enableFog={enableFog}
-            fogNear={fogNear}
-            fogFar={fogFar}
-          />
-
-          {/* 光照设置组件 */}
-          <SceneLighting sceneNodes={sceneNodes} />
-
-          {/* 相机控制组件 */}
-          <CameraManager 
-            cameraControlRef={cameraControlRef}
-            onViewChange={onViewChange}
-          />
-
-          {/* 窗口大小变化处理组件 */}
-          <ResizeHandler />
-
-          {/* 场景对象渲染 */}
-          <SceneObjects 
-            nodes={sceneNodes} 
-            scene3DService={scene3DService}
-          />
-
-          {/* 网格和辅助工具 */}
-          {enableGrid && (
-            <Grid
-              args={[50, 50]}
-              cellColor="#444444"
-              sectionColor="#666666"
-              position={[0, -0.01, 0]}
-            />
-          )}
-
-          {/* 轨道控制器 */}
-          <OrbitControls
-            makeDefault
-            enablePan={true}
-            enableZoom={true}
-            enableRotate={true}
-            minDistance={1}
-            maxDistance={100}
-            maxPolarAngle={Math.PI}
-            // 防止OrbitControls阻挡对象选择事件
-            enableDamping={true}
-            dampingFactor={0.1}
-          />
-
-          {/* Gizmo 坐标轴指示器 - 右上角 */}
-          <GizmoHelper
-            alignment="top-right"
-            margin={[55, 55]}
-            renderPriority={1}
-          >
-            <GizmoViewport
-              axisColors={['#ff4757', '#2ed573', '#3742fa']}
-              labelColor="white"
-              hideNegativeAxes={true}
-            />
-          </GizmoHelper>
-
-          {/* 性能统计 */}
-          {enableStats && <Stats />}
-        </Suspense>
-      </Canvas>
-    </div>
-  );
-};
-
 /**
  * 场景设置组件 - 使用useThreeScene Hook
  */
@@ -278,24 +181,24 @@ const CameraManager: React.FC<{
   cameraControlRef?: React.MutableRefObject<CameraControlRef | null>;
   onViewChange?: React.Dispatch<React.SetStateAction<ViewType>>;
 }> = ({ cameraControlRef, onViewChange }) => {
-  const { 
-    resetCamera,
-    setView,
-    zoomToFitAll,
-    getCurrentView
-  } = useCameraControl({
-    autoRotate: false,
-    enableZoom: true,
-    enablePan: true,
-    animationDuration: 800,
-  });
+  const { resetCamera, setView, zoomToFitAll, getCurrentView } =
+    useCameraControl({
+      autoRotate: false,
+      enableZoom: true,
+      enablePan: true,
+      animationDuration: 800,
+    });
 
   // 暴露相机控制方法给父组件
-  useImperativeHandle(cameraControlRef, () => ({
-    resetCamera,
-    setView,
-    zoomToFitAll,
-  }), [resetCamera, setView, zoomToFitAll]);
+  useImperativeHandle(
+    cameraControlRef,
+    () => ({
+      resetCamera,
+      setView,
+      zoomToFitAll,
+    }),
+    [resetCamera, setView, zoomToFitAll]
+  );
 
   // 监听视图变化，通知父组件
   useEffect(() => {
@@ -539,6 +442,116 @@ const ResizeHandler: React.FC = () => {
   }, [camera, gl]);
 
   return null;
+};
+/**
+ * 3D场景组件
+ * 使用React Three Fiber和自定义Hook管理场景
+ */
+const ViewportScene: React.FC<ViewportSceneProps> = ({
+  backgroundColor = '#2a2a2a',
+  enableGrid = true,
+  enableStats = false,
+  enableFog = false,
+  fogNear = 10,
+  fogFar = 100,
+  scene3DService,
+  cameraControlRef,
+  onViewChange,
+  onObjectPicked,
+  onEmptySpacePicked,
+  selectionState = 'all',
+}) => {
+  // 从Redux获取场景数据
+  const { nodes: sceneNodes } = useAppSelector(state => state.scene);
+
+  return (
+    <div style={{ width: '100%', height: '100%' }}>
+      <Canvas
+        camera={{
+          position: [10, 10, 10],
+          fov: 50,
+          near: 0.1,
+          far: 1000,
+        }}
+        shadows
+        style={{ background: backgroundColor }}
+        resize={{ scroll: false, debounce: { scroll: 50, resize: 50 } }}
+        dpr={[1, 2]}
+      >
+        {/* Suspense包装异步加载的组件 */}
+        <Suspense fallback={null}>
+          {/* 场景设置组件 */}
+          <SceneSetup
+            backgroundColor={backgroundColor}
+            enableFog={enableFog}
+            fogNear={fogNear}
+            fogFar={fogFar}
+          />
+
+          {/* 光照设置组件 */}
+          <SceneLighting sceneNodes={sceneNodes} />
+
+          {/* 相机控制组件 */}
+          <CameraManager
+            cameraControlRef={cameraControlRef}
+            onViewChange={onViewChange}
+          />
+
+          {/* 窗口大小变化处理组件 */}
+          <ResizeHandler />
+
+          {/* 场景对象渲染 */}
+          <SceneObjects 
+            nodes={sceneNodes} 
+            scene3DService={scene3DService}
+            onObjectPicked={onObjectPicked}
+            onEmptySpacePicked={onEmptySpacePicked}
+            selectionState={selectionState}
+          />
+
+          {/* 网格和辅助工具 */}
+          {enableGrid && (
+            <Grid
+              args={[50, 50]}
+              cellColor="#444444"
+              sectionColor="#666666"
+              position={[0, -0.01, 0]}
+            />
+          )}
+
+          {/* 轨道控制器 */}
+          <OrbitControls
+            makeDefault
+            enablePan={true}
+            enableZoom={true}
+            enableRotate={true}
+            minDistance={1}
+            maxDistance={100}
+            maxPolarAngle={Math.PI}
+            // 防止OrbitControls阻挡对象选择事件
+            enableDamping={true}
+            dampingFactor={0.1}
+          />
+
+          {/* Gizmo 坐标轴指示器 - 右上角 */}
+          <GizmoHelper
+            alignment="top-right"
+            margin={[55, 55]}
+            renderPriority={1}
+          >
+            <GizmoViewport
+              axisColors={['#ff4757', '#2ed573', '#3742fa']}
+              labelColor="white"
+              hideNegativeAxes={true}
+            />
+          </GizmoHelper>
+
+          {/* 性能统计 */}
+          {enableStats && <Stats />}
+        </Suspense>
+      </Canvas>
+    </div>
+  );
 };
 
 export default ViewportScene;
