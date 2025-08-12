@@ -37,7 +37,7 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
   // 选择状态 - 默认设置为全选
   const [selectionState, setSelectionState] = useState<SelectionState>('all');
   // 当前拾取的对象
-  const [pickedObject, setPickedObject] = useState<PickedObject | null>(null);
+  const [, setPickedObject] = useState<any | null>(null);
   // 渲染性能统计
   const { stats } = useRenderStats(scene3DService);
   // 相机控制引用
@@ -87,32 +87,22 @@ const Canvas3D: React.FC<Canvas3DProps> = ({
     setSelectionState(prev => prev === 'all' ? 'partial' : 'all');
   };
 
-  // 处理对象拾取
+  // 处理对象拾取（接受完整的 PickedObject）
   const handleObjectPicked = (picked: PickedObject) => {
     setPickedObject(picked);
     if (import.meta.env.DEV) {
       const mode = selectionState === 'all' ? '🔲 全选模式（整个模型）' : '🔳 部分选择模式（具体Mesh）';
-      
       console.log('🎯 模型拾取详情:', {
-        '当前模式': mode,
-        '拾取粒度': picked.intersection?.granularity,
-        '拾取描述': picked.intersection?.objectDescription,
-        '模型ID': picked.id,
-        '模型名称': picked.node.name,
-        '被点击的Mesh': {
-          名称: picked.hitMesh?.name || 'unnamed',
-          类型: picked.hitMesh?.type,
-          材质: picked.intersection?.materialName
+        当前模式: mode,
+        模型ID: picked.id,
+        模型名称: picked.node?.name || picked.id,
+        被点击的对象: {
+          名称: picked.object3D?.name || 'unnamed',
+          类型: picked.object3D?.type,
         },
-        '点击位置': picked.hitPoint,
-        '3D交点': picked.intersection?.point,
-        '三角面索引': picked.intersection?.faceIndex,
-        '距离': picked.intersection?.distance?.toFixed(3),
-        '时间戳': new Date(picked.pickedAt).toLocaleTimeString()
+        时间戳: new Date(picked.pickedAt).toLocaleTimeString(),
       });
-      
-      // 简化控制台输出
-      console.log(`📍 ${mode} 拾取: ${picked.intersection?.objectDescription || picked.node.name || picked.id}`);
+      console.log(`📍 ${mode} 拾取: ${picked.id}`);
     }
   };
 

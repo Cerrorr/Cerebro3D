@@ -39,7 +39,7 @@ pids
 coverage/
 
 # Private individual user cursor rules
-.cursor/rules/_*.mdc
+.cursor/
 node_modules
 
 # Memory Bank system (project documentation, not for version control)

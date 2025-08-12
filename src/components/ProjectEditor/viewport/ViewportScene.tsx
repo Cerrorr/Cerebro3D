@@ -19,6 +19,11 @@ import {
   GizmoHelper,
   GizmoViewport,
 } from '@react-three/drei';
+import {
+  EffectComposer,
+  Outline,
+  Selection,
+} from '@react-three/postprocessing';
 import { useAppSelector } from '@/store';
 import {
   useThreeScene,
@@ -31,6 +36,7 @@ import type {
   CameraControlRef,
 } from './types/viewportScene.types';
 import type { ViewType } from './types/Canvas3D.types';
+
 /**
  * 场景设置组件 - 使用useThreeScene Hook
  */
@@ -464,6 +470,11 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
   // 从Redux获取场景数据
   const { nodes: sceneNodes } = useAppSelector(state => state.scene);
 
+  // 选中对象状态管理
+  const [selectedObjects, setSelectedObjects] = useState<Set<string>>(
+    new Set()
+  );
+
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <Canvas
@@ -480,74 +491,107 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
       >
         {/* Suspense包装异步加载的组件 */}
         <Suspense fallback={null}>
-          {/* 场景设置组件 */}
-          <SceneSetup
-            backgroundColor={backgroundColor}
-            enableFog={enableFog}
-            fogNear={fogNear}
-            fogFar={fogFar}
-          />
-
-          {/* 光照设置组件 */}
-          <SceneLighting sceneNodes={sceneNodes} />
-
-          {/* 相机控制组件 */}
-          <CameraManager
-            cameraControlRef={cameraControlRef}
-            onViewChange={onViewChange}
-          />
-
-          {/* 窗口大小变化处理组件 */}
-          <ResizeHandler />
-
-          {/* 场景对象渲染 */}
-          <SceneObjects 
-            nodes={sceneNodes} 
-            scene3DService={scene3DService}
-            onObjectPicked={onObjectPicked}
-            onEmptySpacePicked={onEmptySpacePicked}
-            selectionState={selectionState}
-          />
-
-          {/* 网格和辅助工具 */}
-          {enableGrid && (
-            <Grid
-              args={[50, 50]}
-              cellColor="#444444"
-              sectionColor="#666666"
-              position={[0, -0.01, 0]}
+          {/* 选择和描边效果包装器 */}
+          <Selection>
+            {/* 场景设置组件 */}
+            <SceneSetup
+              backgroundColor={backgroundColor}
+              enableFog={enableFog}
+              fogNear={fogNear}
+              fogFar={fogFar}
             />
-          )}
 
-          {/* 轨道控制器 */}
-          <OrbitControls
-            makeDefault
-            enablePan={true}
-            enableZoom={true}
-            enableRotate={true}
-            minDistance={1}
-            maxDistance={100}
-            maxPolarAngle={Math.PI}
-            // 防止OrbitControls阻挡对象选择事件
-            enableDamping={true}
-            dampingFactor={0.1}
-          />
+            {/* 光照设置组件 */}
+            <SceneLighting sceneNodes={sceneNodes} />
 
-          {/* Gizmo 坐标轴指示器 - 右上角 */}
-          <GizmoHelper
-            alignment="top-right"
-            margin={[55, 55]}
-            renderPriority={1}
-          >
-            <GizmoViewport
-              axisColors={['#ff4757', '#2ed573', '#3742fa']}
-              labelColor="white"
-              hideNegativeAxes={true}
+            {/* 相机控制组件 */}
+            <CameraManager
+              cameraControlRef={cameraControlRef}
+              onViewChange={onViewChange}
             />
-          </GizmoHelper>
 
-          {/* 性能统计 */}
-          {enableStats && <Stats />}
+            {/* 窗口大小变化处理组件 */}
+            <ResizeHandler />
+
+            {/* 场景对象渲染 */}
+            <SceneObjects
+              nodes={sceneNodes}
+              scene3DService={scene3DService}
+              onObjectPicked={pickedObject => {
+                // 处理对象选择
+                setSelectedObjects(prev => {
+                  const newSelection = new Set(prev);
+                  if (newSelection.has(pickedObject.id)) {
+                    newSelection.delete(pickedObject.id);
+                  } else {
+                    newSelection.add(pickedObject.id);
+                  }
+                  return newSelection;
+                });
+
+                // 将完整的 PickedObject 传给上层
+                onObjectPicked?.(pickedObject);
+              }}
+              onEmptySpacePicked={() => {
+                // 清空选择
+                setSelectedObjects(new Set());
+                onEmptySpacePicked?.();
+              }}
+              selectionState={selectionState}
+              selectedObjects={selectedObjects}
+            />
+
+            {/* 网格和辅助工具 */}
+            {enableGrid && (
+              <Grid
+                args={[50, 50]}
+                cellColor="#444444"
+                sectionColor="#666666"
+                position={[0, -0.01, 0]}
+              />
+            )}
+
+            {/* 轨道控制器 */}
+            <OrbitControls
+              makeDefault
+              enablePan={true}
+              enableZoom={true}
+              enableRotate={true}
+              minDistance={1}
+              maxDistance={100}
+              maxPolarAngle={Math.PI}
+              enableDamping={true}
+              dampingFactor={0.1}
+            />
+
+            {/* Gizmo 坐标轴指示器 - 右上角 */}
+            <GizmoHelper
+              alignment="top-right"
+              margin={[55, 55]}
+              renderPriority={1}
+            >
+              <GizmoViewport
+                axisColors={['#ff4757', '#2ed573', '#3742fa']}
+                labelColor="white"
+                hideNegativeAxes={true}
+              />
+            </GizmoHelper>
+
+            {/* 性能统计 */}
+            {enableStats && <Stats />}
+
+            {/* 后期处理效果组合器 - 放在最后，确保处理完整场景 */}
+            <EffectComposer multisampling={8} autoClear={false}>
+              <Outline
+                edgeStrength={2.5}
+                pulseSpeed={0.0}
+                visibleEdgeColor={0x00ff00}
+                hiddenEdgeColor={0x22ff22}
+                blur={false}
+                xRay={true}
+              />
+            </EffectComposer>
+          </Selection>
         </Suspense>
       </Canvas>
     </div>

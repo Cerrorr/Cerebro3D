@@ -18,6 +18,8 @@ export interface SceneObjectsProps {
   onEmptySpacePicked?: () => void;
   // 选择状态（控制拾取粒度）
   selectionState?: SelectionState;
+  // 选中的对象ID集合
+  selectedObjects?: Set<string>;
 }
 
 export interface SceneObjectProps {
@@ -28,4 +30,6 @@ export interface SceneObjectProps {
   onObjectPicked?: (pickedObject: PickedObject) => void;
   // 创建对象点击处理器的函数
   createObjectClickHandler?: (objectId: string) => (event: any) => void;
+  // 选中的对象ID集合
+  selectedObjects?: Set<string>;
 }

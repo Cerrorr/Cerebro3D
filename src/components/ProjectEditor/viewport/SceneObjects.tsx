@@ -6,6 +6,7 @@
 
 import { Fragment, useEffect, useState } from 'react';
 import { Object3D } from 'three';
+import { Select } from '@react-three/postprocessing';
 import { useClickPicker } from '@/hooks/three';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types';
 import type {
@@ -16,10 +17,17 @@ import type {
 /**
  * 场景对象集合组件
  */
-const SceneObjects = ({ nodes, scene3DService, onObjectPicked, onEmptySpacePicked, selectionState = 'all' }: SceneObjectsProps) => {
+const SceneObjects = ({
+  nodes,
+  scene3DService,
+  onObjectPicked,
+  onEmptySpacePicked,
+  selectionState = 'all',
+  selectedObjects = new Set(),
+}: SceneObjectsProps) => {
   // 根据选择状态确定拾取粒度
   const pickingGranularity = selectionState === 'all' ? 'object' : 'mesh';
-  
+
   // 使用点击拾取Hook
   const { createObjectClickHandler } = useClickPicker(nodes, {
     enabled: true,
@@ -38,6 +46,7 @@ const SceneObjects = ({ nodes, scene3DService, onObjectPicked, onEmptySpacePicke
           allNodes={nodes}
           onObjectPicked={onObjectPicked}
           createObjectClickHandler={createObjectClickHandler}
+          selectedObjects={selectedObjects}
         />
         {node.children?.map(renderNode)}
       </Fragment>
@@ -45,9 +54,9 @@ const SceneObjects = ({ nodes, scene3DService, onObjectPicked, onEmptySpacePicke
   };
 
   return (
-    <group 
+    <group
       name="scene-objects"
-      onClick={(event) => {
+      onClick={event => {
         // 如果点击的是group本身（空白区域），清空选择
         if (event.target === event.currentTarget) {
           onEmptySpacePicked?.();
@@ -62,7 +71,13 @@ const SceneObjects = ({ nodes, scene3DService, onObjectPicked, onEmptySpacePicke
 /**
  * 单个场景对象组件
  */
-const SceneObject = ({ node, scene3DService, allNodes, onObjectPicked, createObjectClickHandler }: SceneObjectProps) => {
+const SceneObject = ({
+  node,
+  scene3DService,
+  allNodes,
+  createObjectClickHandler,
+  selectedObjects = new Set(),
+}: SceneObjectProps) => {
   const [importedObject, setImportedObject] = useState<Object3D | null>(null);
 
   // 检查节点及其所有父节点的可见性
@@ -194,15 +209,18 @@ const SceneObject = ({ node, scene3DService, allNodes, onObjectPicked, createObj
     return null;
   }
 
-  // 如果有导入的对象，直接使用原始对象
+  // 如果有导入的对象，使用Select包装以支持描边效果
   if (importedObject && node.objectId && createObjectClickHandler) {
+    const isSelected = selectedObjects.has(node.objectId);
     return (
-      <primitive 
-        object={importedObject} 
-        onClick={createObjectClickHandler(node.objectId)}
-        onPointerMissed={undefined}
-        userData={{ objectId: node.objectId, nodeName: node.name }}
-      />
+      <Select enabled={isSelected}>
+        <primitive
+          object={importedObject}
+          onClick={createObjectClickHandler(node.objectId)}
+          onPointerMissed={undefined}
+          userData={{ objectId: node.objectId, nodeName: node.name }}
+        />
+      </Select>
     );
   }
 
