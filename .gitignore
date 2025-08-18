@@ -51,3 +51,6 @@ xnotes/
 
 # Documentation (local development only)
 docs/
+
+.cursorignore
+.cursorindexingignore
