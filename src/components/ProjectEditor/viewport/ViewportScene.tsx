@@ -508,23 +508,50 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
   };
 
   // 根据3D对象ID查找对应的节点ID（反向查找）
+  // 根据selectionState决定返回顶层节点还是mesh节点
   const findNodeIdByObjectId = (nodes: any[], objectId: string): string | null => {
-    for (const node of nodes) {
-      // 检查顶层节点（使用objectId）
-      if (node.objectId === objectId) {
-        return node.id;
+    if (selectionState === 'all') {
+      // 全选模式：如果点击的是mesh，返回其父级顶层节点ID
+      for (const node of nodes) {
+        // 直接匹配顶层节点
+        if (node.objectId === objectId) {
+          return node.id;
+        }
+        
+        // 检查是否是顶层节点的子mesh，如果是则返回顶层节点
+        if (node.children && findMeshInChildren(node.children, objectId)) {
+          return node.id; // 返回顶层节点ID，实现整体选择
+        }
       }
-      // 检查mesh节点（使用node.id即uuid）
-      if (node.type === 'mesh' && node.id === objectId) {
-        return node.id;
-      }
-      // 递归查找子节点
-      if (node.children) {
-        const found = findNodeIdByObjectId(node.children, objectId);
-        if (found) return found;
+    } else {
+      // 部分选择模式：返回具体的mesh节点ID
+      for (const node of nodes) {
+        // 检查mesh节点
+        if (node.type === 'mesh' && node.id === objectId) {
+          return node.id;
+        }
+        // 递归查找子节点
+        if (node.children) {
+          const found = findNodeIdByObjectId(node.children, objectId);
+          if (found) return found;
+        }
       }
     }
+    
     return null;
+  };
+
+  // 辅助函数：检查子节点中是否包含指定的mesh
+  const findMeshInChildren = (children: any[], objectId: string): boolean => {
+    for (const child of children) {
+      if (child.type === 'mesh' && child.id === objectId) {
+        return true;
+      }
+      if (child.children && findMeshInChildren(child.children, objectId)) {
+        return true;
+      }
+    }
+    return false;
   };
 
   // 同步SceneTree选择到3D场景高亮
@@ -582,6 +609,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
               scene3DService={scene3DService}
               onObjectPicked={pickedObject => {
                 // 反向同步：点击3D对象时选中对应的树节点
+                // 根据selectionState决定选择整体模型还是单个mesh
                 const nodeId = findNodeIdByObjectId(sceneNodes, pickedObject.id);
                 if (nodeId) {
                   dispatch(selectNode(nodeId));
