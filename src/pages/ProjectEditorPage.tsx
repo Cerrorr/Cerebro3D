@@ -172,6 +172,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
 
       // Redux只存储元数据，不包含Three.js对象
       const newNode = {
+        id: objectId, // 使用objectId作为节点ID，确保ID匹配
         name: result.fileName,
         type: 'mesh' as const,
         visible: true,

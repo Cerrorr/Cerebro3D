@@ -24,7 +24,8 @@ import {
   Outline,
   Selection,
 } from '@react-three/postprocessing';
-import { useAppSelector } from '@/store';
+import { useAppSelector, useAppDispatch } from '@/store';
+import { selectNode } from '@/store/slices/sceneSlice';
 import {
   useThreeScene,
   useLightingSystem,
@@ -467,13 +468,75 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
   onEmptySpacePicked,
   selectionState = 'all',
 }) => {
-  // 从Redux获取场景数据
-  const { nodes: sceneNodes } = useAppSelector(state => state.scene);
+  // 从Redux获取场景数据和选中节点ID
+  const { nodes: sceneNodes, selectedNodeId } = useAppSelector(state => state.scene);
+  const dispatch = useAppDispatch();
 
   // 选中对象状态管理
   const [selectedObjects, setSelectedObjects] = useState<Set<string>>(
     new Set()
   );
+
+  // 查找节点及其所有子mesh的ID
+  const findAllSelectedObjects = (nodes: any[], selectedNodeId: string): string[] => {
+    const selectedIds: string[] = [];
+    
+    const findNode = (nodes: any[], nodeId: string): any => {
+      for (const node of nodes) {
+        if (node.id === nodeId) return node;
+        if (node.children) {
+          const found = findNode(node.children, nodeId);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const collectNodeAndChildren = (node: any): void => {
+      selectedIds.push(node.id);
+      if (node.children) {
+        node.children.forEach(collectNodeAndChildren);
+      }
+    };
+
+    const selectedNode = findNode(nodes, selectedNodeId);
+    if (selectedNode) {
+      collectNodeAndChildren(selectedNode);
+    }
+
+    return selectedIds;
+  };
+
+  // 根据3D对象ID查找对应的节点ID（反向查找）
+  const findNodeIdByObjectId = (nodes: any[], objectId: string): string | null => {
+    for (const node of nodes) {
+      // 检查顶层节点（使用objectId）
+      if (node.objectId === objectId) {
+        return node.id;
+      }
+      // 检查mesh节点（使用node.id即uuid）
+      if (node.type === 'mesh' && node.id === objectId) {
+        return node.id;
+      }
+      // 递归查找子节点
+      if (node.children) {
+        const found = findNodeIdByObjectId(node.children, objectId);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  // 同步SceneTree选择到3D场景高亮
+  useEffect(() => {
+    if (selectedNodeId) {
+      // 找到选中节点及其所有子节点的ID
+      const allSelectedIds = findAllSelectedObjects(sceneNodes, selectedNodeId);
+      setSelectedObjects(new Set(allSelectedIds));
+    } else {
+      setSelectedObjects(new Set());
+    }
+  }, [selectedNodeId, sceneNodes]);
 
   return (
     <div style={{ width: '100%', height: '100%' }}>
@@ -518,7 +581,13 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
               nodes={sceneNodes}
               scene3DService={scene3DService}
               onObjectPicked={pickedObject => {
-                // 处理对象选择
+                // 反向同步：点击3D对象时选中对应的树节点
+                const nodeId = findNodeIdByObjectId(sceneNodes, pickedObject.id);
+                if (nodeId) {
+                  dispatch(selectNode(nodeId));
+                }
+
+                // 处理对象选择（保持原有逻辑）
                 setSelectedObjects(prev => {
                   const newSelection = new Set(prev);
                   if (newSelection.has(pickedObject.id)) {
@@ -533,7 +602,10 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
                 onObjectPicked?.(pickedObject);
               }}
               onEmptySpacePicked={() => {
-                // 清空选择
+                // 清空树节点选择
+                dispatch(selectNode(null));
+                
+                // 清空3D对象选择
                 setSelectedObjects(new Set());
                 onEmptySpacePicked?.();
               }}

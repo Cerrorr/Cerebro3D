@@ -127,11 +127,11 @@ const sceneSlice = createSlice({
     /**
      * 添加场景节点
      */
-    addSceneNode: (state, action: PayloadAction<{ parentId?: string; node: Omit<SceneNode, 'id'> }>) => {
+    addSceneNode: (state, action: PayloadAction<{ parentId?: string; node: Omit<SceneNode, 'id'> | SceneNode }>) => {
       const { parentId, node } = action.payload;
       const newNode: SceneNode = {
         ...node,
-        id: nanoid(),
+        id: 'id' in node ? node.id : nanoid(), // 如果已有ID则使用，否则生成新ID
       };
 
       if (parentId) {
