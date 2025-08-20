@@ -6,7 +6,6 @@
 
 import { Fragment, useEffect, useState } from 'react';
 import { Object3D } from 'three';
-import { Select } from '@react-three/postprocessing';
 import { useClickPicker } from '@/hooks/three';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types';
 import type {
@@ -23,7 +22,6 @@ const SceneObjects = ({
   onObjectPicked,
   onEmptySpacePicked,
   selectionState = 'all',
-  selectedObjects = new Set(),
 }: SceneObjectsProps) => {
   // 根据选择状态确定拾取粒度
   const pickingGranularity = selectionState === 'all' ? 'object' : 'mesh';
@@ -46,7 +44,6 @@ const SceneObjects = ({
           allNodes={nodes}
           onObjectPicked={onObjectPicked}
           createObjectClickHandler={createObjectClickHandler}
-          selectedObjects={selectedObjects}
         />
         {node.children?.map(renderNode)}
       </Fragment>
@@ -76,7 +73,6 @@ const SceneObject = ({
   scene3DService,
   allNodes,
   createObjectClickHandler,
-  selectedObjects = new Set(),
 }: SceneObjectProps) => {
   const [importedObject, setImportedObject] = useState<Object3D | null>(null);
 
@@ -123,12 +119,29 @@ const SceneObject = ({
       const object = scene3DService.getObject(node.objectId);
       if (object) {
         setImportedObject(object);
+        // 为对象添加用户数据，用于后期处理选择
+        object.userData = {
+          ...object.userData,
+          nodeId: node.id,
+          objectId: node.objectId,
+          nodeName: node.name,
+          nodeType: node.type,
+        };
+        
+        // 递归为所有子对象添加用户数据
+        object.traverse((child) => {
+          child.userData = {
+            ...child.userData,
+            parentNodeId: node.id,
+            parentObjectId: node.objectId,
+            parentNodeName: node.name,
+          };
+        });
       }
     } else {
-      // mesh节点不单独创建importedObject，避免重复渲染
       setImportedObject(null);
     }
-  }, [node.objectId, scene3DService]);
+  }, [node.objectId, node.id, node.name, node.type, scene3DService]);
 
   // 同步节点变换到Scene3DService
   useEffect(() => {
@@ -195,38 +208,27 @@ const SceneObject = ({
     }
   }, [importedObject, node, allNodes]);
 
-  // 处理内置对象（相机、光源）的可见性
-  // 这些对象不通过primitive渲染，而是通过ViewportScene中的组件控制
-  if (node.type === 'camera' || node.type === 'light') {
-    // 内置对象的可见性由ViewportScene中的对应组件处理
-    // 这里不需要渲染任何内容
-    return null;
-  }
-
   // 只有根节点（有objectId）才渲染primitive对象
-  // mesh节点通过修改点击处理器来实现选择，但不渲染额外的primitive
   if (!node.objectId) {
     return null;
   }
 
-  // 如果有导入的对象，使用Select包装以支持描边效果
-  if (importedObject && node.objectId && createObjectClickHandler) {
-    const isSelected = selectedObjects.has(node.objectId);
-    
-    return (
-      <Select enabled={isSelected}>
-        <primitive
-          object={importedObject}
-          onClick={createObjectClickHandler(node.objectId)}
-          onPointerMissed={undefined}
-          userData={{ objectId: node.objectId, nodeName: node.name }}
-        />
-      </Select>
-    );
+  // 处理内置对象（相机、光源）的可见性
+  if (node.type === 'camera' || node.type === 'light') {
+    return null;
   }
 
-  // 只渲染导入的模型，不显示默认几何体
-  // 如果没有导入对象，则不渲染任何内容
+  // 简单渲染：只渲染原始模型，不添加额外的选择层
+  if (importedObject && createObjectClickHandler) {
+    return (
+      <primitive
+        object={importedObject}
+        onClick={createObjectClickHandler(node.objectId)}
+        onPointerMissed={undefined}
+        userData={{ objectId: node.objectId, nodeName: node.name }}
+      />
+    );
+  }
 
   return null;
 };

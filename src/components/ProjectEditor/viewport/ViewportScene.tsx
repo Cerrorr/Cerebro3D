@@ -12,6 +12,7 @@ import React, {
   useState,
 } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
+import { Object3D } from 'three';
 import {
   OrbitControls,
   Grid,
@@ -19,11 +20,10 @@ import {
   GizmoHelper,
   GizmoViewport,
 } from '@react-three/drei';
-import {
-  EffectComposer,
-  Outline,
-  Selection,
-} from '@react-three/postprocessing';
+// import {
+//   EffectComposer,
+//   Outline,
+// } from '@react-three/postprocessing';
 import { useAppSelector, useAppDispatch } from '@/store';
 import { selectNode } from '@/store/slices/sceneSlice';
 import {
@@ -31,6 +31,7 @@ import {
   useLightingSystem,
   useCameraControl,
 } from '@/hooks/three';
+import NativeOutlineEffect from './NativeOutlineEffect';
 import SceneObjects from './SceneObjects';
 import type {
   ViewportSceneProps,
@@ -472,57 +473,123 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
   const { nodes: sceneNodes, selectedNodeId } = useAppSelector(state => state.scene);
   const dispatch = useAppDispatch();
 
-  // 选中对象状态管理
-  const [selectedObjects, setSelectedObjects] = useState<Set<string>>(
-    new Set()
-  );
+  // 选中对象状态管理  
+  const [selectedObjects, setSelectedObjects] = useState<Object3D[]>([]);
 
-  // 查找选中节点对应的对象ID（用于高亮）
-  const findSelectedObjectIds = (nodes: any[], selectedNodeId: string): string[] => {
-    const selectedIds: string[] = [];
-    
-    const findNode = (nodes: any[], nodeId: string): any => {
-      for (const node of nodes) {
-        if (node.id === nodeId) return node;
-        if (node.children) {
-          const found = findNode(node.children, nodeId);
-          if (found) return found;
-        }
-      }
-      return null;
-    };
-
-    const selectedNode = findNode(nodes, selectedNodeId);
-    if (selectedNode) {
-      // 如果选中的是顶层节点（有objectId），高亮整个模型
-      if (selectedNode.objectId) {
-        selectedIds.push(selectedNode.objectId);
-      }
-      // 如果选中的是mesh节点，也高亮整个模型（暂时简化）
-      else if (selectedNode.type === 'mesh') {
-        // 找到其父级顶层节点的objectId
-        const findParentWithObjectId = (nodeId: string, searchNodes: any[]): string | null => {
-          for (const node of searchNodes) {
-            if (node.children?.some((child: any) => child.id === nodeId)) {
-              return node.objectId || null;
-            }
-            if (node.children) {
-              const found = findParentWithObjectId(nodeId, node.children);
+  // 同步SceneTree选择到3D场景高亮
+  useEffect(() => {
+    if (selectedNodeId && scene3DService) {
+      // 查找选中节点对应的3D对象
+      const findObjectByNodeId = (nodeId: string): Object3D | null => {
+        const findNode = (nodes: any[], searchNodeId: string): any => {
+          for (const n of nodes) {
+            if (n.id === searchNodeId) return n;
+            if (n.children) {
+              const found = findNode(n.children, searchNodeId);
               if (found) return found;
             }
           }
           return null;
         };
         
-        const parentObjectId = findParentWithObjectId(selectedNode.id, nodes);
-        if (parentObjectId) {
-          selectedIds.push(parentObjectId);
+        // 在所有根节点中查找选中的节点
+        let selectedNode = null;
+        for (const rootNode of sceneNodes) {
+          selectedNode = findNode([rootNode], nodeId);
+          if (selectedNode) break;
         }
+        
+        if (!selectedNode) return null;
+        
+        // 情况1: 如果选中的是顶级节点（有objectId），返回整个对象
+        if (selectedNode.objectId) {
+          const obj = scene3DService.getObject(selectedNode.objectId);
+          return obj || null;
+        }
+        
+        // 情况2: 如果选中的是有子节点的中间节点（包括mesh类型的中间节点）
+        if (selectedNode.children && selectedNode.children.length > 0) {
+          const parentNode = findParentWithObjectId(selectedNode.id);
+          if (parentNode && parentNode.objectId) {
+            const parentObject = scene3DService.getObject(parentNode.objectId);
+            if (parentObject) {
+              // 在父对象中查找名称匹配的对象
+              let foundObject: Object3D | null = null;
+              parentObject.traverse((child: Object3D) => {
+                if (child.name === selectedNode.name && !foundObject) {
+                  foundObject = child;
+                }
+              });
+              return foundObject;
+            }
+          }
+        }
+        
+        // 情况3: 如果选中的是叶子mesh节点，找到对应的具体mesh
+        if (selectedNode.type === 'mesh') {
+          const parentNode = findParentWithObjectId(selectedNode.id);
+          if (parentNode && parentNode.objectId) {
+            const parentObject = scene3DService.getObject(parentNode.objectId);
+            if (parentObject) {
+              // 在父对象中查找名称匹配的mesh
+              let foundMesh: Object3D | null = null;
+              parentObject.traverse((child: Object3D) => {
+                if (child.name === selectedNode.name && child.type === 'Mesh') {
+                  foundMesh = child;
+                }
+              });
+              return foundMesh;
+            }
+          }
+        }
+        
+        return null;
+      };
+      
+      // 查找包含指定节点的顶级父节点（有objectId的节点）
+      const findParentWithObjectId = (targetNodeId: string): any => {
+        const searchInNode = (node: any): any => {
+          // 如果当前节点有objectId，检查是否包含目标节点
+          if (node.objectId) {
+            const containsTarget = (n: any): boolean => {
+              if (n.id === targetNodeId) return true;
+              if (n.children) {
+                return n.children.some((child: any) => containsTarget(child));
+              }
+              return false;
+            };
+            
+            if (containsTarget(node)) return node;
+          }
+          
+          // 递归搜索子节点
+          if (node.children) {
+            for (const child of node.children) {
+              const found = searchInNode(child);
+              if (found) return found;
+            }
+          }
+          return null;
+        };
+        
+        for (const rootNode of sceneNodes) {
+          const found = searchInNode(rootNode);
+          if (found) return found;
+        }
+        return null;
+      };
+      
+      const selectedObject = findObjectByNodeId(selectedNodeId);
+      if (selectedObject) {
+        setSelectedObjects([selectedObject]);
+      } else {
+        setSelectedObjects([]);
       }
+    } else {
+      setSelectedObjects([]);
     }
+  }, [selectedNodeId, sceneNodes, scene3DService]);
 
-    return selectedIds;
-  };
 
   // 根据3D对象ID查找对应的节点ID（反向查找）
   const findNodeIdByObjectId = (nodes: any[], objectId: string): string | null => {
@@ -542,16 +609,26 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
     return searchNodes(nodes);
   };
 
-  // 同步SceneTree选择到3D场景高亮
-  useEffect(() => {
-    if (selectedNodeId) {
-      // 找到选中节点对应的objectId用于高亮
-      const selectedObjectIds = findSelectedObjectIds(sceneNodes, selectedNodeId);
-      setSelectedObjects(new Set(selectedObjectIds));
-    } else {
-      setSelectedObjects(new Set());
-    }
-  }, [selectedNodeId, sceneNodes]);
+  // 根据mesh对象查找对应的mesh节点ID
+  const findMeshNodeId = (nodes: any[], meshObject: any): string | null => {
+    const searchInNodes = (nodeList: any[]): string | null => {
+      for (const node of nodeList) {
+        // 如果是mesh节点且名称匹配
+        if (node.type === 'mesh' && node.name === meshObject.name) {
+          return node.id;
+        }
+        // 递归搜索子节点
+        if (node.children) {
+          const found = searchInNodes(node.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    
+    return searchInNodes(nodes);
+  };
+
 
   return (
     <div style={{ width: '100%', height: '100%' }}>
@@ -569,8 +646,6 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
       >
         {/* Suspense包装异步加载的组件 */}
         <Suspense fallback={null}>
-          {/* 选择和描边效果包装器 */}
-          <Selection>
             {/* 场景设置组件 */}
             <SceneSetup
               backgroundColor={backgroundColor}
@@ -597,21 +672,21 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
               scene3DService={scene3DService}
               onObjectPicked={pickedObject => {
                 // 反向同步：点击3D对象时选中对应的树节点
-                const nodeId = findNodeIdByObjectId(sceneNodes, pickedObject.id);
+                let nodeId: string | null = null;
+                
+                if (selectionState === 'partial' && pickedObject.hitMesh) {
+                  // 部分选中模式：尝试找到具体mesh对应的节点
+                  nodeId = findMeshNodeId(sceneNodes, pickedObject.hitMesh);
+                }
+                
+                // 如果没找到mesh节点或者是全选模式，查找顶级节点
+                if (!nodeId) {
+                  nodeId = findNodeIdByObjectId(sceneNodes, pickedObject.id);
+                }
+                
                 if (nodeId) {
                   dispatch(selectNode(nodeId));
                 }
-
-                // 处理对象选择（保持原有逻辑）
-                setSelectedObjects(prev => {
-                  const newSelection = new Set(prev);
-                  if (newSelection.has(pickedObject.id)) {
-                    newSelection.delete(pickedObject.id);
-                  } else {
-                    newSelection.add(pickedObject.id);
-                  }
-                  return newSelection;
-                });
 
                 // 将完整的 PickedObject 传给上层
                 onObjectPicked?.(pickedObject);
@@ -621,11 +696,10 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
                 dispatch(selectNode(null));
                 
                 // 清空3D对象选择
-                setSelectedObjects(new Set());
+                setSelectedObjects([]);
                 onEmptySpacePicked?.();
               }}
               selectionState={selectionState}
-              selectedObjects={selectedObjects}
             />
 
             {/* 网格和辅助工具 */}
@@ -667,18 +741,15 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
             {/* 性能统计 */}
             {enableStats && <Stats />}
 
-            {/* 后期处理效果组合器 - 放在最后，确保处理完整场景 */}
-            <EffectComposer multisampling={8} autoClear={false}>
-              <Outline
-                edgeStrength={2.5}
-                pulseSpeed={0.0}
-                visibleEdgeColor={0x00ff00}
-                hiddenEdgeColor={0x22ff22}
-                blur={false}
-                xRay={true}
-              />
-            </EffectComposer>
-          </Selection>
+            {/* 原生Three.js OutlinePass后期处理效果 */}
+            <NativeOutlineEffect
+              selectedObjects={selectedObjects}
+              edgeColor={0x00ff00}
+              edgeStrength={2.5}
+              edgeThickness={1.0}
+              pulsePeriod={0}
+            />
+
         </Suspense>
       </Canvas>
     </div>
