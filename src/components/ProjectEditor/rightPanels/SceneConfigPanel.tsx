@@ -53,6 +53,34 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
     });
   }, [sceneConfig, onSceneConfigChange]);
 
+  /**
+   * 处理截屏功能
+   */
+  const handleScreenshot = useCallback(async () => {
+    try {
+      // 查找Canvas元素（来自ViewportScene的Canvas组件）
+      const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+      if (!canvas) {
+        console.error('未找到Canvas元素');
+        return;
+      }
+
+      // 确保渲染完成后再截屏
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      
+      // 将Canvas内容转换为base64图片
+      // 使用jpeg格式并设置白色背景，避免透明度问题
+      const dataURL = canvas.toDataURL('image/jpeg', 0.9);
+      
+      // 更新项目信息中的封面图片
+      onProjectInfoChange({ coverImage: dataURL });
+      
+      console.log('截屏完成');
+    } catch (error) {
+      console.error('截屏失败:', error);
+    }
+  }, [onProjectInfoChange]);
+
   /* ---------- 构建 Collapse items ---------- */
   const projectHeader = (
     <div className="panel-header">
@@ -143,7 +171,13 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
                   </div>
                 )}
               </div>
-              <RButton className="cover-upload-btn" block record={record} desc="点击截屏">
+              <RButton 
+                className="cover-upload-btn" 
+                block 
+                record={record} 
+                desc="点击截屏"
+                onClick={handleScreenshot}
+              >
                 截屏
               </RButton>
             </div>

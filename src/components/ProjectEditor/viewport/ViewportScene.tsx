@@ -643,6 +643,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
         style={{ background: backgroundColor }}
         resize={{ scroll: false, debounce: { scroll: 50, resize: 50 } }}
         dpr={[1, 2]}
+        gl={{ preserveDrawingBuffer: true }}
       >
         {/* Suspense包装异步加载的组件 */}
         <Suspense fallback={null}>
