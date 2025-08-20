@@ -124,33 +124,11 @@ const SceneObject = ({
       if (object) {
         setImportedObject(object);
       }
-    } else if (node.type === 'mesh' && scene3DService) {
-      // 对于mesh节点，需要在场景中查找对应的mesh对象
-      const allObjects = scene3DService.getAllObjects();
-      
-      for (const object of allObjects.values()) {
-        // 递归查找mesh
-        const findMeshByUuid = (obj: any, uuid: string): any => {
-          if (obj.uuid === uuid) return obj;
-          for (const child of obj.children || []) {
-            const found = findMeshByUuid(child, uuid);
-            if (found) return found;
-          }
-          return null;
-        };
-        
-        const meshObject = findMeshByUuid(object, node.id);
-        if (meshObject) {
-          setImportedObject(meshObject);
-          return;
-        }
-      }
-      setImportedObject(null);
     } else {
-      // 如果没有scene3DService或objectId，清空importedObject
+      // mesh节点不单独创建importedObject，避免重复渲染
       setImportedObject(null);
     }
-  }, [node.objectId, node.id, node.type, scene3DService]);
+  }, [node.objectId, scene3DService]);
 
   // 同步节点变换到Scene3DService
   useEffect(() => {
@@ -225,26 +203,23 @@ const SceneObject = ({
     return null;
   }
 
-  // 只有根节点（有objectId）或mesh节点才渲染primitive对象
-  // 子节点的可见性通过父对象控制，但mesh节点需要单独渲染以支持选择
-  if (!node.objectId && node.type !== 'mesh') {
-
+  // 只有根节点（有objectId）才渲染primitive对象
+  // mesh节点通过修改点击处理器来实现选择，但不渲染额外的primitive
+  if (!node.objectId) {
     return null;
   }
 
   // 如果有导入的对象，使用Select包装以支持描边效果
-  if (importedObject && (node.objectId || node.type === 'mesh') && createObjectClickHandler) {
-    // 现在节点ID直接对应对象ID（顶层节点）或mesh的uuid（mesh节点）
-    const objectKey = node.id;
-    const isSelected = selectedObjects.has(objectKey);
+  if (importedObject && node.objectId && createObjectClickHandler) {
+    const isSelected = selectedObjects.has(node.objectId);
     
     return (
       <Select enabled={isSelected}>
         <primitive
           object={importedObject}
-          onClick={createObjectClickHandler(objectKey)}
+          onClick={createObjectClickHandler(node.objectId)}
           onPointerMissed={undefined}
-          userData={{ objectId: objectKey, nodeName: node.name }}
+          userData={{ objectId: node.objectId, nodeName: node.name }}
         />
       </Select>
     );

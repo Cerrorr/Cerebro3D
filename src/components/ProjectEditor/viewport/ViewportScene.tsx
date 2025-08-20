@@ -477,8 +477,8 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
     new Set()
   );
 
-  // 查找节点及其所有子mesh的ID
-  const findAllSelectedObjects = (nodes: any[], selectedNodeId: string): string[] => {
+  // 查找选中节点对应的对象ID（用于高亮）
+  const findSelectedObjectIds = (nodes: any[], selectedNodeId: string): string[] => {
     const selectedIds: string[] = [];
     
     const findNode = (nodes: any[], nodeId: string): any => {
@@ -492,74 +492,62 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
       return null;
     };
 
-    const collectNodeAndChildren = (node: any): void => {
-      selectedIds.push(node.id);
-      if (node.children) {
-        node.children.forEach(collectNodeAndChildren);
-      }
-    };
-
     const selectedNode = findNode(nodes, selectedNodeId);
     if (selectedNode) {
-      collectNodeAndChildren(selectedNode);
+      // 如果选中的是顶层节点（有objectId），高亮整个模型
+      if (selectedNode.objectId) {
+        selectedIds.push(selectedNode.objectId);
+      }
+      // 如果选中的是mesh节点，也高亮整个模型（暂时简化）
+      else if (selectedNode.type === 'mesh') {
+        // 找到其父级顶层节点的objectId
+        const findParentWithObjectId = (nodeId: string, searchNodes: any[]): string | null => {
+          for (const node of searchNodes) {
+            if (node.children?.some((child: any) => child.id === nodeId)) {
+              return node.objectId || null;
+            }
+            if (node.children) {
+              const found = findParentWithObjectId(nodeId, node.children);
+              if (found) return found;
+            }
+          }
+          return null;
+        };
+        
+        const parentObjectId = findParentWithObjectId(selectedNode.id, nodes);
+        if (parentObjectId) {
+          selectedIds.push(parentObjectId);
+        }
+      }
     }
 
     return selectedIds;
   };
 
   // 根据3D对象ID查找对应的节点ID（反向查找）
-  // 根据selectionState决定返回顶层节点还是mesh节点
   const findNodeIdByObjectId = (nodes: any[], objectId: string): string | null => {
-    if (selectionState === 'all') {
-      // 全选模式：如果点击的是mesh，返回其父级顶层节点ID
-      for (const node of nodes) {
-        // 直接匹配顶层节点
+    const searchNodes = (nodeList: any[]): string | null => {
+      for (const node of nodeList) {
         if (node.objectId === objectId) {
           return node.id;
         }
-        
-        // 检查是否是顶层节点的子mesh，如果是则返回顶层节点
-        if (node.children && findMeshInChildren(node.children, objectId)) {
-          return node.id; // 返回顶层节点ID，实现整体选择
-        }
-      }
-    } else {
-      // 部分选择模式：返回具体的mesh节点ID
-      for (const node of nodes) {
-        // 检查mesh节点
-        if (node.type === 'mesh' && node.id === objectId) {
-          return node.id;
-        }
-        // 递归查找子节点
         if (node.children) {
-          const found = findNodeIdByObjectId(node.children, objectId);
+          const found = searchNodes(node.children);
           if (found) return found;
         }
       }
-    }
+      return null;
+    };
     
-    return null;
-  };
-
-  // 辅助函数：检查子节点中是否包含指定的mesh
-  const findMeshInChildren = (children: any[], objectId: string): boolean => {
-    for (const child of children) {
-      if (child.type === 'mesh' && child.id === objectId) {
-        return true;
-      }
-      if (child.children && findMeshInChildren(child.children, objectId)) {
-        return true;
-      }
-    }
-    return false;
+    return searchNodes(nodes);
   };
 
   // 同步SceneTree选择到3D场景高亮
   useEffect(() => {
     if (selectedNodeId) {
-      // 找到选中节点及其所有子节点的ID
-      const allSelectedIds = findAllSelectedObjects(sceneNodes, selectedNodeId);
-      setSelectedObjects(new Set(allSelectedIds));
+      // 找到选中节点对应的objectId用于高亮
+      const selectedObjectIds = findSelectedObjectIds(sceneNodes, selectedNodeId);
+      setSelectedObjects(new Set(selectedObjectIds));
     } else {
       setSelectedObjects(new Set());
     }
@@ -609,7 +597,6 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
               scene3DService={scene3DService}
               onObjectPicked={pickedObject => {
                 // 反向同步：点击3D对象时选中对应的树节点
-                // 根据selectionState决定选择整体模型还是单个mesh
                 const nodeId = findNodeIdByObjectId(sceneNodes, pickedObject.id);
                 if (nodeId) {
                   dispatch(selectNode(nodeId));
