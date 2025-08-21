@@ -27,7 +27,10 @@ export interface SceneConfiguration {
   // 背景设置
   background: {
     type: 'color' | 'texture' | 'skybox';
-    value: string;
+    color?: string; // RGB颜色值，当type为color时使用
+    texture?: string; // 纹理图片路径，当type为texture时使用
+    skybox?: string; // 天空盒图片路径，当type为skybox时使用
+    value: string; // 保持兼容性
   };
   // 环境设置
   environment: {
@@ -50,12 +53,9 @@ export interface SceneConfiguration {
 export interface SceneConfigPanelProps {
   // 项目信息
   projectInfo: ProjectInfo;
-  // 场景配置
-  sceneConfig: SceneConfiguration;
   // 项目信息变更回调
   onProjectInfoChange: (info: Partial<ProjectInfo>) => void;
-  // 场景配置变更回调
-  onSceneConfigChange: (config: Partial<SceneConfiguration>) => void;
+  // sceneConfig 和 onSceneConfigChange 现在通过 Redux 管理
 }
 
 /**

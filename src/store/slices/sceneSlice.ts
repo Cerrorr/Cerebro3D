@@ -8,7 +8,7 @@
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types';
 import type { CanvasSettings } from '@/components/projectEditor/viewport/types';
-import type { CameraConfiguration } from '@/components/projectEditor/rightPanels/types';
+import type { CameraConfiguration, SceneConfiguration } from '@/components/projectEditor/rightPanels/types';
 
 /**
  * 场景状态接口
@@ -28,6 +28,8 @@ export interface SceneState {
   cameraTarget: [number, number, number];
   /** 相机配置 */
   cameraConfig: CameraConfiguration;
+  /** 场景配置 */
+  sceneConfig: SceneConfiguration;
   /** 场景是否加载中 */
   isLoading: boolean;
 }
@@ -107,6 +109,11 @@ const initialState: SceneState = {
   cameraPosition: [6, 4, 6],
   cameraTarget: [0, 0, 0],
   cameraConfig: DEFAULT_CAMERA_CONFIG,
+  sceneConfig: {
+    background: { type: 'color', value: '#2a2a2a', color: '#2a2a2a' },
+    environment: { type: 'none', intensity: 1 },
+    helpers: { enabled: true, axes: true, cameraHelper: false, lightHelper: false },
+  },
   isLoading: false,
 };
 
@@ -280,6 +287,12 @@ const sceneSlice = createSlice({
         state.cameraTarget = [x, y, z];
       }
     },
+    /**
+     * 更新场景配置
+     */
+    updateSceneConfig: (state, action: PayloadAction<Partial<SceneConfiguration>>) => {
+      state.sceneConfig = { ...state.sceneConfig, ...action.payload };
+    },
 
     /**
      * 更新相机位置
@@ -383,6 +396,7 @@ export const {
   updateCanvasSettings,
   setCurrentView,
   updateCameraConfig,
+  updateSceneConfig,
   updateCameraPosition,
   updateCameraTarget,
   setLoading,

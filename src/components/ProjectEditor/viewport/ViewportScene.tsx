@@ -47,9 +47,16 @@ const SceneSetup: React.FC<{
   enableFog: boolean;
   fogNear: number;
   fogFar: number;
-}> = ({ backgroundColor, enableFog, fogNear, fogFar }) => {
+  backgroundConfig?: {
+    type: 'color' | 'texture' | 'skybox';
+    color?: string;
+    texture?: string;
+    skybox?: string;
+  };
+}> = ({ backgroundColor, enableFog, fogNear, fogFar, backgroundConfig }) => {
   const {
     setBackgroundColor,
+    setBackground,
     enableFog: setFog,
     disableFog,
     enableShadows,
@@ -66,7 +73,37 @@ const SceneSetup: React.FC<{
   });
 
   useEffect(() => {
-    setBackgroundColor(backgroundColor);
+    // 应用背景配置
+    if (backgroundConfig) {
+      switch (backgroundConfig.type) {
+        case 'color':
+          if (backgroundConfig.color) {
+            setBackground('color', backgroundConfig.color);
+          } else {
+            setBackgroundColor(backgroundColor);
+          }
+          break;
+        case 'texture':
+          if (backgroundConfig.texture) {
+            setBackground('texture', backgroundConfig.texture);
+          } else {
+            setBackgroundColor(backgroundColor);
+          }
+          break;
+        case 'skybox':
+          if (backgroundConfig.skybox) {
+            setBackground('skybox', backgroundConfig.skybox);
+          } else {
+            setBackgroundColor(backgroundColor);
+          }
+          break;
+        default:
+          setBackgroundColor(backgroundColor);
+      }
+    } else {
+      setBackgroundColor(backgroundColor);
+    }
+    
     enableShadows();
 
     if (enableFog) {
@@ -76,10 +113,12 @@ const SceneSetup: React.FC<{
     }
   }, [
     backgroundColor,
+    backgroundConfig,
     enableFog,
     fogNear,
     fogFar,
     setBackgroundColor,
+    setBackground,
     setFog,
     disableFog,
     enableShadows,
@@ -469,8 +508,8 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
   onEmptySpacePicked,
   selectionState = 'all',
 }) => {
-  // 从Redux获取场景数据和选中节点ID
-  const { nodes: sceneNodes, selectedNodeId } = useAppSelector(state => state.scene);
+  // 从Redux获取场景数据和选中节点ID以及场景配置
+  const { nodes: sceneNodes, selectedNodeId, sceneConfig } = useAppSelector(state => state.scene);
   const dispatch = useAppDispatch();
 
   // 选中对象状态管理  
@@ -653,6 +692,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
               enableFog={enableFog}
               fogNear={fogNear}
               fogFar={fogFar}
+              backgroundConfig={sceneConfig.background}
             />
 
             {/* 光照设置组件 */}

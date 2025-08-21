@@ -21,6 +21,9 @@ export interface UseThreeSceneResult {
   camera: RootState['camera'];
   renderer: RootState['gl'];
   setBackgroundColor: (color: string) => void;
+  setBackgroundTexture: (imageUrl: string) => void;
+  setBackgroundSkybox: (imageUrl: string) => void;
+  setBackground: (type: 'color' | 'texture' | 'skybox', value: string) => void;
   enableFog: (color: string, near: number, far: number) => void;
   disableFog: () => void;
   enableShadows: () => void;

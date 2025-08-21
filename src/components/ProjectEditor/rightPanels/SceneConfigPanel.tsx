@@ -2,18 +2,24 @@ import React, { useCallback } from 'react';
 import { 
   Input, 
   Collapse,
-  Select as AntSelect
+  Select as AntSelect,
+  ColorPicker,
+  Upload,
+  Button
 } from 'antd';
 import { 
   DownOutlined,
   ProjectOutlined,
-  SettingOutlined
+  SettingOutlined,
+  UploadOutlined
 } from '@ant-design/icons';
 import type { SceneConfigPanelProps } from './types';
 import './styles/SceneConfigPanel.scss';
 import type { CollapseProps } from 'antd';
 import { useRecord } from '@/hooks/common/useRecord';
 import { RInput, RSwitch, RSelect, RButton } from '@/components/common/recordable';
+import { useAppSelector, useAppDispatch } from '@/store';
+import { updateSceneConfig } from '@/store/slices/sceneSlice';
 
 const { TextArea } = Input;
 const { Option } = AntSelect;
@@ -26,13 +32,16 @@ const { Option } = AntSelect;
  */
 const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
   projectInfo,
-  sceneConfig,
   onProjectInfoChange,
-  onSceneConfigChange
+  // sceneConfig 和 onSceneConfigChange 现在从 Redux 获取
 }) => {
 
   /* 记录器 */
   const record = useRecord('SceneConfig');
+  
+  /* Redux */
+  const dispatch = useAppDispatch();
+  const sceneConfig = useAppSelector(state => state.scene.sceneConfig);
 
   /**
    * 处理项目信息字段变更
@@ -45,13 +54,13 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
    * 处理场景配置变更
    */
   const handleSceneConfigChange = useCallback((section: string, field: string, value: any) => {
-    onSceneConfigChange({
+    dispatch(updateSceneConfig({
       [section]: {
         ...sceneConfig[section as keyof typeof sceneConfig],
         [field]: value
       }
-    });
-  }, [sceneConfig, onSceneConfigChange]);
+    }));
+  }, [dispatch, sceneConfig]);
 
   /**
    * 处理截屏功能
@@ -80,6 +89,19 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
       console.error('截屏失败:', error);
     }
   }, [onProjectInfoChange]);
+
+  /**
+   * 处理背景图片上传
+   */
+  const handleBackgroundImageUpload = useCallback((file: File, type: 'texture' | 'skybox') => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataURL = e.target?.result as string;
+      handleSceneConfigChange('background', type, dataURL);
+    };
+    reader.readAsDataURL(file);
+    return false; // 阻止默认上传行为
+  }, [handleSceneConfigChange]);
 
   /* ---------- 构建 Collapse items ---------- */
   const projectHeader = (
@@ -205,6 +227,67 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
               <Option value="texture">Texture</Option>
               <Option value="skybox">Skybox</Option>
             </RSelect>
+            
+            {/* 根据背景类型显示不同的配置选项 */}
+            {sceneConfig.background.type === 'color' && (
+              <div className="background-config" style={{ marginTop: '8px' }}>
+                <ColorPicker
+                  value={sceneConfig.background.color || '#2a2a2a'}
+                  onChange={(color) => {
+                    const hexColor = color.toHexString();
+                    handleSceneConfigChange('background', 'color', hexColor);
+                  }}
+                  showText
+                  style={{ width: '100%' }}
+                />
+              </div>
+            )}
+            
+            {sceneConfig.background.type === 'texture' && (
+              <div className="background-config" style={{ marginTop: '8px' }}>
+                <Upload
+                  accept="image/*"
+                  showUploadList={false}
+                  beforeUpload={(file) => handleBackgroundImageUpload(file, 'texture')}
+                >
+                  <Button icon={<UploadOutlined />} block>
+                    上传纹理图片
+                  </Button>
+                </Upload>
+                {sceneConfig.background.texture && (
+                  <div className="uploaded-preview" style={{ marginTop: '8px' }}>
+                    <img 
+                      src={sceneConfig.background.texture} 
+                      alt="背景纹理" 
+                      style={{ width: '100%', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {sceneConfig.background.type === 'skybox' && (
+              <div className="background-config" style={{ marginTop: '8px' }}>
+                <Upload
+                  accept="image/*"
+                  showUploadList={false}
+                  beforeUpload={(file) => handleBackgroundImageUpload(file, 'skybox')}
+                >
+                  <Button icon={<UploadOutlined />} block>
+                    上传天空盒图片
+                  </Button>
+                </Upload>
+                {sceneConfig.background.skybox && (
+                  <div className="uploaded-preview" style={{ marginTop: '8px' }}>
+                    <img 
+                      src={sceneConfig.background.skybox} 
+                      alt="天空盒" 
+                      style={{ width: '100%', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* 环境 */}
