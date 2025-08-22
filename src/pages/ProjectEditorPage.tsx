@@ -50,7 +50,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   const dispatch = useAppDispatch();
 
   // 从Redux获取状态
-  const { nodes: sceneNodes, selectedNodeId } = useAppSelector(state => state.scene);
+  const { nodes: sceneNodes, selectedNodeId, sceneConfig } = useAppSelector(state => state.scene);
   
   // 本地UI状态（不涉及3D或业务逻辑）
   const [projectTitle, setProjectTitle] = useState('');
@@ -149,6 +149,8 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   }, [location.state, initialTitle]);
 
   const handleImportSuccess = useCallback((results: any[]) => {
+    let lastImportedNodeId: string | null = null;
+    
     // 处理导入的模型
     results.forEach(result => {
       // 生成唯一ID
@@ -194,6 +196,9 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
         parentId: 'scene',
         node: newNode
       }));
+
+      // 记录最后导入的节点ID，用于自动选中
+      lastImportedNodeId = objectId;
     });
 
     // 记录导入历史 - 合并为一条记录
@@ -207,8 +212,17 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       });
     }
 
+    // 如果辅助功能开启且有导入的模型，自动选中最后一个导入的模型
+    if (sceneConfig.helpers.enabled && lastImportedNodeId) {
+      // 延迟选中，确保节点已经添加到Redux store中
+      setTimeout(() => {
+        dispatch(selectNode(lastImportedNodeId));
+        console.log('自动选中导入的模型:', lastImportedNodeId);
+      }, 100);
+    }
+
     message.success(`成功导入 ${results.length} 个3D模型`);
-  }, [addHistory, dispatch]);
+  }, [addHistory, dispatch, sceneConfig.helpers.enabled, projectTitle, scene3DService]);
 
   /**
    * 处理文件导入错误

@@ -5,7 +5,8 @@ import {
   Select as AntSelect,
   ColorPicker,
   Upload,
-  Button
+  Button,
+  Tooltip
 } from 'antd';
 import { 
   DownOutlined,
@@ -389,7 +390,20 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
 
           {/* 辅助 */}
           <div className="config-item">
-            <label className="config-label">辅助</label>
+            <Tooltip 
+              title={
+                <div>
+                  <div><strong>辅助功能包含:</strong></div>
+                  <div>• 变换控制器 (TransformControls)</div>
+                  <div>• 快捷键: G-移动, R-旋转, S-缩放</div>
+                  <div>• 导入模型时自动选中</div>
+                </div>
+              }
+              placement="topLeft"
+              mouseEnterDelay={0.3}
+            >
+              <label className="config-label">辅助</label>
+            </Tooltip>
             <RSwitch
               checked={sceneConfig.helpers.enabled}
               onChange={(checked) => {handleSceneConfigChange('helpers', 'enabled', checked);}}

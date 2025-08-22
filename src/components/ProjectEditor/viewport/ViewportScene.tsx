@@ -19,6 +19,7 @@ import {
   Stats,
   GizmoHelper,
   GizmoViewport,
+  TransformControls,
 } from '@react-three/drei';
 // import {
 //   EffectComposer,
@@ -531,6 +532,48 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
 
   // 选中对象状态管理  
   const [selectedObjects, setSelectedObjects] = useState<Object3D[]>([]);
+  // 变换控制器模式状态
+  const [transformMode, setTransformMode] = useState<'translate' | 'rotate' | 'scale'>('translate');
+
+  // 变换控制器快捷键监听
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // 阻止在输入框中触发快捷键
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      // 仅在有选中对象且辅助功能开启时才响应快捷键
+      if (selectedObjects.length === 0 || !sceneConfig.helpers.enabled) {
+        return;
+      }
+
+      switch (event.key.toLowerCase()) {
+        case 'g':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            setTransformMode('translate');
+          }
+          break;
+        case 'r':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            setTransformMode('rotate');
+          }
+          break;
+        case 's':
+          if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            setTransformMode('scale');
+          }
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selectedObjects.length, sceneConfig.helpers.enabled]);
 
   // 同步SceneTree选择到3D场景高亮
   useEffect(() => {
@@ -783,6 +826,26 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
               enableDamping={true}
               dampingFactor={0.1}
             />
+
+            {/* Transform控制器 - 用于变换选中对象 */}
+            {sceneConfig.helpers.enabled && selectedObjects.length > 0 && (
+              <TransformControls
+                object={selectedObjects[0]}
+                mode={transformMode}
+                space="world"
+                size={1}
+                showX={true}
+                showY={true}
+                showZ={true}
+                translationSnap={null}
+                rotationSnap={null}
+                scaleSnap={null}
+                onObjectChange={() => {
+                  // 对象变换时的回调，可以在这里更新节点状态
+                  // TODO: 可以在这里同步更新 Redux 中的节点位置信息
+                }}
+              />
+            )}
 
             {/* Gizmo 坐标轴指示器 - 右上角 */}
             <GizmoHelper
