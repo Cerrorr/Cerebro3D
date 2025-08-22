@@ -24,6 +24,7 @@ export interface UseThreeSceneResult {
   setBackgroundTexture: (imageUrl: string) => void;
   setBackgroundSkybox: (imageUrl: string) => void;
   setBackground: (type: 'color' | 'texture' | 'skybox', value: string) => void;
+  setEnvironmentMap: (type: 'none' | 'equirect' | 'cube', imageUrl?: string, intensity?: number) => void;
   enableFog: (color: string, near: number, far: number) => void;
   disableFog: () => void;
   enableShadows: () => void;

@@ -293,27 +293,98 @@ const SceneConfigPanel: React.FC<SceneConfigPanelProps> = ({
           {/* 环境 */}
           <div className="config-item">
             <label className="config-label">环境</label>
-            <div className="environment-config">
-              <RSelect
-                value={sceneConfig.environment.type}
-                onChange={(value) => handleSceneConfigChange('environment', 'type', value)}
-                record={record}
-                field="环境"
-                className="config-select"
-                suffixIcon={<DownOutlined />}
-              >
-                <Option value="none">None</Option>
-                <Option value="equirect">Equirect</Option>
-                <Option value="cube">Cube</Option>
-              </RSelect>
-              {sceneConfig.environment.type !== 'none' && (
-                <div className="environment-preview">
-                  <div className="environment-placeholder">
-                    <span className="environment-text">RGB</span>
+            <RSelect
+              value={sceneConfig.environment.type}
+              onChange={(value) => handleSceneConfigChange('environment', 'type', value)}
+              record={record}
+              field="环境"
+              className="config-select"
+              suffixIcon={<DownOutlined />}
+            >
+              <Option value="none">None</Option>
+              <Option value="equirect">Equirect</Option>
+              <Option value="cube">Cube</Option>
+            </RSelect>
+            
+            {/* 根据环境类型显示不同的配置选项 */}
+            {sceneConfig.environment.type === 'equirect' && (
+              <div className="environment-config" style={{ marginTop: '8px' }}>
+                <Upload
+                  accept="image/*"
+                  showUploadList={false}
+                  beforeUpload={(file) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                      const dataURL = e.target?.result as string;
+                      handleSceneConfigChange('environment', 'map', dataURL);
+                    };
+                    reader.readAsDataURL(file);
+                    return false;
+                  }}
+                >
+                  <Button icon={<UploadOutlined />} block>
+                    上传全景图片
+                  </Button>
+                </Upload>
+                {sceneConfig.environment.map && (
+                  <div className="uploaded-preview" style={{ marginTop: '8px' }}>
+                    <img 
+                      src={sceneConfig.environment.map} 
+                      alt="环境贴图" 
+                      style={{ width: '100%', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
+                    />
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
+            
+            {sceneConfig.environment.type === 'cube' && (
+              <div className="environment-config" style={{ marginTop: '8px' }}>
+                <Upload
+                  accept="image/*"
+                  showUploadList={false}
+                  beforeUpload={(file) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                      const dataURL = e.target?.result as string;
+                      handleSceneConfigChange('environment', 'map', dataURL);
+                    };
+                    reader.readAsDataURL(file);
+                    return false;
+                  }}
+                >
+                  <Button icon={<UploadOutlined />} block>
+                    上传立方体贴图
+                  </Button>
+                </Upload>
+                {sceneConfig.environment.map && (
+                  <div className="uploaded-preview" style={{ marginTop: '8px' }}>
+                    <img 
+                      src={sceneConfig.environment.map} 
+                      alt="环境贴图" 
+                      style={{ width: '100%', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {sceneConfig.environment.type !== 'none' && (
+              <div className="environment-intensity" style={{ marginTop: '8px' }}>
+                <label style={{ fontSize: '12px', color: '#666', marginBottom: '4px', display: 'block' }}>
+                  环境强度
+                </label>
+                <Input
+                  type="number"
+                  min={0}
+                  max={2}
+                  step={0.1}
+                  value={sceneConfig.environment.intensity || 1}
+                  onChange={(e) => handleSceneConfigChange('environment', 'intensity', parseFloat(e.target.value) || 1)}
+                  style={{ width: '100%' }}
+                />
+              </div>
+            )}
           </div>
 
           {/* 辅助 */}

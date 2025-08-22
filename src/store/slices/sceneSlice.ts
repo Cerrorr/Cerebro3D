@@ -111,7 +111,7 @@ const initialState: SceneState = {
   cameraConfig: DEFAULT_CAMERA_CONFIG,
   sceneConfig: {
     background: { type: 'color', value: '#2a2a2a', color: '#2a2a2a' },
-    environment: { type: 'none', intensity: 1 },
+    environment: { type: 'none', map: undefined, intensity: 1 },
     helpers: { enabled: true, axes: true, cameraHelper: false, lightHelper: false },
   },
   isLoading: false,

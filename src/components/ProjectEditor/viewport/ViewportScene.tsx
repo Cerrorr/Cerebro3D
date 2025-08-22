@@ -53,10 +53,16 @@ const SceneSetup: React.FC<{
     texture?: string;
     skybox?: string;
   };
-}> = ({ backgroundColor, enableFog, fogNear, fogFar, backgroundConfig }) => {
+  environmentConfig?: {
+    type: 'none' | 'equirect' | 'cube';
+    map?: string;
+    intensity: number;
+  };
+}> = ({ backgroundColor, enableFog, fogNear, fogFar, backgroundConfig, environmentConfig }) => {
   const {
     setBackgroundColor,
     setBackground,
+    setEnvironmentMap,
     enableFog: setFog,
     disableFog,
     enableShadows,
@@ -103,6 +109,15 @@ const SceneSetup: React.FC<{
     } else {
       setBackgroundColor(backgroundColor);
     }
+
+    // 应用环境配置
+    if (environmentConfig) {
+      setEnvironmentMap(
+        environmentConfig.type,
+        environmentConfig.map,
+        environmentConfig.intensity
+      );
+    }
     
     enableShadows();
 
@@ -114,11 +129,13 @@ const SceneSetup: React.FC<{
   }, [
     backgroundColor,
     backgroundConfig,
+    environmentConfig,
     enableFog,
     fogNear,
     fogFar,
     setBackgroundColor,
     setBackground,
+    setEnvironmentMap,
     setFog,
     disableFog,
     enableShadows,
@@ -693,6 +710,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
               fogNear={fogNear}
               fogFar={fogFar}
               backgroundConfig={sceneConfig.background}
+              environmentConfig={sceneConfig.environment}
             />
 
             {/* 光照设置组件 */}
