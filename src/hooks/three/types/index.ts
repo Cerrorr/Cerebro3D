@@ -13,3 +13,5 @@ export * from './useFileImport.types';
 export * from './Scene3DService.types';
 export * from './useRenderStats.types';
 export * from './useClickPicker.types';
+export * from './useSceneSelection.types';
+export * from './useTransformControls.types';

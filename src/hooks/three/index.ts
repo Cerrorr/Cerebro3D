@@ -25,5 +25,11 @@ export { useRenderStats } from './useRenderStats';
 // 点击拾取
 export { useClickPicker } from './useClickPicker';
 
+// 场景选择
+export { useSceneSelection } from './useSceneSelection';
+
+// Transform控制器
+export { useTransformControls } from './useTransformControls';
+
 // 类型定义
 export * from './types';
