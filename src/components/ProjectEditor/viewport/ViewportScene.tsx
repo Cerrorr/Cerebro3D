@@ -685,6 +685,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
         setSelectedObjects([]);
       }
     } else {
+      // 如果没有选中节点，清空高亮
       setSelectedObjects([]);
     }
   }, [selectedNodeId, sceneNodes, scene3DService]);
@@ -787,7 +788,12 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
                 }
                 
                 if (nodeId) {
-                  dispatch(selectNode(nodeId));
+                  // 如果点击的是已经选中的节点，则取消选择
+                  if (selectedNodeId === nodeId) {
+                    dispatch(selectNode(null));
+                  } else {
+                    dispatch(selectNode(nodeId));
+                  }
                 }
 
                 // 将完整的 PickedObject 传给上层
