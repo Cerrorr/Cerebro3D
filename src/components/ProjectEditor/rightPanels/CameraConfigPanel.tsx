@@ -15,6 +15,7 @@ import {
   SwapOutlined
 } from '@ant-design/icons';
 import type { CameraConfigPanelProps, CameraType } from './types';
+import { DEFAULT_CAMERA_TRANSFORM } from './constants/CameraConfig.constants';
 import './styles/CameraConfigPanel.scss';
 import { RSelect, RInputNumber, RButton } from '@/components/common/recordable';
 import { useRecord } from '@/hooks/common/useRecord';
@@ -86,11 +87,7 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
    */
   const handleResetCamera = useCallback(() => {
     onCameraConfigChange({
-      transform: {
-        position: { x: 6, y: 4, z: 6 },
-        rotation: { x: 0, y: 0, z: 0 },
-        target: { x: 0, y: 0, z: 0 }
-      }
+      transform: DEFAULT_CAMERA_TRANSFORM
     });
   }, [onCameraConfigChange]);
 
