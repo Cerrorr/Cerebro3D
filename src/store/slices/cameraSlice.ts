@@ -17,12 +17,8 @@ import {
   DEFAULT_CAMERA_TRANSFORM,
   CAMERA_PRESETS
 } from '@/components/projectEditor/rightPanels/constants/CameraConfig.constants';
+import type { CameraState } from '@/store/types/cameraSlice.types';
 
-interface CameraState {
-  config: CameraConfiguration;
-  activePreset: string | null;
-  isDirty: boolean;
-}
 
 const initialState: CameraState = {
   config: DEFAULT_CAMERA_CONFIG,
