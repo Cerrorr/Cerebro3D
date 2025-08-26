@@ -14,11 +14,21 @@ import {
   ControlOutlined,
   SwapOutlined
 } from '@ant-design/icons';
-import type { CameraConfigPanelProps, CameraType } from './types';
-import { DEFAULT_CAMERA_TRANSFORM } from './constants/CameraConfig.constants';
+import type { CameraType } from './types';
 import './styles/CameraConfigPanel.scss';
 import { RSelect, RInputNumber, RButton } from '@/components/common/recordable';
 import { useRecord } from '@/hooks/common/useRecord';
+import { useAppDispatch, useAppSelector } from '@/store';
+import {
+  setCameraType,
+  setPerspectiveConfig,
+  setOrthographicConfig,
+  setCameraPosition,
+  setCameraRotation,
+  setCameraTarget,
+  resetCamera,
+  focusOrigin,
+} from '@/store/slices/cameraSlice';
 
 const { Option } = AntSelect;
 const { Text } = Typography;
@@ -29,79 +39,64 @@ const { Text } = Typography;
  * @author Cerror
  * @since 2025-06-25
  */
-const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
-  cameraConfig,
-  onCameraConfigChange
-}) => {
-  // 记录函数
+const CameraConfigPanel: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const cameraConfig = useAppSelector(state => state.camera.config);
+  
   const record = useRecord('相机配置');
 
   /**
    * 处理相机类型变更
    */
   const handleCameraTypeChange = useCallback((type: CameraType) => {
-    onCameraConfigChange({ type });
-  }, [onCameraConfigChange]);
+    dispatch(setCameraType(type));
+  }, [dispatch]);
+
 
   /**
    * 处理透视相机参数变更
    */
   const handlePerspectiveChange = useCallback((field: string, value: number) => {
-    onCameraConfigChange({
-      perspective: {
-        ...cameraConfig.perspective,
-        [field]: value
-      }
-    });
-  }, [cameraConfig.perspective, onCameraConfigChange]);
+    dispatch(setPerspectiveConfig({ [field]: value }));
+  }, [dispatch]);
 
   /**
    * 处理正交相机参数变更
    */
   const handleOrthographicChange = useCallback((field: string, value: number) => {
-    onCameraConfigChange({
-      orthographic: {
-        ...cameraConfig.orthographic,
-        [field]: value
-      }
-    });
-  }, [cameraConfig.orthographic, onCameraConfigChange]);
+    dispatch(setOrthographicConfig({ [field]: value }));
+  }, [dispatch]);
 
   /**
    * 处理相机变换参数变更
    */
   const handleTransformChange = useCallback((section: 'position' | 'rotation' | 'target', field: 'x' | 'y' | 'z', value: number) => {
-    onCameraConfigChange({
-      transform: {
-        ...cameraConfig.transform,
-        [section]: {
-          ...cameraConfig.transform[section],
-          [field]: value
-        }
-      }
-    });
-  }, [cameraConfig.transform, onCameraConfigChange]);
+    switch (section) {
+      case 'position':
+        dispatch(setCameraPosition({ [field]: value }));
+        break;
+      case 'rotation':
+        dispatch(setCameraRotation({ [field]: value }));
+        break;
+      case 'target':
+        dispatch(setCameraTarget({ [field]: value }));
+        break;
+    }
+  }, [dispatch]);
 
   /**
    * 重置相机参数
    */
   const handleResetCamera = useCallback(() => {
-    onCameraConfigChange({
-      transform: DEFAULT_CAMERA_TRANSFORM
-    });
-  }, [onCameraConfigChange]);
+    dispatch(resetCamera());
+  }, [dispatch]);
 
   /**
    * 聚焦到原点
    */
   const handleFocusOrigin = useCallback(() => {
-    onCameraConfigChange({
-      transform: {
-        ...cameraConfig.transform,
-        target: { x: 0, y: 0, z: 0 }
-      }
-    });
-  }, [cameraConfig.transform, onCameraConfigChange]);
+    dispatch(focusOrigin());
+  }, [dispatch]);
 
   /* ---------- 构建 Collapse items ---------- */
   const items = [
@@ -351,46 +346,6 @@ const CameraConfigPanel: React.FC<CameraConfigPanelProps> = ({
                   value={cameraConfig.transform.position.z}
                   onChange={(value) => handleTransformChange('position', 'z', Number(value ?? 0))}
                   step={0.1}
-                  className="config-input-number"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* 旋转 */}
-          <div className="config-group">
-            <Text className="config-group-title">旋转</Text>
-            <div className="config-row">
-              <div className="config-item config-item--third">
-                <label className="config-label">X</label>
-                <RInputNumber
-                  record={record}
-                  field="rotation.x"
-                  value={cameraConfig.transform.rotation.x}
-                  onChange={(value) => handleTransformChange('rotation', 'x', Number(value ?? 0))}
-                  step={1}
-                  className="config-input-number"
-                />
-              </div>
-              <div className="config-item config-item--third">
-                <label className="config-label">Y</label>
-                <RInputNumber
-                  record={record}
-                  field="rotation.y"
-                  value={cameraConfig.transform.rotation.y}
-                  onChange={(value) => handleTransformChange('rotation', 'y', Number(value ?? 0))}
-                  step={1}
-                  className="config-input-number"
-                />
-              </div>
-              <div className="config-item config-item--third">
-                <label className="config-label">Z</label>
-                <RInputNumber
-                  record={record}
-                  field="rotation.z"
-                  value={cameraConfig.transform.rotation.z}
-                  onChange={(value) => handleTransformChange('rotation', 'z', Number(value ?? 0))}
-                  step={1}
                   className="config-input-number"
                 />
               </div>

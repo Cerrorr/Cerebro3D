@@ -60,10 +60,7 @@ const RightSidebarContent: React.FC<RightSidebarContentProps> = ({ currentTab, p
             onProjectInfoChange={handlers.onProjectInfoChange}
           />
         ) : currentTab === 'camera' ? (
-          <CameraConfigPanel
-            cameraConfig={cameraConfig}
-            onCameraConfigChange={handlers.onCameraConfigChange}
-          />
+          <CameraConfigPanel />
         ) : currentTab === 'lighting' ? (
           <LightingConfigPanel
             lightingConfig={lightingConfig}

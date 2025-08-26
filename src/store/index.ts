@@ -8,11 +8,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import historyReducer from './slices/historySlice';
 import sceneReducer from './slices/sceneSlice';
+import cameraReducer from './slices/cameraSlice';
 
 export const store = configureStore({
   reducer: {
     history: historyReducer,
     scene: sceneReducer,
+    camera: cameraReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

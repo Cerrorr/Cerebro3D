@@ -4,7 +4,7 @@
  * @description 3D视口场景组件 - 重构版本，使用模块化组件和Hook
  */
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {
   OrbitControls,
@@ -14,7 +14,8 @@ import {
   GizmoViewport,
   TransformControls,
 } from '@react-three/drei';
-import { useAppSelector } from '@/store';
+import { useAppSelector, useAppDispatch } from '@/store';
+import { setCameraPosition, setCameraTarget } from '@/store/slices/cameraSlice';
 
 // 导入子组件
 import SceneSetup from './components/SceneSetup';
@@ -52,6 +53,9 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
 }) => {
   // 从Redux获取场景数据和配置
   const { nodes: sceneNodes, sceneConfig } = useAppSelector(state => state.scene);
+  const cameraConfig = useAppSelector(state => state.camera.config);
+  const dispatch = useAppDispatch();
+  const orbitControlsRef = useRef<any>(null);
 
   // 使用选择管理Hook
   const sceneSelection = useSceneSelection({
@@ -78,14 +82,41 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
     onEmptySpacePicked?.();
   };
 
+  // 处理相机变化，同步到 Redux
+  const handleCameraChange = () => {
+    if (orbitControlsRef.current) {
+      const controls = orbitControlsRef.current;
+      const camera = controls.object;
+      const target = controls.target;
+      
+      // 同步相机位置
+      dispatch(setCameraPosition({
+        x: camera.position.x,
+        y: camera.position.y,
+        z: camera.position.z,
+      }));
+      
+      // 同步相机目标点
+      dispatch(setCameraTarget({
+        x: target.x,
+        y: target.y,
+        z: target.z,
+      }));
+    }
+  };
+
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <Canvas
         camera={{
-          position: [10, 10, 10],
-          fov: 50,
-          near: 0.1,
-          far: 1000,
+          position: [
+            cameraConfig.transform.position.x,
+            cameraConfig.transform.position.y,
+            cameraConfig.transform.position.z
+          ],
+          fov: cameraConfig.type === 'perspective' ? cameraConfig.perspective.fov : 50,
+          near: cameraConfig.type === 'perspective' ? cameraConfig.perspective.near : cameraConfig.orthographic.near,
+          far: cameraConfig.type === 'perspective' ? cameraConfig.perspective.far : cameraConfig.orthographic.far,
         }}
         shadows
         style={{ background: backgroundColor }}
@@ -111,6 +142,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
           <CameraManager
             cameraControlRef={cameraControlRef}
             onViewChange={onViewChange}
+            cameraConfig={cameraConfig}
           />
 
           {/* 窗口大小变化处理组件 */}
@@ -137,6 +169,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
 
           {/* 轨道控制器 */}
           <OrbitControls
+            ref={orbitControlsRef}
             makeDefault
             enablePan={true}
             enableZoom={true}
@@ -146,6 +179,12 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
             maxPolarAngle={Math.PI}
             enableDamping={true}
             dampingFactor={0.1}
+            target={[
+              cameraConfig.transform.target.x,
+              cameraConfig.transform.target.y,
+              cameraConfig.transform.target.z,
+            ]}
+            onChange={handleCameraChange}
           />
 
           {/* Transform控制器 - 用于变换选中对象 */}
