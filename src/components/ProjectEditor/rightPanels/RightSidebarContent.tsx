@@ -62,10 +62,7 @@ const RightSidebarContent: React.FC<RightSidebarContentProps> = ({ currentTab, p
         ) : currentTab === 'camera' ? (
           <CameraConfigPanel />
         ) : currentTab === 'lighting' ? (
-          <LightingConfigPanel
-            lightingConfig={lightingConfig}
-            onLightingConfigChange={handlers.onLightingConfigChange}
-          />
+          <LightingConfigPanel />
         ) : currentTab === 'postprocess' ? (
           <PostProcessingPanel
             config={postProcessingConfig}
@@ -77,10 +74,7 @@ const RightSidebarContent: React.FC<RightSidebarContentProps> = ({ currentTab, p
             onChange={handlers.onWeatherChange ?? handlers.onChange}
           />
         ) : currentTab === 'renderer' ? (
-          <RendererConfigPanel
-            config={rendererConfig}
-            onChange={handlers.onRendererChange ?? handlers.onChange}
-          />
+          <RendererConfigPanel />
         ) : currentTab === 'history' ? (
           <HistoryPanel
             historyState={historyState}

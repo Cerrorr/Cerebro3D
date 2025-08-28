@@ -23,7 +23,7 @@ const CameraManager: React.FC<CameraManagerProps> = ({
   onViewChange,
   cameraConfig
 }) => {
-  const { camera, gl, size, scene, set } = useThree();
+  const { camera, size, set } = useThree();
   
   const { resetCamera, setView, zoomToFitAll, getCurrentView, setPosition, setTarget } =
     useCameraControl({

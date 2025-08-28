@@ -22,6 +22,8 @@ import SceneSetup from './components/SceneSetup';
 import SceneLighting from './components/SceneLighting';
 import CameraManager from './components/CameraManager';
 import ResizeHandler from './components/ResizeHandler';
+import RendererSync from './components/RendererSync';
+import GlobalIllumination from './components/GlobalIllumination';
 import NativeOutlineEffect from './NativeOutlineEffect';
 import SceneObjects from './SceneObjects';
 
@@ -137,6 +139,12 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
 
           {/* 光照设置组件 */}
           <SceneLighting />
+
+          {/* 渲染器配置同步组件 */}
+          <RendererSync />
+
+          {/* 全局光影组件 */}
+          <GlobalIllumination />
 
           {/* 相机控制组件 */}
           <CameraManager
