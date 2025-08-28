@@ -1,16 +1,19 @@
 /**
  * 窗口大小变化处理组件
  * 监听窗口大小变化，自动更新相机宽高比和渲染器尺寸
- * 优化版本：实时同步面板动画，减少闪烁
+ * 优化版本：实时同步面板动画，减少闪烁，同步Redux状态
  * @author Cerror
  * @since 2025-08-22
  */
 
 import React, { useEffect, useRef } from 'react';
 import { useThree } from '@react-three/fiber';
+import { useAppDispatch } from '@/store';
+import { setPerspectiveConfig } from '@/store/slices/cameraSlice';
 
 const ResizeHandler: React.FC = () => {
   const { camera, gl } = useThree();
+  const dispatch = useAppDispatch();
   const lastSizeRef = useRef({ width: 0, height: 0 });
   const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const animationFrameRef = useRef<number | null>(null);
@@ -38,8 +41,12 @@ const ResizeHandler: React.FC = () => {
         // 更新相机宽高比
         if (camera.type === 'PerspectiveCamera') {
           const perspectiveCamera = camera as any;
-          perspectiveCamera.aspect = width / height;
+          const newAspect = width / height;
+          perspectiveCamera.aspect = newAspect;
           perspectiveCamera.updateProjectionMatrix();
+          
+          // 同步更新Redux中的相机配置
+          dispatch(setPerspectiveConfig({ aspect: newAspect }));
         }
 
         if (camera.type === 'OrthographicCamera') {
@@ -178,7 +185,7 @@ const ResizeHandler: React.FC = () => {
       }
       isAnimatingRef.current = false;
     };
-  }, [camera, gl]);
+  }, [camera, gl, dispatch]);
 
   return null;
 };

@@ -17,7 +17,7 @@ import type {
  */
 export const DEFAULT_PERSPECTIVE_CONFIG: PerspectiveCameraConfig = {
   fov: 75,
-  aspect: 1,
+  aspect: 16 / 9, // 使用常见的16:9宽高比
   near: 0.1,
   far: 10000,
 };
@@ -125,7 +125,7 @@ export const CAMERA_PRESETS: CameraPreset[] = [
       type: 'perspective',
       perspective: {
         fov: 50,
-        aspect: 1,
+        aspect: 16 / 9, // 使用16:9宽高比
         near: 0.1,
         far: 10000,
       },
