@@ -7,7 +7,7 @@
 import React, { useEffect, useRef, useMemo, memo } from 'react';
 import { useThree } from '@react-three/fiber';
 import { useAppSelector } from '@/store';
-import * as THREE from 'three';
+import { DirectionalLight, OrthographicCamera } from 'three';
 
 export interface GlobalIlluminationProps {
   // 可选的额外配置
@@ -18,7 +18,7 @@ const GlobalIllumination: React.FC<GlobalIlluminationProps> = memo(() => {
   const { globalIllumination } = useAppSelector(state => state.renderer.config);
   
   // 使用ref来缓存光源，避免重复创建
-  const globalLightRef = useRef<THREE.DirectionalLight | null>(null);
+  const globalLightRef = useRef<DirectionalLight | null>(null);
   const lastConfigRef = useRef<typeof globalIllumination | null>(null);
 
   // 分离配置以减少不必要的重渲染
@@ -70,7 +70,7 @@ const GlobalIllumination: React.FC<GlobalIlluminationProps> = memo(() => {
 
     // 如果光源不存在，创建新的
     if (!globalLightRef.current) {
-      const globalLight = new THREE.DirectionalLight();
+      const globalLight = new DirectionalLight();
       globalLight.name = 'global-illumination-light';
       globalLight.target.position.set(0, 0, 0);
       
@@ -166,7 +166,7 @@ const GlobalIllumination: React.FC<GlobalIlluminationProps> = memo(() => {
     // 设置阴影相机的视锥体大小（只在需要时更新）
     if (!lastConfig) {
       const d = 50;
-      const shadowCamera = globalLight.shadow.camera as THREE.OrthographicCamera;
+      const shadowCamera = globalLight.shadow.camera as OrthographicCamera;
       shadowCamera.left = -d;
       shadowCamera.right = d;
       shadowCamera.top = d;

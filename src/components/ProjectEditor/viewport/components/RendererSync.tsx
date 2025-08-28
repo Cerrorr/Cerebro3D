@@ -7,7 +7,19 @@
 import React, { useEffect, useRef, useMemo, memo } from 'react';
 import { useThree } from '@react-three/fiber';
 import { useAppSelector } from '@/store';
-import * as THREE from 'three';
+import {
+  NoToneMapping,
+  LinearToneMapping,
+  ReinhardToneMapping,
+  CineonToneMapping,
+  ACESFilmicToneMapping,
+  BasicShadowMap,
+  PCFShadowMap,
+  PCFSoftShadowMap,
+  VSMShadowMap,
+  SRGBColorSpace,
+  type ShadowMapType,
+} from 'three';
 
 export interface RendererSyncProps {
   // 可选的额外配置
@@ -51,32 +63,32 @@ const RendererSync: React.FC<RendererSyncProps> = memo(() => {
 
     switch (toneMappingConfig.type) {
       case 'No':
-        if (currentToneMapping !== THREE.NoToneMapping) {
-          gl.toneMapping = THREE.NoToneMapping;
+        if (currentToneMapping !== NoToneMapping) {
+          gl.toneMapping = NoToneMapping;
           needsCompile = true;
         }
         break;
       case 'Linear':
-        if (currentToneMapping !== THREE.LinearToneMapping) {
-          gl.toneMapping = THREE.LinearToneMapping;
+        if (currentToneMapping !== LinearToneMapping) {
+          gl.toneMapping = LinearToneMapping;
           needsCompile = true;
         }
         break;
       case 'Reinhard':
-        if (currentToneMapping !== THREE.ReinhardToneMapping) {
-          gl.toneMapping = THREE.ReinhardToneMapping;
+        if (currentToneMapping !== ReinhardToneMapping) {
+          gl.toneMapping = ReinhardToneMapping;
           needsCompile = true;
         }
         break;
       case 'Cineon':
-        if (currentToneMapping !== THREE.CineonToneMapping) {
-          gl.toneMapping = THREE.CineonToneMapping;
+        if (currentToneMapping !== CineonToneMapping) {
+          gl.toneMapping = CineonToneMapping;
           needsCompile = true;
         }
         break;
       case 'ACESFilmic':
-        if (currentToneMapping !== THREE.ACESFilmicToneMapping) {
-          gl.toneMapping = THREE.ACESFilmicToneMapping;
+        if (currentToneMapping !== ACESFilmicToneMapping) {
+          gl.toneMapping = ACESFilmicToneMapping;
           needsCompile = true;
         }
         break;
@@ -110,23 +122,23 @@ const RendererSync: React.FC<RendererSyncProps> = memo(() => {
     }
     
     if (shadowConfig.enabled) {
-      let newShadowType: THREE.ShadowMapType;
+      let newShadowType: ShadowMapType;
       
       switch (shadowConfig.type) {
         case 'Basic':
-          newShadowType = THREE.BasicShadowMap;
+          newShadowType = BasicShadowMap;
           break;
         case 'PCF':
-          newShadowType = THREE.PCFShadowMap;
+          newShadowType = PCFShadowMap;
           break;
         case 'PCF Soft':
-          newShadowType = THREE.PCFSoftShadowMap;
+          newShadowType = PCFSoftShadowMap;
           break;
         case 'VSM':
-          newShadowType = THREE.VSMShadowMap;
+          newShadowType = VSMShadowMap;
           break;
         default:
-          newShadowType = THREE.PCFSoftShadowMap;
+          newShadowType = PCFSoftShadowMap;
       }
 
       if (gl.shadowMap.type !== newShadowType) {
@@ -181,8 +193,8 @@ const RendererSync: React.FC<RendererSyncProps> = memo(() => {
 
     if (globalIlluminationConfig.enabled) {
       // 检查当前颜色空间设置
-      if (gl.outputColorSpace !== THREE.SRGBColorSpace) {
-        gl.outputColorSpace = THREE.SRGBColorSpace;
+      if (gl.outputColorSpace !== SRGBColorSpace) {
+        gl.outputColorSpace = SRGBColorSpace;
       }
     }
 
