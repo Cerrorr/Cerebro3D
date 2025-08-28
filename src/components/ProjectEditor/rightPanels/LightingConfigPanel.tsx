@@ -5,7 +5,7 @@
  * @since 2025-06-26
  */
 
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { Typography, Collapse } from 'antd';
 import type { Color } from 'antd/es/color-picker';
 import { 
@@ -16,24 +16,35 @@ import {
   EnvironmentOutlined,
   HighlightOutlined
 } from '@ant-design/icons';
+import './styles/LightingConfigPanel.scss';
 import type { 
-  LightingConfigPanelProps,
   LightingConfig,
   Vector3
-} from './types';
-import './styles/LightingConfigPanel.scss';
+} from './types/LightingConfig.types';
 import { useRecord } from '@/hooks/common/useRecord';
 import { RInputNumber, RSwitch, RColorPicker } from '@/components/common/recordable';
+import { useAppDispatch, useAppSelector } from '@/store';
+import {
+  setAmbientLight,
+  setDirectionalLight,
+  setDirectionalLightPosition,
+  setHemisphereLight,
+  setPointLight,
+  setPointLightPosition,
+  setSpotLight,
+  setSpotLightPosition,
+  setSpotLightTarget,
+} from '@/store/slices/lightingSlice';
 
 const { Text } = Typography;
 
 /**
  * 灯光配置面板组件
  */
-const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
-  lightingConfig,
-  onLightingConfigChange
-}) => {
+const LightingConfigPanel: React.FC = memo(() => {
+  const dispatch = useAppDispatch();
+  const lightingConfig = useAppSelector(state => state.lighting.config);
+  
   /* 记录器 */
   const record = useRecord('Lighting');
 
@@ -41,64 +52,39 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
    * 处理环境光配置变化
    */
   const handleAmbientChange = useCallback((field: string, value: any) => {
-    onLightingConfigChange({
-      ambient: {
-        ...lightingConfig.ambient,
-        [field]: value
-      }
-    });
-  }, [lightingConfig.ambient, onLightingConfigChange]);
+    dispatch(setAmbientLight({ [field]: value }));
+  }, [dispatch]);
 
   /**
    * 处理平行光配置变化
    */
   const handleDirectionalChange = useCallback((field: string, value: any) => {
-    onLightingConfigChange({
-      directional: {
-        ...lightingConfig.directional,
-        [field]: value
-      }
-    });
-  }, [lightingConfig.directional, onLightingConfigChange]);
+    dispatch(setDirectionalLight({ [field]: value }));
+  }, [dispatch]);
 
   /**
    * 处理半球光配置变化
    */
   const handleHemisphereChange = useCallback((field: string, value: any) => {
     record(`半球光 ${field} = ${value}`);
-    onLightingConfigChange({
-      hemisphere: {
-        ...lightingConfig.hemisphere,
-        [field]: value
-      }
-    });
-  }, [lightingConfig.hemisphere, onLightingConfigChange]);
+    dispatch(setHemisphereLight({ [field]: value }));
+  }, [dispatch, record]);
 
   /**
    * 处理点光源配置变化
    */
   const handlePointChange = useCallback((field: string, value: any) => {
     record(`点光源 ${field} = ${value}`);
-    onLightingConfigChange({
-      point: {
-        ...lightingConfig.point,
-        [field]: value
-      }
-    });
-  }, [lightingConfig.point, onLightingConfigChange]);
+    dispatch(setPointLight({ [field]: value }));
+  }, [dispatch, record]);
 
   /**
    * 处理聚光灯配置变化
    */
   const handleSpotChange = useCallback((field: string, value: any) => {
     record(`聚光灯 ${field} = ${value}`);
-    onLightingConfigChange({
-      spot: {
-        ...lightingConfig.spot,
-        [field]: value
-      }
-    });
-  }, [lightingConfig.spot, onLightingConfigChange]);
+    dispatch(setSpotLight({ [field]: value }));
+  }, [dispatch, record]);
 
   /**
    * 处理位置变化
@@ -109,18 +95,28 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
     value: number | string | null
   ) => {
     const num = Number(value ?? 0);
-    const currentConfig = lightingConfig[lightType] as any;
     record(`${lightType} 位置 ${axis} = ${num}`);
-    onLightingConfigChange({
-      [lightType]: {
-        ...currentConfig,
-        position: {
-          ...currentConfig.position,
-          [axis]: num
-        }
-      }
-    });
-  }, [lightingConfig, onLightingConfigChange]);
+    
+    switch(lightType) {
+      case 'directional':
+        dispatch(setDirectionalLightPosition({ [axis]: num }));
+        break;
+      case 'point':
+        dispatch(setPointLightPosition({ [axis]: num }));
+        break;
+      case 'spot':
+        dispatch(setSpotLightPosition({ [axis]: num }));
+        break;
+      case 'hemisphere':
+        dispatch(setHemisphereLight({ 
+          position: { 
+            ...lightingConfig.hemisphere.position, 
+            [axis]: num 
+          } 
+        }));
+        break;
+    }
+  }, [dispatch, record, lightingConfig]);
 
   /**
    * 处理目标点变化（聚光灯）
@@ -128,16 +124,8 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
   const handleTargetChange = useCallback((axis: keyof Vector3, value: number | string | null) => {
     const num = Number(value ?? 0);
     record(`聚光灯目标 ${axis} = ${num}`);
-    onLightingConfigChange({
-      spot: {
-        ...lightingConfig.spot,
-        target: {
-          ...lightingConfig.spot.target,
-          [axis]: num
-        }
-      }
-    });
-  }, [lightingConfig.spot, onLightingConfigChange]);
+    dispatch(setSpotLightTarget({ [axis]: num }));
+  }, [dispatch, record]);
 
   /**
    * 处理颜色变化
@@ -147,15 +135,27 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
     field: string,
     color: Color
   ) => {
-    const currentConfig = lightingConfig[lightType] as any;
+    const hexColor = color.toHexString();
     record(`${lightType} 颜色修改`);
-    onLightingConfigChange({
-      [lightType]: {
-        ...currentConfig,
-        [field]: color.toHexString()
-      }
-    });
-  }, [lightingConfig, onLightingConfigChange]);
+    
+    switch(lightType) {
+      case 'ambient':
+        dispatch(setAmbientLight({ [field]: hexColor }));
+        break;
+      case 'directional':
+        dispatch(setDirectionalLight({ [field]: hexColor }));
+        break;
+      case 'hemisphere':
+        dispatch(setHemisphereLight({ [field]: hexColor }));
+        break;
+      case 'point':
+        dispatch(setPointLight({ [field]: hexColor }));
+        break;
+      case 'spot':
+        dispatch(setSpotLight({ [field]: hexColor }));
+        break;
+    }
+  }, [dispatch, record]);
 
   /* ---------- 构建 Collapse items ---------- */
   const items = [
@@ -165,13 +165,15 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         <div className="panel-header">
           <BulbOutlined className="panel-icon" />
           <span>环境光</span>
-          <RSwitch
-            record={record}
-            field="ambient.enabled"
-            size="small"
-            checked={lightingConfig.ambient.enabled}
-            onChange={(checked) => handleAmbientChange('enabled', checked)}
-          />
+          <div onClick={(e) => e.stopPropagation()}>
+            <RSwitch
+              record={record}
+              field="ambient.enabled"
+              size="small"
+              checked={lightingConfig.ambient.enabled}
+              onChange={(checked) => handleAmbientChange('enabled', checked)}
+            />
+          </div>
         </div>
       ),
       children: (
@@ -211,13 +213,15 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         <div className="panel-header">
           <SunOutlined className="panel-icon" />
           <span>平行光</span>
-          <RSwitch
-            record={record}
-            field="directional.enabled"
-            size="small"
-            checked={lightingConfig.directional.enabled}
-            onChange={(checked) => handleDirectionalChange('enabled', checked)}
-          />
+          <div onClick={(e) => e.stopPropagation()}>
+            <RSwitch
+              record={record}
+              field="directional.enabled"
+              size="small"
+              checked={lightingConfig.directional.enabled}
+              onChange={(checked) => handleDirectionalChange('enabled', checked)}
+            />
+          </div>
         </div>
       ),
       children: (
@@ -311,13 +315,15 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         <div className="panel-header">
           <GlobalOutlined className="panel-icon" />
           <span>半球光</span>
-          <RSwitch 
-            record={record}
-            field="hemisphere.enabled"
-            size="small"
-            checked={lightingConfig.hemisphere.enabled}
-            onChange={(checked) => handleHemisphereChange('enabled', checked)}
-          />
+          <div onClick={(e) => e.stopPropagation()}>
+            <RSwitch 
+              record={record}
+              field="hemisphere.enabled"
+              size="small"
+              checked={lightingConfig.hemisphere.enabled}
+              onChange={(checked) => handleHemisphereChange('enabled', checked)}
+            />
+          </div>
         </div>
       ),
       children: (
@@ -412,13 +418,15 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         <div className="panel-header">
           <EnvironmentOutlined className="panel-icon" />
           <span>点光源</span>
-          <RSwitch 
-            record={record}
-            field="point.enabled"
-            size="small"
-            checked={lightingConfig.point.enabled}
-            onChange={(checked) => handlePointChange('enabled', checked)}
-          />
+          <div onClick={(e) => e.stopPropagation()}>
+            <RSwitch 
+              record={record}
+              field="point.enabled"
+              size="small"
+              checked={lightingConfig.point.enabled}
+              onChange={(checked) => handlePointChange('enabled', checked)}
+            />
+          </div>
         </div>
       ),
       children: (
@@ -558,13 +566,15 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
         <div className="panel-header">
           <HighlightOutlined className="panel-icon" />
           <span>聚光灯</span>
-          <RSwitch 
-            record={record}
-            field="spot.enabled"
-            size="small"
-            checked={lightingConfig.spot.enabled}
-            onChange={(checked) => handleSpotChange('enabled', checked)}
-          />
+          <div onClick={(e) => e.stopPropagation()}>
+            <RSwitch 
+              record={record}
+              field="spot.enabled"
+              size="small"
+              checked={lightingConfig.spot.enabled}
+              onChange={(checked) => handleSpotChange('enabled', checked)}
+            />
+          </div>
         </div>
       ),
       children: (
@@ -784,6 +794,8 @@ const LightingConfigPanel: React.FC<LightingConfigPanelProps> = ({
       />
     </div>
   );
-};
+});
+
+LightingConfigPanel.displayName = 'LightingConfigPanel';
 
 export default LightingConfigPanel;

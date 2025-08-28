@@ -136,7 +136,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
           />
 
           {/* 光照设置组件 */}
-          <SceneLighting sceneNodes={sceneNodes} />
+          <SceneLighting />
 
           {/* 相机控制组件 */}
           <CameraManager

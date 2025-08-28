@@ -1,105 +1,173 @@
 /**
- * 光照设置组件 - 使用useLightingSystem Hook
+ * 光照设置组件 - 使用Redux配置
  * @author Cerror
  * @since 2025-08-22
  */
 
-import React, { useEffect } from 'react';
-import { useLightingSystem } from '@/hooks/three';
+import React, { memo, useMemo } from 'react';
+import { useAppSelector } from '@/store';
 
 export interface SceneLightingProps {
-  sceneNodes: any[];
+  sceneNodes?: any[];
 }
 
-const SceneLighting: React.FC<SceneLightingProps> = ({ sceneNodes }) => {
-  const {
-    addAmbientLight,
-    addDirectionalLight,
-    ambientLight,
-    directionalLight,
-  } = useLightingSystem({
-    enableAmbientLight: true,
-    ambientIntensity: 0.6,
-    enableDirectionalLight: true,
-    directionalIntensity: 1,
-    enableShadows: true,
-  });
+const SceneLighting: React.FC<SceneLightingProps> = memo(() => {
+  const lightingConfig = useAppSelector(state => state.lighting.config);
+  
+  // 使用 useMemo 缓存灯光组件，避免不必要的重新创建
+  const ambientLightElement = useMemo(() => {
+    if (!lightingConfig.ambient.enabled) return null;
+    return (
+      <ambientLight
+        key="ambient"
+        color={lightingConfig.ambient.color}
+        intensity={lightingConfig.ambient.intensity}
+      />
+    );
+  }, [lightingConfig.ambient.enabled, lightingConfig.ambient.color, lightingConfig.ambient.intensity]);
 
-  useEffect(() => {
-    // 添加环境光
-    addAmbientLight(0.6, '#ffffff');
+  const directionalLightElement = useMemo(() => {
+    if (!lightingConfig.directional.enabled) return null;
+    return (
+      <directionalLight
+        key="directional"
+        color={lightingConfig.directional.color}
+        intensity={lightingConfig.directional.intensity}
+        position={[
+          lightingConfig.directional.position.x,
+          lightingConfig.directional.position.y,
+          lightingConfig.directional.position.z
+        ]}
+        castShadow={lightingConfig.directional.castShadow}
+        shadow-mapSize={[lightingConfig.directional.shadowMapSize, lightingConfig.directional.shadowMapSize]}
+        shadow-camera-far={50}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+      />
+    );
+  }, [
+    lightingConfig.directional.enabled,
+    lightingConfig.directional.color,
+    lightingConfig.directional.intensity,
+    lightingConfig.directional.position.x,
+    lightingConfig.directional.position.y,
+    lightingConfig.directional.position.z,
+    lightingConfig.directional.castShadow,
+    lightingConfig.directional.shadowMapSize
+  ]);
 
-    // 添加主光源
-    import('three').then(({ Vector3 }) => {
-      addDirectionalLight(new Vector3(10, 10, 5), 1);
-    });
-  }, [addAmbientLight, addDirectionalLight]);
+  const hemisphereLightElement = useMemo(() => {
+    if (!lightingConfig.hemisphere.enabled) return null;
+    return (
+      <hemisphereLight
+        key="hemisphere"
+        color={lightingConfig.hemisphere.skyColor}
+        groundColor={lightingConfig.hemisphere.groundColor}
+        intensity={lightingConfig.hemisphere.intensity}
+        position={[
+          lightingConfig.hemisphere.position.x,
+          lightingConfig.hemisphere.position.y,
+          lightingConfig.hemisphere.position.z
+        ]}
+      />
+    );
+  }, [
+    lightingConfig.hemisphere.enabled,
+    lightingConfig.hemisphere.skyColor,
+    lightingConfig.hemisphere.groundColor,
+    lightingConfig.hemisphere.intensity,
+    lightingConfig.hemisphere.position.x,
+    lightingConfig.hemisphere.position.y,
+    lightingConfig.hemisphere.position.z
+  ]);
 
-  // 控制光源可见性
-  useEffect(() => {
-    // 递归查找节点
-    const findNodeById = (nodes: any[], id: string): any => {
-      for (const node of nodes) {
-        if (node.id === id) return node;
-        if (node.children) {
-          const found = findNodeById(node.children, id);
-          if (found) return found;
-        }
-      }
-      return null;
-    };
+  const pointLightElement = useMemo(() => {
+    if (!lightingConfig.point.enabled) return null;
+    return (
+      <pointLight
+        key="point"
+        color={lightingConfig.point.color}
+        intensity={lightingConfig.point.intensity}
+        position={[
+          lightingConfig.point.position.x,
+          lightingConfig.point.position.y,
+          lightingConfig.point.position.z
+        ]}
+        distance={lightingConfig.point.distance}
+        decay={lightingConfig.point.decay}
+        castShadow={lightingConfig.point.castShadow}
+        shadow-mapSize={[lightingConfig.point.shadowMapSize, lightingConfig.point.shadowMapSize]}
+      />
+    );
+  }, [
+    lightingConfig.point.enabled,
+    lightingConfig.point.color,
+    lightingConfig.point.intensity,
+    lightingConfig.point.position.x,
+    lightingConfig.point.position.y,
+    lightingConfig.point.position.z,
+    lightingConfig.point.distance,
+    lightingConfig.point.decay,
+    lightingConfig.point.castShadow,
+    lightingConfig.point.shadowMapSize
+  ]);
 
-    // 检查节点及其所有父节点的可见性
-    const isNodeVisible = (nodeToCheck: any, nodes: any[]): boolean => {
-      if (nodeToCheck.visible === false) {
-        return false;
-      }
+  const spotLightElement = useMemo(() => {
+    if (!lightingConfig.spot.enabled) return null;
+    return (
+      <spotLight
+        key="spot"
+        color={lightingConfig.spot.color}
+        intensity={lightingConfig.spot.intensity}
+        position={[
+          lightingConfig.spot.position.x,
+          lightingConfig.spot.position.y,
+          lightingConfig.spot.position.z
+        ]}
+        target-position={[
+          lightingConfig.spot.target.x,
+          lightingConfig.spot.target.y,
+          lightingConfig.spot.target.z
+        ]}
+        angle={lightingConfig.spot.angle}
+        penumbra={lightingConfig.spot.penumbra}
+        distance={lightingConfig.spot.distance}
+        decay={lightingConfig.spot.decay}
+        castShadow={lightingConfig.spot.castShadow}
+        shadow-mapSize={[lightingConfig.spot.shadowMapSize, lightingConfig.spot.shadowMapSize]}
+      />
+    );
+  }, [
+    lightingConfig.spot.enabled,
+    lightingConfig.spot.color,
+    lightingConfig.spot.intensity,
+    lightingConfig.spot.position.x,
+    lightingConfig.spot.position.y,
+    lightingConfig.spot.position.z,
+    lightingConfig.spot.target.x,
+    lightingConfig.spot.target.y,
+    lightingConfig.spot.target.z,
+    lightingConfig.spot.angle,
+    lightingConfig.spot.penumbra,
+    lightingConfig.spot.distance,
+    lightingConfig.spot.decay,
+    lightingConfig.spot.castShadow,
+    lightingConfig.spot.shadowMapSize
+  ]);
 
-      // 查找父节点
-      const findParent = (targetId: string, searchNodes: any[]): any => {
-        for (const searchNode of searchNodes) {
-          if (
-            searchNode.children?.some((child: any) => child.id === targetId)
-          ) {
-            return searchNode;
-          }
-          if (searchNode.children) {
-            const found = findParent(targetId, searchNode.children);
-            if (found) return found;
-          }
-        }
-        return null;
-      };
+  return (
+    <>
+      {ambientLightElement}
+      {directionalLightElement}
+      {hemisphereLightElement}
+      {pointLightElement}
+      {spotLightElement}
+    </>
+  );
+});
 
-      const parent = findParent(nodeToCheck.id, nodes);
-      if (parent) {
-        return isNodeVisible(parent, nodes);
-      }
-
-      return true;
-    };
-
-    const ambientLightNode = findNodeById(sceneNodes, 'ambient-light');
-    const directionalLightNode = findNodeById(sceneNodes, 'directional-light');
-
-    // 控制环境光可见性
-    if (ambientLight && ambientLightNode) {
-      const shouldBeVisible = isNodeVisible(ambientLightNode, sceneNodes);
-      ambientLight.visible = shouldBeVisible;
-      // 设置光照强度，隐藏时强度为0
-      ambientLight.intensity = shouldBeVisible ? 0.6 : 0;
-    }
-
-    // 控制平行光可见性
-    if (directionalLight && directionalLightNode) {
-      const shouldBeVisible = isNodeVisible(directionalLightNode, sceneNodes);
-      directionalLight.visible = shouldBeVisible;
-      // 设置光照强度，隐藏时强度为0
-      directionalLight.intensity = shouldBeVisible ? 1 : 0;
-    }
-  }, [sceneNodes, ambientLight, directionalLight]);
-
-  return null;
-};
+SceneLighting.displayName = 'SceneLighting';
 
 export default SceneLighting;
