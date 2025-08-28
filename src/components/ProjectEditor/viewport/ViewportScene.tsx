@@ -122,9 +122,14 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
         }}
         shadows
         style={{ background: backgroundColor }}
-        resize={{ scroll: false, debounce: { scroll: 50, resize: 50 } }}
+        resize={{ scroll: false, debounce: { scroll: 100, resize: 100 } }}
         dpr={[1, 2]}
-        gl={{ preserveDrawingBuffer: true }}
+        gl={{ 
+          preserveDrawingBuffer: true,
+          antialias: true,
+          alpha: false,
+          powerPreference: "high-performance"
+        }}
       >
         <Suspense fallback={null}>
           {/* 场景设置组件 */}
