@@ -11,6 +11,7 @@ import sceneReducer from './slices/sceneSlice';
 import cameraReducer from './slices/cameraSlice';
 import lightingReducer from './slices/lightingSlice';
 import rendererReducer from './slices/rendererSlice';
+import postProcessingReducer from './slices/postProcessingSlice';
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     camera: cameraReducer,
     lighting: lightingReducer,
     renderer: rendererReducer,
+    postProcessing: postProcessingReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

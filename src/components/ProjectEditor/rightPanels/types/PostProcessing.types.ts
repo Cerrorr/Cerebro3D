@@ -28,6 +28,8 @@ export interface OutlineConfig {
   visibleEdgeColor: string;
   // 隐藏边缘颜色
   hiddenEdgeColor: string;
+  // 是否显示不可见边缘
+  showHiddenEdges: boolean;
 }
 
 /**

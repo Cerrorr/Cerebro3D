@@ -9,15 +9,16 @@ import { PostProcessingConfig } from '../types/PostProcessing.types';
 // 默认后期处理配置
 export const DEFAULT_POST_PROCESSING_CONFIG: PostProcessingConfig = {
   antialiasing: {
-    enabled: false,
+    enabled: true,
   },
   outline: {
-    enabled: false,
+    enabled: true,
     edgeStrength: 1.0,
     edgeGlow: 0.0,
     edgeThickness: 1.0,
     visibleEdgeColor: '#ffee00',
     hiddenEdgeColor: '#ff6a00',
+    showHiddenEdges: false,
   },
   bloom: {
     enabled: false,
@@ -36,15 +37,15 @@ export const DEFAULT_POST_PROCESSING_CONFIG: PostProcessingConfig = {
   },
   zoom: {
     enabled: false,
-    focus: 1.0,
-    aperture: 0.025,
-    maxBlur: 0.01,
+    focus: 10.0,
+    aperture: 0.1,
+    maxBlur: 0.02,
   },
   pixel: {
     enabled: false,
     pixelSize: 6.0,
-    normalEdgeStrength: 0.3,
-    depthEdgeStrength: 0.4,
+    normalEdgeStrength: 1.0,
+    depthEdgeStrength: 0.5,
   },
   halftone: {
     enabled: false,

@@ -17,7 +17,6 @@ import {
   FastForwardOutlined
 } from '@ant-design/icons';
 import type { 
-  PostProcessingPanelProps, 
   PostProcessingConfig,
   AntialiasingConfig,
   OutlineConfig,
@@ -27,17 +26,19 @@ import type {
   ZoomConfig,
   PixelConfig,
   HalftoneConfig
-} from './types';
+} from './types/PostProcessing.types';
 import './styles/PostProcessingPanel.scss';
 import { useRecord } from '@/hooks/common/useRecord';
 import { RSlider } from '@/components/common/recordable';
+import { useAppSelector, useAppDispatch } from '@/store';
+import { updatePostProcessingConfig } from '@/store/slices/postProcessingSlice';
 
 const { Option } = Select;
 
-const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
-  config,
-  onChange
-}) => {
+const PostProcessingPanel: React.FC = () => {
+  // 从Redux获取后期处理配置
+  const config = useAppSelector(state => state.postProcessing.config);
+  const dispatch = useAppDispatch();
   // 记录器
   const record = useRecord('后期处理');
 
@@ -48,8 +49,8 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
       ...config,
       antialiasing: { ...config.antialiasing, ...updates }
     };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updatePostProcessingConfig(newConfig));
+  }, [config, dispatch, record]);
 
   // 描边线配置更新
   const handleOutlineChange = useCallback((updates: Partial<OutlineConfig>) => {
@@ -58,8 +59,8 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
       ...config,
       outline: { ...config.outline, ...updates }
     };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updatePostProcessingConfig(newConfig));
+  }, [config, dispatch, record]);
 
   // 辉光配置更新
   const handleBloomChange = useCallback((updates: Partial<BloomConfig>) => {
@@ -68,8 +69,8 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
       ...config,
       bloom: { ...config.bloom, ...updates }
     };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updatePostProcessingConfig(newConfig));
+  }, [config, dispatch, record]);
 
   // LUT配置更新
   const handleLUTChange = useCallback((updates: Partial<LUTConfig>) => {
@@ -78,8 +79,8 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
       ...config,
       lut: { ...config.lut, ...updates }
     };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updatePostProcessingConfig(newConfig));
+  }, [config, dispatch, record]);
 
   // 运动残影配置更新
   const handleMotionBlurChange = useCallback((updates: Partial<MotionBlurConfig>) => {
@@ -88,8 +89,8 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
       ...config,
       motionBlur: { ...config.motionBlur, ...updates }
     };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updatePostProcessingConfig(newConfig));
+  }, [config, dispatch, record]);
 
   // 变焦配置更新
   const handleZoomChange = useCallback((updates: Partial<ZoomConfig>) => {
@@ -98,8 +99,8 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
       ...config,
       zoom: { ...config.zoom, ...updates }
     };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updatePostProcessingConfig(newConfig));
+  }, [config, dispatch, record]);
 
   // 像素风配置更新
   const handlePixelChange = useCallback((updates: Partial<PixelConfig>) => {
@@ -108,8 +109,8 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
       ...config,
       pixel: { ...config.pixel, ...updates }
     };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updatePostProcessingConfig(newConfig));
+  }, [config, dispatch, record]);
 
   // 半色调配置更新
   const handleHalftoneChange = useCallback((updates: Partial<HalftoneConfig>) => {
@@ -118,8 +119,8 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
       ...config,
       halftone: { ...config.halftone, ...updates }
     };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updatePostProcessingConfig(newConfig));
+  }, [config, dispatch, record]);
 
   const collapseItems = [
     {
@@ -237,12 +238,25 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
           </div>
 
           <div className="config-item">
-            <span className="config-label">不可见边缘</span>
+            <div className="config-row">
+              <span className="config-label">不可见边缘</span>
+              <Switch
+                checked={config.outline.showHiddenEdges}
+                onChange={(showHiddenEdges) => handleOutlineChange({ showHiddenEdges })}
+                className="config-switch"
+                size="small"
+                disabled={!config.outline.enabled}
+              />
+            </div>
+          </div>
+
+          <div className="config-item">
+            <span className="config-label">不可见边缘颜色</span>
             <Input
               type="color"
               value={config.outline.hiddenEdgeColor}
               onChange={(e) => handleOutlineChange({ hiddenEdgeColor: e.target.value })}
-              disabled={!config.outline.enabled}
+              disabled={!config.outline.enabled || !config.outline.showHiddenEdges}
               className="config-color-input"
             />
           </div>
@@ -461,7 +475,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               record={record}
               field="zoom.focus"
               min={0.1}
-              max={2.0}
+              max={100.0}
               step={0.1}
               value={config.zoom.focus}
               onChange={(focus) => handleZoomChange({ focus })}
@@ -477,7 +491,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               record={record}
               field="zoom.aperture"
               min={0.001}
-              max={0.1}
+              max={1.0}
               step={0.001}
               value={config.zoom.aperture}
               onChange={(aperture) => handleZoomChange({ aperture })}
@@ -493,7 +507,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               record={record}
               field="zoom.maxBlur"
               min={0.001}
-              max={0.05}
+              max={0.2}
               step={0.001}
               value={config.zoom.maxBlur}
               onChange={(maxBlur) => handleZoomChange({ maxBlur })}
@@ -549,7 +563,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               record={record}
               field="pixel.normalEdgeStrength"
               min={0}
-              max={1}
+              max={3}
               step={0.1}
               value={config.pixel.normalEdgeStrength}
               onChange={(normalEdgeStrength) => handlePixelChange({ normalEdgeStrength })}
@@ -565,7 +579,7 @@ const PostProcessingPanel: React.FC<PostProcessingPanelProps> = ({
               record={record}
               field="pixel.depthEdgeStrength"
               min={0}
-              max={1}
+              max={2}
               step={0.1}
               value={config.pixel.depthEdgeStrength}
               onChange={(depthEdgeStrength) => handlePixelChange({ depthEdgeStrength })}

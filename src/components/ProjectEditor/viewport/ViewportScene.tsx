@@ -24,7 +24,7 @@ import CameraManager from './components/CameraManager';
 import ResizeHandler from './components/ResizeHandler';
 import RendererSync from './components/RendererSync';
 import GlobalIllumination from './components/GlobalIllumination';
-import NativeOutlineEffect from './NativeOutlineEffect';
+import PostProcessingEffects from './PostProcessingEffects';
 import SceneObjects from './SceneObjects';
 
 // 导入Hooks
@@ -56,6 +56,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
   // 从Redux获取场景数据和配置
   const { nodes: sceneNodes, sceneConfig } = useAppSelector(state => state.scene);
   const cameraConfig = useAppSelector(state => state.camera.config);
+  const postProcessingConfigFromRedux = useAppSelector(state => state.postProcessing.config);
   const dispatch = useAppDispatch();
   const orbitControlsRef = useRef<any>(null);
 
@@ -236,13 +237,10 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
           {/* 性能统计 */}
           {enableStats && <Stats />}
 
-          {/* 原生Three.js OutlinePass后期处理效果 */}
-          <NativeOutlineEffect
+          {/* 后期处理效果 - 总是渲染 */}
+          <PostProcessingEffects
             selectedObjects={sceneSelection.selectedObjects}
-            edgeColor={0x00ff00}
-            edgeStrength={2.5}
-            edgeThickness={1.0}
-            pulsePeriod={0}
+            config={postProcessingConfigFromRedux}
           />
         </Suspense>
       </Canvas>

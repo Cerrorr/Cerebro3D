@@ -32,7 +32,6 @@ import {
 } from '@/components/projectEditor/rightPanels/types';
 import { 
   DEFAULT_LIGHTING_CONFIG,
-  DEFAULT_POST_PROCESSING_CONFIG,
   DEFAULT_WEATHER_CONFIG,
   DEFAULT_RENDERER_CONFIG,
   DEFAULT_MATERIAL_STATE,
@@ -48,6 +47,7 @@ import type {
 } from './types/useRightSidebarPanelsState.types';
 import { useAppSelector, useAppDispatch } from '@/store';
 import { updateCameraConfig } from '@/store/slices/sceneSlice';
+import { updatePostProcessingConfig } from '@/store/slices/postProcessingSlice';
 import { addRecord } from '@/store/slices/historySlice';
 
 /**
@@ -82,10 +82,8 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
 
   // 灯光配置
   const [lightingConfig, setLightingConfig] = useState<LightingConfig>(DEFAULT_LIGHTING_CONFIG);
-  // 后期处理配置
-  const [postProcessingConfig, setPostProcessingConfig] = useState<PostProcessingConfig>(
-    DEFAULT_POST_PROCESSING_CONFIG
-  );
+  // 从Redux获取配置
+  const postProcessingConfig = useAppSelector(state => state.postProcessing.config);
   // 天气配置
   const [weatherConfig, setWeatherConfig] = useState<WeatherConfig>(DEFAULT_WEATHER_CONFIG);
   // 渲染器配置
@@ -306,10 +304,10 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
    */
   const handlePostProcessingConfigChange = useCallback(
     (config: PostProcessingConfig) => {
-      setPostProcessingConfig(config);
+      dispatch(updatePostProcessingConfig(config));
       record('修改后期处理配置');
     },
-    [record]
+    [dispatch, record]
   );
 
   /**

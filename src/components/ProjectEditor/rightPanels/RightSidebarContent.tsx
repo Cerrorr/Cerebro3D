@@ -64,10 +64,7 @@ const RightSidebarContent: React.FC<RightSidebarContentProps> = ({ currentTab, p
         ) : currentTab === 'lighting' ? (
           <LightingConfigPanel />
         ) : currentTab === 'postprocess' ? (
-          <PostProcessingPanel
-            config={postProcessingConfig}
-            onChange={handlers.onChange}
-          />
+          <PostProcessingPanel />
         ) : currentTab === 'weather' ? (
           <WeatherConfigPanel
             config={weatherConfig}
