@@ -1,62 +1,77 @@
 /**
+ * 天气配置类型定义
+ * 定义雾、雨、雪等天气效果的配置接口和类型
+ * @author Cerror
+ * @since 2025-09-01
+ */
+
+/**
  * 雾效果配置接口
  */
 export interface FogConfig {
-  // 是否启用雾效果
+  /** 是否启用雾效果 */
   enabled: boolean;
-  // 雾类型：Linear(线性) 或 Exponential(指数)
+  /** 雾类型：Linear(线性) 或 Exponential(指数) */
   type: 'Linear' | 'Exponential';
-  // 雾颜色
+  /** 雾颜色 */
   color: string;
-  // 近点距离
+  /** 近点距离（线性雾） */
   near: number;
-  // 远点距离
+  /** 远点距离（线性雾） */
   far: number;
+  /** 密度（指数雾） */
+  density: number;
 }
 
 /**
  * 雨效果配置接口
  */
 export interface RainConfig {
-  // 是否启用雨效果
+  /** 是否启用雨效果 */
   enabled: boolean;
-  // 雨的速度
+  /** 雨的速度 */
   speed: number;
-  // 雨滴颜色
+  /** 雨滴颜色 */
   color: string;
-  // 雨滴大小
+  /** 雨滴大小 */
   size: number;
-  // 雨的弧度/角度
+  /** 雨的弧度/角度 */
   arc: number;
-  // 雨的透明度
+  /** 雨的透明度 */
   opacity: number;
+  /** 粒子数量 */
+  particleCount: number;
 }
 
 /**
  * 雪效果配置接口
  */
 export interface SnowConfig {
-  // 是否启用雪效果
+  /** 是否启用雪效果 */
   enabled: boolean;
-  // 雪花下落速度
+  /** 雪花下落速度 */
   speed: number;
-  // 雪花密度
+  /** 雪花密度 */
   density: number;
-  // 雪花大小
+  /** 雪花大小 */
   size: number;
-  // 雪花透明度
+  /** 雪花透明度 */
   opacity: number;
+  /** 雪花颜色 */
+  color: string;
+  /** 粒子数量 */
+  particleCount: number;
 }
 
 /**
  * 完整天气配置接口
  */
 export interface WeatherConfig {
-  // 雾效果配置
+  /** 雾效果配置 */
   fog: FogConfig;
-  // 雨效果配置
+  /** 雨效果配置 */
   rain: RainConfig;
-  // 雪效果配置
+  /** 雪效果配置 */
   snow: SnowConfig;
 }
 
@@ -64,9 +79,9 @@ export interface WeatherConfig {
  * 天气配置面板组件属性接口
  */
 export interface WeatherConfigPanelProps {
-  // 天气配置
+  /** 天气配置 */
   config: WeatherConfig;
-  // 配置变更回调函数
+  /** 配置变更回调函数 */
   onChange: (config: WeatherConfig) => void;
 }
  

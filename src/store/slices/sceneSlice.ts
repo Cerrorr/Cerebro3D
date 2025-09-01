@@ -9,7 +9,9 @@ import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import type { SceneNode } from '@/components/projectEditor/sceneTree/types';
 import type { CanvasSettings } from '@/components/projectEditor/viewport/types';
 import type { CameraConfiguration, SceneConfiguration } from '@/components/projectEditor/rightPanels/types';
+import type { WeatherConfig } from '@/components/projectEditor/rightPanels/types/WeatherConfig.types';
 import type { SceneState } from '@/store/types/sceneSlice.types';
+import { DEFAULT_WEATHER_CONFIG } from '@/components/projectEditor/rightPanels/constants/WeatherConfig.constants';
 
 /**
  * 默认画布设置
@@ -91,6 +93,7 @@ const initialState: SceneState = {
     environment: { type: 'none', map: undefined, intensity: 1 },
     helpers: { enabled: true, axes: true, cameraHelper: false, lightHelper: false },
   },
+  weatherConfig: DEFAULT_WEATHER_CONFIG,
   isLoading: false,
 };
 
@@ -272,6 +275,13 @@ const sceneSlice = createSlice({
     },
 
     /**
+     * 更新天气配置
+     */
+    updateWeatherConfig: (state, action: PayloadAction<Partial<WeatherConfig>>) => {
+      state.weatherConfig = { ...state.weatherConfig, ...action.payload };
+    },
+
+    /**
      * 更新相机位置
      */
     updateCameraPosition: (state, action: PayloadAction<[number, number, number]>) => {
@@ -374,6 +384,7 @@ export const {
   setCurrentView,
   updateCameraConfig,
   updateSceneConfig,
+  updateWeatherConfig,
   updateCameraPosition,
   updateCameraTarget,
   setLoading,

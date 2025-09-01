@@ -5,10 +5,12 @@ import {
   CloudDownloadOutlined,
   StarOutlined 
 } from '@ant-design/icons';
-import type { WeatherConfigPanelProps, WeatherConfig, FogConfig, RainConfig, SnowConfig } from './types';
 import './styles/WeatherConfigPanel.scss';
 import { useRecord } from '@/hooks/common/useRecord';
 import { RSlider } from '@/components/common/recordable';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateWeatherConfig } from '@/store/slices/sceneSlice';
+import type { RootState } from '@/store';
 
 /**
  * 天气配置面板组件
@@ -16,42 +18,31 @@ import { RSlider } from '@/components/common/recordable';
  * @author Cerror
  * @since 2025-06-26
  */
-const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
-  config,
-  onChange
-}) => {
+const WeatherConfigPanel: React.FC = () => {
   // 记录器
   const record = useRecord('天气');
+  
+  // 从Redux获取天气配置
+  const config = useSelector((state: RootState) => state.scene.weatherConfig);
+  const dispatch = useDispatch();
 
   // 雾配置更新处理函数
-  const handleFogConfigChange = useCallback((updates: Partial<FogConfig>) => {
+  const handleFogConfigChange = useCallback((updates: Partial<import('./types/WeatherConfig.types').FogConfig>) => {
     record(`雾 ${Object.keys(updates).join(',')} 修改`);
-    const newConfig: WeatherConfig = {
-      ...config,
-      fog: { ...config.fog, ...updates }
-    };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updateWeatherConfig({ fog: { ...config.fog, ...updates } }));
+  }, [config.fog, dispatch, record]);
 
   // 雨配置更新处理函数
-  const handleRainConfigChange = useCallback((updates: Partial<RainConfig>) => {
+  const handleRainConfigChange = useCallback((updates: Partial<import('./types/WeatherConfig.types').RainConfig>) => {
     record(`雨 ${Object.keys(updates).join(',')} 修改`);
-    const newConfig: WeatherConfig = {
-      ...config,
-      rain: { ...config.rain, ...updates }
-    };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updateWeatherConfig({ rain: { ...config.rain, ...updates } }));
+  }, [config.rain, dispatch, record]);
 
   // 雪配置更新处理函数
-  const handleSnowConfigChange = useCallback((updates: Partial<SnowConfig>) => {
+  const handleSnowConfigChange = useCallback((updates: Partial<import('./types/WeatherConfig.types').SnowConfig>) => {
     record(`雪 ${Object.keys(updates).join(',')} 修改`);
-    const newConfig: WeatherConfig = {
-      ...config,
-      snow: { ...config.snow, ...updates }
-    };
-    onChange(newConfig);
-  }, [config, onChange]);
+    dispatch(updateWeatherConfig({ snow: { ...config.snow, ...updates } }));
+  }, [config.snow, dispatch, record]);
 
   // 折叠面板配置
   const collapseItems = [
@@ -102,43 +93,68 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
             />
           </div>
 
-          {/* 近点距离 */}
-          <div className="config-item">
-            <div className="config-row">
-              <span className="config-label">近点</span>
-              <span className="config-value">{config.fog.near}</span>
+          {/* 近点距离（仅线性雾显示） */}
+          {config.fog.type === 'Linear' && (
+            <div className="config-item">
+              <div className="config-row">
+                <span className="config-label">近点</span>
+                <span className="config-value">{config.fog.near}</span>
+              </div>
+              <RSlider
+                record={record}
+                field="fog.near"
+                min={0}
+                max={10}
+                step={0.1}
+                value={config.fog.near}
+                onChange={(value) => handleFogConfigChange({ near: value })}
+                onChangeComplete={(value) => handleFogConfigChange({ near: value })}
+                className="config-slider"
+              />
             </div>
-            <RSlider
-              record={record}
-              field="fog.near"
-              min={0}
-              max={10}
-              step={0.1}
-              value={config.fog.near}
-              onChange={(value) => handleFogConfigChange({ near: value })}
-              onChangeComplete={(value) => handleFogConfigChange({ near: value })}
-              className="config-slider"
-            />
-          </div>
+          )}
 
-          {/* 远点距离 */}
-          <div className="config-item">
-            <div className="config-row">
-              <span className="config-label">远点</span>
-              <span className="config-value">{config.fog.far}</span>
+          {/* 远点距离（仅线性雾显示） */}
+          {config.fog.type === 'Linear' && (
+            <div className="config-item">
+              <div className="config-row">
+                <span className="config-label">远点</span>
+                <span className="config-value">{config.fog.far}</span>
+              </div>
+              <RSlider
+                record={record}
+                field="fog.far"
+                min={1}
+                max={100}
+                step={1}
+                value={config.fog.far}
+                onChange={(value) => handleFogConfigChange({ far: value })}
+                onChangeComplete={(value) => handleFogConfigChange({ far: value })}
+                className="config-slider"
+              />
             </div>
-            <RSlider
-              record={record}
-              field="fog.far"
-              min={1}
-              max={100}
-              step={1}
-              value={config.fog.far}
-              onChange={(value) => handleFogConfigChange({ far: value })}
-              onChangeComplete={(value) => handleFogConfigChange({ far: value })}
-              className="config-slider"
-            />
-          </div>
+          )}
+
+          {/* 密度（仅指数雾显示） */}
+          {config.fog.type === 'Exponential' && (
+            <div className="config-item">
+              <div className="config-row">
+                <span className="config-label">密度</span>
+                <span className="config-value">{config.fog.density}</span>
+              </div>
+              <RSlider
+                record={record}
+                field="fog.density"
+                min={0.001}
+                max={0.1}
+                step={0.001}
+                value={config.fog.density}
+                onChange={(value) => handleFogConfigChange({ density: value })}
+                onChangeComplete={(value) => handleFogConfigChange({ density: value })}
+                className="config-slider"
+              />
+            </div>
+          )}
         </div>
       ),
     },
@@ -251,6 +267,25 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               className="config-slider"
             />
           </div>
+
+          {/* 粒子数量 */}
+          <div className="config-item">
+            <div className="config-row">
+              <span className="config-label">粒子数量</span>
+              <span className="config-value">{config.rain.particleCount}</span>
+            </div>
+            <RSlider
+              record={record}
+              field="rain.particleCount"
+              min={100}
+              max={5000}
+              step={100}
+              value={config.rain.particleCount}
+              onChange={(value) => handleRainConfigChange({ particleCount: value })}
+              onChangeComplete={(value) => handleRainConfigChange({ particleCount: value })}
+              className="config-slider"
+            />
+          </div>
         </div>
       ),
     },
@@ -349,6 +384,36 @@ const WeatherConfigPanel: React.FC<WeatherConfigPanelProps> = ({
               value={config.snow.opacity}
               onChange={(value) => handleSnowConfigChange({ opacity: value })}
               onChangeComplete={(value) => handleSnowConfigChange({ opacity: value })}
+              className="config-slider"
+            />
+          </div>
+
+          {/* 颜色 */}
+          <div className="config-item">
+            <span className="config-label">颜色</span>
+            <Input
+              type="color"
+              value={config.snow.color}
+              onChange={(e) => handleSnowConfigChange({ color: e.target.value })}
+              className="config-color-input"
+            />
+          </div>
+
+          {/* 粒子数量 */}
+          <div className="config-item">
+            <div className="config-row">
+              <span className="config-label">粒子数量</span>
+              <span className="config-value">{config.snow.particleCount}</span>
+            </div>
+            <RSlider
+              record={record}
+              field="snow.particleCount"
+              min={100}
+              max={3000}
+              step={100}
+              value={config.snow.particleCount}
+              onChange={(value) => handleSnowConfigChange({ particleCount: value })}
+              onChangeComplete={(value) => handleSnowConfigChange({ particleCount: value })}
               className="config-slider"
             />
           </div>

@@ -5,6 +5,7 @@ import { SceneNode } from "@/components/projectEditor/sceneTree/types";
 import { CanvasSettings } from "@/components/projectEditor/viewport/types";
 import { CameraConfiguration } from "@/components/projectEditor/rightPanels/types/CameraConfig.types";
 import { SceneConfiguration } from "@/components/projectEditor/rightPanels/types/SceneConfig.types";
+import { WeatherConfig } from "@/components/projectEditor/rightPanels/types/WeatherConfig.types";
 
 export interface SceneState {
   /** 场景节点树 */
@@ -23,6 +24,8 @@ export interface SceneState {
   cameraConfig: CameraConfiguration;
   /** 场景配置 */
   sceneConfig: SceneConfiguration;
+  /** 天气配置 */
+  weatherConfig: WeatherConfig;
   /** 场景是否加载中 */
   isLoading: boolean;
 }

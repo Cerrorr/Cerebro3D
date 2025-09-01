@@ -95,11 +95,12 @@ const SceneSetup: React.FC<SceneSetupProps> = ({
     
     enableShadows();
 
-    if (enableFog) {
-      setFog('#cccccc', fogNear, fogFar);
-    } else {
-      disableFog();
-    }
+    // 雾效果由 WeatherManager 专门管理，这里不再处理
+    // if (enableFog) {
+    //   setFog('#cccccc', fogNear, fogFar);
+    // } else {
+    //   disableFog();
+    // }
   }, [
     backgroundColor,
     backgroundConfig,

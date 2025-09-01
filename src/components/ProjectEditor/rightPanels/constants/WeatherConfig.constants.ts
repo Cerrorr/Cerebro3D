@@ -15,9 +15,10 @@ export const DEFAULT_WEATHER_CONFIG: WeatherConfig = {
   fog: {
     enabled: false,
     type: 'Linear',
-    color: '#ffffff',
-    near: 0.1,
-    far: 50,
+    color: '#888888',  // 改为灰色，更容易看到
+    near: 1,
+    far: 30,
+    density: 0.02,
   },
   rain: {
     enabled: false,
@@ -26,6 +27,7 @@ export const DEFAULT_WEATHER_CONFIG: WeatherConfig = {
     size: 0.5,
     arc: 95,
     opacity: 0.4,
+    particleCount: 2000,
   },
   snow: {
     enabled: false,
@@ -33,5 +35,7 @@ export const DEFAULT_WEATHER_CONFIG: WeatherConfig = {
     density: 1,
     size: 0.5,
     opacity: 0.5,
+    color: '#ffffff',
+    particleCount: 1000,
   },
 };

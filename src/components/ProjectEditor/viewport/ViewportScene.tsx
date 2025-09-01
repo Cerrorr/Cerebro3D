@@ -25,6 +25,7 @@ import ResizeHandler from './components/ResizeHandler';
 import RendererSync from './components/RendererSync';
 import GlobalIllumination from './components/GlobalIllumination';
 import PostProcessingEffects from './PostProcessingEffects';
+import { WeatherEffects } from './WeatherEffects';
 import SceneObjects from './SceneObjects';
 
 // 导入Hooks
@@ -43,7 +44,6 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
   backgroundColor = '#2a2a2a',
   enableGrid = true,
   enableStats = false,
-  enableFog = false,
   fogNear = 10,
   fogFar = 100,
   scene3DService,
@@ -136,7 +136,7 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
           {/* 场景设置组件 */}
           <SceneSetup
             backgroundColor={backgroundColor}
-            enableFog={enableFog}
+            enableFog={false}  // 禁用 SceneSetup 的雾效果，由 WeatherManager 控制
             fogNear={fogNear}
             fogFar={fogFar}
             backgroundConfig={sceneConfig.background}
@@ -236,6 +236,9 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
 
           {/* 性能统计 */}
           {enableStats && <Stats />}
+
+          {/* 天气效果组件 */}
+          <WeatherEffects />
 
           {/* 后期处理效果 - 总是渲染 */}
           <PostProcessingEffects
