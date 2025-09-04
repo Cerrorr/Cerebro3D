@@ -61,6 +61,10 @@ export interface RightSidebarProps {
   collapsible?: boolean;
   // 默认折叠状态
   defaultCollapsed?: boolean;
+  // 面板属性（从外部传入）
+  panelsProps?: Record<string, any>;
+  // 其他额外属性
+  [key: string]: any;
 }
 
 /**

@@ -21,6 +21,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
   width = DEFAULT_CONFIG.DEFAULT_WIDTH,
   collapsible = true,
   defaultCollapsed = false,
+  ...additionalProps // 接收额外的属性，包括 panelsProps
 }) => {
   /* 折叠 & 当前标签页状态 */
   const { collapsed, currentTab, toggleCollapsed, handleTabChange } = useRightSidebarState({
@@ -28,8 +29,10 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
     defaultCollapsed,
   });
 
-  /* 各面板数据 + 回调 */
-  const { panelsProps } = useRightSidebarPanelsState();
+  /* 各面板数据 + 回调 - 优先使用传入的，否则使用默认的 */
+  const defaultPanelsState = useRightSidebarPanelsState();
+  const panelsProps = additionalProps.panelsProps || defaultPanelsState.panelsProps;
+
 
   const tabItems = getTabItems();
 

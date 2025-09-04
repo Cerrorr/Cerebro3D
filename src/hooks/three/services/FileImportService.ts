@@ -105,20 +105,29 @@ export class FileImportService {
         URL.revokeObjectURL(url);
 
         try {
+          
           // 提取3D对象
           const rawObject = this.modelProcessor.extractObject(result, fileType);
           
+          // 提取动画剪辑
+          const animationClips = this.modelProcessor.extractAnimations(result, fileType);
+          
           // 处理模型
-          const processResult = this.modelProcessor.processModel(rawObject);
+          const processResult = this.modelProcessor.processModel(rawObject, animationClips);
 
-          resolve({
+          const finalResult = {
             object: processResult.object,
             fileName: file.name,
             fileSize: file.size,
             fileType,
             loadTime: Date.now() - startTime,
             position: processResult.position,
-          });
+            animations: processResult.animations,
+            animationClips: processResult.animationClips,
+          };
+          
+
+          resolve(finalResult);
         } catch (error) {
           reject(this.createError(
             '模型处理失败',

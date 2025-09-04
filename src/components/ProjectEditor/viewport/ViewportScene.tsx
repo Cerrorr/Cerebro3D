@@ -27,6 +27,7 @@ import GlobalIllumination from './components/GlobalIllumination';
 import PostProcessingEffects from './PostProcessingEffects';
 import { WeatherEffects } from './WeatherEffects';
 import SceneObjects from './SceneObjects';
+import AnimationUpdater from './components/AnimationUpdater';
 
 // 导入Hooks
 import { useSceneSelection, useTransformControls } from '@/hooks/three';
@@ -133,6 +134,9 @@ const ViewportScene: React.FC<ViewportSceneProps> = ({
         }}
       >
         <Suspense fallback={null}>
+          {/* 动画更新器 */}
+          <AnimationUpdater />
+          
           {/* 场景设置组件 */}
           <SceneSetup
             backgroundColor={backgroundColor}

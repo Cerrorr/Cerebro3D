@@ -31,6 +31,10 @@ import {
   toggleNodeVisibility,
   clearSceneObjectsOnly
 } from '@/store/slices/sceneSlice';
+import { useRightSidebarPanelsState } from '@/hooks/business/useRightSidebarPanelsState';
+import { useAnimationControl } from '@/hooks/three/useAnimationControl';
+import type { FileImportResult } from '@/hooks/three/types';
+import type { AnimationItem, AnimationStatus } from '@/components/projectEditor/rightPanels/types/AnimationPanel.types';
 
 /**
  * 项目页面主组件 (重构版)
@@ -65,6 +69,17 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
 
   // 历史记录 & 日志 Hook
   const { addHistory, logs } = useHistoryRecorder();
+  
+  // 右侧面板状态管理
+  const { panelsProps } = useRightSidebarPanelsState();
+  
+  // 动画控制
+  const animationControl = useAnimationControl({
+    onAnimationUpdate: (animationId: string, status: AnimationStatus, progress: number) => {
+      // 更新动画状态
+      panelsProps.onUpdateAnimationItem?.(animationId, { status, progress });
+    }
+  });
   
   // 使用 App 组件的 message API
   const { message } = App.useApp();
@@ -148,11 +163,14 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
     setProjectTitle(finalProjectTitle);
   }, [location.state, initialTitle]);
 
-  const handleImportSuccess = useCallback((results: any[]) => {
+  const handleImportSuccess = useCallback((results: FileImportResult[]) => {
+    
     let lastImportedNodeId: string | null = null;
+    let allAnimations: AnimationItem[] = [];
     
     // 处理导入的模型
     results.forEach(result => {
+      
       // 生成唯一ID
       const objectId = `imported_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
       
@@ -170,6 +188,15 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       if (!addResult.success) {
         console.error('添加3D对象失败:', addResult.message);
         return;
+      }
+
+      // 如果有动画数据，收集到总的动画列表中，并注册到动画控制器
+      if (result.animations && result.animations.length > 0 && result.animationClips && result.animationClips.length > 0) {
+        allAnimations.push(...result.animations);
+        
+        // 注册动画对象到动画控制器
+        animationControl.registerAnimatedObject(objectId, result.object, result.animationClips, result.animations);
+        
       }
 
       // Redux只存储元数据，不包含Three.js对象
@@ -201,13 +228,20 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       lastImportedNodeId = objectId;
     });
 
+
+    // 如果有动画数据，添加到动画面板状态中
+    if (allAnimations.length > 0) {
+      panelsProps.onAddAnimations?.(allAnimations);
+    } else {
+    }
+
     // 记录导入历史 - 合并为一条记录
     if (results.length > 0) {
       addHistory({
         actionType: 'import',
         targetType: 'scene',
         targetName: projectTitle,
-        description: `成功导入 ${results.length} 个3D模型: ${results.map(r => r.fileName).join(', ')}`,
+        description: `成功导入 ${results.length} 个3D模型: ${results.map(r => r.fileName).join(', ')}${allAnimations.length > 0 ? `，包含 ${allAnimations.length} 个动画` : ''}`,
         logLevel: 'info'
       });
     }
@@ -221,8 +255,47 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       }, 100);
     }
 
-    message.success(`成功导入 ${results.length} 个3D模型`);
-  }, [addHistory, dispatch, sceneConfig.helpers.enabled, projectTitle, scene3DService]);
+    message.success(
+      `成功导入 ${results.length} 个3D模型${allAnimations.length > 0 ? `，包含 ${allAnimations.length} 个动画` : ''}`
+    );
+  }, [addHistory, dispatch, sceneConfig.helpers.enabled, projectTitle, scene3DService, panelsProps, animationControl]);
+
+  // 创建真正的动画播放控制回调
+  const handleRealAnimationPlay = useCallback((animationId: string) => {
+    animationControl.playAnimation(animationId, false);
+    // 同时更新面板状态
+    panelsProps.onAnimationPlay?.(animationId);
+  }, [animationControl, panelsProps]);
+
+  const handleRealAnimationPause = useCallback((animationId: string) => {
+    animationControl.pauseAnimation(animationId);
+    panelsProps.onAnimationPause?.(animationId);
+  }, [animationControl, panelsProps]);
+
+  const handleRealAnimationStop = useCallback((animationId: string) => {
+    animationControl.stopAnimation(animationId);
+    panelsProps.onAnimationStop?.(animationId);
+  }, [animationControl, panelsProps]);
+
+  const handleRealProgressChange = useCallback((animationId: string, progress: number) => {
+    animationControl.setAnimationProgress(animationId, progress);
+    panelsProps.onProgressChange?.(animationId, progress);
+  }, [animationControl, panelsProps]);
+
+  const handleRealSpeedChange = useCallback((speed: number) => {
+    animationControl.setPlaybackSpeed(speed);
+    panelsProps.onSpeedChange?.(speed);
+  }, [animationControl, panelsProps]);
+
+  // 创建增强的面板属性，包含真正的动画控制回调
+  const enhancedPanelsProps = {
+    ...panelsProps,
+    onAnimationPlay: handleRealAnimationPlay,
+    onAnimationPause: handleRealAnimationPause,
+    onAnimationStop: handleRealAnimationStop,
+    onProgressChange: handleRealProgressChange,
+    onSpeedChange: handleRealSpeedChange,
+  };
 
   /**
    * 处理文件导入错误
@@ -454,6 +527,7 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
               width={320}
               collapsible={true}
               defaultCollapsed={false}
+              panelsProps={enhancedPanelsProps}
             />
           </div>
         </div>

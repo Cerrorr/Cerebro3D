@@ -9,6 +9,7 @@ import {
   RendererConfig,
   AnimationPanelState,
   AnimationType,
+  AnimationItem,
   AnimationStatus,
   ObjectState,
   MaterialState,
@@ -185,36 +186,117 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   );
 
   /**
+   * 添加动画到状态中
+   * @param animations - 动画项数组
+   */
+  const handleAddAnimations = useCallback(
+    (animations: AnimationItem[]) => {
+      setAnimationState(prev => {
+        const newState = {
+          ...prev,
+          animations: [...prev.animations, ...animations]
+        };
+        return newState;
+      });
+      record(`添加 ${animations.length} 个动画`);
+    },
+    [record]
+  );
+
+  /**
+   * 更新动画状态
+   * @param animationId - 动画ID
+   * @param updates - 更新的属性
+   */
+  const handleUpdateAnimationItem = useCallback(
+    (animationId: string, updates: Partial<AnimationItem>) => {
+      setAnimationState(prev => ({
+        ...prev,
+        animations: prev.animations.map(animation =>
+          animation.id === animationId 
+            ? { ...animation, ...updates, updatedAt: new Date() }
+            : animation
+        )
+      }));
+    },
+    []
+  );
+
+  /**
+   * 选择动画
+   * @param animationId - 动画ID
+   */
+  const handleAnimationSelect = useCallback(
+    (animationId: string) => {
+      setAnimationState(prev => ({ ...prev, selectedAnimationId: animationId }));
+      record(`选择动画 ${animationId}`);
+    },
+    [record]
+  );
+
+  /**
+   * 删除动画
+   * @param animationId - 动画ID
+   */
+  const handleDeleteAnimation = useCallback(
+    (animationId: string) => {
+      setAnimationState(prev => ({
+        ...prev,
+        animations: prev.animations.filter(animation => animation.id !== animationId),
+        selectedAnimationId: prev.selectedAnimationId === animationId ? null : prev.selectedAnimationId
+      }));
+      record(`删除动画 ${animationId}`);
+    },
+    [record]
+  );
+
+  /**
    * 播放动画
+   * @param animationId - 动画ID
    */
   const handleAnimationPlay = useCallback(
-    () => record('播放动画', 'modify', 'animation'),
-    [record]
+    (animationId: string) => {
+      handleUpdateAnimationItem(animationId, { status: 'playing' });
+      record(`播放动画 ${animationId}`, 'modify', 'animation');
+    },
+    [record, handleUpdateAnimationItem]
   );
 
   /**
    * 暂停动画
+   * @param animationId - 动画ID
    */
   const handleAnimationPause = useCallback(
-    () => record('暂停动画', 'modify', 'animation'),
-    [record]
+    (animationId: string) => {
+      handleUpdateAnimationItem(animationId, { status: 'paused' });
+      record(`暂停动画 ${animationId}`, 'modify', 'animation');
+    },
+    [record, handleUpdateAnimationItem]
   );
 
   /**
    * 停止动画
+   * @param animationId - 动画ID
    */
   const handleAnimationStop = useCallback(
-    () => record('停止动画', 'modify', 'animation'),
-    [record]
+    (animationId: string) => {
+      handleUpdateAnimationItem(animationId, { status: 'stopped', progress: 0 });
+      record(`停止动画 ${animationId}`, 'modify', 'animation');
+    },
+    [record, handleUpdateAnimationItem]
   );
 
   /**
    * 设置动画进度
+   * @param animationId - 动画ID
    * @param progress - 动画进度百分比
    */
   const handleProgressChange = useCallback(
-    (progress: number) => record(`设置动画进度: ${progress}%`),
-    [record]
+    (animationId: string, progress: number) => {
+      handleUpdateAnimationItem(animationId, { progress });
+      record(`设置动画 ${animationId} 进度: ${progress}%`);
+    },
+    [record, handleUpdateAnimationItem]
   );
 
   /**
@@ -634,14 +716,19 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
     onClearHistory: clearHistory,
     onJumpToRecord: handleJumpToRecord,
     onFilterChange: setHistoryFilter,
-    onConfigChange: handleAnimationConfigChange,
+    /* 动画相关回调函数 */
+    onAnimationSelect: handleAnimationSelect,
     onAnimationPlay: handleAnimationPlay,
     onAnimationPause: handleAnimationPause,
     onAnimationStop: handleAnimationStop,
+    onAnimationDelete: handleDeleteAnimation,
     onProgressChange: handleProgressChange,
     onSpeedChange: handleSpeedChange,
+    onConfigChange: handleAnimationConfigChange,
     onSearch: handleAnimationSearch,
     onFilter: handleAnimationFilter,
+    onAddAnimations: handleAddAnimations,
+    onUpdateAnimationItem: handleUpdateAnimationItem,
     onObjectInfoChange: handleObjectInfoChange,
     onObjectTransformChange: handleObjectTransformChange,
     onObjectShadowChange: handleObjectShadowChange,

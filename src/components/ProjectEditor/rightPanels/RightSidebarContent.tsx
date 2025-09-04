@@ -81,12 +81,15 @@ const RightSidebarContent: React.FC<RightSidebarContentProps> = ({ currentTab, p
         ) : currentTab === 'animation' ? (
           <AnimationPanel
             animationState={animationState}
+            onAnimationSelect={handlers.onAnimationSelect}
             onAnimationPlay={handlers.onAnimationPlay}
             onAnimationPause={handlers.onAnimationPause}
             onAnimationStop={handlers.onAnimationStop}
+            onAnimationDelete={handlers.onAnimationDelete}
             onProgressChange={handlers.onProgressChange}
             onSpeedChange={handlers.onSpeedChange}
-            onConfigChange={handlers.onPlaybackConfigChange}
+            onPlaybackConfigChange={handlers.onPlaybackConfigChange}
+            onConfigChange={handlers.onConfigChange}
             onSearch={handlers.onSearch}
             onFilter={handlers.onFilter}
           />

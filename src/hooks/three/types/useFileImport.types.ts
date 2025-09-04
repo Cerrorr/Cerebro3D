@@ -1,4 +1,5 @@
-import { Object3D, Vector3 } from 'three';
+import { Object3D, Vector3, AnimationClip } from 'three';
+import type { AnimationItem } from '@/components/projectEditor/rightPanels/types/AnimationPanel.types';
 
 /**
  * 文件导入结果接口
@@ -17,6 +18,10 @@ export interface FileImportResult {
   loadTime: number;
   // 计算的位置信息（可选）
   position?: Vector3;
+  // 从模型中提取的动画数据（可选）
+  animations?: AnimationItem[];
+  // 原始的Three.js动画剪辑（可选）
+  animationClips?: AnimationClip[];
 }
 
 /**
