@@ -15,13 +15,20 @@ import {
   BufferAttribute,
   PointsMaterial,
   AdditiveBlending,
-  Clock
+  Clock,
+  TextureLoader,
+  Texture
 } from 'three';
 import type { WeatherConfig } from '@/components/projectEditor/rightPanels/types/WeatherConfig.types';
 
 export class WeatherManager {
   private scene: Scene;
   private weatherConfig: WeatherConfig;
+  
+  // 纹理加载器
+  private textureLoader: TextureLoader;
+  private rainTexture: Texture | null = null;
+  private snowTexture: Texture | null = null;
   
   // 雨效果相关
   private rainParticles: Points | null = null;
@@ -41,11 +48,49 @@ export class WeatherManager {
   constructor(scene: Scene) {
     this.scene = scene;
     this.clock = new Clock();
+    this.textureLoader = new TextureLoader();
     this.weatherConfig = {
       fog: { enabled: false, type: 'Linear', color: '#888888', near: 1, far: 30, density: 0.02 },
       rain: { enabled: false, speed: 0.4, color: '#ffffff', size: 0.5, arc: 95, opacity: 0.4, particleCount: 2000 },
       snow: { enabled: false, speed: 1, density: 1, size: 0.5, opacity: 0.5, color: '#ffffff', particleCount: 1000 }
     };
+    
+    // 预加载纹理
+    this.loadTextures();
+  }
+
+  /**
+   * 加载天气效果纹理
+   * 预加载雨和雪的纹理文件
+   * @author Cerror
+   * @since 2025-09-04
+   */
+  private loadTextures(): void {
+    // 加载雨滴纹理
+    this.textureLoader.load(
+      '/images/rain.png',
+      (texture) => {
+        this.rainTexture = texture;
+        console.log('🌧️ 雨滴纹理加载成功');
+      },
+      undefined,
+      (error) => {
+        console.warn('⚠️ 雨滴纹理加载失败:', error);
+      }
+    );
+    
+    // 加载雪花纹理
+    this.textureLoader.load(
+      '/images/snow.png',
+      (texture) => {
+        this.snowTexture = texture;
+        console.log('❄️ 雪花纹理加载成功');
+      },
+      undefined,
+      (error) => {
+        console.warn('⚠️ 雪花纹理加载失败:', error);
+      }
+    );
   }
 
   /**
@@ -125,7 +170,7 @@ export class WeatherManager {
 
   /**
    * 创建雨粒子系统
-   * 根据配置创建指定数量的雨粒子并添加到场景中
+   * 根据配置创建指定数量的雨粒子并添加到场景中，使用纹理贴图
    * @author Cerror
    * @since 2025-09-01
    */
@@ -152,12 +197,14 @@ export class WeatherManager {
       vertexColors: false,
       blending: AdditiveBlending,
       depthWrite: false,
-      fog: false  // 雨粒子不受雾影响
+      fog: false,  // 雨粒子不受雾影响
+      map: this.rainTexture, // 使用雨滴纹理
+      alphaTest: 0.1 // 只渲染不透明的像素
     });
     
     this.rainParticles = new Points(this.rainGeometry, this.rainMaterial);
     this.scene.add(this.rainParticles);
-    console.log(`🌧️ 雨粒子已创建 (${particleCount}个粒子)`);
+    console.log(`🌧️ 雨粒子已创建 (${particleCount}个粒子)` + (this.rainTexture ? ' - 使用纹理贴图' : ' - 使用纯色'));
   }
 
   /**
@@ -216,7 +263,7 @@ export class WeatherManager {
 
   /**
    * 创建雪粒子系统
-   * 根据配置创建指定数量的雪粒子并添加到场景中
+   * 根据配置创建指定数量的雪粒子并添加到场景中，使用纹理贴图
    * @author Cerror
    * @since 2025-09-01
    */
@@ -247,12 +294,14 @@ export class WeatherManager {
       blending: AdditiveBlending,
       depthWrite: false,
       sizeAttenuation: true,
-      fog: false  // 雪粒子不受雾影响
+      fog: false,  // 雪粒子不受雾影响
+      map: this.snowTexture, // 使用雪花纹理
+      alphaTest: 0.1 // 只渲染不透明的像素
     });
     
     this.snowParticles = new Points(this.snowGeometry, this.snowMaterial);
     this.scene.add(this.snowParticles);
-    console.log(`❄️ 雪粒子已创建 (${particleCount}个粒子)`);
+    console.log(`❄️ 雪粒子已创建 (${particleCount}个粒子)` + (this.snowTexture ? ' - 使用纹理贴图' : ' - 使用纯色'));
   }
 
   /**
@@ -368,5 +417,15 @@ export class WeatherManager {
     this.removeRainParticles();
     this.removeSnowParticles();
     this.scene.fog = null;
+    
+    // 销毁纹理
+    if (this.rainTexture) {
+      this.rainTexture.dispose();
+      this.rainTexture = null;
+    }
+    if (this.snowTexture) {
+      this.snowTexture.dispose();
+      this.snowTexture = null;
+    }
   }
 }
