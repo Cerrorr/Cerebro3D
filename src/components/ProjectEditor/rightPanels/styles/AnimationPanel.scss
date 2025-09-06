@@ -170,11 +170,23 @@
           min-width: 80px;
         }
 
+        .switch-container {
+          flex: 1;
+          min-width: 90px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .ant-switch {
+          flex-shrink: 0;
+        }
+
         .control-value {
           font-size: 12px;
           color: #f3f4f6; // text-gray-100
           font-weight: 500;
-          min-width: 45px;
+          min-width: 50px;
           text-align: right;
           flex-shrink: 0;
         }

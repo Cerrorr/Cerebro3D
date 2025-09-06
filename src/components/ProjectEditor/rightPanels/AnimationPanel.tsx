@@ -5,11 +5,12 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { Button, List, Empty, Tooltip, Typography } from 'antd';
+import { Button, List, Empty, Tooltip, Typography, Switch } from 'antd';
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
-  StopOutlined
+  StopOutlined,
+  ReloadOutlined
 } from '@ant-design/icons';
 import './styles/AnimationPanel.scss';
 import type {
@@ -41,6 +42,9 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
   // 安全地获取播放速度，提供默认值
   const initialSpeed = animationState?.playbackConfig?.playbackSpeed ?? 1.0;
   const [localSpeedValue, setLocalSpeedValue] = useState(initialSpeed);
+  
+  // 循环播放状态
+  const [isLoopEnabled, setIsLoopEnabled] = useState(false);
 
   // 记录器
   const record = useRecord('动画');
@@ -111,14 +115,15 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
   const handlePlayClick = useCallback(
     (animationId: string, status: AnimationStatus, event: React.MouseEvent) => {
       event.stopPropagation();
-      record(`${status === 'playing' ? '暂停' : '播放'}动画 ${animationId}`);
+      record(`${status === 'playing' ? '暂停' : '播放'}动画 ${animationId} ${isLoopEnabled ? '(循环模式)' : ''}`);
       if (status === 'playing') {
         onAnimationPause?.(animationId);
       } else {
-        onAnimationPlay?.(animationId);
+        // 传递循环参数给播放回调
+        onAnimationPlay?.(animationId, isLoopEnabled);
       }
     },
-    [onAnimationPlay, onAnimationPause]
+    [onAnimationPlay, onAnimationPause, isLoopEnabled]
   );
 
   // 处理停止按钮点击
@@ -148,6 +153,15 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
       onSpeedChange?.(speed);
     },
     [onSpeedChange]
+  );
+
+  // 处理循环开关变化
+  const handleLoopToggle = useCallback(
+    (checked: boolean) => {
+      setIsLoopEnabled(checked);
+      record(`${checked ? '启用' : '禁用'}循环播放`);
+    },
+    []
   );
 
   // 渲染简化的动画项
@@ -245,6 +259,25 @@ const AnimationPanel: React.FC<AnimationPanelProps> = ({
 
       {/* 底部控制面板 */}
       <div className="animation-controls">
+        {/* 循环播放开关 */}
+        <div className="control-row">
+          <Text className="control-label">循环播放:</Text>
+          <div className="control-slider">
+            <div className="switch-container">
+              <Switch
+                checked={isLoopEnabled}
+                onChange={handleLoopToggle}
+                checkedChildren={<ReloadOutlined />}
+                unCheckedChildren="关"
+                size="small"
+              />
+            </div>
+            <Text className="control-value">
+              {isLoopEnabled ? '开启' : '关闭'}
+            </Text>
+          </div>
+        </div>
+
         {/* 播放速度控制 */}
         <div className="control-row">
           <Text className="control-label">播放速度:</Text>

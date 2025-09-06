@@ -261,10 +261,10 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   }, [addHistory, dispatch, sceneConfig.helpers.enabled, projectTitle, scene3DService, panelsProps, animationControl]);
 
   // 创建真正的动画播放控制回调
-  const handleRealAnimationPlay = useCallback((animationId: string) => {
-    animationControl.playAnimation(animationId, false);
+  const handleRealAnimationPlay = useCallback((animationId: string, loop?: boolean) => {
+    animationControl.playAnimation(animationId, loop || false);
     // 同时更新面板状态
-    panelsProps.onAnimationPlay?.(animationId);
+    panelsProps.onAnimationPlay?.(animationId, loop);
   }, [animationControl, panelsProps]);
 
   const handleRealAnimationPause = useCallback((animationId: string) => {

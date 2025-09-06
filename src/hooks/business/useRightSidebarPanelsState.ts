@@ -255,9 +255,9 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
    * @param animationId - 动画ID
    */
   const handleAnimationPlay = useCallback(
-    (animationId: string) => {
+    (animationId: string, loop?: boolean) => {
       handleUpdateAnimationItem(animationId, { status: 'playing' });
-      record(`播放动画 ${animationId}`, 'modify', 'animation');
+      record(`播放动画 ${animationId}${loop ? ' (循环模式)' : ''}`, 'modify', 'animation');
     },
     [record, handleUpdateAnimationItem]
   );

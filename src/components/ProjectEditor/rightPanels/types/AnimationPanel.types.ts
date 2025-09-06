@@ -125,7 +125,7 @@ export interface AnimationPanelProps {
   // 动画选择回调
   onAnimationSelect?: (animationId: string) => void;
   // 动画播放回调
-  onAnimationPlay?: (animationId: string) => void;
+  onAnimationPlay?: (animationId: string, loop?: boolean) => void;
   // 动画暂停回调
   onAnimationPause?: (animationId: string) => void;
   // 动画停止回调
