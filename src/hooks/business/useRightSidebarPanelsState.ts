@@ -1,4 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '@/store';
+import { Object3D, Mesh, MathUtils } from 'three';
 import {
   ProjectInfo,
   SceneConfiguration,
@@ -44,9 +46,9 @@ import { devLog } from '@/utils/devLog';
 import { useHistoryRecorder } from '@/hooks/business/useHistoryRecorder';
 import type { HistoryActionType, HistoryTargetType } from '@/components/projectEditor/rightPanels/types/HistoryPanel.types';
 import type {
-  UseRightSidebarPanelsStateResult
+  UseRightSidebarPanelsStateResult,
+  UseRightSidebarPanelsStateOptions
 } from './types/useRightSidebarPanelsState.types';
-import { useAppSelector, useAppDispatch } from '@/store';
 import { updateCameraConfig } from '@/store/slices/sceneSlice';
 import { updatePostProcessingConfig } from '@/store/slices/postProcessingSlice';
 import { addRecord } from '@/store/slices/historySlice';
@@ -57,12 +59,17 @@ import { addRecord } from '@/store/slices/historySlice';
  * @returns 返回右侧面板的所有状态和操作函数
  * @author Cerror
  * @since 2025-07-08 */
-export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult => {
+export const useRightSidebarPanelsState = (
+  options: UseRightSidebarPanelsStateOptions = {}
+): UseRightSidebarPanelsStateResult => {
+  const { scene3DService, sceneNodes = [] } = options;
   const dispatch = useAppDispatch();
   
   /* ---------------- Redux状态 ---------------- */
   // 从Redux获取相机配置
   const cameraConfig = useAppSelector(state => state.scene.cameraConfig);
+  // 获取选中的节点ID
+  const selectedNodeId = useAppSelector(state => state.scene.selectedNodeId);
 
   /* ---------------- 基础状态 ---------------- */
   // 项目信息
@@ -148,6 +155,191 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
     },
     [addHistory]
   );
+
+  /* ---------------- 对象信息提取函数 ---------------- */
+  /**
+   * 从Three.js对象提取信息并转换为ObjectState
+   * @param object3D - Three.js对象
+   * @returns ObjectState
+   */
+  const extractObjectState = useCallback((object3D: Object3D): ObjectState => {
+    // 提取基本信息
+    const info: ObjectInfo = {
+      type: object3D.type as any,
+      id: object3D.uuid,
+      name: object3D.name || `${object3D.type}_${object3D.id}`,
+      material: object3D instanceof Mesh && object3D.material ? 
+        (Array.isArray(object3D.material) ? 
+          `${object3D.material.length} materials` : 
+          object3D.material.type
+        ) : undefined
+    };
+
+    // 提取变换信息
+    const transform: TransformConfig = {
+      position: {
+        x: parseFloat(object3D.position.x.toFixed(3)),
+        y: parseFloat(object3D.position.y.toFixed(3)),
+        z: parseFloat(object3D.position.z.toFixed(3))
+      },
+      rotation: {
+        x: parseFloat(MathUtils.radToDeg(object3D.rotation.x).toFixed(1)),
+        y: parseFloat(MathUtils.radToDeg(object3D.rotation.y).toFixed(1)),
+        z: parseFloat(MathUtils.radToDeg(object3D.rotation.z).toFixed(1))
+      },
+      scale: {
+        x: parseFloat(object3D.scale.x.toFixed(3)),
+        y: parseFloat(object3D.scale.y.toFixed(3)),
+        z: parseFloat(object3D.scale.z.toFixed(3))
+      }
+    };
+
+    // 提取阴影信息
+    const shadow: ObjectShadowConfig = {
+      castShadow: object3D.castShadow || false,
+      receiveShadow: object3D.receiveShadow || false
+    };
+
+    // 提取可见性信息
+    const visibility: VisibilityConfig = {
+      visible: object3D.visible,
+      frustumCulled: object3D.frustumCulled
+    };
+
+    // 提取渲染次序
+    const renderOrder: RenderOrderConfig = {
+      renderOrder: object3D.renderOrder
+    };
+
+    // 默认剖切配置
+    const clipping: ClippingConfig = {
+      enabled: false,
+      planeNormal: { x: 0, y: 1, z: 0 },
+      planeDistance: 0,
+      side: 'front',
+      showEdges: false,
+      edgeColor: '#ffffff',
+      edgeThickness: 1
+    };
+
+    // 默认爆炸配置
+    const explode: ExplodeConfig = {
+      enabled: false,
+      intensity: 1.0,
+      center: { x: 0, y: 0, z: 0 },
+      direction: 'radial',
+      duration: 1000,
+      easing: 'easeOut'
+    };
+
+    // 提取用户数据
+    const customData = object3D.userData || {};
+
+    return {
+      info,
+      transform,
+      shadow,
+      visibility,
+      renderOrder,
+      clipping,
+      explode,
+      customData
+    };
+  }, []);
+
+  /* ---------------- 选中对象同步 ---------------- */
+  /**
+   * 根据选中的节点ID查找对应的3D对象
+   */
+  const findSelectedObject = useCallback((nodeId: string): Object3D | null => {
+    if (!scene3DService || !nodeId) return null;
+
+    // 查找选中节点
+    const findNode = (nodes: any[], searchNodeId: string): any => {
+      for (const n of nodes) {
+        if (n.id === searchNodeId) return n;
+        if (n.children) {
+          const found = findNode(n.children, searchNodeId);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    let selectedNode = null;
+    for (const rootNode of sceneNodes) {
+      selectedNode = findNode([rootNode], nodeId);
+      if (selectedNode) break;
+    }
+
+    if (!selectedNode) return null;
+
+    // 如果选中的是顶级节点（有objectId），返回整个对象
+    if (selectedNode.objectId) {
+      return scene3DService.getObject(selectedNode.objectId) || null;
+    }
+
+    // 查找包含指定节点的顶级父节点
+    const findParentWithObjectId = (targetNodeId: string): any => {
+      const searchInNode = (node: any): any => {
+        if (node.objectId) {
+          const containsTarget = (n: any): boolean => {
+            if (n.id === targetNodeId) return true;
+            if (n.children) {
+              return n.children.some((child: any) => containsTarget(child));
+            }
+            return false;
+          };
+          if (containsTarget(node)) return node;
+        }
+        if (node.children) {
+          for (const child of node.children) {
+            const found = searchInNode(child);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+      
+      for (const rootNode of sceneNodes) {
+        const found = searchInNode(rootNode);
+        if (found) return found;
+      }
+      return null;
+    };
+
+    // 如果是中间节点或叶子节点，找到父对象并查找具体对象
+    const parentNode = findParentWithObjectId(selectedNode.id);
+    if (parentNode && parentNode.objectId) {
+      const parentObject = scene3DService.getObject(parentNode.objectId);
+      if (parentObject) {
+        let foundObject: Object3D | null = null;
+        parentObject.traverse((child: Object3D) => {
+          if (child.name === selectedNode.name && !foundObject) {
+            foundObject = child;
+          }
+        });
+        return foundObject;
+      }
+    }
+
+    return null;
+  }, [scene3DService, sceneNodes]);
+
+  // 监听选中对象变化，更新ObjectPanel状态
+  useEffect(() => {
+    if (selectedNodeId && scene3DService) {
+      const selectedObject = findSelectedObject(selectedNodeId);
+      if (selectedObject) {
+        const newObjectState = extractObjectState(selectedObject);
+        setObjectState(newObjectState);
+      } else {
+        setObjectState(DEFAULT_OBJECT_STATE);
+      }
+    } else {
+      setObjectState(DEFAULT_OBJECT_STATE);
+    }
+  }, [selectedNodeId, scene3DService, sceneNodes, findSelectedObject, extractObjectState]);
 
   /**
    * 场景配置变更回调
@@ -417,15 +609,87 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   );
 
   /**
+   * 应用更改到Three.js对象
+   * @param changes - 要应用的更改
+   */
+  const applyChangesToSelectedObject = useCallback((changes: Partial<ObjectState>) => {
+    if (!selectedNodeId || !scene3DService) return;
+    
+    const selectedObject = findSelectedObject(selectedNodeId);
+    if (!selectedObject) return;
+
+    // 应用变换更改
+    if (changes.transform) {
+      const { position, rotation, scale } = changes.transform;
+      
+      if (position) {
+        selectedObject.position.set(position.x, position.y, position.z);
+      }
+      
+      if (rotation) {
+        selectedObject.rotation.set(
+          MathUtils.degToRad(rotation.x),
+          MathUtils.degToRad(rotation.y),
+          MathUtils.degToRad(rotation.z)
+        );
+      }
+      
+      if (scale) {
+        selectedObject.scale.set(scale.x, scale.y, scale.z);
+      }
+    }
+
+    // 应用信息更改
+    if (changes.info) {
+      if (changes.info.name) {
+        selectedObject.name = changes.info.name;
+      }
+    }
+
+    // 应用阴影更改
+    if (changes.shadow) {
+      if (changes.shadow.castShadow !== undefined) {
+        selectedObject.castShadow = changes.shadow.castShadow;
+      }
+      if (changes.shadow.receiveShadow !== undefined) {
+        selectedObject.receiveShadow = changes.shadow.receiveShadow;
+      }
+    }
+
+    // 应用可见性更改
+    if (changes.visibility) {
+      if (changes.visibility.visible !== undefined) {
+        selectedObject.visible = changes.visibility.visible;
+      }
+      if (changes.visibility.frustumCulled !== undefined) {
+        selectedObject.frustumCulled = changes.visibility.frustumCulled;
+      }
+    }
+
+    // 应用渲染次序更改
+    if (changes.renderOrder) {
+      if (changes.renderOrder.renderOrder !== undefined) {
+        selectedObject.renderOrder = changes.renderOrder.renderOrder;
+      }
+    }
+
+    // 应用自定义数据更改
+    if (changes.customData) {
+      selectedObject.userData = { ...selectedObject.userData, ...changes.customData };
+    }
+  }, [selectedNodeId, scene3DService, findSelectedObject]);
+
+  /**
    * 对象信息变更回调
    * @param info - 对象信息的部分更新
    */
   const handleObjectInfoChange = useCallback(
     (info: Partial<ObjectInfo>) => {
       setObjectState(prev => ({ ...prev, info: { ...prev.info, ...info } }));
+      applyChangesToSelectedObject({ info: { ...objectState.info, ...info } });
       record('修改对象信息');
     },
-    [record]
+    [record, applyChangesToSelectedObject, objectState.info]
   );
 
   /**
@@ -435,9 +699,10 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   const handleObjectTransformChange = useCallback(
     (transform: Partial<TransformConfig>) => {
       setObjectState(prev => ({ ...prev, transform: { ...prev.transform, ...transform } }));
+      applyChangesToSelectedObject({ transform: { ...objectState.transform, ...transform } });
       record('修改对象变换');
     },
-    [record]
+    [record, applyChangesToSelectedObject, objectState.transform]
   );
 
   /**
@@ -447,9 +712,10 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   const handleObjectShadowChange = useCallback(
     (shadow: Partial<ObjectShadowConfig>) => {
       setObjectState(prev => ({ ...prev, shadow: { ...prev.shadow, ...shadow } }));
+      applyChangesToSelectedObject({ shadow: { ...objectState.shadow, ...shadow } });
       record('修改对象阴影');
     },
-    [record]
+    [record, applyChangesToSelectedObject, objectState.shadow]
   );
 
   /**
@@ -459,9 +725,10 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   const handleObjectVisibilityChange = useCallback(
     (visibility: Partial<VisibilityConfig>) => {
       setObjectState(prev => ({ ...prev, visibility: { ...prev.visibility, ...visibility } }));
+      applyChangesToSelectedObject({ visibility: { ...objectState.visibility, ...visibility } });
       record('修改对象可见性');
     },
-    [record]
+    [record, applyChangesToSelectedObject, objectState.visibility]
   );
 
   /**
@@ -471,9 +738,10 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   const handleObjectRenderOrderChange = useCallback(
     (renderOrder: Partial<RenderOrderConfig>) => {
       setObjectState(prev => ({ ...prev, renderOrder: { ...prev.renderOrder, ...renderOrder } }));
+      applyChangesToSelectedObject({ renderOrder: { ...objectState.renderOrder, ...renderOrder } });
       record('修改对象渲染次序');
     },
-    [record]
+    [record, applyChangesToSelectedObject, objectState.renderOrder]
   );
 
   /**
@@ -483,6 +751,7 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   const handleObjectClippingChange = useCallback(
     (clipping: Partial<ClippingConfig>) => {
       setObjectState(prev => ({ ...prev, clipping: { ...prev.clipping, ...clipping } }));
+      // 注意：剖切功能需要额外的着色器支持，这里只更新状态
       record('修改对象剖切');
     },
     [record]
@@ -495,9 +764,23 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   const handleObjectExplodeChange = useCallback(
     (explode: Partial<ExplodeConfig>) => {
       setObjectState(prev => ({ ...prev, explode: { ...prev.explode, ...explode } }));
+      
+      // 应用爆炸功能到实际对象
+      if (selectedNodeId && scene3DService) {
+        const newConfig = { ...objectState.explode, ...explode };
+        
+        if (newConfig.enabled) {
+          // 启用或更新爆炸
+          scene3DService.updateObjectExplode(selectedNodeId, newConfig);
+        } else {
+          // 禁用爆炸
+          scene3DService.disableObjectExplode(selectedNodeId);
+        }
+      }
+      
       record('修改对象爆炸');
     },
-    [record]
+    [record, selectedNodeId, scene3DService, objectState.explode]
   );
 
   /**
@@ -507,9 +790,10 @@ export const useRightSidebarPanelsState = (): UseRightSidebarPanelsStateResult =
   const handleObjectCustomDataChange = useCallback(
     (customData: any) => {
       setObjectState(prev => ({ ...prev, customData }));
+      applyChangesToSelectedObject({ customData });
       record('修改对象自定义数据');
     },
-    [record]
+    [record, applyChangesToSelectedObject]
   );
 
   /* ---------------- 材质相关回调 ---------------- */

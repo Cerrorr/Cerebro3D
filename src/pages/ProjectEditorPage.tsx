@@ -70,23 +70,6 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
   // 历史记录 & 日志 Hook
   const { addHistory, logs } = useHistoryRecorder();
   
-  // 右侧面板状态管理
-  const { panelsProps } = useRightSidebarPanelsState();
-  
-  // 动画控制
-  const animationControl = useAnimationControl({
-    onAnimationUpdate: (animationId: string, status: AnimationStatus, progress: number) => {
-      // 更新动画状态
-      panelsProps.onUpdateAnimationItem?.(animationId, { status, progress });
-    }
-  });
-  
-  // 使用 App 组件的 message API
-  const { message } = App.useApp();
-
-  // 场景初始化状态标记
-  const [sceneInitialized, setSceneInitialized] = useState(false);
-
   // 3D场景服务实例
   const [scene3DService] = useState(() => new Scene3DService({
     container: null, // 将在ViewportScene中设置
@@ -104,6 +87,26 @@ const ProjectEditorPage: React.FC<ProjectEditorPageProps> = ({
       console.log('场景更新:', object);
     }
   }));
+
+  // 右侧面板状态管理
+  const { panelsProps } = useRightSidebarPanelsState({
+    scene3DService,
+    sceneNodes
+  });
+  
+  // 动画控制
+  const animationControl = useAnimationControl({
+    onAnimationUpdate: (animationId: string, status: AnimationStatus, progress: number) => {
+      // 更新动画状态
+      panelsProps.onUpdateAnimationItem?.(animationId, { status, progress });
+    }
+  });
+  
+  // 使用 App 组件的 message API
+  const { message } = App.useApp();
+
+  // 场景初始化状态标记
+  const [sceneInitialized, setSceneInitialized] = useState(false);
 
   // 场景初始化
   useEffect(() => {

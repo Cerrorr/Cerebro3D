@@ -8,3 +8,5 @@ export { FileImportService } from './FileImportService';
 export { Scene3DService } from './Scene3DService';
 export { WeatherManager } from './WeatherManager';
 export { AnimationManager, globalAnimationManager } from './AnimationManager';
+export { ClippingManager } from './ClippingManager';
+export { ExplodeManager } from './ExplodeManager';

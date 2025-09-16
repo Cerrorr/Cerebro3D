@@ -2,8 +2,8 @@
  * 对象面板样式
  * 自定义样式和布局，Ant Design 组件样式已迁移到主题配置
  * @author Cerror
- * @since 2024-01-22
- * @updated 2025-07-12 - 移除 Ant Design 样式覆盖，迁移到主题配置
+ * @since 2025-09-06
+ * @updated 2025-09-06 - 移除 Ant Design 样式覆盖，迁移到主题配置
  */
 
 .object-panel {
@@ -12,6 +12,7 @@
   height: 100%;
   background: #111827; // bg-gray-900
   color: #f3f4f6; // text-gray-100
+  overflow: hidden; // 防止整个面板溢出
 
   // 空状态样式
   &__empty {
@@ -25,6 +26,7 @@
   &__collapse {
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden; // 防止水平滚动
 
     // 自定义滚动条
     &::-webkit-scrollbar {
@@ -57,6 +59,8 @@
 
   // 信息区域样式
   .info-section {
+    padding: 8px 0;
+    
     .form-row {
       display: flex;
       align-items: center;
@@ -131,6 +135,8 @@
 
   // 变换区域样式
   .transform-section {
+    padding: 8px 0;
+    
     .vector-group {
       margin-bottom: 16px;
 
@@ -146,9 +152,16 @@
       }
 
       .vector-inputs {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 6px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        // 小屏幕下使用垂直布局，避免水平滚动
+        @media (min-width: 400px) {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 6px;
+        }
         
         // 使用自定义类名，避免影响其他ant-input组件
         .vector-input {
@@ -161,6 +174,8 @@
 
   // 阴影区域样式
   .shadow-section {
+    padding: 8px 0;
+    
     .switch-group {
       display: flex;
       gap: 24px;
@@ -175,6 +190,8 @@
 
   // 可见性区域样式
   .visibility-section {
+    padding: 8px 0;
+    
     .switch-item {
       margin-bottom: 12px;
 
@@ -201,8 +218,65 @@
     }
   }
 
+  // 剖切区域样式
+  .clipping-section {
+    padding: 8px 0;
+    
+    .switch-item {
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .form-label {
+        font-size: 12px;
+        color: #d1d5db; // text-gray-300
+        font-weight: 500;
+        min-width: 60px;
+      }
+    }
+
+    .vector-group {
+      margin: 16px 0;
+      
+      .vector-label {
+        font-size: 12px;
+        color: #d1d5db;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .vector-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        // 小屏幕下使用垂直布局，避免水平滚动
+        @media (min-width: 400px) {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 6px;
+        }
+      }
+    }
+  }
+
   // 爆炸区域样式
   .explode-section {
+    padding: 8px 0;
+    
     .switch-item {
       margin-bottom: 12px;
 
@@ -242,27 +316,37 @@
         grid-template-columns: 1fr 1fr 1fr;
         gap: 6px;
 
-        // 轴向输入组件 - 实际样式由主题配置管理
+        .axis-input {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 8px;
+          min-width: 0; // 确保不会溢出
+
+          .axis-label {
+            font-size: 10px;
+            color: #9ca3af; // gray-400
+            font-weight: 500;
+            min-width: 12px;
+            flex-shrink: 0;
+          }
+
+          // 在网格布局下改为垂直
+          @media (min-width: 400px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+          }
+        }
       }
     }
 
-    .axis-input {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-
-      .axis-label {
-        font-size: 10px;
-        color: #9ca3af; // gray-400
-      }
-
-      // 注意：Ant Design 数字输入框样式已迁移到主题配置
-    }
   }
 
   // 自定义数据区域样式
   .custom-data-section {
+    padding: 8px 0;
+    
     .custom-data-input {
       background: #1f2937; // bg-gray-800
       border-color: #4b5563; // border-gray-600
@@ -298,6 +382,42 @@
       font-size: 12px;
       color: #d1d5db; // text-gray-300
     }
+  }
+}
+
+// 全局输入框样式 - 防止溢出
+.object-panel {
+  // 确保所有输入框不会溢出
+  .ant-input,
+  .ant-input-number,
+  .ant-select,
+  .ant-input-number-input {
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  // 特别处理数字输入框
+  .ant-input-number {
+    width: 100%;
+    
+    .ant-input-number-input {
+      text-align: center;
+    }
+  }
+
+  // 响应式标签宽度
+  .form-label {
+    flex-shrink: 0;
+    max-width: 80px;
+    word-wrap: break-word;
+  }
+
+  // 确保表单行不会溢出
+  .form-row {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 

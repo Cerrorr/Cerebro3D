@@ -1,3 +1,9 @@
+/**
+ * 全局样式配置
+ * @author Cerror  
+ * @since 2025-09-06
+ */
+
 // 使用现代SCSS语法导入变量和混入 - 必须在最顶部
 @use 'variables' as vars;
 @use 'mixins' as mix;

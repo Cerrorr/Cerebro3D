@@ -134,17 +134,6 @@ export class AnimationManager {
   }
 
   /**
-   * 获取所有可用的动作ID（调试用）
-   */
-  private getAllActionIds(): string[] {
-    const allIds: string[] = [];
-    this.controllers.forEach(controller => {
-      allIds.push(...Array.from(controller.actions.keys()));
-    });
-    return allIds;
-  }
-
-  /**
    * 暂停动画
    * @param animationId 动画ID
    */

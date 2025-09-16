@@ -27,7 +27,7 @@ import {
   BokehPass
 } from 'three/examples/jsm/postprocessing/BokehPass.js';
 import { Vector2, ShaderMaterial } from 'three';
-import type { PostProcessingConfig } from '@/components/projectEditor/rightPanels/types/PostProcessing.types';
+import type { PostProcessingEffectsProps } from './types/PostProcessingEffects.types';
 import { LUTManager, type LUTType } from './LUTManager';
 import { LUTShader } from './LUTShader';
 
@@ -45,11 +45,6 @@ extend({
   BokehPass,
   ShaderPass
 });
-
-interface PostProcessingEffectsProps {
-  selectedObjects?: any[];
-  config: PostProcessingConfig;
-}
 
 const PostProcessingEffects: React.FC<PostProcessingEffectsProps> = ({ 
   selectedObjects = [],

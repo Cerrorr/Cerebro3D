@@ -12,6 +12,8 @@ import type {
   Scene3DOperationResult 
 } from '../types/Scene3DService.types';
 import type { Object3D } from 'three';
+import { ClippingManager, type ClippingConfig } from './ClippingManager';
+import { ExplodeManager, type ExplodeConfig } from './ExplodeManager';
 
 /**
  * 3D场景服务类
@@ -21,6 +23,8 @@ export class Scene3DService {
   private config: Scene3DConfig;
   private state: Scene3DState;
   private sceneObjects: Map<string, Object3D> = new Map();
+  private clippingManager: ClippingManager = new ClippingManager();
+  private explodeManager: ExplodeManager = new ExplodeManager();
 
   constructor(config: Scene3DConfig) {
     this.config = config;
@@ -313,8 +317,239 @@ export class Scene3DService {
    * 销毁服务
    */
   destroy(): void {
+    this.clippingManager.clearAll();
+    this.explodeManager.clearAll();
     this.clear();
     this.state.initialized = false;
     this.state.rendererReady = false;
+  }
+
+  // ============= 剖切功能方法 =============
+
+  /**
+   * 启用对象剖切
+   * @param objectId 对象ID
+   * @param config 剖切配置
+   */
+  enableObjectClipping(objectId: string, config: ClippingConfig): Scene3DOperationResult {
+    try {
+      const object = this.sceneObjects.get(objectId);
+      if (!object) {
+        return {
+          success: false,
+          message: `对象 ID "${objectId}" 不存在`,
+        };
+      }
+
+      const success = this.clippingManager.enableClipping(objectId, object, config);
+      return {
+        success,
+        message: success ? '剖切启用成功' : '剖切启用失败',
+        data: { objectId, config }
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `启用剖切失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  /**
+   * 禁用对象剖切
+   * @param objectId 对象ID
+   */
+  disableObjectClipping(objectId: string): Scene3DOperationResult {
+    try {
+      const object = this.sceneObjects.get(objectId);
+      if (!object) {
+        return {
+          success: false,
+          message: `对象 ID "${objectId}" 不存在`,
+        };
+      }
+
+      const success = this.clippingManager.disableClipping(objectId, object);
+      return {
+        success,
+        message: success ? '剖切禁用成功' : '剖切禁用失败',
+        data: { objectId }
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `禁用剖切失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  /**
+   * 更新对象剖切配置
+   * @param objectId 对象ID
+   * @param config 剖切配置
+   */
+  updateObjectClipping(objectId: string, config: ClippingConfig): Scene3DOperationResult {
+    try {
+      const object = this.sceneObjects.get(objectId);
+      if (!object) {
+        return {
+          success: false,
+          message: `对象 ID "${objectId}" 不存在`,
+        };
+      }
+
+      const success = this.clippingManager.updateClipping(objectId, object, config);
+      return {
+        success,
+        message: success ? '剖切配置更新成功' : '剖切配置更新失败',
+        data: { objectId, config }
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `更新剖切配置失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  // ============= 爆炸功能方法 =============
+
+  /**
+   * 启用对象爆炸视图
+   * @param objectId 对象ID
+   * @param config 爆炸配置
+   */
+  enableObjectExplode(objectId: string, config: ExplodeConfig): Scene3DOperationResult {
+    try {
+      const object = this.sceneObjects.get(objectId);
+      if (!object) {
+        return {
+          success: false,
+          message: `对象 ID "${objectId}" 不存在`,
+        };
+      }
+
+      const success = this.explodeManager.enableExplode(objectId, object, config);
+      return {
+        success,
+        message: success ? '爆炸视图启用成功' : '爆炸视图启用失败',
+        data: { objectId, config }
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `启用爆炸视图失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  /**
+   * 禁用对象爆炸视图
+   * @param objectId 对象ID
+   */
+  disableObjectExplode(objectId: string): Scene3DOperationResult {
+    try {
+      const object = this.sceneObjects.get(objectId);
+      if (!object) {
+        return {
+          success: false,
+          message: `对象 ID "${objectId}" 不存在`,
+        };
+      }
+
+      const success = this.explodeManager.disableExplode(objectId, object);
+      return {
+        success,
+        message: success ? '爆炸视图禁用成功' : '爆炸视图禁用失败',
+        data: { objectId }
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `禁用爆炸视图失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  /**
+   * 更新对象爆炸配置
+   * @param objectId 对象ID
+   * @param config 爆炸配置
+   */
+  updateObjectExplode(objectId: string, config: ExplodeConfig): Scene3DOperationResult {
+    try {
+      const object = this.sceneObjects.get(objectId);
+      if (!object) {
+        return {
+          success: false,
+          message: `对象 ID "${objectId}" 不存在`,
+        };
+      }
+
+      const success = this.explodeManager.updateExplode(objectId, object, config);
+      return {
+        success,
+        message: success ? '爆炸配置更新成功' : '爆炸配置更新失败',
+        data: { objectId, config }
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `更新爆炸配置失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  /**
+   * 切换对象爆炸状态
+   * @param objectId 对象ID
+   */
+  toggleObjectExplode(objectId: string): Scene3DOperationResult {
+    try {
+      const object = this.sceneObjects.get(objectId);
+      if (!object) {
+        return {
+          success: false,
+          message: `对象 ID "${objectId}" 不存在`,
+        };
+      }
+
+      const success = this.explodeManager.toggleExplode(objectId, object);
+      const state = this.explodeManager.getExplodeState(objectId);
+      
+      return {
+        success,
+        message: success ? 
+          `爆炸状态切换成功 - ${state?.isExploded ? '已爆炸' : '已收拢'}` : 
+          '爆炸状态切换失败',
+        data: { objectId, isExploded: state?.isExploded }
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      return {
+        success: false,
+        message: `切换爆炸状态失败: ${errorMessage}`,
+      };
+    }
+  }
+
+  /**
+   * 获取剖切管理器（用于高级操作）
+   */
+  getClippingManager(): ClippingManager {
+    return this.clippingManager;
+  }
+
+  /**
+   * 获取爆炸管理器（用于高级操作）
+   */
+  getExplodeManager(): ExplodeManager {
+    return this.explodeManager;
   }
 }

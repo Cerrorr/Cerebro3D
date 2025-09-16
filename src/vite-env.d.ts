@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Vite 环境变量类型定义文件
+ * @description 为Vite环境变量和TypeScript提供类型定义支持
+ * @author Cerebro3D Team
+ * @version 1.0.0
+ * @since 2024-12-01
+ */
+
 /// <reference types="vite/client" />
 
 /**

@@ -1,3 +1,11 @@
+/**
+ * @fileoverview 侧边栏主容器组件样式
+ * @description 定义侧边栏整体布局、响应式行为和容器样式
+ * @author Cerror
+ * @version 1.0.0
+ * @since 2025-09-06
+ */
+
 @use '@/styles/variables' as vars;
 @use '@/styles/mixins' as mix;
 @use 'sass:map';

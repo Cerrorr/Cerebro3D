@@ -28,6 +28,17 @@ import {
   GeometryOperations,
 } from '@/components/projectEditor/rightPanels/types';
 import type { HistorySliceState } from '@/store/types/historySlice.types';
+import type { Scene3DServiceInterface } from '@/hooks/three/types/useScene3D.types';
+
+/**
+ * 右侧面板状态管理Hook选项
+ */
+export interface UseRightSidebarPanelsStateOptions {
+  // 3D场景服务
+  scene3DService?: Scene3DServiceInterface | null;
+  // 场景节点数据
+  sceneNodes?: any[];
+}
 
 /**
  * 右侧面板状态管理Hook返回值
